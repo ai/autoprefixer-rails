@@ -21,8 +21,4 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/ai/autoprefixer-rails'
 
   s.add_dependency "execjs", [">= 0"]
-
-  s.add_development_dependency "bundler",   [">= 1.0.10"]
-  s.add_development_dependency "rake",      [">= 0"]
-  s.add_development_dependency "rspec",     [">= 0"]
 end

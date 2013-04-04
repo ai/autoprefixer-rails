@@ -31,7 +31,7 @@ PLATFORMS
 
 DEPENDENCIES
   autoprefixer-rails!
-  bundler (>= 1.0.10)
   rake
   rspec
   therubyracer
+  therubyrhino

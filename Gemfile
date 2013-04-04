@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
 gemspec
-gem 'therubyracer'
+gem 'rake'
+gem 'rspec'
+
+gem 'therubyrhino', :platforms =>  'jruby'
+gem 'therubyracer', :platforms => ['mri', 'rbx']
