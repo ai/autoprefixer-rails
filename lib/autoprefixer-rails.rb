@@ -27,6 +27,12 @@ module AutoprefixerRails
     compiler.call('autoprefixer.compile', css, browsers)
   end
 
+  def self.install(assets, browsers = [])
+    assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
+      AutoprefixerRails.compile(css, browsers)
+    end
+  end
+
   # Path to Autoprefixer JS library
   def self.js_file
     Pathname(__FILE__).dirname.join('../vendor/autoprefixer.js')
