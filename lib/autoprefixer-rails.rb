@@ -28,7 +28,7 @@ module AutoprefixerRails
   end
 
   def self.install(assets, browsers = [])
-    assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
+    assets.register_bundle_processor 'text/css', :autoprefixer do |context, css|
       AutoprefixerRails.compile(css, browsers)
     end
   end
@@ -42,4 +42,8 @@ module AutoprefixerRails
   def self.compiler
     @compiler ||= ExecJS.compile("window = this;\n" + js_file.read)
   end
+end
+
+if defined?(Rails)
+  require Pathname(__FILE__).dirname.join('autoprefixer-rails/railtie').to_s
 end
