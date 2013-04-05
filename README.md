@@ -66,8 +66,8 @@ gem "autoprefixer-rails"
 
 If you need to specify browsers actual for your project (by default, it’s last
 2 versions of each browser, like
-[in Google](http://support.google.com/a/bin/answer.py?answer=33864)), you can
-[write them](https://github.com/ai/autoprefixer#browsers)
+[in Google](http://support.google.com/a/bin/answer.py?answer=33864)),
+you can [write them](https://github.com/ai/autoprefixer#browsers)
 to `config/autoprefixer.yml`:
 
 ```yaml
