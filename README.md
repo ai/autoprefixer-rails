@@ -15,9 +15,9 @@ a {
 }
 ```
 
-Autoprefixer will take own database (from [Can I Use](http://caniuse.com/))
-with current browser statistics and properties support and adds only actual
-prefixes by Assets Pipeline:
+Autoprefixer will see in own database (from [Can I Use](http://caniuse.com/))
+with current browser statistics and properties support and adds only
+actual prefixes by Assets Pipeline:
 
 ```css
 a {
@@ -31,7 +31,7 @@ a {
 ```
 
 You can use it with Sass, LESS or Stylus, because Assets Pipeline has a nice
-architecture cascade filters. Just write CSS without prefixes in Sass syntax:
+architecture cascade filters. Just write CSS without prefixes in Sass syntax:
 
 ```sass
 a
@@ -65,7 +65,9 @@ gem "autoprefixer-rails"
 ```
 
 If you need to specify browsers actual for your project (by default, it’s last
-2 versions of each browser), you can write them to `config/autoprefixer.yml`:
+2 versions of each browser), you can
+[write them](https://github.com/ai/autoprefixer#browsers)
+to `config/autoprefixer.yml`:
 
 ```yaml
 - "last 1 version"
@@ -76,7 +78,7 @@ If you need to specify browsers actual for your project (by default, it’s last
 ### Sprockets
 
 If you use Sinatra or other non-Rails framework with Sprockets,
-just connect your Sprockets environment to Autoprefixer and write CSS
+just connect your Sprockets environment to Autoprefixer and write CSS
 in usual way:
 
 ```ruby
@@ -88,6 +90,8 @@ require "autoprefixer-rails"
 AutoprefixerRails.install(assets)
 ```
 
+You can set arrays of actual browsers as second argument in `install` method.
+
 ### Ruby
 
 If you need Autoprefixer in plain Ruby code, it’s very easy:
@@ -96,3 +100,5 @@ If you need Autoprefixer in plain Ruby code, it’s very easy:
 require "autoprefixer-rails"
 prefxied = AutoprefixerRails.compile(css)
 ```
+
+You can set arrays of actual browsers as second argument in `compile` method.
