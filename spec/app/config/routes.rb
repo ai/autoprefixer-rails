@@ -1,3 +1,3 @@
 App::Application.routes.draw do
-  root to: 'css#test'
+  root :to => 'css#test'
 end
