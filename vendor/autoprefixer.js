@@ -2176,41 +2176,6 @@ var uniq = function (array) {
 //     use(autoprefixer.filter(last 1 version')).
 //     toString();
 var autoprefixer = {
-    // Parse `css` by Rework and add prefixed properties for browsers
-    // in `requirements`.
-    compile: function (css, requirements) {
-        return rework(css).use(autoprefixer.filter(requirements)).toString();
-    },
-
-    // Return Rework filter, which will add necessary prefixes for browsers
-    // in `requirements`.
-    filter: function (requirements) {
-        if ( !requirements ) {
-            requirements = [];
-        } else if ( !Array.isArray(requirements) ) {
-            requirements = [requirements];
-        }
-
-        var browsers = this.parse(requirements);
-        var props    = this.props(browsers);
-
-        return function (style, filters) {
-            props.forEach(function (prop) {
-                if ( prop.name == '@keyframes' ) {
-                    filters.use( rework.keyframes(prop.prefixes) );
-                } else {
-                    if ( !prop.onlyValue ) {
-                        filters.use( rework.prefix(prop.name, prop.prefixes) );
-                    }
-                    if ( prop.onlyValue || prop.transition ) {
-                        filters.use(
-                            rework.prefixValue(prop.name, prop.prefixes));
-                    }
-                }
-            });
-        };
-    },
-
     // Load data
     data: {
         browsers: {
@@ -5678,6 +5643,41 @@ var autoprefixer = {
         ]
     }
 }
+    },
+
+    // Parse `css` by Rework and add prefixed properties for browsers
+    // in `requirements`.
+    compile: function (css, requirements) {
+        return rework(css).use(autoprefixer.filter(requirements)).toString();
+    },
+
+    // Return Rework filter, which will add necessary prefixes for browsers
+    // in `requirements`.
+    filter: function (requirements) {
+        if ( !requirements ) {
+            requirements = [];
+        } else if ( !Array.isArray(requirements) ) {
+            requirements = [requirements];
+        }
+
+        var browsers = this.parse(requirements);
+        var props    = this.props(browsers);
+
+        return function (style, filters) {
+            props.forEach(function (prop) {
+                if ( prop.name == '@keyframes' ) {
+                    filters.use( rework.keyframes(prop.prefixes) );
+                } else {
+                    if ( !prop.onlyValue ) {
+                        filters.use( rework.prefix(prop.name, prop.prefixes) );
+                    }
+                    if ( prop.onlyValue || prop.transition ) {
+                        filters.use(
+                            rework.prefixValue(prop.name, prop.prefixes));
+                    }
+                }
+            });
+        };
     },
 
     // Return array of browsers for requirements in free form.
