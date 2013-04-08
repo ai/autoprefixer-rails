@@ -28,7 +28,7 @@ module AutoprefixerRails
   end
 
   def self.install(assets, browsers = [])
-    assets.register_bundle_processor 'text/css', :autoprefixer do |context, css|
+    assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
       AutoprefixerRails.compile(css, browsers)
     end
   end

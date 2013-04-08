@@ -18,12 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module AutoprefixedRails
   class Railtie < ::Rails::Railtie
-    initializer :setup do |app|
-      app.config.after_initialize do |app|
-        config   = app.root.join('config/autoprefixer.yml')
-        browsers = config.exist? ? YAML.load_file(config) : []
-        AutoprefixerRails.install(app.assets, browsers)
-      end
+    config.after_initialize do |app|
+      config   = app.root.join('config/autoprefixer.yml')
+      browsers = config.exist? ? YAML.load_file(config) : []
+      AutoprefixerRails.install(app.assets, browsers)
     end
   end
 end
