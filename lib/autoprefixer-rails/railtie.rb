@@ -16,9 +16,11 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
+require 'sprockets/railtie'
+
 module AutoprefixedRails
   class Railtie < ::Rails::Railtie
-    config.after_initialize do |app|
+    initializer :setup_autoprefixer do |app|
       config   = app.root.join('config/autoprefixer.yml')
       browsers = config.exist? ? YAML.load_file(config) : []
       AutoprefixerRails.install(app.assets, browsers)
