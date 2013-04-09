@@ -71,10 +71,13 @@ you can [write them](https://github.com/ai/autoprefixer#browsers)
 to `config/autoprefixer.yml`:
 
 ```yaml
-- "last 1 version"
-- "> 1%"
-- "ie 8"
+browsers:
+  - "last 1 version"
+  - "> 1%"
+  - "ie 8"
 ```
+
+Autoprefixer will process only yours CSS from `app/` and `lib/` dirs.
 
 ### Sprockets
 

@@ -1,1 +1,2 @@
-- chrome 25
+browsers:
+  - chrome 25

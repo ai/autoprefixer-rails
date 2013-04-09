@@ -1,5 +1,6 @@
 class CssController < ApplicationController
   def test
-    render :text => Rails.application.assets['test.css']
+    file = params[:file] + '.css'
+    render :text => Rails.application.assets[file]
   end
 end

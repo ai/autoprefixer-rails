@@ -21,9 +21,10 @@ require 'sprockets/railtie'
 module AutoprefixedRails
   class Railtie < ::Rails::Railtie
     initializer :setup_autoprefixer do |app|
-      config   = app.root.join('config/autoprefixer.yml')
-      browsers = config.exist? ? YAML.load_file(config) : []
-      AutoprefixerRails.install(app.assets, browsers)
+      file   = app.root.join('config/autoprefixer.yml')
+      config = file.exist? ? YAML.load_file(file) : { 'browsers' => [] }
+      dirs   = [app.root.join('app/'), app.root.join('lib/')]
+      AutoprefixerRails.install(app.assets, config['browsers'], :dirs => dirs)
     end
   end
 end

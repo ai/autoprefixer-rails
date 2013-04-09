@@ -27,9 +27,17 @@ module AutoprefixerRails
     compiler.call('autoprefixer.compile', css, browsers)
   end
 
-  def self.install(assets, browsers = [])
+  # Add Autoprefixer for Sprockets environment in `assets`. You can specify
+  # `browsers` actual in your project. Also, you can set options with
+  # whitelist of `dirs` to be autoprefxied.
+  def self.install(assets, browsers = [], opts = { })
     assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
-      AutoprefixerRails.compile(css, browsers)
+      path = context.pathname.to_s
+      if opts[:dirs] and opts[:dirs].none? { |i| path.starts_with? i.to_s }
+        css
+      else
+        AutoprefixerRails.compile(css, browsers)
+      end
     end
   end
 

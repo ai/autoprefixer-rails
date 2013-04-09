@@ -14,4 +14,17 @@ describe AutoprefixerRails do
 
     assets['test.css'].to_s.should == PREFIXED
   end
+
+  it "should has dirs whitelist" do
+    assets = Sprockets::Environment.new
+    assets.append_path(DIR.join('app/'))
+    dirs = [DIR.join('app/vendor')]
+
+    AutoprefixerRails.install(assets, ['chrome 25'], :dirs => dirs)
+
+    assets['vendor/assets/stylesheets/foreign.css'].to_s.should ==
+      ".f {\n  -webkit-transition: none;\n  transition: none\n}"
+    assets['app/assets/stylesheets/test.css'].to_s.should ==
+      "a { transition: all 1s }\n"
+  end
 end
