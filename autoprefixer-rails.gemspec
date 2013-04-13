@@ -5,11 +5,9 @@ Gem::Specification.new do |s|
   s.name        = 'autoprefixer-rails'
   s.version     = AutoprefixerRails::VERSION.dup
   s.date        = Time.now.strftime('%Y-%m-%d')
-  s.summary     = 'Parse CSS and add only actual prefixed'
-  s.description = <<-EOF
-    Parse CSS and add prefixed properties and values
-    when it really necessary for selected browsers.
-  EOF
+  s.summary     = 'Parse CSS and add only actual prefixed by Can I Use database'
+  s.description = 'Parse CSS and add prefixed properties and values ' +
+                  'by Can I Use database for actual browsers'
 
   s.files            = `git ls-files`.split("\n")
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
