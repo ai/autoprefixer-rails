@@ -1,2 +1,6 @@
+== 0.2 (Hear Me Roar!)
+* Update parse libraries.
+* Add inspect method and rake tast.
+
 == 0.1 (Fire and Blood)
 * Initial release.
