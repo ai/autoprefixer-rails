@@ -50,6 +50,11 @@ module AutoprefixerRails
   def self.compiler
     @compiler ||= ExecJS.compile("window = this;\n" + js_file.read)
   end
+
+  # Return string with selected browsers and prefixed CSS properties and values
+  def self.inspect(browsers = [])
+    compiler.call('autoprefixer.inspect', browsers)
+  end
 end
 
 if defined?(Rails)

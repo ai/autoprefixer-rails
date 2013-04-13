@@ -16,25 +16,30 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
-require 'sprockets/railtie'
+require 'rake'
+require 'rake/tasklib'
+require 'autoprefixer-rails'
 
-module AutoprefixedRails
-  class Railtie < ::Rails::Railtie
-    rake_tasks do |app|
-      require 'rake/autoprefixer_tasks'
-      Rake::AutoprefixerTasks.new(browsers(app))
+module Rake
+  # Define task to inspect Autoprefixer browsers, properties and values.
+  # Call it from your `Rakefile`:
+  #
+  #   AutoprefixerTasks.new(['> 1%', 'opera 12'])
+  class AutoprefixerTasks < Rake::TaskLib
+    attr_reader :browsers
+
+    def initialize(browsers = [])
+      @browsers = browsers
+      define
     end
 
-    initializer :setup_autoprefixer do |app|
-      dirs   = [app.root.join('app/'), app.root.join('lib/')]
-      AutoprefixerRails.install(app.assets, browsers(app), :dirs => dirs)
-    end
-
-    # Read browsers requirements from application config
-    def browsers(app)
-      file   = app.root.join('config/autoprefixer.yml')
-      config = file.exist? ? YAML.load_file(file) : { 'browsers' => [] }
-      config['browsers']
+    def define
+      namespace :autoprefixer do
+        desc 'Show selected browsers and prefixed CSS properties and values'
+        task :inspect do
+          puts AutoprefixerRails.inspect(@browsers)
+        end
+      end
     end
   end
 end

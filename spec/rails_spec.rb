@@ -13,3 +13,11 @@ describe CssController, :type => :controller do
     response.body.should == ".f { transition: none }\n"
   end
 end
+
+describe 'Rake task' do
+  it "should inspect" do
+    inspect = `cd spec/app; bundle exec rake autoprefixer:inspect`
+    inspect.should =~ /Browsers:\n  Chrome 25\n\n/
+    inspect.should =~ /  transition: webkit/
+  end
+end

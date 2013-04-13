@@ -27,4 +27,10 @@ describe AutoprefixerRails do
     assets['app/assets/stylesheets/test.css'].to_s.should ==
       "a { transition: all 1s }\n"
   end
+
+  it "should inspect" do
+    inspect = AutoprefixerRails.inspect(['chrome 25'])
+    inspect.should =~ /Browsers:\n  Chrome 25\n\n/
+    inspect.should =~ /  transition: webkit/
+  end
 end
