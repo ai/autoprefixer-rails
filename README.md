@@ -9,10 +9,9 @@ This gem provides Ruby and Ruby on Rails integration with
 Write your CSS usual code without prefixes (forget about them at all,
 Autoprefixer will think for you) in `app/assets/stylesheets`:
 
-```css
-a {
-    transition: transform 1s
-}
+```sass
+a
+  transition: transform 1s
 ```
 
 Autoprefixer will take database with current browser statistics
@@ -29,13 +28,10 @@ a {
 }
 ```
 
-You can use it with Sass, LESS or Stylus, because Assets Pipeline has a nice
-architecture cascade filters. Just write CSS without prefixes in Sass syntax:
+You can use it with CSS, SCSS, Sass, LESS or Stylus, because Assets Pipeline
+has a nice architecture cascade filters.
 
-```sass
-a
-  transition: transform 1s
-```
+Sponsored by [Evil Martians](http://evilmartians.com/).
 
 ## Features
 
