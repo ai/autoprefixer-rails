@@ -74,6 +74,12 @@ browsers:
 
 Autoprefixer will process only yours CSS from `app/` and `lib/` dirs.
 
+You can inspect, what properties will be changed by Rake task:
+
+```sh
+rake autoprefixer:inspect
+```
+
 ### Sprockets
 
 If you use Sinatra or other non-Rails framework with Sprockets,
