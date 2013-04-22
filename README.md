@@ -20,10 +20,8 @@ and properties support and adds only actual prefixes by Assets Pipeline:
 ```css
 a {
   -webkit-transition: -webkit-transform 1s;
-  -ms-transition: -ms-transform 1s;
   -o-transition: -o-transform 1s;
-  -webkit-transition: transform 1s;
-  -o-transition: transform 1s;
+  transition: -webkit-transform 1s;
   transition: transform 1s
 }
 ```
