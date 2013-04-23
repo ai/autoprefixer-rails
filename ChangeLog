@@ -1,3 +1,11 @@
+== 0.3 (Growing Strong)
+* Use own filters instead of Rework’s `prefix` and `prefixValue`.
+* Smarter value prefixer without false match “order” in “border”.
+* 40% faster.
+* Don’t add unnecessary properties instead of Rework’s `prefixValue`.
+* Don’t change properties order.
+* Sort properties and values in inspect output.
+
 == 0.2 (Hear Me Roar!)
 * Update parse libraries.
 * Add inspect method and rake tast.
