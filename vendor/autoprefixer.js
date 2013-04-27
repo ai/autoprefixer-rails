@@ -6083,8 +6083,15 @@ var splitPrefix = function (prop) {
 // Generate RegExp to test, does CSS value contain some `word`.
 var containRegexp = function (word) {
     return new RegExp('(^|\\s|,|\\()' +
-                word.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1") +
-               '($|\\s|\\()');
+               word.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1") +
+               '($|\\s|\\()', 'ig');
+};
+
+// Throw error with `messages with mark, that is from Autoprefixer.
+var error = function (message) {
+    var err = new Error(message);
+    err.autoprefixer = true;
+    throw err;
 };
 
 // Parse CSS and add prefixed properties and values by Can I Use database
@@ -6195,7 +6202,7 @@ var autoprefixer = {
 
                     for ( var name in values ) {
                         var value = values[name];
-                        if ( !value.regexp.test(rule.value) ) {
+                        if ( !rule.value.match(value.regexp) ) {
                             continue;
                         }
 
@@ -6288,15 +6295,19 @@ var autoprefixer = {
     // Check browser name and reduce version if them from future.
     check: function (req) {
         req = req.split(/\s+/);
+        if ( req.length > 2 ) {
+            error('Unknown browsers requirement `' + req.join(' ')  + '`');
+        }
+
         var name    = req[0];
         var version = parseFloat(req[1]);
 
         var data = this.data.browsers[name];
         if ( !data ) {
-            throw new Error('Unknown browser `' + name + '`');
+            error('Unknown browser `' + name + '`');
         }
         if ( !version ) {
-            throw new Error("Can't recognize version in `" + req + '`');
+            error("Can't recognize version in `" + req + '`');
         }
 
         var last = data.versions[0];
@@ -6394,6 +6405,7 @@ require.alias("visionmedia-rework/lib/plugins/prefix-selectors.js", "autoprefixe
 require.alias("visionmedia-rework/lib/plugins/prefix-value.js", "autoprefixer/deps/rework/lib/plugins/prefix-value.js");
 require.alias("visionmedia-rework/lib/plugins/media.js", "autoprefixer/deps/rework/lib/plugins/media.js");
 require.alias("visionmedia-rework/lib/plugins/prefix.js", "autoprefixer/deps/rework/lib/plugins/prefix.js");
+require.alias("visionmedia-rework/index.js", "rework/index.js");
 require.alias("visionmedia-css/index.js", "visionmedia-rework/deps/css/index.js");
 require.alias("visionmedia-css-parse/index.js", "visionmedia-css/deps/css-parse/index.js");
 
