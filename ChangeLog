@@ -6,6 +6,12 @@
 * Don’t change properties order.
 * Sort properties and values in inspect output.
 
+20130424:
+* Fix value override in prefixer.
+
+20130427:
+* Prefix several same values in one property.
+
 == 0.2 (Hear Me Roar!)
 * Update parse libraries.
 * Add inspect method and rake tast.
