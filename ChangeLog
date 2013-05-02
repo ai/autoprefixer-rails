@@ -12,6 +12,10 @@
 20130427:
 * Prefix several same values in one property.
 
+20130502:
+* Don’t add -webkit- prefix to IE filter.
+* Don’t duplicate already prefixed rules.
+
 == 0.2 (Hear Me Roar!)
 * Update parse libraries.
 * Add inspect method and rake tast.
