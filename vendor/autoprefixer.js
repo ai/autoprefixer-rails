@@ -4657,7 +4657,10 @@ module.exports = {
             "safari 6",
             "ios 6"
         ],
-        transition: true
+        transition: true,
+        check: function () {
+            return !this.match(/DXImageTransform\.Microsoft/);
+        }
     },
     flex: {
         browsers: [
@@ -6152,7 +6155,41 @@ var autoprefixer = {
     // Change `style` declarations in parsed `css`, to add prefixes for `props`.
     prefixer: function (props, style, css) {
         if ( props['@keyframes'] ) {
-            css.use( rework.keyframes(props['@keyframes'].prefixes) );
+            // Keyframes
+
+             style.rules.forEach(function(rule) {
+                if ( !rule.keyframes ) {
+                    return;
+                }
+
+                props['@keyframes'].prefixes.forEach(function (prefix) {
+                    var contain = style.rules.some(function (other) {
+                        return other.keyframes && rule.name == other.name &&
+                               other.vendor == prefix;
+                    });
+                    if ( contain ) {
+                        return;
+                    }
+
+                    var clone = { name: rule.name };
+                    clone.vendor = rule.vendor;
+                    clone.keyframes = [];
+                    rule.keyframes.forEach(function (keyframe) {
+                        var keyframeClone          = { };
+                        keyframeClone.values       = keyframe.values.slice();
+                        keyframeClone.declarations = keyframe.declarations.map(
+                            function (i) {
+                                return { property: i.property, value: i.value };
+                            });
+
+                        clone.keyframes.push(keyframeClone);
+                    });
+
+
+                    clone.vendor = prefix;
+                    style.rules.push(clone);
+                });
+             });
         }
 
         var all = props['*'];
@@ -6165,7 +6202,22 @@ var autoprefixer = {
         var isTransition = /(-(webkit|moz|ms|o)-)?transition(-property)?/;
 
         rework.visit.declarations(style, function (rules, node) {
-            var vendor = node.vendor;
+            var vendor   = node.vendor;
+            var prefixes = ['-webkit-', '-moz-', '-ms-', '-o-'];
+
+            var contain = function (rules, prop, value) {
+                return rules.some(function (rule) {
+                    return rule.property == prop && rule.value == value;
+                });
+            };
+            var add = function (rules, num, prop, value) {
+                if ( contain(rules, prop, value) ) {
+                    return num;
+                }
+
+                rules.splice(num, 0, { property: prop, value: value });
+                return num + 1;
+            };
 
             // Properties
             for ( var num = 0; num < rules.length; num += 1 ) {
@@ -6175,17 +6227,25 @@ var autoprefixer = {
                 if ( !prop || !prop.prefixes ) {
                     continue;
                 }
+                if ( prop.check && !prop.check.call(rule.value, rule) ) {
+                    continue;
+                }
 
                 prop.prefixes.forEach(function (prefix) {
                     if ( vendor && vendor != prefix ) {
                         return;
                     }
-
-                    rules.splice(num, 0, {
-                        property: prefix + rule.property,
-                        value:    rule.value
+                    var wrong = prefixes.some(function (other) {
+                        if ( other == prefix ) {
+                            return false;
+                        }
+                        return rule.value.indexOf(other) != -1;
                     });
-                    num += 1;
+                    if ( wrong ) {
+                        return;
+                    }
+
+                    num = add(rules, num, prefix + rule.property, rule.value);
                 });
             };
 
@@ -6222,13 +6282,16 @@ var autoprefixer = {
                     for ( var prefix in prefixed ) {
                         if ( prefixed[prefix] != rule.value ) {
                             if ( propVendor ) {
-                                rule.value = prefixed[prefix];
+                                var exists = contain(rules, rule.property,
+                                                     prefixed[prefix]);
+                                if ( exists ) {
+                                    rules.splice(num, 1);
+                                } else {
+                                    rule.value = prefixed[prefix];
+                                }
                             } else {
-                                rules.splice(num, 0, {
-                                    property: rule.property,
-                                    value:    prefixed[prefix]
-                                });
-                                num += 1;
+                                num = add(rules, num, rule.property,
+                                          prefixed[prefix]);
                             }
                         }
                     }
@@ -6341,21 +6404,19 @@ var autoprefixer = {
             if ( prefixes.length ) {
                 prefixes = uniq(prefixes);
 
-                if ( data[name].props ) {
-                    selected[name] = {
-                        props:      data[name].props,
-                        regexp:     containRegexp(name),
-                        prefixes:   prefixes
-                    };
-                } else if (data[name].transition) {
-                    selected[name] = {
-                        regexp:     containRegexp(name),
-                        prefixes:   prefixes,
-                        transition: true
-                    };
-                } else {
-                    selected[name] = { prefixes: prefixes };
+                var obj = { prefixes: prefixes }
+                for ( var key in data[name] ) {
+                    if ( key == 'browsers' ) {
+                        continue;
+                    }
+                    obj[key] = data[name][key];
                 }
+
+                if ( obj.props || obj.transition ) {
+                    obj.regexp = containRegexp(name);
+                }
+
+                selected[name] = obj;
             }
         }
         return selected;
