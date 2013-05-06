@@ -2744,7 +2744,26 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
-        ]
+        ],
+        replace: function (string, prefix) {
+            var regexp;
+            if (prefix !== '-webkit-') {
+                return;
+            }
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
+                if (deg) {
+                    deg = parseInt(deg);
+                    deg += 90;
+                    if (deg > 360) {
+                        deg -= 360;
+                    }
+                    return prefix + gradient + deg + 'deg';
+                } else {
+                    return prefix + gradient;
+                }
+            });
+        }
     },
     "radial-gradient": {
         props: [
@@ -2803,7 +2822,26 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
-        ]
+        ],
+        replace: function (string, prefix) {
+            var regexp;
+            if (prefix !== '-webkit-') {
+                return;
+            }
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
+                if (deg) {
+                    deg = parseInt(deg);
+                    deg += 90;
+                    if (deg > 360) {
+                        deg -= 360;
+                    }
+                    return prefix + gradient + deg + 'deg';
+                } else {
+                    return prefix + gradient;
+                }
+            });
+        }
     },
     "repeating-linear-gradient": {
         props: [
@@ -2862,7 +2900,26 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
-        ]
+        ],
+        replace: function (string, prefix) {
+            var regexp;
+            if (prefix !== '-webkit-') {
+                return;
+            }
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
+                if (deg) {
+                    deg = parseInt(deg);
+                    deg += 90;
+                    if (deg > 360) {
+                        deg -= 360;
+                    }
+                    return prefix + gradient + deg + 'deg';
+                } else {
+                    return prefix + gradient;
+                }
+            });
+        }
     },
     "repeating-radial-gradient": {
         props: [
@@ -2921,7 +2978,26 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
-        ]
+        ],
+        replace: function (string, prefix) {
+            var regexp;
+            if (prefix !== '-webkit-') {
+                return;
+            }
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
+                if (deg) {
+                    deg = parseInt(deg);
+                    deg += 90;
+                    if (deg > 360) {
+                        deg -= 360;
+                    }
+                    return prefix + gradient + deg + 'deg';
+                } else {
+                    return prefix + gradient;
+                }
+            });
+        }
     }
 };
 
@@ -3725,6 +3801,110 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
+        ],
+        transition: true
+    },
+    "border-bottom-left-radius": {
+        browsers: [
+            "ff 2",
+            "ff 3",
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "safari 4",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2"
+        ],
+        transition: true,
+        prefixed: {
+            "-moz-": "moz-border-radius-bottomleft"
+        }
+    },
+    "border-bottom-right-radius": {
+        browsers: [
+            "ff 2",
+            "ff 3",
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "safari 4",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2"
+        ],
+        transition: true,
+        prefixed: {
+            "-moz-": "moz-border-radius-bottomright"
+        }
+    },
+    "border-radius": {
+        browsers: [
+            "ff 2",
+            "ff 3",
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "safari 4",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2"
+        ],
+        transition: true
+    },
+    "border-top-left-radius": {
+        browsers: [
+            "ff 2",
+            "ff 3",
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "safari 4",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2"
+        ],
+        transition: true,
+        prefixed: {
+            "-moz-": "moz-border-radius-topleft"
+        }
+    },
+    "border-top-right-radius": {
+        browsers: [
+            "ff 2",
+            "ff 3",
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "safari 4",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2"
+        ],
+        transition: true,
+        prefixed: {
+            "-moz-": "moz-border-radius-topright"
+        }
+    },
+    "box-shadow": {
+        browsers: [
+            "ff 3.5",
+            "ff 3.6",
+            "chrome 4",
+            "chrome 5",
+            "chrome 6",
+            "chrome 7",
+            "chrome 8",
+            "chrome 9",
+            "safari 4",
+            "safari 5",
+            "safari 3.1",
+            "safari 3.2",
+            "ios 3.2",
+            "ios 4.0",
+            "ios 4.1",
+            "ios 4.2",
+            "ios 4.3"
         ],
         transition: true
     },
@@ -6058,6 +6238,7 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+(function () {
 'use strict';
 
 var rework = require('rework');
@@ -6075,7 +6256,7 @@ var uniq = function (array) {
 
 // Split prefix and property name.
 var splitPrefix = function (prop) {
-    if ( prop[0] == '-' ) {
+    if ( prop[0] === '-' ) {
         var sep = prop.indexOf('-', 1) + 1;
         return { prefix: prop.slice(0, sep), name: prop.slice(sep) };
     } else {
@@ -6086,7 +6267,7 @@ var splitPrefix = function (prop) {
 // Generate RegExp to test, does CSS value contain some `word`.
 var containRegexp = function (word) {
     return new RegExp('(^|\\s|,|\\()' +
-               word.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1") +
+               word.replace(/([.?*+\^\$\[\]\\(){}|\-])/g, "\\$1") +
                '($|\\s|\\()', 'ig');
 };
 
@@ -6144,28 +6325,31 @@ var autoprefixer = {
             requirements = [requirements];
         }
 
-        var browsers = this.parse(requirements);
-        var props    = this.prefixes(browsers);
+        var browsers   = this.parse(requirements);
+        var values     = this.filter(this.data.values, browsers);
+        var props      = this.filter(this.data.props,  browsers);
+        var prefixes   = this.prefixes(props, values);
+        var unprefixes = this.unprefixes(props, values);
 
-        return function (style, css) {
-            autoprefixer.prefixer(props, style, css);
+        return function (style) {
+            autoprefixer.unprefixer(unprefixes, style);
+            autoprefixer.prefixer(prefixes, style);
         };
     },
 
-    // Change `style` declarations in parsed `css`, to add prefixes for `props`.
-    prefixer: function (props, style, css) {
+    // Change `style` declarations in parsed CSS, to add prefixes for `props`.
+    prefixer: function (props, style) {
         if ( props['@keyframes'] ) {
             // Keyframes
-
-             style.rules.forEach(function(rule) {
+            style.rules.forEach(function(rule) {
                 if ( !rule.keyframes ) {
                     return;
                 }
 
                 props['@keyframes'].prefixes.forEach(function (prefix) {
                     var contain = style.rules.some(function (other) {
-                        return other.keyframes && rule.name == other.name &&
-                               other.vendor == prefix;
+                        return other.keyframes && rule.name === other.name &&
+                               other.vendor === prefix;
                     });
                     if ( contain ) {
                         return;
@@ -6207,7 +6391,7 @@ var autoprefixer = {
 
             var contain = function (rules, prop, value) {
                 return rules.some(function (rule) {
-                    return rule.property == prop && rule.value == value;
+                    return rule.property === prop && rule.value === value;
                 });
             };
             var add = function (rules, num, prop, value) {
@@ -6218,11 +6402,12 @@ var autoprefixer = {
                 rules.splice(num, 0, { property: prop, value: value });
                 return num + 1;
             };
+            var num, rule, prop;
 
             // Properties
-            for ( var num = 0; num < rules.length; num += 1 ) {
-                var rule = rules[num];
-                var prop = props[rule.property];
+            for ( num = 0; num < rules.length; num += 1 ) {
+                rule = rules[num];
+                prop = props[rule.property];
 
                 if ( !prop || !prop.prefixes ) {
                     continue;
@@ -6232,14 +6417,14 @@ var autoprefixer = {
                 }
 
                 prop.prefixes.forEach(function (prefix) {
-                    if ( vendor && vendor != prefix ) {
+                    if ( vendor && vendor !== prefix ) {
                         return;
                     }
                     var wrong = prefixes.some(function (other) {
-                        if ( other == prefix ) {
+                        if ( other === prefix ) {
                             return false;
                         }
-                        return rule.value.indexOf(other) != -1;
+                        return rule.value.indexOf(other) !== -1;
                     });
                     if ( wrong ) {
                         return;
@@ -6247,15 +6432,15 @@ var autoprefixer = {
 
                     num = add(rules, num, prefix + rule.property, rule.value);
                 });
-            };
+            }
 
             // Values
-            for ( var num = 0; num < rules.length; num += 1 ) {
-                var rule = rules[num];
+            for ( num = 0; num < rules.length; num += 1 ) {
+                rule = rules[num];
 
-                var split = splitPrefix(rule.property);
-                var prop  = props[split.name];
+                var split      = splitPrefix(rule.property);
                 var propVendor = split.prefix || vendor;
+                prop = props[split.name];
 
                 var valuePrefixer = function (values) {
                     var prefixed = { };
@@ -6267,11 +6452,21 @@ var autoprefixer = {
                         }
 
                         value.prefixes.forEach(function (prefix) {
-                            if ( propVendor && propVendor != prefix ) {
+                            if ( propVendor && propVendor !== prefix ) {
                                 return;
                             }
                             if ( !prefixed[prefix]) {
                                 prefixed[prefix] = rule.value;
+                            }
+                            if ( value.replace ) {
+                                if ( prefixed[prefix].match(value.regexp) ) {
+                                    var replaced = value.replace(
+                                        prefixed[prefix], prefix);
+                                    if ( replaced ) {
+                                        prefixed[prefix] = replaced;
+                                        return;
+                                    }
+                                }
                             }
                             prefixed[prefix] = prefixed[prefix].replace(
                                 value.regexp, '$1' + prefix + name + '$2');
@@ -6280,7 +6475,7 @@ var autoprefixer = {
 
 
                     for ( var prefix in prefixed ) {
-                        if ( prefixed[prefix] != rule.value ) {
+                        if ( prefixed[prefix] !== rule.value ) {
                             if ( propVendor ) {
                                 var exists = contain(rules, rule.property,
                                                      prefixed[prefix]);
@@ -6310,9 +6505,47 @@ var autoprefixer = {
         });
     },
 
+    // Change `style` declarations in parsed CSS, to remove `remove`.
+    unprefixer: function (remove, style) {
+        var all = remove.values['*'];
+
+        // Keyframes
+        style.rules = style.rules.filter(function (rule) {
+            return !(rule.keyframes && remove.keyframes[rule.vendor]);
+        });
+
+        rework.visit.declarations(style, function (rules) {
+            for ( var num = 0; num < rules.length; num += 1 ) {
+                var rule = rules[num];
+
+                // Properties
+                if ( remove.props[rule.property] ) {
+                    rules.splice(num, 1);
+                    continue;
+                }
+
+                // Values
+                var prop   = splitPrefix(rule.property).name;
+                var values = all;
+                if ( remove.values[prop] ) {
+                    values = values.concat(remove.values[prop]);
+                }
+                if ( prop === 'transition' || prop === 'transition-property' ) {
+                    values = values.concat(remove.transition);
+                }
+                values.forEach(function (value) {
+                    if ( rule.value.match(value) ) {
+                        rules.splice(num, 1);
+                        return false;
+                    }
+                });
+            }
+        });
+    },
+
     // Return array of browsers for requirements in free form.
     parse: function (requirements) {
-        if ( requirements.length == 0 ) {
+        if ( requirements.length === 0 ) {
             requirements = ['last 2 versions'];
         }
 
@@ -6395,18 +6628,18 @@ var autoprefixer = {
         for ( var name in data ) {
             var need     = data[name].browsers;
             var prefixes = browsers.filter(function (browser) {
-                return need.indexOf(browser) != -1;
+                return need.indexOf(browser) !== -1;
             }).map(function (browser) {
                 var key = browser.split(' ')[0];
                 return autoprefixer.data.browsers[key].prefix;
-            }).sort(function (a, b) { return b.length - a.length });
+            }).sort(function (a, b) { return b.length - a.length; });
 
             if ( prefixes.length ) {
                 prefixes = uniq(prefixes);
 
-                var obj = { prefixes: prefixes }
+                var obj = { prefixes: prefixes };
                 for ( var key in data[name] ) {
-                    if ( key == 'browsers' ) {
+                    if ( key === 'browsers' ) {
                         continue;
                     }
                     obj[key] = data[name][key];
@@ -6423,10 +6656,7 @@ var autoprefixer = {
     },
 
     // Return properties, which them prefixed values inside.
-    prefixes: function (browsers) {
-        var values = this.filter(this.data.values, browsers);
-        var props  = this.filter(this.data.props,  browsers);
-
+    prefixes: function (props, values) {
         for ( var name in values ) {
             values[name].props.forEach(function (prop) {
                 if ( !props[prop] ) {
@@ -6440,10 +6670,69 @@ var autoprefixer = {
         }
 
         return props;
+    },
+
+    // Return old properties and values to remove.
+    unprefixes: function (props, values) {
+        var remove = { props: {}, values: {}, transition: [], keyframes: {} };
+        var name, prefixes, prop, value, names;
+
+        for ( name in this.data.props ) {
+            prop     = this.data.props[name];
+            prefixes = prop.browsers.map(function (b) {
+                var key = b.split(' ')[0];
+                return autoprefixer.data.browsers[key].prefix;
+            });
+            uniq(prefixes).filter(function (prefix) {
+                if ( !props[name] ) {
+                    return true;
+                }
+                return props[name].prefixes.indexOf(prefix) === -1;
+            }).forEach(function (prefix) {
+                if ( prop.transition ) {
+                    remove.transition.push(containRegexp(prefix + name));
+                }
+                if ( name === '@keyframes' ) {
+                    remove.keyframes[prefix] = true;
+                } else {
+                    if ( prop.prefixed && prop.prefixed[prefix] ) {
+                        remove.props[prop.prefixed[prefix]] = true;
+                    } else {
+                        remove.props[prefix + name] = true;
+                    }
+                }
+            });
+        }
+
+        for ( name in this.data.values ) {
+            value = this.data.values[name];
+            prefixes = value.browsers.map(function (b) {
+                var key = b.split(' ')[0];
+                return autoprefixer.data.browsers[key].prefix;
+            });
+            names = uniq(prefixes).filter(function (prefix) {
+                if ( !values[name] ) {
+                    return true;
+                }
+                return values[name].prefixes.indexOf(prefix) === -1;
+            }).map(function (prefix) {
+                return containRegexp(prefix + name);
+            });
+
+            value.props.forEach(function (prop) {
+                if ( !remove.values[prop] ) {
+                    remove.values[prop] = [];
+                }
+                remove.values[prop] = remove.values[prop].concat(names);
+            });
+        }
+
+        return remove;
     }
 };
 
 module.exports = autoprefixer;
+})();
 
 });
 require.alias("visionmedia-rework/index.js", "autoprefixer/deps/rework/index.js");
