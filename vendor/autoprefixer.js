@@ -2343,29 +2343,29 @@ module.exports = {
             27
         ],
         popularity: [
-            1.21495,
-            27.6188,
-            1.01816,
-            0.453468,
-            0.205344,
-            0.453468,
-            0.059892,
-            0.059892,
-            0.077004,
-            0.102672,
-            0.068448,
-            0.102672,
-            0.08556,
-            0.094116,
-            0.094116,
-            0.12834,
-            0.077004,
-            0.034224,
-            0.04278,
-            0.034224,
-            0.025668,
-            0.025668,
-            0.025668
+            27.6639,
+            1.61868,
+            0.72324,
+            0.6888,
+            0.54243,
+            0.5166,
+            0.07749,
+            0.07749,
+            0.09471,
+            0.09471,
+            0.0861,
+            0.12054,
+            0.10332,
+            0.11193,
+            0.12054,
+            0.15498,
+            0.09471,
+            0.03444,
+            0.04305,
+            0.02583,
+            0.02583,
+            0.02583,
+            0.02583
         ]
     },
     ff: {
@@ -2398,27 +2398,27 @@ module.exports = {
             21
         ],
         popularity: [
-            0.393576,
-            12.9281,
-            0.667368,
-            0.367908,
-            0.487692,
-            0.325128,
-            0.308016,
-            0.222456,
-            0.444912,
-            0.188232,
-            0.2139,
-            0.12834,
-            0.111228,
-            0.077004,
-            0.077004,
-            0.08556,
-            0.12834,
-            0.419244,
-            0.068448,
-            0.102672,
-            0.034224
+            8.15367,
+            4.66662,
+            0.3444,
+            0.30135,
+            0.70602,
+            0.39606,
+            0.26691,
+            0.20664,
+            0.40467,
+            0.1722,
+            0.19803,
+            0.10332,
+            0.0861,
+            0.06888,
+            0.06888,
+            0.07749,
+            0.12054,
+            0.37884,
+            0.06027,
+            0.09471,
+            0.02583
         ]
     },
     ie: {
@@ -2431,12 +2431,15 @@ module.exports = {
             6,
             5.5
         ],
+        future: [
+            11
+        ],
         popularity: [
-            1.95345,
-            13.6655,
-            8.89427,
-            0.553191,
-            0.250665,
+            5.38881,
+            11.6221,
+            8.09627,
+            0.513634,
+            0.226347,
             0.009298
         ]
     },
@@ -2453,14 +2456,14 @@ module.exports = {
             3.2
         ],
         popularity: [
-            6.26488,
-            0.4636595,
-            0.4636595,
-            0.0657155,
-            0.0657155,
-            0.0073017,
-            0.0073017,
-            0.00730172
+            6.02384,
+            0.3597855,
+            0.3597855,
+            0.065104,
+            0.065104,
+            0.00685305,
+            0.00685305,
+            0.00685306
         ]
     },
     opera: {
@@ -2480,18 +2483,18 @@ module.exports = {
             9.6
         ],
         popularity: [
-            0.710148,
-            0.102672,
-            0.059892,
-            0.017112,
-            0.008556,
-            0.008556,
-            0.017112,
+            0.62853,
+            0.07749,
+            0.04305,
+            0.01722,
+            0.00861,
+            0.00861,
+            0.00861,
             0.008565,
-            0.008556,
-            0.008556,
-            0.004278,
-            0.004278
+            0.00861,
+            0.00861,
+            0.004305,
+            0.004305
         ]
     },
     safari: {
@@ -2505,10 +2508,10 @@ module.exports = {
             3.1
         ],
         popularity: [
-            1.9251,
-            1.42885,
-            0.479136,
-            0.136896,
+            1.90281,
+            1.35177,
+            0.4305,
+            0.12054,
             0.008692,
             0
         ]
@@ -2616,7 +2619,17 @@ module.exports = {
             "ios 4.3",
             "ios 5.0",
             "ios 5.1"
-        ]
+        ],
+        replace: function (string, prefix, rules) {
+            if (prefix === '-webkit-') {
+                rules.add('display', '-webkit-box');
+                return '-webkit-' + string;
+            } else if (prefix === '-moz-') {
+                return prefix + 'box';
+            } else if (prefix === '-ms-') {
+                return prefix + 'flexbox';
+            }
+        }
     },
     "inline-flex": {
         props: [
@@ -2747,10 +2760,30 @@ module.exports = {
         ],
         replace: function (string, prefix) {
             var regexp;
+            regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
+            string = string.replace(regexp, function (_, ver, hor) {
+                var direct;
+                direct = [];
+                if (ver === 'top') {
+                    direct.push('bottom');
+                }
+                if (ver === 'bottom') {
+                    direct.push('top');
+                }
+                if (hor === 'right') {
+                    direct.push('left');
+                }
+                if (hor === 'left') {
+                    direct.push('right');
+                }
+                return direct.join(' ');
+            });
+            regexp = /(repeating-)?(linear|radial)-gradient/gi;
+            string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
-                return;
+                return string;
             }
-            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
                 if (deg) {
                     deg = parseInt(deg);
@@ -2758,9 +2791,9 @@ module.exports = {
                     if (deg > 360) {
                         deg -= 360;
                     }
-                    return prefix + gradient + deg + 'deg';
+                    return gradient + deg + 'deg';
                 } else {
-                    return prefix + gradient;
+                    return gradient;
                 }
             });
         }
@@ -2825,10 +2858,30 @@ module.exports = {
         ],
         replace: function (string, prefix) {
             var regexp;
+            regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
+            string = string.replace(regexp, function (_, ver, hor) {
+                var direct;
+                direct = [];
+                if (ver === 'top') {
+                    direct.push('bottom');
+                }
+                if (ver === 'bottom') {
+                    direct.push('top');
+                }
+                if (hor === 'right') {
+                    direct.push('left');
+                }
+                if (hor === 'left') {
+                    direct.push('right');
+                }
+                return direct.join(' ');
+            });
+            regexp = /(repeating-)?(linear|radial)-gradient/gi;
+            string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
-                return;
+                return string;
             }
-            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
                 if (deg) {
                     deg = parseInt(deg);
@@ -2836,9 +2889,9 @@ module.exports = {
                     if (deg > 360) {
                         deg -= 360;
                     }
-                    return prefix + gradient + deg + 'deg';
+                    return gradient + deg + 'deg';
                 } else {
-                    return prefix + gradient;
+                    return gradient;
                 }
             });
         }
@@ -2903,10 +2956,30 @@ module.exports = {
         ],
         replace: function (string, prefix) {
             var regexp;
+            regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
+            string = string.replace(regexp, function (_, ver, hor) {
+                var direct;
+                direct = [];
+                if (ver === 'top') {
+                    direct.push('bottom');
+                }
+                if (ver === 'bottom') {
+                    direct.push('top');
+                }
+                if (hor === 'right') {
+                    direct.push('left');
+                }
+                if (hor === 'left') {
+                    direct.push('right');
+                }
+                return direct.join(' ');
+            });
+            regexp = /(repeating-)?(linear|radial)-gradient/gi;
+            string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
-                return;
+                return string;
             }
-            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
                 if (deg) {
                     deg = parseInt(deg);
@@ -2914,9 +2987,9 @@ module.exports = {
                     if (deg > 360) {
                         deg -= 360;
                     }
-                    return prefix + gradient + deg + 'deg';
+                    return gradient + deg + 'deg';
                 } else {
-                    return prefix + gradient;
+                    return gradient;
                 }
             });
         }
@@ -2981,10 +3054,30 @@ module.exports = {
         ],
         replace: function (string, prefix) {
             var regexp;
+            regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
+            string = string.replace(regexp, function (_, ver, hor) {
+                var direct;
+                direct = [];
+                if (ver === 'top') {
+                    direct.push('bottom');
+                }
+                if (ver === 'bottom') {
+                    direct.push('top');
+                }
+                if (hor === 'right') {
+                    direct.push('left');
+                }
+                if (hor === 'left') {
+                    direct.push('right');
+                }
+                return direct.join(' ');
+            });
+            regexp = /(repeating-)?(linear|radial)-gradient/gi;
+            string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
-                return;
+                return string;
             }
-            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/g;
+            regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
                 if (deg) {
                     deg = parseInt(deg);
@@ -2992,9 +3085,9 @@ module.exports = {
                     if (deg > 360) {
                         deg -= 360;
                     }
-                    return prefix + gradient + deg + 'deg';
+                    return gradient + deg + 'deg';
                 } else {
-                    return prefix + gradient;
+                    return gradient;
                 }
             });
         }
@@ -6073,6 +6166,7 @@ module.exports = {
     "user-select": {
         browsers: [
             "ie 10",
+            "ie 11",
             "ff 2",
             "ff 3",
             "ff 4",
@@ -6278,6 +6372,41 @@ var error = function (message) {
     throw err;
 };
 
+// Class to edit rules array inside forEach.
+var Rules = function(rules) {
+    this.rules = rules;
+};
+Rules.prototype = {
+    // Execute `callback` on every rule.
+    forEach: function (callback) {
+        for ( this.num = 0; this.num < this.rules.length; this.num += 1 ) {
+            callback(this.rules[this.num]);
+        }
+    },
+
+    // Check that rules contain rule with `prop` and `values`.
+    contain: function (prop, value) {
+        return this.rules.some(function (rule) {
+            return rule.property === prop && rule.value === value;
+        });
+    },
+
+    // Add new rule with `prop` and `value`.
+    add: function (prop, value) {
+        if ( this.contain(prop, value) ) {
+            return;
+        }
+
+        this.rules.splice(this.num, 0, { property: prop, value: value });
+        this.num += 1;
+    },
+
+    // Remove current rule.
+    removeCurrent: function () {
+        this.rules.splice(this.num, 1);
+    }
+};
+
 // Parse CSS and add prefixed properties and values by Can I Use database
 // for actual browsers.
 //
@@ -6339,8 +6468,19 @@ var autoprefixer = {
 
     // Change `style` declarations in parsed CSS, to add prefixes for `props`.
     prefixer: function (props, style) {
+        var all      = props['*'];
+        var prefixes = ['-webkit-', '-moz-', '-ms-', '-o-'];
+
+        var transitions = { };
+        for ( var i in props ) {
+            if ( props[i].transition && props[i].prefixes ) {
+                transitions[i] = props[i];
+            }
+        }
+        var isTransition = /(-(webkit|moz|ms|o)-)?transition(-property)?/;
+
+        // Keyframes
         if ( props['@keyframes'] ) {
-            // Keyframes
             style.rules.forEach(function(rule) {
                 if ( !rule.keyframes ) {
                     return;
@@ -6376,48 +6516,22 @@ var autoprefixer = {
              });
         }
 
-        var all = props['*'];
-        var transitions = { };
-        for ( var i in props ) {
-            if ( props[i].transition && props[i].prefixes ) {
-                transitions[i] = props[i];
-            }
-        }
-        var isTransition = /(-(webkit|moz|ms|o)-)?transition(-property)?/;
-
-        rework.visit.declarations(style, function (rules, node) {
-            var vendor   = node.vendor;
-            var prefixes = ['-webkit-', '-moz-', '-ms-', '-o-'];
-
-            var contain = function (rules, prop, value) {
-                return rules.some(function (rule) {
-                    return rule.property === prop && rule.value === value;
-                });
-            };
-            var add = function (rules, num, prop, value) {
-                if ( contain(rules, prop, value) ) {
-                    return num;
-                }
-
-                rules.splice(num, 0, { property: prop, value: value });
-                return num + 1;
-            };
-            var num, rule, prop;
+        rework.visit.declarations(style, function (list, node) {
+            var rules = new Rules(list);
 
             // Properties
-            for ( num = 0; num < rules.length; num += 1 ) {
-                rule = rules[num];
-                prop = props[rule.property];
+            rules.forEach(function (rule) {
+                var prop = props[rule.property];
 
                 if ( !prop || !prop.prefixes ) {
-                    continue;
+                    return;
                 }
                 if ( prop.check && !prop.check.call(rule.value, rule) ) {
-                    continue;
+                    return;
                 }
 
                 prop.prefixes.forEach(function (prefix) {
-                    if ( vendor && vendor !== prefix ) {
+                    if ( node.vendor && node.vendor !== prefix ) {
                         return;
                     }
                     var wrong = prefixes.some(function (other) {
@@ -6430,17 +6544,15 @@ var autoprefixer = {
                         return;
                     }
 
-                    num = add(rules, num, prefix + rule.property, rule.value);
+                    rules.add(prefix + rule.property, rule.value);
                 });
-            }
+            });
 
             // Values
-            for ( num = 0; num < rules.length; num += 1 ) {
-                rule = rules[num];
-
-                var split      = splitPrefix(rule.property);
-                var propVendor = split.prefix || vendor;
-                prop = props[split.name];
+            rules.forEach(function (rule) {
+                var split  = splitPrefix(rule.property);
+                var vendor = split.prefix || node.vendor;
+                var prop   = props[split.name];
 
                 var valuePrefixer = function (values) {
                     var prefixed = { };
@@ -6452,22 +6564,23 @@ var autoprefixer = {
                         }
 
                         value.prefixes.forEach(function (prefix) {
-                            if ( propVendor && propVendor !== prefix ) {
+                            if ( vendor && vendor !== prefix ) {
                                 return;
                             }
-                            if ( !prefixed[prefix]) {
+                            if ( !prefixed[prefix] ) {
                                 prefixed[prefix] = rule.value;
                             }
                             if ( value.replace ) {
                                 if ( prefixed[prefix].match(value.regexp) ) {
                                     var replaced = value.replace(
-                                        prefixed[prefix], prefix);
+                                        prefixed[prefix], prefix, rules);
                                     if ( replaced ) {
                                         prefixed[prefix] = replaced;
                                         return;
                                     }
                                 }
                             }
+
                             prefixed[prefix] = prefixed[prefix].replace(
                                 value.regexp, '$1' + prefix + name + '$2');
                         });
@@ -6475,19 +6588,20 @@ var autoprefixer = {
 
 
                     for ( var prefix in prefixed ) {
-                        if ( prefixed[prefix] !== rule.value ) {
-                            if ( propVendor ) {
-                                var exists = contain(rules, rule.property,
-                                                     prefixed[prefix]);
-                                if ( exists ) {
-                                    rules.splice(num, 1);
-                                } else {
-                                    rule.value = prefixed[prefix];
-                                }
+                        if ( prefixed[prefix] === rule.value ) {
+                            continue;
+                        }
+
+                        if ( vendor ) {
+                            var exists = rules.contain(
+                                rule.property, prefixed[prefix]);
+                            if ( exists ) {
+                                rules.removeCurrent();
                             } else {
-                                num = add(rules, num, rule.property,
-                                          prefixed[prefix]);
+                                rule.value = prefixed[prefix];
                             }
+                        } else {
+                            rules.add(rule.property, prefixed[prefix]);
                         }
                     }
                 };
@@ -6501,7 +6615,7 @@ var autoprefixer = {
                 if ( rule.property.match(isTransition) ) {
                     valuePrefixer(transitions);
                 }
-            }
+            });
         });
     },
 
