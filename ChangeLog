@@ -3,6 +3,11 @@
 * Add border-radius and box-shadow properties to database.
 * Change degrees in webkit gradients.
 
+20130515:
+* Add old syntax in gradient direction.
+* Add old syntax for display: flex.
+* Update browser global usage statistics.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
