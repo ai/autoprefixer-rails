@@ -8,6 +8,10 @@
 * Add old syntax for display: flex.
 * Update browser global usage statistics.
 
+20130521:
+* Add Firefox 23 data.
+* Update css-parse to fix @-moz-document issue.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
