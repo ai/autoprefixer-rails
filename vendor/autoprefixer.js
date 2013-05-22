@@ -208,7 +208,12 @@ module.exports = function(css){
    */
 
   function stylesheet() {
-    return { stylesheet: { rules: rules() }};
+    return {
+      type: 'stylesheet',
+      stylesheet: {
+        rules: rules()
+      }
+    };
   }
 
   /**
@@ -267,8 +272,8 @@ module.exports = function(css){
    */
 
   function comments(rules) {
-    rules = rules || [];
     var c;
+    rules = rules || [];
     while (c = comment()) rules.push(c);
     return rules;
   }
@@ -278,15 +283,20 @@ module.exports = function(css){
    */
 
   function comment() {
-    if ('/' == css[0] && '*' == css[1]) {
-      var i = 2;
-      while ('*' != css[i] || '/' != css[i + 1]) ++i;
-      i += 2;
-      var comment = css.slice(2, i - 2);
-      css = css.slice(i);
-      whitespace();
-      return { comment: comment };
-    }
+    if ('/' != css[0] || '*' != css[1]) return;
+
+    var i = 2;
+    while (null != css[i] && ('*' != css[i] || '/' != css[i + 1])) ++i;
+    i += 2;
+
+    var str = css.slice(2, i - 2);
+    css = css.slice(i);
+    whitespace();
+
+    return {
+      type: 'comment',
+      comment: str
+    };
   }
 
   /**
@@ -320,7 +330,32 @@ module.exports = function(css){
     // ;
     match(/^[;\s]*/);
 
-    return { property: prop, value: val };
+    return {
+      type: 'declaration',
+      property: prop,
+      value: val
+    };
+  }
+
+  /**
+   * Parse declarations.
+   */
+
+  function declarations() {
+    var decls = [];
+
+    if (!open()) return;
+    comments(decls);
+
+    // declarations
+    var decl;
+    while (decl = declaration()) {
+      decls.push(decl);
+      comments(decls);
+    }
+
+    if (!close()) return;
+    return decls;
   }
 
   /**
@@ -339,6 +374,7 @@ module.exports = function(css){
     if (!vals.length) return;
 
     return {
+      type: 'keyframe',
       values: vals,
       declarations: declarations()
     };
@@ -371,6 +407,7 @@ module.exports = function(css){
     if (!close()) return;
 
     return {
+      type: 'keyframes',
       name: name,
       vendor: vendor,
       keyframes: frames
@@ -393,7 +430,11 @@ module.exports = function(css){
 
     if (!close()) return;
 
-    return { supports: supports, rules: style };
+    return {
+      type: 'supports',
+      supports: supports,
+      rules: style
+    };
   }
 
   /**
@@ -412,7 +453,11 @@ module.exports = function(css){
 
     if (!close()) return;
 
-    return { media: media, rules: style };
+    return {
+      type: 'media',
+      media: media,
+      rules: style
+    };
   }
 
   /**
@@ -431,7 +476,7 @@ module.exports = function(css){
 
     // declarations
     var decl;
-    while (decl = declaration() || atmargin()) {
+    while (decl = declaration()) {
       decls.push(decl);
       comments();
     }
@@ -439,7 +484,7 @@ module.exports = function(css){
     if (!close()) return;
 
     return {
-      type: "page",
+      type: 'page',
       selectors: sel,
       declarations: decls
     };
@@ -463,6 +508,7 @@ module.exports = function(css){
     if (!close()) return;
 
     return {
+      type: 'document',
       document: doc,
       vendor: vendor,
       rules: style
@@ -470,26 +516,11 @@ module.exports = function(css){
   }
 
   /**
-   * Parse margin at-rules
-   */
-
-  function atmargin() {
-    var m = match(/^@([a-z\-]+) */);
-    if (!m) return;
-    var type = m[1]
-
-    return {
-      type: type,
-      declarations: declarations()
-    }
-  }
-
-  /**
    * Parse import
    */
 
   function atimport() {
-    return _atrule('import')
+    return _atrule('import');
   }
 
   /**
@@ -515,30 +546,9 @@ module.exports = function(css){
   function _atrule(name) {
     var m = match(new RegExp('^@' + name + ' *([^;\\n]+);\\s*'));
     if (!m) return;
-    var ret = {}
+    var ret = { type: name };
     ret[name] = m[1].trim();
     return ret;
-  }
-
-  /**
-   * Parse declarations.
-   */
-
-  function declarations() {
-    var decls = [];
-
-    if (!open()) return;
-    comments();
-
-    // declarations
-    var decl;
-    while (decl = declaration()) {
-      decls.push(decl);
-      comments();
-    }
-
-    if (!close()) return;
-    return decls;
   }
 
   /**
@@ -564,7 +574,11 @@ module.exports = function(css){
     var sel = selector();
     if (!sel) return;
     comments();
-    return { selectors: sel, declarations: declarations() };
+    return {
+      type: 'rule',
+      selectors: sel,
+      declarations: declarations()
+    };
   }
 
   return stylesheet();
@@ -610,6 +624,8 @@ Compiler.prototype.compile = function(node){
  */
 
 Compiler.prototype.visit = function(node){
+  if ('page' == node.type) return this.page(node);
+  if (node.document) return this.document(node);
   if (node.comment) return this.comment(node);
   if (node.charset) return this.charset(node);
   if (node.keyframes) return this.keyframes(node);
@@ -650,6 +666,28 @@ Compiler.prototype.media = function(node){
 
   return '@media '
     + node.media
+    + ' {\n'
+    + this.indent(1)
+    + node.rules.map(this.visit, this).join('\n\n')
+    + this.indent(-1)
+    + '\n}';
+};
+
+/**
+ * Visit document node.
+ */
+
+Compiler.prototype.document = function(node){
+  var doc = '@' + (node.vendor || '') + 'document ' + node.document;
+
+  if (this.compress) {
+    return doc
+      + '{'
+      + node.rules.map(this.visit, this).join('')
+      + '}';
+  }
+
+  return doc + ' '
     + ' {\n'
     + this.indent(1)
     + node.rules.map(this.visit, this).join('\n\n')
@@ -714,6 +752,19 @@ Compiler.prototype.keyframe = function(node){
     + node.declarations.map(this.declaration, this).join(';\n')
     + this.indent(-1)
     + '\n' + this.indent() + '}\n';
+};
+
+/**
+ * Visit page node.
+ */
+
+Compiler.prototype.page = function(node){
+  return '@page ' + node.selectors.join(', ')
+    + ' {\n'
+    + this.indent(1)
+    + node.declarations.map(this.declaration, this).join(';\n')
+    + this.indent(-1)
+    + '\n}';
 };
 
 /**
