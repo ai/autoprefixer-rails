@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    autoprefixer-rails (0.4.20130521)
+    autoprefixer-rails (0.4.20130523)
       execjs
 
 GEM

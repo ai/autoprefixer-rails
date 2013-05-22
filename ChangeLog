@@ -12,6 +12,9 @@
 * Add Firefox 23 data.
 * Update css-parse to fix @-moz-document issue.
 
+20130523:
+* Update Rework’s libraries to fix @page statement.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
