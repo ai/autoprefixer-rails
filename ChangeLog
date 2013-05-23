@@ -15,6 +15,9 @@
 20130523:
 * Update Rework’s libraries to fix @page statement.
 
+20130524:
+* Add Chrome 29 data.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
