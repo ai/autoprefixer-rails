@@ -6692,7 +6692,7 @@ var autoprefixer = {
                         return;
                     }
 
-                    var clone = { name: rule.name };
+                    var clone = { name: rule.name, type: rule.type };
                     clone.vendor = rule.vendor;
                     clone.keyframes = [];
                     rule.keyframes.forEach(function (keyframe) {
