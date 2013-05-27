@@ -2445,6 +2445,40 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
 // See updaters/ dir for generator. Run bin/update to update.
 
 module.exports = {
+    android: {
+        prefix: "-webkit-",
+        versions: [
+            4.2,
+            4.1,
+            4,
+            3,
+            2.3,
+            2.2,
+            2.1
+        ],
+        minor: true,
+        popularity: [
+            0.113747,
+            1.29078,
+            1.36002,
+            0.00494553,
+            1.90403,
+            0.182984,
+            0.0840739
+        ]
+    },
+    bb: {
+        prefix: "-webkit-",
+        versions: [
+            10,
+            7
+        ],
+        minor: true,
+        popularity: [
+            0,
+            0.102165
+        ]
+    },
     chrome: {
         prefix: "-webkit-",
         versions: [
@@ -2686,7 +2720,8 @@ module.exports = {
             "chrome 24",
             "chrome 25",
             "safari 6",
-            "ios 6"
+            "ios 6",
+            "bb 10"
         ]
     },
     flex: {
@@ -2756,7 +2791,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         replace: function (string, prefix, rules) {
             if (prefix === '-webkit-') {
@@ -2836,7 +2880,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "linear-gradient": {
@@ -2895,7 +2948,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         replace: function (string, prefix) {
             var regexp;
@@ -2993,7 +3055,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         replace: function (string, prefix) {
             var regexp;
@@ -3091,7 +3162,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         replace: function (string, prefix) {
             var regexp;
@@ -3189,7 +3269,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         replace: function (string, prefix) {
             var regexp;
@@ -3290,7 +3379,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "align-content": {
@@ -3357,7 +3455,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -3425,7 +3532,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -3493,7 +3609,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -3548,7 +3673,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-delay": {
@@ -3602,7 +3736,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-direction": {
@@ -3656,7 +3799,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-duration": {
@@ -3710,7 +3862,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-fill-mode": {
@@ -3764,7 +3925,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-iteration-count": {
@@ -3818,7 +3988,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-name": {
@@ -3872,7 +4051,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-play-state": {
@@ -3926,7 +4114,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "animation-timing-function": {
@@ -3980,7 +4177,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "backface-visibility": {
@@ -4046,7 +4252,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4060,7 +4275,8 @@ module.exports = {
             "safari 4",
             "safari 3.1",
             "safari 3.2",
-            "ios 3.2"
+            "ios 3.2",
+            "android 2.1"
         ],
         transition: true,
         prefixed: {
@@ -4077,7 +4293,8 @@ module.exports = {
             "safari 4",
             "safari 3.1",
             "safari 3.2",
-            "ios 3.2"
+            "ios 3.2",
+            "android 2.1"
         ],
         transition: true,
         prefixed: {
@@ -4094,7 +4311,8 @@ module.exports = {
             "safari 4",
             "safari 3.1",
             "safari 3.2",
-            "ios 3.2"
+            "ios 3.2",
+            "android 2.1"
         ],
         transition: true
     },
@@ -4108,7 +4326,8 @@ module.exports = {
             "safari 4",
             "safari 3.1",
             "safari 3.2",
-            "ios 3.2"
+            "ios 3.2",
+            "android 2.1"
         ],
         transition: true,
         prefixed: {
@@ -4125,7 +4344,8 @@ module.exports = {
             "safari 4",
             "safari 3.1",
             "safari 3.2",
-            "ios 3.2"
+            "ios 3.2",
+            "android 2.1"
         ],
         transition: true,
         prefixed: {
@@ -4150,7 +4370,12 @@ module.exports = {
             "ios 4.0",
             "ios 4.1",
             "ios 4.2",
-            "ios 4.3"
+            "ios 4.3",
+            "android 3",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "bb 7"
         ],
         transition: true
     },
@@ -4194,7 +4419,12 @@ module.exports = {
             "ios 4.0",
             "ios 4.1",
             "ios 4.2",
-            "ios 4.3"
+            "ios 4.3",
+            "android 3",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "bb 7"
         ]
     },
     "break-after": {
@@ -4262,7 +4492,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4331,7 +4570,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4400,7 +4648,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4469,7 +4726,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4538,7 +4804,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4607,7 +4882,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4676,7 +4960,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4745,7 +5038,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4814,7 +5116,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4883,7 +5194,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -4952,7 +5272,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5021,7 +5350,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5090,7 +5428,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5109,7 +5456,8 @@ module.exports = {
             "chrome 28",
             "chrome 29",
             "safari 6",
-            "ios 6"
+            "ios 6",
+            "bb 10"
         ],
         transition: true,
         check: function () {
@@ -5180,7 +5528,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5248,7 +5605,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5316,7 +5682,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5384,7 +5759,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5452,7 +5836,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5520,7 +5913,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5588,7 +5990,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5656,7 +6067,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5724,7 +6144,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5791,7 +6220,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5858,7 +6296,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5925,7 +6372,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -5992,7 +6448,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -6059,7 +6524,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ],
         transition: true
     },
@@ -6119,7 +6593,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "transition-delay": {
@@ -6178,7 +6661,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "transition-duration": {
@@ -6237,7 +6729,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "transition-property": {
@@ -6296,7 +6797,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "transition-timing-function": {
@@ -6355,7 +6865,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     },
     "user-select": {
@@ -6423,7 +6942,16 @@ module.exports = {
             "ios 4.2",
             "ios 4.3",
             "ios 5.0",
-            "ios 5.1"
+            "ios 5.1",
+            "android 3",
+            "android 4",
+            "android 2.1",
+            "android 2.2",
+            "android 2.3",
+            "android 4.1",
+            "android 4.2",
+            "bb 7",
+            "bb 10"
         ]
     }
 };
@@ -6577,7 +7105,9 @@ Rules.prototype = {
     // Execute `callback` on every rule.
     forEach: function (callback) {
         for ( this.num = 0; this.num < this.rules.length; this.num += 1 ) {
-            callback(this.rules[this.num]);
+            if ( this.rules[this.num].property ) {
+                callback(this.rules[this.num]);
+            }
         }
     },
 
@@ -6825,14 +7355,14 @@ var autoprefixer = {
             return !(rule.keyframes && remove.keyframes[rule.vendor]);
         });
 
-        rework.visit.declarations(style, function (rules) {
-            for ( var num = 0; num < rules.length; num += 1 ) {
-                var rule = rules[num];
+        rework.visit.declarations(style, function (list) {
+            var rules = new Rules(list);
 
+            rules.forEach(function (rule) {
                 // Properties
                 if ( remove.props[rule.property] ) {
-                    rules.splice(num, 1);
-                    continue;
+                    rules.removeCurrent();
+                    return;
                 }
 
                 // Values
@@ -6846,11 +7376,11 @@ var autoprefixer = {
                 }
                 values.forEach(function (value) {
                     if ( rule.value.match(value) ) {
-                        rules.splice(num, 1);
+                        rules.removeCurrent();
                         return false;
                     }
                 });
-            }
+            });
         });
     },
 
@@ -6864,21 +7394,27 @@ var autoprefixer = {
         var browsers = [];
         requirements.map(function (req) {
 
-          if ( match = req.match(/^last (\d+) versions?$/i) ) {
-              return autoprefixer.browsers(function(browser) {
-                  return browser.versions.slice(0, match[1]);
-              });
+            if ( match = req.match(/^last (\d+) versions?$/i) ) {
+                return autoprefixer.browsers(function(browser) {
+                    if ( browser.minor ) {
+                        return [];
+                    }
+                    return browser.versions.slice(0, match[1]);
+                });
 
-          } else if ( match = req.match(/^> (\d+(\.\d+)?)%$/i) ) {
-              return autoprefixer.browsers(function(browser) {
-                  return browser.versions.filter(function (version, i) {
-                      return browser.popularity[i] > match[1];
-                  });
-              });
+            } else if ( match = req.match(/^> (\d+(\.\d+)?)%$/i) ) {
+                return autoprefixer.browsers(function(browser) {
+                    if ( browser.minor ) {
+                        return [];
+                    }
+                    return browser.versions.filter(function (version, i) {
+                        return browser.popularity[i] > match[1];
+                    });
+                });
 
-          } else {
-              return [autoprefixer.check(req)];
-          }
+            } else {
+                return [autoprefixer.check(req)];
+            }
 
         }).forEach(function (reqBrowsers) {
             browsers = browsers.concat(reqBrowsers);
