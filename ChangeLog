@@ -18,6 +18,9 @@
 20130524:
 * Add Chrome 29 data.
 
+20130527:
+* Fix new css-stringify issue.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
