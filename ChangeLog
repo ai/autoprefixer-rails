@@ -21,6 +21,10 @@
 20130527:
 * Fix new css-stringify issue.
 
+20130528:
+* Fix compatibilty with Rework from git master.
+* Add minor browsers to data, which can be selected only directly.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
