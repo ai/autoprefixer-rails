@@ -1,6 +1,6 @@
 # Autoprefixer Rails
 
-Parse CSS and add prefixed properties and values by
+Parse CSS and add prefixed properties and values from
 [Can I Use](http://caniuse.com/) database for actual browsers.
 
 This gem provides Ruby and Ruby on Rails integration with
@@ -15,7 +15,7 @@ a
 ```
 
 Autoprefixer will take database with current browser statistics
-and properties support and adds only actual prefixes by Assets Pipeline:
+and properties support and add only actual prefixes by Assets Pipeline:
 
 ```css
 a {
