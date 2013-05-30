@@ -25,6 +25,10 @@
 * Fix compatibilty with Rework from git master.
 * Add minor browsers to data, which can be selected only directly.
 
+20130530:
+* Add Opera 15 and iOS 6.1 data.
+* Fix iOS versions in properties and values data.
+
 == 0.3 (Growing Strong)
 * Use own filters instead of Rework’s `prefix` and `prefixValue`.
 * Smarter value prefixer without false match “order” in “border”.
