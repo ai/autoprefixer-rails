@@ -23,7 +23,7 @@ describe AutoprefixerRails do
     AutoprefixerRails.install(assets, ['chrome 25'], :dirs => dirs)
 
     assets['vendor/assets/stylesheets/foreign.css'].to_s.should ==
-      ".f {\n  -webkit-transition: none;\n  transition: none\n}"
+      ".f {\n  -webkit-transition: none;\n  transition: none;\n}"
     assets['app/assets/stylesheets/test.css'].to_s.should ==
       "a { transition: all 1s }\n"
   end

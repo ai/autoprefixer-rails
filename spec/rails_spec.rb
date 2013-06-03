@@ -4,7 +4,10 @@ describe CssController, :type => :controller do
   it "should integrate with Rails" do
     get :test, :file => 'test'
     response.should be_success
-    response.body.should == PREFIXED
+    response.body.should == "a {\n" +
+                            "  -webkit-transition: all 1s;\n" +
+                            "  transition: all 1s\n" +
+                            "}"
   end
 
   it "should not compile foreign styles" do

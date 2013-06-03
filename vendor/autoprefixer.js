@@ -649,17 +649,40 @@ module.exports = function(css, options){
 require.register("visionmedia-css-stringify/index.js", function(exports, require, module){
 
 /**
+ * Module dependencies.
+ */
+
+var Compressed = require('./lib/compress');
+var Identity = require('./lib/identity');
+
+/**
  * Stringfy the given AST `node`.
  *
  * @param {Object} node
- * @param {Object} options
+ * @param {Object} [options]
  * @return {String}
  * @api public
  */
 
 module.exports = function(node, options){
-  return new Compiler(options).compile(node);
+  options = options || {};
+
+  var compiler = options.compress
+    ? new Compressed(options)
+    : new Identity(options);
+
+  return compiler.compile(node);
 };
+
+
+});
+require.register("visionmedia-css-stringify/lib/compress.js", function(exports, require, module){
+
+/**
+ * Expose compiler.
+ */
+
+module.exports = Compiler;
 
 /**
  * Initialize a new `Compiler`.
@@ -667,8 +690,6 @@ module.exports = function(node, options){
 
 function Compiler(options) {
   options = options || {};
-  this.compress = options.compress;
-  this.indentation = options.indent;
 }
 
 /**
@@ -678,7 +699,7 @@ function Compiler(options) {
 Compiler.prototype.compile = function(node){
   return node.stylesheet
     .rules.map(this.visit, this)
-    .join(this.compress ? '' : '\n\n');
+    .join('');
 };
 
 /**
@@ -695,7 +716,6 @@ Compiler.prototype.visit = function(node){
 
 Compiler.prototype.comment = function(node){
   if (this.compress) return '';
-  return '/*' + node.comment + '*/';
 };
 
 /**
@@ -711,14 +731,172 @@ Compiler.prototype.import = function(node){
  */
 
 Compiler.prototype.media = function(node){
-  if (this.compress) {
-    return '@media '
-      + node.media
-      + '{'
-      + node.rules.map(this.visit, this).join('')
-      + '}';
-  }
+  return '@media '
+    + node.media
+    + '{'
+    + node.rules.map(this.visit, this).join('')
+    + '}';
+};
 
+/**
+ * Visit document node.
+ */
+
+Compiler.prototype.document = function(node){
+  var doc = '@' + (node.vendor || '') + 'document ' + node.document;
+
+  return doc
+    + '{'
+    + node.rules.map(this.visit, this).join('')
+    + '}';
+};
+
+/**
+ * Visit charset node.
+ */
+
+Compiler.prototype.charset = function(node){
+  return '@charset ' + node.charset + ';';
+};
+
+/**
+ * Visit supports node.
+ */
+
+Compiler.prototype.supports = function(node){
+  return '@supports '
+    + node.supports
+    + ' {\n'
+    + this.indent(1)
+    + node.rules.map(this.visit, this).join('\n\n')
+    + this.indent(-1)
+    + '\n}';
+};
+
+/**
+ * Visit keyframes node.
+ */
+
+Compiler.prototype.keyframes = function(node){
+  return '@'
+    + (node.vendor || '')
+    + 'keyframes '
+    + node.name
+    + '{'
+    + node.keyframes.map(this.visit, this).join('')
+    + '}';
+};
+
+/**
+ * Visit keyframe node.
+ */
+
+Compiler.prototype.keyframe = function(node){
+  var decls = node.declarations;
+
+  return node.values.join(',')
+    + '{'
+    + decls.map(this.visit, this).join('')
+    + '}';
+};
+
+/**
+ * Visit page node.
+ */
+
+Compiler.prototype.page = function(node){
+  var sel = node.selectors.length
+    ? node.selectors.join(', ') + ' '
+    : '';
+
+  return '@page ' + sel
+    + '{\n'
+    + this.indent(1)
+    + node.declarations.map(this.visit, this).join('\n')
+    + this.indent(-1)
+    + '\n}';
+};
+
+/**
+ * Visit rule node.
+ */
+
+Compiler.prototype.rule = function(node){
+  var decls = node.declarations;
+  if (!decls.length) return '';
+
+  return node.selectors.join(',')
+    + '{'
+    + decls.map(this.visit, this).join('')
+    + '}';
+};
+
+/**
+ * Visit declaration node.
+ */
+
+Compiler.prototype.declaration = function(node){
+  return node.property + ':' + node.value + ';';
+};
+
+
+});
+require.register("visionmedia-css-stringify/lib/identity.js", function(exports, require, module){
+
+/**
+ * Expose compiler.
+ */
+
+module.exports = Compiler;
+
+/**
+ * Initialize a new `Compiler`.
+ */
+
+function Compiler(options) {
+  options = options || {};
+  this.indentation = options.indent;
+}
+
+/**
+ * Compile `node`.
+ */
+
+Compiler.prototype.compile = function(node){
+  return node.stylesheet
+    .rules.map(this.visit, this)
+    .join('\n\n');
+};
+
+/**
+ * Visit `node`.
+ */
+
+Compiler.prototype.visit = function(node){
+  return this[node.type](node);
+};
+
+/**
+ * Visit comment node.
+ */
+
+Compiler.prototype.comment = function(node){
+  return this.indent() + '/*' + node.comment + '*/';
+};
+
+/**
+ * Visit import node.
+ */
+
+Compiler.prototype.import = function(node){
+  return '@import ' + node.import + ';';
+};
+
+/**
+ * Visit media node.
+ */
+
+Compiler.prototype.media = function(node){
   return '@media '
     + node.media
     + ' {\n'
@@ -735,13 +913,6 @@ Compiler.prototype.media = function(node){
 Compiler.prototype.document = function(node){
   var doc = '@' + (node.vendor || '') + 'document ' + node.document;
 
-  if (this.compress) {
-    return doc
-      + '{'
-      + node.rules.map(this.visit, this).join('')
-      + '}';
-  }
-
   return doc + ' '
     + ' {\n'
     + this.indent(1)
@@ -755,11 +926,21 @@ Compiler.prototype.document = function(node){
  */
 
 Compiler.prototype.charset = function(node){
-  if (this.compress) {
-    return '@charset ' + node.charset + ';';
-  }
-
   return '@charset ' + node.charset + ';\n';
+};
+
+/**
+ * Visit supports node.
+ */
+
+Compiler.prototype.supports = function(node){
+  return '@supports '
+    + node.supports
+    + ' {\n'
+    + this.indent(1)
+    + node.rules.map(this.visit, this).join('\n\n')
+    + this.indent(-1)
+    + '\n}';
 };
 
 /**
@@ -767,23 +948,13 @@ Compiler.prototype.charset = function(node){
  */
 
 Compiler.prototype.keyframes = function(node){
-  if (this.compress) {
-    return '@'
-      + (node.vendor || '')
-      + 'keyframes '
-      + node.name
-      + '{'
-      + node.keyframes.map(this.keyframe, this).join('')
-      + '}';
-  }
-
   return '@'
     + (node.vendor || '')
     + 'keyframes '
     + node.name
     + ' {\n'
     + this.indent(1)
-    + node.keyframes.map(this.keyframe, this).join('\n')
+    + node.keyframes.map(this.visit, this).join('\n')
     + this.indent(-1)
     + '}';
 };
@@ -793,18 +964,13 @@ Compiler.prototype.keyframes = function(node){
  */
 
 Compiler.prototype.keyframe = function(node){
-  if (this.compress) {
-    return node.values.join(',')
-      + '{'
-      + node.declarations.map(this.declaration, this).join(';')
-      + '}';
-  }
+  var decls = node.declarations;
 
   return this.indent()
     + node.values.join(', ')
     + ' {\n'
     + this.indent(1)
-    + node.declarations.map(this.declaration, this).join(';\n')
+    + decls.map(this.visit, this).join('\n')
     + this.indent(-1)
     + '\n' + this.indent() + '}\n';
 };
@@ -814,10 +980,14 @@ Compiler.prototype.keyframe = function(node){
  */
 
 Compiler.prototype.page = function(node){
-  return '@page ' + node.selectors.join(', ')
-    + ' {\n'
+  var sel = node.selectors.length
+    ? node.selectors.join(', ') + ' '
+    : '';
+
+  return '@page ' + sel
+    + '{\n'
     + this.indent(1)
-    + node.declarations.map(this.declaration, this).join(';\n')
+    + node.declarations.map(this.visit, this).join('\n')
     + this.indent(-1)
     + '\n}';
 };
@@ -829,20 +999,12 @@ Compiler.prototype.page = function(node){
 Compiler.prototype.rule = function(node){
   var indent = this.indent();
   var decls = node.declarations;
-
-  if (this.compress) {
-    if (!decls.length) return '';
-
-    return node.selectors.join(',')
-      + '{'
-      + decls.map(this.declaration, this).join(';')
-      + '}';
-  }
+  if (!decls.length) return '';
 
   return node.selectors.map(function(s){ return indent + s }).join(',\n')
     + ' {\n'
     + this.indent(1)
-    + decls.map(this.declaration, this).join(';\n')
+    + decls.map(this.visit, this).join('\n')
     + this.indent(-1)
     + '\n' + this.indent() + '}';
 };
@@ -852,11 +1014,7 @@ Compiler.prototype.rule = function(node){
  */
 
 Compiler.prototype.declaration = function(node){
-  if (this.compress) {
-    return node.property + ':' + node.value;
-  }
-
-  return this.indent() + node.property + ': ' + node.value;
+  return this.indent() + node.property + ': ' + node.value + ';';
 };
 
 /**
@@ -2458,13 +2616,13 @@ module.exports = {
         ],
         minor: true,
         popularity: [
-            0.113747,
-            1.29078,
-            1.36002,
-            0.00494553,
-            1.90403,
-            0.182984,
-            0.0840739
+            0.11786,
+            1.33745,
+            1.40919,
+            0.00512434,
+            1.97287,
+            0.189601,
+            0.0871138
         ]
     },
     bb: {
@@ -2476,7 +2634,7 @@ module.exports = {
         minor: true,
         popularity: [
             0,
-            0.102165
+            0.114401
         ]
     },
     chrome: {
@@ -2512,30 +2670,30 @@ module.exports = {
             28
         ],
         popularity: [
-            0.19803,
-            27.6639,
-            1.61868,
-            0.72324,
-            0.6888,
-            0.54243,
-            0.5166,
-            0.07749,
-            0.07749,
-            0.09471,
-            0.09471,
-            0.0861,
-            0.12054,
-            0.10332,
-            0.11193,
-            0.12054,
-            0.15498,
-            0.09471,
-            0.03444,
-            0.04305,
-            0.02583,
-            0.02583,
-            0.02583,
-            0.02583
+            6.23274,
+            23.488,
+            0.55497,
+            0.742806,
+            0.708654,
+            0.631812,
+            0.589122,
+            0.12807,
+            0.119532,
+            0.145146,
+            0.136608,
+            0.12807,
+            0.162222,
+            0.145146,
+            0.153684,
+            0.162222,
+            0.196374,
+            0.136608,
+            0.034152,
+            0.04269,
+            0.025614,
+            0.025614,
+            0.025614,
+            0.025614
         ]
     },
     ff: {
@@ -2569,28 +2727,28 @@ module.exports = {
             22
         ],
         popularity: [
-            0.30996,
-            8.15367,
-            4.66662,
-            0.3444,
-            0.30135,
-            0.70602,
-            0.39606,
-            0.26691,
-            0.20664,
-            0.40467,
-            0.1722,
-            0.19803,
-            0.10332,
-            0.0861,
-            0.06888,
-            0.06888,
-            0.07749,
-            0.12054,
-            0.37884,
-            0.06027,
-            0.09471,
-            0.02583
+            3.75672,
+            8.81122,
+            0.452514,
+            0.264678,
+            0.281754,
+            0.537894,
+            0.332982,
+            0.247602,
+            0.204912,
+            0.375672,
+            0.17076,
+            0.196374,
+            0.093918,
+            0.08538,
+            0.059766,
+            0.059766,
+            0.068304,
+            0.110994,
+            0.358596,
+            0.059766,
+            0.08538,
+            0.025614
         ]
     },
     ie: {
@@ -2607,11 +2765,11 @@ module.exports = {
             11
         ],
         popularity: [
-            5.38881,
-            11.6221,
-            8.09627,
-            0.513634,
-            0.226347,
+            7.50785,
+            8.3027,
+            7.45601,
+            0.466541,
+            0.207351,
             0.009298
         ]
     },
@@ -2629,15 +2787,15 @@ module.exports = {
             3.2
         ],
         popularity: [
-            3.01192,
-            3.01192,
-            0.3597855,
-            0.3597855,
-            0.065104,
-            0.065104,
-            0.00685305,
-            0.00685305,
-            0.00685306
+            3.094025,
+            3.094025,
+            0.352705,
+            0.352705,
+            0.055874,
+            0.055874,
+            0.00698425,
+            0.00698425,
+            0.00698426
         ]
     },
     opera: {
@@ -2660,18 +2818,18 @@ module.exports = {
             15
         ],
         popularity: [
-            0.62853,
-            0.07749,
-            0.04305,
-            0.01722,
-            0.00861,
-            0.00861,
-            0.00861,
+            0.623274,
+            0.068304,
+            0.04269,
+            0.017076,
+            0.008538,
+            0.008538,
+            0.008538,
             0.008565,
-            0.00861,
-            0.00861,
-            0.004305,
-            0.004305
+            0.008538,
+            0.008538,
+            0.004269,
+            0.004269
         ]
     },
     safari: {
@@ -2685,10 +2843,10 @@ module.exports = {
             3.1
         ],
         popularity: [
-            1.90281,
-            1.35177,
-            0.4305,
-            0.12054,
+            1.91251,
+            1.25509,
+            0.401286,
+            0.110994,
             0.008692,
             0
         ]
@@ -2975,22 +3133,22 @@ module.exports = {
             var regexp;
             regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
             string = string.replace(regexp, function (_, ver, hor) {
-                var direct;
-                direct = [];
-                if (ver === 'top') {
-                    direct.push('bottom');
-                }
-                if (ver === 'bottom') {
-                    direct.push('top');
-                }
-                if (hor === 'right') {
-                    direct.push('left');
-                }
-                if (hor === 'left') {
-                    direct.push('right');
-                }
-                return direct.join(' ');
-            });
+                    var direct;
+                    direct = [];
+                    if (ver === 'top') {
+                        direct.push('bottom');
+                    }
+                    if (ver === 'bottom') {
+                        direct.push('top');
+                    }
+                    if (hor === 'right') {
+                        direct.push('left');
+                    }
+                    if (hor === 'left') {
+                        direct.push('right');
+                    }
+                    return direct.join(' ');
+                });
             regexp = /(repeating-)?(linear|radial)-gradient/gi;
             string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
@@ -2998,17 +3156,17 @@ module.exports = {
             }
             regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
-                if (deg) {
-                    deg = parseInt(deg);
-                    deg += 90;
-                    if (deg > 360) {
-                        deg -= 360;
+                    if (deg) {
+                        deg = parseInt(deg);
+                        deg += 90;
+                        if (deg > 360) {
+                            deg -= 360;
+                        }
+                        return gradient + deg + 'deg';
+                    } else {
+                        return gradient;
                     }
-                    return gradient + deg + 'deg';
-                } else {
-                    return gradient;
-                }
-            });
+                });
         }
     },
     "radial-gradient": {
@@ -3083,22 +3241,22 @@ module.exports = {
             var regexp;
             regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
             string = string.replace(regexp, function (_, ver, hor) {
-                var direct;
-                direct = [];
-                if (ver === 'top') {
-                    direct.push('bottom');
-                }
-                if (ver === 'bottom') {
-                    direct.push('top');
-                }
-                if (hor === 'right') {
-                    direct.push('left');
-                }
-                if (hor === 'left') {
-                    direct.push('right');
-                }
-                return direct.join(' ');
-            });
+                    var direct;
+                    direct = [];
+                    if (ver === 'top') {
+                        direct.push('bottom');
+                    }
+                    if (ver === 'bottom') {
+                        direct.push('top');
+                    }
+                    if (hor === 'right') {
+                        direct.push('left');
+                    }
+                    if (hor === 'left') {
+                        direct.push('right');
+                    }
+                    return direct.join(' ');
+                });
             regexp = /(repeating-)?(linear|radial)-gradient/gi;
             string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
@@ -3106,17 +3264,17 @@ module.exports = {
             }
             regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
-                if (deg) {
-                    deg = parseInt(deg);
-                    deg += 90;
-                    if (deg > 360) {
-                        deg -= 360;
+                    if (deg) {
+                        deg = parseInt(deg);
+                        deg += 90;
+                        if (deg > 360) {
+                            deg -= 360;
+                        }
+                        return gradient + deg + 'deg';
+                    } else {
+                        return gradient;
                     }
-                    return gradient + deg + 'deg';
-                } else {
-                    return gradient;
-                }
-            });
+                });
         }
     },
     "repeating-linear-gradient": {
@@ -3191,22 +3349,22 @@ module.exports = {
             var regexp;
             regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
             string = string.replace(regexp, function (_, ver, hor) {
-                var direct;
-                direct = [];
-                if (ver === 'top') {
-                    direct.push('bottom');
-                }
-                if (ver === 'bottom') {
-                    direct.push('top');
-                }
-                if (hor === 'right') {
-                    direct.push('left');
-                }
-                if (hor === 'left') {
-                    direct.push('right');
-                }
-                return direct.join(' ');
-            });
+                    var direct;
+                    direct = [];
+                    if (ver === 'top') {
+                        direct.push('bottom');
+                    }
+                    if (ver === 'bottom') {
+                        direct.push('top');
+                    }
+                    if (hor === 'right') {
+                        direct.push('left');
+                    }
+                    if (hor === 'left') {
+                        direct.push('right');
+                    }
+                    return direct.join(' ');
+                });
             regexp = /(repeating-)?(linear|radial)-gradient/gi;
             string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
@@ -3214,17 +3372,17 @@ module.exports = {
             }
             regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
-                if (deg) {
-                    deg = parseInt(deg);
-                    deg += 90;
-                    if (deg > 360) {
-                        deg -= 360;
+                    if (deg) {
+                        deg = parseInt(deg);
+                        deg += 90;
+                        if (deg > 360) {
+                            deg -= 360;
+                        }
+                        return gradient + deg + 'deg';
+                    } else {
+                        return gradient;
                     }
-                    return gradient + deg + 'deg';
-                } else {
-                    return gradient;
-                }
-            });
+                });
         }
     },
     "repeating-radial-gradient": {
@@ -3299,22 +3457,22 @@ module.exports = {
             var regexp;
             regexp = /to\s+(top|bottom)?\s*(left|right)?/ig;
             string = string.replace(regexp, function (_, ver, hor) {
-                var direct;
-                direct = [];
-                if (ver === 'top') {
-                    direct.push('bottom');
-                }
-                if (ver === 'bottom') {
-                    direct.push('top');
-                }
-                if (hor === 'right') {
-                    direct.push('left');
-                }
-                if (hor === 'left') {
-                    direct.push('right');
-                }
-                return direct.join(' ');
-            });
+                    var direct;
+                    direct = [];
+                    if (ver === 'top') {
+                        direct.push('bottom');
+                    }
+                    if (ver === 'bottom') {
+                        direct.push('top');
+                    }
+                    if (hor === 'right') {
+                        direct.push('left');
+                    }
+                    if (hor === 'left') {
+                        direct.push('right');
+                    }
+                    return direct.join(' ');
+                });
             regexp = /(repeating-)?(linear|radial)-gradient/gi;
             string = string.replace(regexp, prefix + '$&');
             if (prefix !== '-webkit-') {
@@ -3322,17 +3480,17 @@ module.exports = {
             }
             regexp = /((repeating-)?(linear|radial)-gradient\()\s*(-?\d+deg)?/ig;
             return string.replace(regexp, function (_0, gradient, _1, _2, deg) {
-                if (deg) {
-                    deg = parseInt(deg);
-                    deg += 90;
-                    if (deg > 360) {
-                        deg -= 360;
+                    if (deg) {
+                        deg = parseInt(deg);
+                        deg += 90;
+                        if (deg > 360) {
+                            deg -= 360;
+                        }
+                        return gradient + deg + 'deg';
+                    } else {
+                        return gradient;
                     }
-                    return gradient + deg + 'deg';
-                } else {
-                    return gradient;
-                }
-            });
+                });
         }
     }
 };
@@ -7230,7 +7388,11 @@ Rules.prototype = {
             return;
         }
 
-        this.rules.splice(this.num, 0, { property: prop, value: value });
+        this.rules.splice(this.num, 0, {
+            type:    'declaration',
+            property: prop,
+            value:    value
+        });
         this.num += 1;
     },
 
@@ -7333,10 +7495,15 @@ var autoprefixer = {
                     clone.keyframes = [];
                     rule.keyframes.forEach(function (keyframe) {
                         var keyframeClone          = { };
+                        keyframeClone.type         = keyframe.type;
                         keyframeClone.values       = keyframe.values.slice();
                         keyframeClone.declarations = keyframe.declarations.map(
                             function (i) {
-                                return { property: i.property, value: i.value };
+                                var declClone = { };
+                                for ( var key in i ) {
+                                    declClone[key] = i[key];
+                                }
+                                return declClone;
                             });
 
                         clone.keyframes.push(keyframeClone);
@@ -7713,6 +7880,8 @@ require.alias("visionmedia-css/index.js", "visionmedia-rework/deps/css/index.js"
 require.alias("visionmedia-css-parse/index.js", "visionmedia-css/deps/css-parse/index.js");
 
 require.alias("visionmedia-css-stringify/index.js", "visionmedia-css/deps/css-stringify/index.js");
+require.alias("visionmedia-css-stringify/lib/compress.js", "visionmedia-css/deps/css-stringify/lib/compress.js");
+require.alias("visionmedia-css-stringify/lib/identity.js", "visionmedia-css/deps/css-stringify/lib/identity.js");
 
 require.alias("visionmedia-debug/index.js", "visionmedia-rework/deps/debug/index.js");
 require.alias("visionmedia-debug/debug.js", "visionmedia-rework/deps/debug/debug.js");
