@@ -37,9 +37,10 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
   or another preprocessor).
 * You write normal properties (not special mixins), so you don’t need to
   remember which properties needs to be prefixed.
-* Autoprefixer uses only necessary prefixes. You choose which browsers (by default
-  the last 2 versions for each browser). Did you know, that prefixes for
-  `border-radius` [have not been necessary](http://caniuse.com/border-radius)
+* Autoprefixer uses only necessary prefixes. You choose which browsers
+  (by default the last 2 versions for each browser).
+  Did you know, that prefixes for `border-radius`
+  [have not been necessary](http://caniuse.com/border-radius)
   for a long time now?
 * The properties and browsers database is updated automatically
   (from [Can I Use](http://caniuse.com/)), so prefixes will always be up-to-date
