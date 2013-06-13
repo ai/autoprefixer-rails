@@ -24,7 +24,7 @@ require 'execjs'
 module AutoprefixerRails
   # Parse `css` and add vendor prefixes for `browsers`.
   def self.compile(css, browsers = [])
-    compiler.call('autoprefixer.compile', css, browsers)
+    compiler.call('compile', css, browsers)
   end
 
   # Add Autoprefixer for Sprockets environment in `assets`. You can specify
@@ -46,14 +46,24 @@ module AutoprefixerRails
     Pathname(__FILE__).dirname.join('../vendor/autoprefixer.js')
   end
 
+  # Return JS code for proxy function to save this in Autoprefixer
+  def self.proxy(func)
+    <<-JS
+      window.#{ func } = function() {
+        return autoprefixer.#{ func }.apply(autoprefixer, arguments)
+      };
+    JS
+  end
+
   # Get loaded JS contex with Autoprefixer
   def self.compiler
-    @compiler ||= ExecJS.compile("window = this;\n" + js_file.read)
+    @compiler ||= ExecJS.compile("window = this;\n" + js_file.read +
+                                 proxy('compile') + proxy('inspect'))
   end
 
   # Return string with selected browsers and prefixed CSS properties and values
   def self.inspect(browsers = [])
-    compiler.call('autoprefixer.inspect', browsers)
+    compiler.call('inspect', browsers)
   end
 end
 
