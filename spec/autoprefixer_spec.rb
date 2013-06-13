@@ -30,7 +30,7 @@ describe AutoprefixerRails do
 
   it "should inspect" do
     inspect = AutoprefixerRails.inspect(['chrome 25'])
-    inspect.should =~ /Browsers:\n  Chrome 25\n\n/
+    inspect.should =~ /Browsers:\n  Chrome: 25\n\n/
     inspect.should =~ /  transition: webkit/
   end
 end
