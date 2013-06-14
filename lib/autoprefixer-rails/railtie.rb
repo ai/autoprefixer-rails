@@ -26,14 +26,13 @@ module AutoprefixedRails
     end
 
     initializer :setup_autoprefixer do |app|
-      dirs   = [app.root.join('app/'), app.root.join('lib/')]
-      AutoprefixerRails.install(app.assets, browsers(app), :dirs => dirs)
+      AutoprefixerRails.install(app.assets, browsers(app))
     end
 
     # Read browsers requirements from application config
     def browsers(app)
       file   = app.root.join('config/autoprefixer.yml')
-      config = file.exist? ? YAML.load_file(file) : { 'browsers' => [] }
+      config = file.exist? ? YAML.load_file(file) : { 'browsers' => nil }
       config['browsers']
     end
   end
