@@ -1764,15 +1764,17 @@ require.register("autoprefixer/lib/autoprefixer/css.js", function(exports, requi
       return this.number -= 1;
     };
 
-    CSS.prototype.eachDeclaration = function(callback) {
-      var i, keyframe, rule, _i, _j, _len, _len1, _ref, _ref1;
-      _ref = this.stylesheet.rules;
+    CSS.prototype.eachDeclaration = function(callback, node) {
+      var i, keyframe, rule, _i, _j, _len, _len1, _ref, _ref1, _results;
+      if (node == null) {
+        node = this.stylesheet;
+      }
+      _ref = node.rules;
+      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         i = _ref[_i];
         if (i.rules) {
-          rule = new Rule(i.rules, i.vendor);
-          rule.each(callback);
-          return;
+          this.eachDeclaration(callback, i);
         }
         if (i.keyframes) {
           _ref1 = i.keyframes;
@@ -1784,9 +1786,12 @@ require.register("autoprefixer/lib/autoprefixer/css.js", function(exports, requi
         }
         if (i.declarations) {
           rule = new Rule(i.declarations, i.vendor);
-          rule.each(callback);
+          _results.push(rule.each(callback));
+        } else {
+          _results.push(void 0);
         }
       }
+      return _results;
     };
 
     return CSS;
