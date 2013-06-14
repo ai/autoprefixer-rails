@@ -2,7 +2,8 @@ require File.expand_path('../spec_helper', __FILE__)
 
 describe CssController, :type => :controller do
   before :all do
-    Rails.root.join('tmp').rmtree
+    cache = Rails.root.join('tmp/cache')
+    cache.rmtree if cache.exist?
   end
 
   it "should integrate with Rails" do
