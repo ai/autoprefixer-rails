@@ -33,7 +33,15 @@ module AutoprefixerRails
   def self.install(assets, browsers = nil)
     assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
       if defined?(Sass::Rails) and Sass::Rails::VERSION == '4.0.0.rc2'
-        AutoprefixerRails.compile(css, browsers) rescue css
+        begin
+          AutoprefixerRails.compile(css, browsers)
+        rescue ExecJS::ProgramError => e
+          if e.message =~ /Can't parse CSS/
+            css
+          else
+            raise e
+          end
+        end
       else
         AutoprefixerRails.compile(css, browsers)
       end
