@@ -1337,10 +1337,15 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
 
   autoprefixer = {
     compile: function(str, requirements) {
-      var nodes;
-      nodes = parse(this.fixIeComments(str));
+      var nodes,
+        _this = this;
+      nodes = this.catchParseErrors(function() {
+        return parse(_this.removeBadComments(str));
+      });
       this.rework(requirements)(nodes.stylesheet);
-      return stringify(nodes);
+      return this.catchParseErrors(function() {
+        return stringify(nodes);
+      });
     },
     rework: function(requirements) {
       var browsers, prefixes;
@@ -1357,8 +1362,8 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
       browsers: require('../data/browsers'),
       prefixes: require('../data/prefixes')
     },
-    fixIeComments: function(css) {
-      return css.replace(/\/\*[^\*]*\*\/\s*:/g, ':');
+    removeBadComments: function(css) {
+      return css.replace(/\/\*[^\*]*\*\/\s*:/g, ':').replace(/\/\*[^\*]*\{[^\*]*\*\//g, '');
     },
     inspect: function(requirements) {
       var browsers, prefixes;
@@ -1366,6 +1371,18 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
       prefixes = new Prefixes(this.data.prefixes, browsers);
       this.inspectFunc || (this.inspectFunc = require('./autoprefixer/inspect'));
       return this.inspectFunc(prefixes);
+    },
+    catchParseErrors: function(callback) {
+      var e, error;
+      try {
+        return callback();
+      } catch (_error) {
+        e = _error;
+        error = new Error("Can't parse CSS");
+        error.stack = e.stack;
+        error.css = true;
+        throw error;
+      }
     }
   };
 
@@ -1504,12 +1521,16 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
         prefixed = autoprefixer.compile(css, this.requirements);
       } catch (_error) {
         error = _error;
-        if (error.autoprefixer) {
+        if (error.autoprefixer || error.css) {
           this.error("autoprefixer: " + error.message);
         } else {
           this.error('autoprefixer: Internal error');
-          this.error('');
-          this.error(error.stack);
+        }
+        if (error.css || !error.autoprefixer) {
+          if (error.stack != null) {
+            this.error('');
+            this.error(error.stack);
+          }
         }
       }
       if (!prefixed) {
@@ -1960,6 +1981,16 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
         param -= 360;
       }
       return "" + param + "deg";
+    };
+
+    Gradient.prototype.prefixed = function(prefix) {
+      var type;
+      if (prefix === '-webkit-') {
+        type = this.name === 'linear-gradient' ? 'linear' : 'radial';
+        return utils.regexp("-webkit-(" + type + "-gradient|gradient\\(\\s*" + type + ")", false);
+      } else {
+        return Gradient.__super__.prefixed.apply(this, arguments);
+      }
     };
 
     return Gradient;
@@ -2470,8 +2501,14 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
     escapeRegexp: function(string) {
       return string.replace(/([.?*+\^\$\[\]\\(){}|\-])/g, "\\$1");
     },
-    regexp: function(word) {
-      return new RegExp('(^|\\s|,|\\()(' + this.escapeRegexp(word) + '($|\\s|\\(|,))', 'gi');
+    regexp: function(word, escape) {
+      if (escape == null) {
+        escape = true;
+      }
+      if (escape) {
+        word = this.escapeRegexp(word);
+      }
+      return new RegExp('(^|\\s|,|\\()(' + word + '($|\\s|\\(|,))', 'gi');
     }
   };
 
