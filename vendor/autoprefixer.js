@@ -1431,7 +1431,7 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
       var h;
       h = [];
       h.push('Files:');
-      h.push("  Be default, prefixed CSS will rewrite original files.");
+      h.push("  By default, prefixed CSS will rewrite original files.");
       h.push("  If you didn't set input files, " + "autoprefixer will read from stdin stream.");
       h.push("  Output CSS will be written to stdout stream on " + "`-o -' argument or stdin input.");
       h.push('');
@@ -1831,20 +1831,46 @@ require.register("autoprefixer/lib/autoprefixer/declaration.js", function(export
   utils = require('./utils');
 
   Declaration = (function() {
-    function Declaration(rule, number, node) {
-      var separator;
+    Declaration.register = function(klass) {
+      var name, _i, _len, _ref, _results;
+      _ref = klass.names;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        name = _ref[_i];
+        _results.push(this.hacks[name] = klass);
+      }
+      return _results;
+    };
+
+    Declaration.hacks = {};
+
+    Declaration.load = function(rule, number, node) {
+      var klass, prefix, unprefixed, _ref;
+      _ref = this.split(node.property), prefix = _ref[0], unprefixed = _ref[1];
+      klass = this.hacks[unprefixed] || Declaration;
+      return new klass(rule, number, node, prefix, unprefixed);
+    };
+
+    Declaration.split = function(prop) {
+      var prefix, separator, unprefixed;
+      if (prop[0] === '-') {
+        separator = prop.indexOf('-', 1) + 1;
+        prefix = prop.slice(0, separator);
+        unprefixed = prop.slice(separator);
+        return [prefix, unprefixed];
+      } else {
+        return [void 0, prop];
+      }
+    };
+
+    function Declaration(rule, number, node, prefix, unprefixed) {
       this.rule = rule;
       this.number = number;
       this.node = node;
+      this.prefix = prefix;
+      this.unprefixed = unprefixed;
       this.prop = this.node.property;
       this.value = this.node.value;
-      if (this.prop[0] === '-') {
-        separator = this.prop.indexOf('-', 1) + 1;
-        this.prefix = this.prop.slice(0, separator);
-        this.unprefixed = this.prop.slice(separator);
-      } else {
-        this.unprefixed = this.prop;
-      }
       this.valuesCache = {};
     }
 
@@ -1916,6 +1942,99 @@ require.register("autoprefixer/lib/autoprefixer/declaration.js", function(export
 }).call(this);
 
 });
+require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", function(exports, require, module){
+(function() {
+  var BorderRadius, Declaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Declaration = require('../declaration');
+
+  BorderRadius = (function(_super) {
+    var hor, mozilla, normal, ver, _i, _j, _len, _len1, _ref, _ref1;
+
+    __extends(BorderRadius, _super);
+
+    BorderRadius.names = ['border-radius'];
+
+    BorderRadius.toMozilla = {};
+
+    BorderRadius.toNormal = {};
+
+    _ref = ['top', 'bottom'];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      ver = _ref[_i];
+      _ref1 = ['left', 'right'];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        hor = _ref1[_j];
+        normal = "border-" + ver + "-" + hor + "-radius";
+        mozilla = "border-radius-" + ver + hor;
+        BorderRadius.names.push(normal);
+        BorderRadius.names.push(mozilla);
+        BorderRadius.toMozilla[normal] = mozilla;
+        BorderRadius.toNormal[mozilla] = normal;
+      }
+    }
+
+    function BorderRadius() {
+      BorderRadius.__super__.constructor.apply(this, arguments);
+      if (this.prefix === '-moz-') {
+        this.unprefixed = BorderRadius.toNormal[this.unprefixed] || this.unprefixed;
+        this.prop = this.prefix + this.unprefixed;
+      }
+    }
+
+    BorderRadius.prototype.prefixProp = function(prefix) {
+      var prop;
+      if (prefix === '-moz-') {
+        prop = BorderRadius.toMozilla[this.unprefixed] || this.unprefixed;
+        if (this.rule.contain(prefix + prop)) {
+          return;
+        }
+        return this.insertBefore(prefix + prop, this.value);
+      } else {
+        return BorderRadius.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return BorderRadius;
+
+  })(Declaration);
+
+  module.exports = BorderRadius;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(exports, require, module){
+(function() {
+  var Declaration, Filter,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Declaration = require('../declaration');
+
+  Filter = (function(_super) {
+    __extends(Filter, _super);
+
+    Filter.names = ['filter'];
+
+    function Filter() {
+      Filter.__super__.constructor.apply(this, arguments);
+      if (this.value.match(/DXImageTransform\.Microsoft/)) {
+        this.unprefixed = this.prop = '-ms-filter';
+      }
+    }
+
+    return Filter;
+
+  })(Declaration);
+
+  module.exports = Filter;
+
+}).call(this);
+
+});
 require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exports, require, module){
 (function() {
   var Gradient, Value, utils,
@@ -1927,13 +2046,24 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
   utils = require('../utils');
 
   Gradient = (function(_super) {
+    var i, _i, _len, _ref;
+
     __extends(Gradient, _super);
+
+    Gradient.names = ['linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient'];
+
+    Gradient.regexps = {};
+
+    _ref = Gradient.names;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      Gradient.regexps[i] = new RegExp('(^|\\s|,)' + i + '\\(([^)]+)\\)', 'gi');
+    }
 
     function Gradient(name, prefixes) {
       this.name = name;
       this.prefixes = prefixes;
-      name = utils.escapeRegexp(this.name);
-      this.regexp = new RegExp('(^|\\s|,)' + name + '\\(([^)]+)\\)', 'gi');
+      this.regexp = Gradient.regexps[this.name];
     }
 
     Gradient.prototype.addPrefix = function(prefix, string) {
@@ -1963,10 +2093,10 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       param = param.split(' ');
       param.splice(0, 1);
       param = (function() {
-        var _i, _len, _results;
+        var _j, _len1, _results;
         _results = [];
-        for (_i = 0, _len = param.length; _i < _len; _i++) {
-          value = param[_i];
+        for (_j = 0, _len1 = param.length; _j < _len1; _j++) {
+          value = param[_j];
           _results.push(this.directions[value.toLowerCase()] || value);
         }
         return _results;
@@ -2152,7 +2282,7 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
 
   Value = require('./value');
 
-  Value.register('linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient', require('./hacks/gradient'));
+  Value.register(require('./hacks/gradient'));
 
   Prefixes = (function() {
     function Prefixes(data, browsers) {
@@ -2397,6 +2527,10 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
 
   Declaration = require('./declaration');
 
+  Declaration.register(require('./hacks/filter'));
+
+  Declaration.register(require('./hacks/border-radius'));
+
   Rule = (function() {
     function Rule(declarations, prefix) {
       this.declarations = declarations;
@@ -2409,7 +2543,7 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
       _results = [];
       while (this.number < this.declarations.length) {
         if (this.declarations[this.number].property) {
-          decl = new Declaration(this, this.number, this.declarations[this.number]);
+          decl = Declaration.load(this, this.number, this.declarations[this.number]);
           callback(decl, decl.prefix || this.prefix);
         }
         _results.push(this.number += 1);
@@ -2440,7 +2574,7 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         decl = _ref[i];
         if (decl.property === prop) {
-          return new Declaration(this, i, decl);
+          return Declaration.load(this, i, decl);
         }
       }
       return null;
@@ -2517,18 +2651,17 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
 });
 require.register("autoprefixer/lib/autoprefixer/value.js", function(exports, require, module){
 (function() {
-  var Value, utils,
-    __slice = [].slice;
+  var Value, utils;
 
   utils = require('./utils');
 
   Value = (function() {
-    Value.register = function() {
-      var klass, name, names, _i, _j, _len, _results;
-      names = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), klass = arguments[_i++];
+    Value.register = function(klass) {
+      var name, _i, _len, _ref, _results;
+      _ref = klass.names;
       _results = [];
-      for (_j = 0, _len = names.length; _j < _len; _j++) {
-        name = names[_j];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        name = _ref[_i];
         _results.push(this.hacks[name] = klass);
       }
       return _results;
@@ -2542,10 +2675,17 @@ require.register("autoprefixer/lib/autoprefixer/value.js", function(exports, req
       return new klass(name, prefixes);
     };
 
+    Value.regexps = {};
+
+    Value.regexp = function(name) {
+      var _base;
+      return (_base = this.regexps)[name] || (_base[name] = utils.regexp(name));
+    };
+
     function Value(name, prefixes) {
       this.name = name;
       this.prefixes = prefixes;
-      this.regexp = utils.regexp(this.name);
+      this.regexp = Value.regexp(this.name);
     }
 
     Value.prototype.check = function(decl) {
