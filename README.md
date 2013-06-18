@@ -35,10 +35,10 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
 
 * You write normal CSS (or use Autoprefixer after Sass, Stylus
   or another preprocessor).
-* You write normal properties (not special mixins), so you don’t need to
-  remember which properties needs to be prefixed.
+* You write normal properties (not special mixins), so you don’t need
+  to remember which properties needs to be prefixed.
 * Autoprefixer uses only necessary prefixes. You choose which browsers
-  (by default the last 2 versions for each browser).
+  (by default the last 2 versions for each browser).
   Did you know, that prefixes for `border-radius`
   [have not been necessary](http://caniuse.com/border-radius)
   for a long time now?
@@ -83,7 +83,7 @@ rake autoprefixer:inspect
 ### Sprockets
 
 If you use Sinatra or other non-Rails frameworks with Sprockets,
-just connect your Sprockets environment to Autoprefixer and write CSS
+just connect your Sprockets environment to Autoprefixer and write CSS
 in the usual way:
 
 ```ruby
