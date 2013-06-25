@@ -216,17 +216,23 @@ module.exports = function(css, options){
     var lines = str.match(/\n/g);
     if (lines) lineno += lines.length;
     var i = str.lastIndexOf('\n');
-    column = ~i ? str.length-i : column + str.length;
+    column = ~i ? str.length - i : column + str.length;
   }
+
+  /**
+   * Mark position and patch `node.position`.
+   */
 
   function position() {
     var start = { line: lineno, column: column };
     if (!options.position) return positionNoop;
+
     return function(node){
       node.position = {
         start: start,
         end: { line: lineno, column: column }
       };
+
       whitespace();
       return node;
     }
@@ -235,9 +241,22 @@ module.exports = function(css, options){
   /**
    * Return `node`.
    */
+
   function positionNoop(node) {
     whitespace();
     return node;
+  }
+
+  /**
+   * Error `msg`.
+   */
+
+  function error(msg) {
+    var err = new Error(msg + ' near line ' + lineno + ':' + column);
+    err.line = lineno;
+    err.column = column;
+    err.source = css;
+    throw err;
   }
 
   /**
@@ -334,6 +353,7 @@ module.exports = function(css, options){
     updatePosition(str);
     css = css.slice(i);
     column += 2;
+
     return pos({
       type: 'comment',
       comment: str
@@ -363,11 +383,11 @@ module.exports = function(css, options){
     prop = prop[0];
 
     // :
-    if (!match(/^:\s*/)) return;
+    if (!match(/^:\s*/)) return error("property missing ':'");
 
     // val
     var val = match(/^((?:'(?:\\'|.)*?'|"(?:\\"|.)*?"|\([^\)]*?\)|[^};])+)/);
-    if (!val) return;
+    if (!val) return error('property missing value');
 
     var ret = pos({
       type: 'declaration',
@@ -377,6 +397,7 @@ module.exports = function(css, options){
 
     // ;
     match(/^[;\s]*/);
+
     return ret;
   }
 
@@ -387,7 +408,7 @@ module.exports = function(css, options){
   function declarations() {
     var decls = [];
 
-    if (!open()) return;
+    if (!open()) return error("missing '{'");
     comments(decls);
 
     // declarations
@@ -397,7 +418,7 @@ module.exports = function(css, options){
       comments(decls);
     }
 
-    if (!close()) return;
+    if (!close()) return error("missing '}'");
     return decls;
   }
 
@@ -437,10 +458,10 @@ module.exports = function(css, options){
 
     // identifier
     var m = match(/^([-\w]+)\s*/);
-    if (!m) return;
+    if (!m) return error("@keyframes missing name");
     var name = m[1];
 
-    if (!open()) return;
+    if (!open()) return error("@keyframes missing '{'");
     comments();
 
     var frame;
@@ -450,7 +471,7 @@ module.exports = function(css, options){
       comments();
     }
 
-    if (!close()) return;
+    if (!close()) return error("@keyframes missing '}'");
 
     return pos({
       type: 'keyframes',
@@ -471,12 +492,12 @@ module.exports = function(css, options){
     if (!m) return;
     var supports = m[1].trim();
 
-    if (!open()) return;
+    if (!open()) return error("@supports missing '{'");
     comments();
 
     var style = rules();
 
-    if (!close()) return;
+    if (!close()) return error("@supports missing '}'");
 
     return pos({
       type: 'supports',
@@ -496,12 +517,12 @@ module.exports = function(css, options){
     if (!m) return;
     var media = m[1].trim();
 
-    if (!open()) return;
+    if (!open()) return error("@media missing '{'");
     comments();
 
     var style = rules();
 
-    if (!close()) return;
+    if (!close()) return error("@media missing '}'");
 
     return pos({
       type: 'media',
@@ -522,7 +543,7 @@ module.exports = function(css, options){
     var sel = selector() || [];
     var decls = [];
 
-    if (!open()) return;
+    if (!open()) return error("@page missing '{'");
     comments();
 
     // declarations
@@ -532,7 +553,7 @@ module.exports = function(css, options){
       comments();
     }
 
-    if (!close()) return;
+    if (!close()) return error("@page missing '}'");
 
     return pos({
       type: 'page',
@@ -550,15 +571,15 @@ module.exports = function(css, options){
     var m = match(/^@([-\w]+)?document *([^{]+)/);
     if (!m) return;
 
-    var vendor = m[1].trim();
+    var vendor = (m[1] || '').trim();
     var doc = m[2].trim();
 
-    if (!open()) return;
+    if (!open()) return error("@document missing '{'");
     comments();
 
     var style = rules();
 
-    if (!close()) return;
+    if (!close()) return error("@document missing '}'");
 
     return pos({
       type: 'document',
@@ -1093,16 +1114,13 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "align-content": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "align-items": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "align-self": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     animation: {
       browsers: ["ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
@@ -1227,53 +1245,43 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
       transition: true
     },
+    "display-flex": {
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
+    },
     filter: {
       browsers: ["chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 6", "safari 7", "opera 15", "ios 6", "ios 6.1", "ios 7", "bb 10"],
       transition: true
     },
     flex: {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-basis": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-direction": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-flow": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-grow": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-shrink": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "flex-wrap": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
-    },
-    "inline-flex": {
-      props: ["display"],
       browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "justify-content": {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "linear-gradient": {
       props: ["background", "background-image"],
       browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     order: {
-      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
-      transition: true
+      browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     perspective: {
       browsers: ["ie 9", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 11", "opera 12", "opera 15", "opera 10.5", "opera 10.6", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
@@ -1868,7 +1876,7 @@ require.register("autoprefixer/lib/autoprefixer/declaration.js", function(export
         unprefixed = prop.slice(separator);
         return [prefix, unprefixed];
       } else {
-        return [void 0, prop];
+        return ['', prop];
       }
     };
 
@@ -1951,6 +1959,146 @@ require.register("autoprefixer/lib/autoprefixer/declaration.js", function(export
 }).call(this);
 
 });
+require.register("autoprefixer/lib/autoprefixer/hacks/align-content.js", function(exports, require, module){
+(function() {
+  var AlignContent, FlexDeclaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  AlignContent = (function(_super) {
+    __extends(AlignContent, _super);
+
+    AlignContent.names = ['align-content', 'flex-line-pack'];
+
+    AlignContent.oldValues = {
+      'flex-end': 'end',
+      'flex-start': 'start',
+      'space-between': 'justify',
+      'space-around': 'distribute'
+    };
+
+    function AlignContent() {
+      AlignContent.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'align-content';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    AlignContent.prototype.prefixProp = function(prefix) {
+      var oldValue, spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        oldValue = AlignContent.oldValues[this.value] || this.value;
+        this.insertBefore(prefix + 'flex-line-pack', oldValue);
+      }
+      if (spec.final) {
+        return AlignContent.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return AlignContent;
+
+  })(FlexDeclaration);
+
+  module.exports = AlignContent;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/align-items.js", function(exports, require, module){
+(function() {
+  var AlignItems, FlexDeclaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  AlignItems = (function(_super) {
+    __extends(AlignItems, _super);
+
+    AlignItems.names = ['align-items', 'flex-align', 'box-align'];
+
+    AlignItems.oldValues = {
+      'flex-end': 'end',
+      'flex-start': 'start'
+    };
+
+    function AlignItems() {
+      AlignItems.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'align-items';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    AlignItems.prototype.prefixProp = function(prefix) {
+      var oldValue, spec;
+      spec = this.flexSpec(prefix);
+      oldValue = AlignItems.oldValues[this.value] || this.value;
+      if (spec.v2009) {
+        this.insertBefore(prefix + 'box-align', oldValue);
+      }
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex-align', oldValue);
+      }
+      if (spec.final) {
+        return AlignItems.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return AlignItems;
+
+  })(FlexDeclaration);
+
+  module.exports = AlignItems;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/align-self.js", function(exports, require, module){
+(function() {
+  var AlignSelf, FlexDeclaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  AlignSelf = (function(_super) {
+    __extends(AlignSelf, _super);
+
+    AlignSelf.names = ['align-self', 'flex-item-align'];
+
+    AlignSelf.oldValues = {
+      'flex-end': 'end',
+      'flex-start': 'start'
+    };
+
+    function AlignSelf() {
+      AlignSelf.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'align-self';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    AlignSelf.prototype.prefixProp = function(prefix) {
+      var oldValue, spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        oldValue = AlignSelf.oldValues[this.value] || this.value;
+        this.insertBefore(prefix + 'flex-item-align', oldValue);
+      }
+      if (spec.final) {
+        return AlignSelf.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return AlignSelf;
+
+  })(FlexDeclaration);
+
+  module.exports = AlignSelf;
+
+}).call(this);
+
+});
 require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", function(exports, require, module){
 (function() {
   var BorderRadius, Declaration,
@@ -2015,6 +2163,68 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", functio
 }).call(this);
 
 });
+require.register("autoprefixer/lib/autoprefixer/hacks/display-flex.js", function(exports, require, module){
+(function() {
+  var DisplayFlex, FlexDeclaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  DisplayFlex = (function(_super) {
+    __extends(DisplayFlex, _super);
+
+    DisplayFlex.names = ['display'];
+
+    function DisplayFlex() {
+      var name, prefix, _ref;
+      DisplayFlex.__super__.constructor.apply(this, arguments);
+      _ref = FlexDeclaration.split(this.value), prefix = _ref[0], name = _ref[1];
+      if (name === 'flex' || name === 'box' || name === 'flexbox') {
+        this.prefix = prefix;
+        this.unprefixed = 'display-flex';
+        this.prop = this.prefix + this.unprefixed;
+      } else if (name === 'inline-flex' || name === 'inline-flexbox') {
+        this.prefix = prefix;
+        this.unprefixed = 'display-flex';
+        this.prop = this.prefix + this.unprefixed;
+        this.inline = true;
+      }
+    }
+
+    DisplayFlex.prototype.prefixProp = function(prefix) {
+      var spec;
+      if (this.unprefixed !== 'display-flex') {
+        return DisplayFlex.__super__.prefixProp.apply(this, arguments);
+      } else {
+        spec = this.flexSpec(prefix);
+        if (spec.v2009) {
+          if (!this.inline) {
+            this.prefixDisplay(prefix, 'box');
+          }
+        }
+        if (spec.v2012) {
+          this.prefixDisplay(prefix, this.inline ? 'inline-flexbox' : 'flexbox');
+        }
+        if (spec.final) {
+          return this.prefixDisplay(prefix, this.inline ? 'inline-flex' : 'flex');
+        }
+      }
+    };
+
+    DisplayFlex.prototype.prefixDisplay = function(prefix, name) {
+      return this.insertBefore('display', prefix + name);
+    };
+
+    return DisplayFlex;
+
+  })(FlexDeclaration);
+
+  module.exports = DisplayFlex;
+
+}).call(this);
+
+});
 require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(exports, require, module){
 (function() {
   var Declaration, Filter,
@@ -2040,6 +2250,314 @@ require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(expor
   })(Declaration);
 
   module.exports = Filter;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-basis.js", function(exports, require, module){
+(function() {
+  var FlexBasis, FlexDeclaration, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  FlexBasis = (function(_super) {
+    __extends(FlexBasis, _super);
+
+    function FlexBasis() {
+      _ref = FlexBasis.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FlexBasis.names = ['flex-basis'];
+
+    FlexBasis.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex', '0 1 ' + this.value);
+      }
+      if (spec.final) {
+        return FlexBasis.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return FlexBasis;
+
+  })(FlexDeclaration);
+
+  module.exports = FlexBasis;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-declaration.js", function(exports, require, module){
+(function() {
+  var Declaration, FlexDeclaration, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Declaration = require('../declaration');
+
+  FlexDeclaration = (function(_super) {
+    __extends(FlexDeclaration, _super);
+
+    function FlexDeclaration() {
+      _ref = FlexDeclaration.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FlexDeclaration.prototype.flexSpec = function(prefix) {
+      return {
+        v2009: prefix === '-webkit-' || prefix === '-moz-',
+        v2012: prefix === '-ms-',
+        final: prefix === '-webkit-'
+      };
+    };
+
+    return FlexDeclaration;
+
+  })(Declaration);
+
+  module.exports = FlexDeclaration;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-direction.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, FlexDirection,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  FlexDirection = (function(_super) {
+    __extends(FlexDirection, _super);
+
+    FlexDirection.names = ['flex-direction', 'box-direction', 'box-orient'];
+
+    function FlexDirection() {
+      FlexDirection.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'flex-direction';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    FlexDirection.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2009) {
+        this.insertBefore(prefix + 'box-orient', this.value.indexOf('row') !== -1 ? 'horizontal' : 'vertical');
+        this.insertBefore(prefix + 'box-direction', this.value.indexOf('reverse') !== -1 ? 'reverse' : 'normal');
+      }
+      if (spec.v2012 || spec.final) {
+        return FlexDirection.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return FlexDirection;
+
+  })(FlexDeclaration);
+
+  module.exports = FlexDirection;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-flow.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, FlexFlow, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  FlexFlow = (function(_super) {
+    __extends(FlexFlow, _super);
+
+    function FlexFlow() {
+      _ref = FlexFlow.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FlexFlow.names = ['flex-flow'];
+
+    FlexFlow.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        FlexFlow.__super__.prefixProp.apply(this, arguments);
+      }
+      if (spec.final) {
+        return FlexFlow.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return FlexFlow;
+
+  })(FlexDeclaration);
+
+  module.exports = FlexFlow;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-grow.js", function(exports, require, module){
+(function() {
+  var Flex, FlexDeclaration, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  Flex = (function(_super) {
+    __extends(Flex, _super);
+
+    function Flex() {
+      _ref = Flex.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    Flex.names = ['flex-grow'];
+
+    Flex.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2009) {
+        this.insertBefore(prefix + 'box-flex', this.value);
+      }
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex', this.value);
+      }
+      if (spec.final) {
+        return Flex.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return Flex;
+
+  })(FlexDeclaration);
+
+  module.exports = Flex;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-shrink.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, FlexShrink, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  FlexShrink = (function(_super) {
+    __extends(FlexShrink, _super);
+
+    function FlexShrink() {
+      _ref = FlexShrink.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FlexShrink.names = ['flex-shrink'];
+
+    FlexShrink.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex', '0 ' + this.value);
+      }
+      if (spec.final) {
+        return FlexShrink.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return FlexShrink;
+
+  })(FlexDeclaration);
+
+  module.exports = FlexShrink;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex-wrap.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, FlexWrap, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  FlexWrap = (function(_super) {
+    __extends(FlexWrap, _super);
+
+    function FlexWrap() {
+      _ref = FlexWrap.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FlexWrap.names = ['flex-wrap'];
+
+    FlexWrap.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2012) {
+        FlexWrap.__super__.prefixProp.apply(this, arguments);
+      }
+      if (spec.final) {
+        return FlexWrap.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return FlexWrap;
+
+  })(FlexDeclaration);
+
+  module.exports = FlexWrap;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/flex.js", function(exports, require, module){
+(function() {
+  var Flex, FlexDeclaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  Flex = (function(_super) {
+    __extends(Flex, _super);
+
+    Flex.names = ['flex', 'box-flex'];
+
+    function Flex() {
+      Flex.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'flex';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    Flex.prototype.prefixProp = function(prefix) {
+      var spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2009) {
+        this.insertBefore(prefix + 'box-flex', this.value);
+      }
+      if (spec.v2012) {
+        Flex.__super__.prefixProp.apply(this, arguments);
+      }
+      if (spec.final) {
+        return Flex.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return Flex;
+
+  })(FlexDeclaration);
+
+  module.exports = Flex;
 
 }).call(this);
 
@@ -2137,6 +2655,101 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
   })(Value);
 
   module.exports = Gradient;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/justify-content.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, JustifyContent,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  JustifyContent = (function(_super) {
+    __extends(JustifyContent, _super);
+
+    JustifyContent.names = ['justify-content', 'flex-pack', 'box-pack'];
+
+    JustifyContent.oldValues = {
+      'flex-end': 'end',
+      'flex-start': 'start',
+      'space-between': 'justify',
+      'space-around': 'distribute'
+    };
+
+    function JustifyContent() {
+      JustifyContent.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'justify-content';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    JustifyContent.prototype.prefixProp = function(prefix) {
+      var oldValue, spec;
+      spec = this.flexSpec(prefix);
+      oldValue = JustifyContent.oldValues[this.value] || this.value;
+      if (spec.v2009) {
+        if (this.value !== 'space-around') {
+          this.insertBefore(prefix + 'box-pack', oldValue);
+        }
+      }
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex-pack', oldValue);
+      }
+      if (spec.final) {
+        return JustifyContent.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return JustifyContent;
+
+  })(FlexDeclaration);
+
+  module.exports = JustifyContent;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/order.js", function(exports, require, module){
+(function() {
+  var FlexDeclaration, Order,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  FlexDeclaration = require('./flex-declaration');
+
+  Order = (function(_super) {
+    __extends(Order, _super);
+
+    Order.names = ['order', 'flex-order', 'box-ordinal-group'];
+
+    function Order() {
+      Order.__super__.constructor.apply(this, arguments);
+      this.unprefixed = 'order';
+      this.prop = this.prefix + this.unprefixed;
+    }
+
+    Order.prototype.prefixProp = function(prefix) {
+      var oldValue, spec;
+      spec = this.flexSpec(prefix);
+      if (spec.v2009) {
+        oldValue = parseInt(this.value) + 1;
+        this.insertBefore(prefix + 'box-ordinal-group', oldValue.toString());
+      }
+      if (spec.v2012) {
+        this.insertBefore(prefix + 'flex-order', this.value);
+      }
+      if (spec.final) {
+        return Order.__super__.prefixProp.apply(this, arguments);
+      }
+    };
+
+    return Order;
+
+  })(FlexDeclaration);
+
+  module.exports = Order;
 
 }).call(this);
 
@@ -2539,6 +3152,32 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
   Declaration.register(require('./hacks/filter'));
 
   Declaration.register(require('./hacks/border-radius'));
+
+  Declaration.register(require('./hacks/flex'));
+
+  Declaration.register(require('./hacks/order'));
+
+  Declaration.register(require('./hacks/flex-grow'));
+
+  Declaration.register(require('./hacks/flex-wrap'));
+
+  Declaration.register(require('./hacks/flex-flow'));
+
+  Declaration.register(require('./hacks/align-self'));
+
+  Declaration.register(require('./hacks/flex-basis'));
+
+  Declaration.register(require('./hacks/flex-shrink'));
+
+  Declaration.register(require('./hacks/align-items'));
+
+  Declaration.register(require('./hacks/display-flex'));
+
+  Declaration.register(require('./hacks/align-content'));
+
+  Declaration.register(require('./hacks/flex-direction'));
+
+  Declaration.register(require('./hacks/justify-content'));
 
   Rule = (function() {
     function Rule(declarations, prefix) {
