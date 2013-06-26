@@ -20,6 +20,10 @@
 * Convert flexbox properties to 2009 and 2012 specifications.
 * Add support for sass-rails 4 final.
 
+20130626:
+* Add Firefox 24 data.q
+* Add prefixes for font-feature-settings.
+
 == 0.4 (Winter Is Coming)
 * Remove outdated prefixes.
 * Add border-radius and box-shadow properties to database.
