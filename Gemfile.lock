@@ -32,7 +32,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     arel (4.0.0)
-    atomic (1.1.9)
+    atomic (1.1.10)
     builder (3.1.4)
     diff-lcs (1.2.4)
     erubis (2.7.0)
