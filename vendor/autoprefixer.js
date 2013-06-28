@@ -2552,10 +2552,11 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex.js", function(exports
     }
 
     Flex.prototype.prefixProp = function(prefix) {
-      var spec;
+      var first, spec;
       spec = this.flexSpec(prefix);
       if (spec.v2009) {
-        this.insertBefore(prefix + 'box-flex', this.value);
+        first = this.value.split(' ')[0];
+        this.insertBefore(prefix + 'box-flex', first);
       }
       if (spec.v2012) {
         Flex.__super__.prefixProp.apply(this, arguments);
