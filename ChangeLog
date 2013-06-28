@@ -21,8 +21,12 @@
 * Add support for sass-rails 4 final.
 
 20130626:
-* Add Firefox 24 data.q
+* Add Firefox 24 data.
 * Add prefixes for font-feature-settings.
+
+20130629:
+* Fix convert flex properties to old box-flex.
+* Fix Sinatra (sprockets-sass) suuport.
 
 == 0.4 (Winter Is Coming)
 * Remove outdated prefixes.
