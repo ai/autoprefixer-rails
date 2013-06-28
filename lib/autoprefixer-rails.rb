@@ -32,7 +32,7 @@ module AutoprefixerRails
   # whitelist of `dirs` to be autoprefxied.
   def self.install(assets, browsers = nil)
     assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
-      if defined?(Sass::Rails)
+      if defined?(Sass::Rails) or defined?(Sprockets::Sass)
         begin
           AutoprefixerRails.compile(css, browsers)
         rescue ExecJS::ProgramError => e
