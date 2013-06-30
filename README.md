@@ -33,9 +33,8 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
 
 ## Features
 
-* You write normal CSS (or use Autoprefixer after Sass, Stylus
-  or another preprocessor).
-* You write normal properties (not special mixins), so you don’t need
+* Write CSS (*or SaSS, Stylus or another supported preprocessor.*)
+* Write normal properties (not special mixins), so you don’t need
   to remember which properties needs to be prefixed.
 * Autoprefixer uses only necessary prefixes. You choose which browsers
   (by default the last 2 versions for each browser).
@@ -46,7 +45,7 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
   (from [Can I Use](http://caniuse.com/)), so prefixes will always be up-to-date
   (scripts don’t have holidays or work).
 * Removes outdated prefixes to clean libraries and legacy code.
-* It also adds prefixes to values. For example, to `calc(1em + 5px)` or
+* Adds prefixes to values. For example, to `calc(1em + 5px)` or
   to property names in `transition`.
 
 ## Usage
