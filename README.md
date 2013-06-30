@@ -5,7 +5,7 @@ Automatically parse CSS and add vendor-prefixes to CSS rules using values from t
 This gem provides Ruby and Ruby on Rails integration with the
 [Autoprefixer](https://github.com/ai/autoprefixer) javascript library.
 
-Write your CSS rules without vendor-prefixes (in fact, forget about them entirely) and Autoprefixes will apply vendor-prefixes for you.
+Write your CSS rules without vendor-prefixes (in fact, forget about them entirely) and Autoprefixer will apply vendor-prefixes for you.
 
 For example in `app/assets/stylesheet/foobar.scss.css`:
 
