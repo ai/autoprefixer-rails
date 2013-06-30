@@ -52,7 +52,7 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
 
 ### Ruby on Rails
 
-Add `autoprefixer-rails` gem to `Gemfile` and write CSS in usual way:
+Add the `autoprefixer-rails` gem to your `Gemfile` and write your CSS rules without even thinking about vendor-prefixes. Remember: Autoprefixer adds the necessary prefixes for you!
 
 ```ruby
 gem "autoprefixer-rails"
@@ -71,7 +71,7 @@ browsers:
   - "ie 8"
 ```
 
-Autoprefixer will process only your CSS from `app/` and `lib/` dirs.
+Autoprefixer will process only your CSS from `app/` and `lib/` directories.
 
 You can inspect what properties will be changed using a Rake task:
 
@@ -105,4 +105,4 @@ require "autoprefixer-rails"
 prefxied = AutoprefixerRails.compile(css)
 ```
 
-You can specify arrays of browsers as second argument to the `compile` method.
+You can specify arrays of browsers as a second argument to the `compile` method.
