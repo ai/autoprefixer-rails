@@ -1,13 +1,13 @@
-# Autoprefixer Rails
+﻿# Autoprefixer Rails
 
-Parse CSS and add prefixed properties and values from
-[Can I Use](http://caniuse.com/) database for actual browsers.
+Automatically parse CSS and add vendor-prefixes to CSS rules using values from the [Can I Use](http://caniuse.com/) website.
 
-This gem provides Ruby and Ruby on Rails integration with
-[Autoprefixer](https://github.com/ai/autoprefixer) JS library.
+This gem provides Ruby and Ruby on Rails integration with the
+[Autoprefixer](https://github.com/ai/autoprefixer) javascript library.
 
-Write your CSS usual code without prefixes (forget about them at all,
-Autoprefixer will think for you) in `app/assets/stylesheets`:
+Write your CSS rules without vendor-prefixes (in fact, forget about them entirely) and Autoprefixer will apply vendor-prefixes for you.
+
+For example in `app/assets/stylesheet/foobar.scss.css`:
 
 ```sass
 a
@@ -15,7 +15,7 @@ a
 ```
 
 Autoprefixer uses a database with current browser statistics
-and properties support to add prefixes automatically, using the Asset Pipeline:
+and properties support to add vendor-prefixes automatically using the Asset Pipeline:
 
 ```css
 a {
@@ -27,15 +27,14 @@ a {
 ```
 
 You can use it with CSS, SCSS, Sass, LESS or Stylus, because the Assets Pipeline
-has a nice architecture cascade filters.
+has a nice architecture for cascade filters.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
 ## Features
 
-* You write normal CSS (or use Autoprefixer after Sass, Stylus
-  or another preprocessor).
-* You write normal properties (not special mixins), so you don’t need
+* Write CSS (*or SaSS, Stylus or another supported preprocessor.*)
+* Write normal properties (not special mixins), so you don’t need
   to remember which properties needs to be prefixed.
 * Autoprefixer uses only necessary prefixes. You choose which browsers
   (by default the last 2 versions for each browser).
@@ -46,14 +45,14 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
   (from [Can I Use](http://caniuse.com/)), so prefixes will always be up-to-date
   (scripts don’t have holidays or work).
 * Removes outdated prefixes to clean libraries and legacy code.
-* It also adds prefixes to values. For example, to `calc(1em + 5px)` or
+* Adds prefixes to values. For example, to `calc(1em + 5px)` or
   to property names in `transition`.
 
 ## Usage
 
 ### Ruby on Rails
 
-Add `autoprefixer-rails` gem to `Gemfile` and write CSS in usual way:
+Add the `autoprefixer-rails` gem to your `Gemfile` and write your CSS rules without even thinking about vendor-prefixes. Remember: Autoprefixer adds the necessary prefixes for you!
 
 ```ruby
 gem "autoprefixer-rails"
@@ -72,7 +71,7 @@ browsers:
   - "ie 8"
 ```
 
-Autoprefixer will process only your CSS from `app/` and `lib/` dirs.
+Autoprefixer will process only your CSS from `app/` and `lib/` directories.
 
 You can inspect what properties will be changed using a Rake task:
 
@@ -106,4 +105,4 @@ require "autoprefixer-rails"
 prefxied = AutoprefixerRails.compile(css)
 ```
 
-You can specify arrays of browsers as second argument to the `compile` method.
+You can specify arrays of browsers as a second argument to the `compile` method.
