@@ -1,13 +1,13 @@
-# Autoprefixer Rails
+﻿# Autoprefixer Rails
 
-Parse CSS and add prefixed properties and values from
-[Can I Use](http://caniuse.com/) database for actual browsers.
+Automatically parse CSS and add vendor-prefixes to CSS rules using values from the [Can I Use](http://caniuse.com/) website.
 
-This gem provides Ruby and Ruby on Rails integration with
-[Autoprefixer](https://github.com/ai/autoprefixer) JS library.
+This gem provides Ruby and Ruby on Rails integration with the
+[Autoprefixer](https://github.com/ai/autoprefixer) javascript library.
 
-Write your CSS usual code without prefixes (forget about them at all,
-Autoprefixer will think for you) in `app/assets/stylesheets`:
+Write your CSS rules without vendor-prefixes (in fact, forget about them entirely) and Autoprefixes will apply vendor-prefixes for you.
+
+For example in `app/assets/stylesheet/foobar.scss.css`:
 
 ```sass
 a
@@ -15,7 +15,7 @@ a
 ```
 
 Autoprefixer uses a database with current browser statistics
-and properties support to add prefixes automatically, using the Asset Pipeline:
+and properties support to add vendor-prefixes automatically using the Asset Pipeline:
 
 ```css
 a {
@@ -27,7 +27,7 @@ a {
 ```
 
 You can use it with CSS, SCSS, Sass, LESS or Stylus, because the Assets Pipeline
-has a nice architecture cascade filters.
+has a nice architecture for cascade filters.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
