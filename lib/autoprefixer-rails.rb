@@ -17,24 +17,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =end
 
 require 'pathname'
-require 'execjs'
 
 # Ruby integration with Autoprefixer JS library, which parse CSS and adds
-# only actual prefixed.
+# only actual prefixed
 module AutoprefixerRails
-  # Parse `css` and add vendor prefixes for `browsers`.
+  # Parse `css` and add vendor prefixes for `browsers`
   def self.compile(css, browsers = nil)
-    compiler.call('compile', css, browsers)
+    compiler(browsers).compile(css)
   end
 
-  # Add Autoprefixer for Sprockets environment in `assets`. You can specify
-  # `browsers` actual in your project. Also, you can set options with
-  # whitelist of `dirs` to be autoprefxied.
+  # Add Autoprefixer for Sprockets environment in `assets`.
+  # You can specify `browsers` actual in your project.
   def self.install(assets, browsers = nil)
+    compiler = Compiler.new(browsers)
     assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
       if defined?(Sass::Rails) or defined?(Sprockets::Sass)
         begin
-          AutoprefixerRails.compile(css, browsers)
+          compiler.compile(css)
         rescue ExecJS::ProgramError => e
           if e.message =~ /Can't parse CSS/
             css
@@ -43,37 +42,26 @@ module AutoprefixerRails
           end
         end
       else
-        AutoprefixerRails.compile(css, browsers)
+        compiler.compile(css)
       end
     end
   end
 
-  # Path to Autoprefixer JS library
-  def self.js_file
-    Pathname(__FILE__).dirname.join('../vendor/autoprefixer.js')
-  end
-
-  # Return JS code for proxy function to save this in Autoprefixer
-  def self.proxy(func)
-    <<-JS
-      window.#{ func } = function() {
-        return autoprefixer.#{ func }.apply(autoprefixer, arguments)
-      };
-    JS
-  end
-
-  # Get loaded JS contex with Autoprefixer
-  def self.compiler
-    @compiler ||= ExecJS.compile("window = this;\n" + js_file.read +
-                                 proxy('compile') + proxy('inspect'))
-  end
-
   # Return string with selected browsers and prefixed CSS properties and values
   def self.inspect(browsers = [])
-    compiler.call('inspect', browsers)
+    compiler(browsers).inspect
+  end
+
+  # Cache compiler instances
+  def self.compiler(browsers)
+    @cache ||= { }
+    @cache[browsers] ||= Compiler.new(browsers)
   end
 end
 
-if defined?(Rails)
-  require Pathname(__FILE__).dirname.join('autoprefixer-rails/railtie').to_s
-end
+dir = Pathname(__FILE__).dirname.join('autoprefixer-rails')
+
+require dir.join('version').to_s
+require dir.join('compiler').to_s
+
+require dir.join('railtie').to_s if defined?(Rails)
