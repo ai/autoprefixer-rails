@@ -1403,9 +1403,7 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
         return parse(_this.removeBadComments(str));
       });
       this.rework(nodes.stylesheet);
-      return this.catchParseErrors(function() {
-        return stringify(nodes);
-      });
+      return stringify(nodes);
     };
 
     Autoprefixer.prototype.rework = function(stylesheet) {
@@ -1426,7 +1424,7 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
         return callback();
       } catch (_error) {
         e = _error;
-        error = new Error("Can't parse CSS");
+        error = new Error("Can't parse CSS: " + e.message);
         error.stack = e.stack;
         error.css = true;
         throw error;
