@@ -3,7 +3,7 @@
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
 from the [Can I Use](http://caniuse.com/). This gem provides
-Ruby and Ruby on Rails integration with the this JavaScript library.
+Ruby and Ruby on Rails integration with the this JavaScript tool.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
@@ -17,8 +17,8 @@ Add the `autoprefixer-rails` gem to your `Gemfile`:
 gem "autoprefixer-rails"
 ```
 
-Write your CSS (Sass, Stylus or LESS) rules without vendor prefixes
-and Autoprefixer will apply vendor prefixes for you.
+Write your CSS (Sass, Stylus, LESS) rules without vendor prefixes
+and Autoprefixer will apply prefixes for you.
 For example in `app/assets/stylesheet/foobar.sass`:
 
 ```sass
@@ -39,11 +39,8 @@ a {
 ```
 
 If you need to specify browsers for your project (by default, it’s last
-2 versions of each browser, like
-[Google](http://support.google.com/a/bin/answer.py?answer=33864)),
-you can save them to `config/autoprefixer.yml`.
-See [browser section](https://github.com/ai/autoprefixer#browsers)
-in Autoprefixer documentation.
+2 versions of each browser, [like Google]), you can save them
+to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
 
 ```yaml
 browsers:
@@ -57,6 +54,9 @@ You can inspect what properties will be changed using a Rake task:
 ```sh
 rake autoprefixer:inspect
 ```
+
+[like Google]:     http://support.google.com/a/bin/answer.py?answer=33864
+[browser section]: https://github.com/ai/autoprefixer#browsers
 
 ### Sprockets
 
