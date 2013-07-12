@@ -2,9 +2,8 @@
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
-from the [Can I Use](http://caniuse.com/) website. This gem provides
-Ruby and Ruby on Rails integration with the
-[Autoprefixer](https://github.com/ai/autoprefixer) JavaScript library.
+from the [Can I Use](http://caniuse.com/). This gem provides
+Ruby and Ruby on Rails integration with the this JavaScript library.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
@@ -18,7 +17,7 @@ Add the `autoprefixer-rails` gem to your `Gemfile`:
 gem "autoprefixer-rails"
 ```
 
-Write your CSS (Sass, Stylus or LESS) rules without vendor prefixes
+Write your CSS (Sass, Stylus or LESS) rules without vendor prefixes
 and Autoprefixer will apply vendor prefixes for you.
 For example in `app/assets/stylesheet/foobar.sass`:
 
@@ -27,9 +26,8 @@ a
   transition: transform 1s
 ```
 
-Autoprefixer uses a Can I Use database with current browser statistics
-and properties support to add vendor-prefixes automatically using
-the Asset Pipeline:
+Autoprefixer uses Can I Use database with browser statistics and properties
+support to add vendor-prefixes automatically using the Asset Pipeline:
 
 ```css
 a {
