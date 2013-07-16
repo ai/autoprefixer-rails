@@ -1281,7 +1281,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     "linear-gradient": {
       props: ["background", "background-image"],
-      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     order: {
       browsers: ["ie 10", "ff 2", "ff 3", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
@@ -1296,15 +1296,15 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     "radial-gradient": {
       props: ["background", "background-image"],
-      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "repeating-linear-gradient": {
       props: ["background", "background-image"],
-      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     "repeating-radial-gradient": {
       props: ["background", "background-image"],
-      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 7", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "safari 4", "safari 5", "safari 6", "safari 5.1", "opera 12", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"]
     },
     transform: {
       browsers: ["ie 9", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 3.5", "ff 3.6", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "safari 4", "safari 5", "safari 6", "safari 7", "safari 3.1", "safari 3.2", "safari 5.1", "opera 11", "opera 12", "opera 15", "opera 10.5", "opera 10.6", "opera 11.1", "opera 11.5", "opera 11.6", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "android 3", "android 4", "android 2.1", "android 2.2", "android 2.3", "android 4.1", "android 4.2", "bb 7", "bb 10"],
@@ -1363,8 +1363,6 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     reqs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     if (reqs.length === 0 || (reqs.length === 1 && (reqs[0] == null))) {
       reqs = void 0;
-    } else if (reqs.length === 1 && reqs[0] === false) {
-      reqs = [];
     } else if (reqs.length === 1 && reqs[0] instanceof Array) {
       reqs = reqs[0];
     }
@@ -1385,6 +1383,7 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
       this.prefixes = prefixes;
       this.data = data;
       this.rework = __bind(this.rework, this);
+      this.browsers = this.prefixes.browsers.selected;
     }
 
     Autoprefixer.prototype.compile = function(str) {
@@ -1694,11 +1693,21 @@ require.register("autoprefixer/lib/autoprefixer/browsers.js", function(exports, 
     };
 
     Browsers.prototype.requirements = {
+      none: {
+        regexp: /^none$/i,
+        select: function() {
+          return [];
+        }
+      },
       lastVersions: {
         regexp: /^last (\d+) versions?$/i,
         select: function(versions) {
           return this.browsers(function(data) {
-            return data.versions.slice(0, versions);
+            if (data.minor) {
+              return [];
+            } else {
+              return data.versions.slice(0, versions);
+            }
           });
         }
       },
@@ -1739,9 +1748,6 @@ require.register("autoprefixer/lib/autoprefixer/browsers.js", function(exports, 
       _ref = this.data;
       for (browser in _ref) {
         data = _ref[browser];
-        if (data.minor) {
-          continue;
-        }
         versions = criteria(data).map(function(version) {
           return "" + browser + " " + version;
         });
@@ -2012,8 +2018,6 @@ require.register("autoprefixer/lib/autoprefixer/deprecated.js", function(exports
         browsers = [];
       } else if (!(browsers instanceof Array)) {
         browsers = [browsers];
-      } else if (browsers.length === 0) {
-        browsers = [false];
       }
       key = browsers.toString();
       return (_base = this.cache)[key] || (_base[key] = autoprefixer.apply(autoprefixer, browsers));
