@@ -22,7 +22,7 @@ module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer compiler instance
   class Compiler
     def initialize(browsers)
-      @browsers = browsers
+      @browsers = browsers || []
     end
 
     # Return prefixed `css`
