@@ -1,9 +1,9 @@
 ﻿# Autoprefixer Rails
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
-to parse CSS and add vendor prefixes to CSS rules using values
+to parse CSS and add vendor prefixes to CSS rules using values
 from the [Can I Use](http://caniuse.com/). This gem provides
-Ruby and Ruby on Rails integration with the this JavaScript tool.
+Ruby and Ruby on Rails integration with the this JavaScript tool.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
@@ -11,14 +11,14 @@ Sponsored by [Evil Martians](http://evilmartians.com/).
 
 ### Ruby on Rails
 
-Add the `autoprefixer-rails` gem to your `Gemfile`:
+Add the `autoprefixer-rails` gem to your `Gemfile`:
 
 ```ruby
 gem "autoprefixer-rails"
 ```
 
 Write your CSS (Sass, Stylus, LESS) rules without vendor prefixes
-and Autoprefixer will apply prefixes for you.
+and Autoprefixer will apply prefixes for you.
 For example in `app/assets/stylesheet/foobar.sass`:
 
 ```sass
@@ -56,7 +56,7 @@ rake autoprefixer:inspect
 ```
 
 [like Google]:     http://support.google.com/a/bin/answer.py?answer=33864
-[browser section]: https://github.com/ai/autoprefixer#browsers
+[browser section]: https://github.com/ai/autoprefixer#browsers
 
 ### Sprockets
 
