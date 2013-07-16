@@ -3,7 +3,7 @@
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
 from the [Can I Use](http://caniuse.com/). This gem provides
-Ruby and Ruby on Rails integration with this JavaScript tool.
+Ruby and Ruby on Rails integration with this JavaScript tool.
 
 Sponsored by [Evil Martians](http://evilmartians.com/).
 
