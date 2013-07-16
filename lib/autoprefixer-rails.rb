@@ -23,7 +23,7 @@ require 'pathname'
 module AutoprefixerRails
   # Parse `css` and add vendor prefixes for `browsers`
   def self.compile(css, browsers = nil)
-    compiler(browsers).compile(css)
+    compiler(*browsers).compile(css)
   end
 
   # Add Autoprefixer for Sprockets environment in `assets`.
@@ -47,13 +47,8 @@ module AutoprefixerRails
     end
   end
 
-  # Return string with selected browsers and prefixed CSS properties and values
-  def self.inspect(browsers = [])
-    compiler(browsers).inspect
-  end
-
   # Cache compiler instances
-  def self.compiler(browsers)
+  def self.compiler(*browsers)
     @cache ||= { }
     @cache[browsers] ||= Compiler.new(browsers)
   end

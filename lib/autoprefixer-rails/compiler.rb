@@ -54,8 +54,12 @@ module AutoprefixerRails
 
     # Return JS code to create Autoprefixer instance
     def create_instance
-      browsers = @browsers.map(&:to_s).join("', '")
-      "var compiler = autoprefixer('#{browsers}');"
+      if @browsers.empty?
+        "var compiler = autoprefixer;"
+      else
+        browsers = @browsers.map(&:to_s).join("', '")
+        "var compiler = autoprefixer('#{browsers}');"
+      end
     end
 
     # Return JS code to create proxy methods

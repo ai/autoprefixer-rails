@@ -30,7 +30,7 @@ module Rake
 
     def initialize(browsers = [])
       @browsers = browsers
-      @compiler = AutoprefixerRails.compiler(@browsers)
+      @compiler = AutoprefixerRails.compiler(*@browsers)
       define
     end
 
