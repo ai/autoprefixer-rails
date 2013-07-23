@@ -6,7 +6,7 @@ describe CssController, :type => :controller do
     cache.rmtree if cache.exist?
   end
 
-  it "should integrate with Rails" do
+  it "integrates with Rails" do
     get :test, :file => 'test'
     response.should be_success
     response.body.should == PREFIXED
@@ -14,7 +14,7 @@ describe CssController, :type => :controller do
 end
 
 describe 'Rake task' do
-  it "should inspect" do
+  it "inspects" do
     inspect = `cd spec/app; bundle exec rake autoprefixer:inspect`
     inspect.should =~ /Browsers:\n  Chrome: 25\n\n/
     inspect.should =~ /  transition: webkit/
