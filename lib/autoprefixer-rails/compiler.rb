@@ -21,7 +21,7 @@ require 'execjs'
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer compiler instance
   class Compiler
-    def initialize(browsers)
+    def initialize(browsers=nil)
       @browsers = browsers || []
     end
 
