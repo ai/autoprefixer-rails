@@ -378,7 +378,7 @@ module.exports = function(css, options){
     var pos = position();
 
     // prop
-    var prop = match(/^(\*?[-\w]+)\s*/);
+    var prop = match(/^(\*?[//*-\w]+)\s*/);
     if (!prop) return;
     prop = prop[0];
 
@@ -462,13 +462,12 @@ module.exports = function(css, options){
     var name = m[1];
 
     if (!open()) return error("@keyframes missing '{'");
-    comments();
 
     var frame;
-    var frames = [];
+    var frames = comments();
     while (frame = keyframe()) {
       frames.push(frame);
-      comments();
+      frames = frames.concat(comments());
     }
 
     if (!close()) return error("@keyframes missing '}'");
@@ -493,9 +492,8 @@ module.exports = function(css, options){
     var supports = m[1].trim();
 
     if (!open()) return error("@supports missing '{'");
-    comments();
 
-    var style = rules();
+    var style = comments().concat(rules());
 
     if (!close()) return error("@supports missing '}'");
 
@@ -518,9 +516,8 @@ module.exports = function(css, options){
     var media = m[1].trim();
 
     if (!open()) return error("@media missing '{'");
-    comments();
 
-    var style = rules();
+    var style = comments().concat(rules());
 
     if (!close()) return error("@media missing '}'");
 
@@ -541,16 +538,15 @@ module.exports = function(css, options){
     if (!m) return;
 
     var sel = selector() || [];
-    var decls = [];
 
     if (!open()) return error("@page missing '{'");
-    comments();
+    var decls = comments();
 
     // declarations
     var decl;
     while (decl = declaration()) {
       decls.push(decl);
-      comments();
+      decls = decls.concat(comments());
     }
 
     if (!close()) return error("@page missing '}'");
@@ -575,9 +571,8 @@ module.exports = function(css, options){
     var doc = m[2].trim();
 
     if (!open()) return error("@document missing '{'");
-    comments();
 
-    var style = rules();
+    var style = comments().concat(rules());
 
     if (!close()) return error("@document missing '}'");
 
@@ -1422,7 +1417,7 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     };
 
     Autoprefixer.prototype.removeBadComments = function(css) {
-      return css.replace(/\/\*[^\*]*\*\/\s*:/g, ':').replace(/\/\*[^\*]*\{[^\*]*\*\//g, '');
+      return css.replace(/\/\*[^\*]*\{[^\*]*\*\//g, '');
     };
 
     return Autoprefixer;
@@ -2197,6 +2192,35 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-self.js", function(e
   })(FlexDeclaration);
 
   module.exports = AlignSelf;
+
+}).call(this);
+
+});
+require.register("autoprefixer/lib/autoprefixer/hacks/background-clip.js", function(exports, require, module){
+(function() {
+  var BackgroundClip, Declaration,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Declaration = require('../declaration');
+
+  BackgroundClip = (function(_super) {
+    __extends(BackgroundClip, _super);
+
+    BackgroundClip.names = ['background-clip'];
+
+    function BackgroundClip() {
+      BackgroundClip.__super__.constructor.apply(this, arguments);
+      if (this.value.indexOf('text') !== -1) {
+        this.unprefixed = this.prop = '-nonstandard-background-clip';
+      }
+    }
+
+    return BackgroundClip;
+
+  })(Declaration);
+
+  module.exports = BackgroundClip;
 
 }).call(this);
 
@@ -3319,6 +3343,8 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
   Declaration.register(require('./hacks/flex-direction'));
 
   Declaration.register(require('./hacks/justify-content'));
+
+  Declaration.register(require('./hacks/background-clip'));
 
   Rule = (function() {
     function Rule(declarations, prefix) {
