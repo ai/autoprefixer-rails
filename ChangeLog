@@ -14,6 +14,10 @@
 * Don’t remove IE hack on CSS parse.
 * Fix loading into Rails without Sprockets.
 
+20130729:
+* Add Opera 16 data.
+* Fix “Invalid range in character class” error on JRuby.
+
 == 0.5 (Ours is the Fury)
 * Rewrite Autoprefixer to be more flexible.
 * Use css, instead of Rework, to fix CSS parsing errors faster.
