@@ -1853,7 +1853,11 @@ require.register("autoprefixer/lib/autoprefixer/css.js", function(exports, requi
           _ref1 = i.keyframes;
           for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
             keyframe = _ref1[_j];
-            rule = new Rule(keyframe.declarations, i.vendor);
+            if (keyframe.type === 'keyframe') {
+              rule = new Rule(keyframe.declarations, i.vendor);
+            } else {
+              rule = new Rule();
+            }
             rule.each(callback);
           }
         }
@@ -2730,7 +2734,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
         if (params.length > 0) {
           if (params[0].slice(0, 3) === 'to ') {
             params[0] = _this.fixDirection(params[0]);
-          } else if (prefix === '-webkit-' && params[0].indexOf('deg') !== -1) {
+          } else if (params[0].indexOf('deg') !== -1) {
             params[0] = _this.fixAngle(params[0]);
           }
         }
@@ -2761,12 +2765,14 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       return param.join(' ');
     };
 
+    Gradient.prototype.roundFloat = function(float, digits) {
+      return parseFloat(float.toFixed(digits));
+    };
+
     Gradient.prototype.fixAngle = function(param) {
-      param = parseInt(param);
-      param += 90;
-      if (param > 360) {
-        param -= 360;
-      }
+      param = parseFloat(param);
+      param = Math.abs(450 - param) % 360;
+      param = this.roundFloat(param, 3);
       return "" + param + "deg";
     };
 
@@ -2995,12 +3001,16 @@ require.register("autoprefixer/lib/autoprefixer/keyframes.js", function(exports,
     Keyframes.prototype.clone = function() {
       return utils.clone(this.rule, {
         keyframes: this.rule.keyframes.map(function(i) {
-          return utils.clone(i, {
-            values: i.values.slice(),
-            declarations: i.declarations.map(function(decl) {
-              return utils.clone(decl);
-            })
-          });
+          if (i.type === 'keyframe') {
+            return utils.clone(i, {
+              values: i.values.slice(),
+              declarations: i.declarations.map(function(decl) {
+                return utils.clone(decl);
+              })
+            });
+          } else {
+            return utils.clone(i);
+          }
         })
       });
     };
@@ -3349,7 +3359,7 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
 
   Rule = (function() {
     function Rule(declarations, prefix) {
-      this.declarations = declarations;
+      this.declarations = declarations != null ? declarations : [];
       this.prefix = prefix;
     }
 
