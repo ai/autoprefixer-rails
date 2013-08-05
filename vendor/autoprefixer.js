@@ -1383,8 +1383,6 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     prefixes: require('../data/prefixes')
   };
 
-  require('./autoprefixer/deprecated').install(autoprefixer);
-
   Autoprefixer = (function() {
     function Autoprefixer(prefixes, data) {
       this.prefixes = prefixes;
@@ -1435,6 +1433,22 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     return Autoprefixer;
 
   })();
+
+  autoprefixer["default"] = function() {
+    return this.instance || (this.instance = autoprefixer());
+  };
+
+  autoprefixer.compile = function(str) {
+    return this["default"]().compile(str);
+  };
+
+  autoprefixer.rework = function(stylesheet) {
+    return this["default"]().rework(stylesheet);
+  };
+
+  autoprefixer.inspect = function() {
+    return this["default"]().inspect();
+  };
 
   module.exports = autoprefixer;
 
@@ -1991,67 +2005,6 @@ require.register("autoprefixer/lib/autoprefixer/declaration.js", function(export
   })();
 
   module.exports = Declaration;
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/deprecated.js", function(exports, require, module){
-(function() {
-  var deprecated;
-
-  deprecated = {
-    warning: function(method) {
-      if ((typeof console !== "undefined" && console !== null ? console.warn : void 0) == null) {
-        return;
-      }
-      return console.warn(("Method autoprefixer." + method + " is deprecated ") + "and will be removed in 0.7 version. " + ("Use autoprefixer(reqs)." + method + " instead."));
-    },
-    cache: {},
-    create: function(autoprefixer, browsers) {
-      var key, _base;
-      if (browsers == null) {
-        browsers = [];
-      } else if (!(browsers instanceof Array)) {
-        browsers = [browsers];
-      }
-      key = browsers.toString();
-      return (_base = this.cache)[key] || (_base[key] = autoprefixer.apply(autoprefixer, browsers));
-    },
-    install: function(autoprefixer) {
-      var name, _i, _len, _ref, _results;
-      _ref = ['compile', 'rework', 'inspect'];
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
-        if (name !== 'install' && name !== 'warning') {
-          _results.push(autoprefixer[name] = this[name]);
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    },
-    compile: function(str, browsers) {
-      if (browsers) {
-        deprecated.warning('compile');
-      }
-      return deprecated.create(this, browsers).compile(str);
-    },
-    rework: function(browsers) {
-      if (browsers) {
-        deprecated.warning('rework');
-      }
-      return deprecated.create(this, browsers).rework;
-    },
-    inspect: function(browsers) {
-      if (browsers) {
-        deprecated.warning('inspect');
-      }
-      return deprecated.create(this, browsers).inspect();
-    }
-  };
-
-  module.exports = deprecated;
 
 }).call(this);
 
