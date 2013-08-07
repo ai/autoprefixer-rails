@@ -1113,6 +1113,10 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       selector: true,
       browsers: ["ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24"]
     },
+    ":fullscreen": {
+      selector: true,
+      browsers: ["chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ie 11", "opera 15", "opera 16", "safari 5.1", "safari 6", "safari 7"]
+    },
     "@keyframes": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
     },
@@ -1315,6 +1319,9 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "repeating-radial-gradient": {
       props: ["background", "background-image", "border-image"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+    },
+    "tab-size": {
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
     },
     transform: {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"],
@@ -2676,6 +2683,43 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex.js", function(exports
 }).call(this);
 
 });
+require.register("autoprefixer/lib/autoprefixer/hacks/fullscreen.js", function(exports, require, module){
+(function() {
+  var Fullscreen, Selector, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Selector = require('../selector');
+
+  Fullscreen = (function(_super) {
+    __extends(Fullscreen, _super);
+
+    function Fullscreen() {
+      _ref = Fullscreen.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    Fullscreen.names = [':fullscreen'];
+
+    Fullscreen.prototype.prefixed = function(prefix) {
+      if ('-webkit-' === prefix) {
+        return ':-webkit-full-screen';
+      } else if ('-moz-' === prefix) {
+        return ':-moz-full-screen';
+      } else {
+        return ":" + prefix + "fullscreen";
+      }
+    };
+
+    return Fullscreen;
+
+  })(Selector);
+
+  module.exports = Fullscreen;
+
+}).call(this);
+
+});
 require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exports, require, module){
 (function() {
   var Gradient, OldValue, Value, utils,
@@ -2898,7 +2942,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/placeholder.js", function(
       } else if ('-ms-' === prefix) {
         return ':-ms-input-placeholder';
       } else {
-        return "::" + prefix + "-placeholder";
+        return "::" + prefix + "placeholder";
       }
     };
 
@@ -3102,6 +3146,8 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
   Value.register(require('./hacks/gradient'));
 
   Selector.register(require('./hacks/placeholder'));
+
+  Selector.register(require('./hacks/fullscreen'));
 
   Prefixes = (function() {
     function Prefixes(data, browsers) {
