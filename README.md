@@ -60,7 +60,7 @@ rake autoprefixer:inspect
 ### Sprockets
 
 If you use Sinatra or other non-Rails frameworks with Sprockets,
-just connect your Sprockets environment to Autoprefixer and write CSS
+just connect your Sprockets environment with Autoprefixer and write CSS
 in the usual way:
 
 ```ruby
