@@ -1087,9 +1087,9 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
     },
     opera: {
       prefix: "-o-",
-      future: [16],
-      versions: [15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10, 10.1, 9.5, 9.6],
-      popularity: [0.074385, 0.59508, 0.057855, 0.041325, 0.01653, 0.008265, 0.008265, 0.008265, 0.008392, 0.0123975, 0.0123975, 0.0041325, 0.0041325]
+      future: [17],
+      versions: [16, 15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10, 10.1, 9.5, 9.6],
+      popularity: [0, 0.074385, 0.59508, 0.057855, 0.041325, 0.01653, 0.008265, 0.008265, 0.008265, 0.008392, 0.0123975, 0.0123975, 0.0041325, 0.0041325]
     },
     safari: {
       prefix: "-webkit-",
@@ -1250,9 +1250,17 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "display-flex": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
     },
+    "fill-available": {
+      props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
+      browsers: ["bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "safari 7"]
+    },
     filter: {
       browsers: ["bb 10", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "safari 6", "safari 7"],
       transition: true
+    },
+    "fit-content": {
+      props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
+      browsers: ["bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "safari 7"]
     },
     flex: {
       transition: true,
@@ -1299,7 +1307,16 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     "linear-gradient": {
       props: ["background", "background-image", "border-image"],
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+    },
+    "max-content": {
+      props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
+      browsers: ["bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "safari 7"]
+    },
+    "min-content": {
+      props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
+      browsers: ["bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "safari 7"]
     },
     order: {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
@@ -1314,14 +1331,17 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     "radial-gradient": {
       props: ["background", "background-image", "border-image"],
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-linear-gradient": {
       props: ["background", "background-image", "border-image"],
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-radial-gradient": {
       props: ["background", "background-image", "border-image"],
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "tab-size": {
@@ -1339,18 +1359,23 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
     },
     transition: {
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "transition-delay": {
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "transition-duration": {
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "transition-property": {
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "transition-timing-function": {
+      mistakes: ["-ms-"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "user-select": {
@@ -2399,6 +2424,53 @@ require.register("autoprefixer/lib/autoprefixer/hacks/display-flex.js", function
 }).call(this);
 
 });
+require.register("autoprefixer/lib/autoprefixer/hacks/fill-available.js", function(exports, require, module){
+(function() {
+  var FillAvailable, OldValue, Value, utils, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  OldValue = require('../old-value');
+
+  Value = require('../value');
+
+  utils = require('../utils');
+
+  FillAvailable = (function(_super) {
+    __extends(FillAvailable, _super);
+
+    function FillAvailable() {
+      _ref = FillAvailable.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    FillAvailable.names = ['fill-available'];
+
+    FillAvailable.prototype.addPrefix = function(prefix, string) {
+      if (prefix === '-moz-') {
+        return string.replace(this.regexp, '$1-moz-available$3');
+      } else {
+        return FillAvailable.__super__.addPrefix.apply(this, arguments);
+      }
+    };
+
+    FillAvailable.prototype.old = function(prefix) {
+      if (prefix === '-moz-') {
+        return new OldValue('-moz-available');
+      } else {
+        return FillAvailable.__super__.old.apply(this, arguments);
+      }
+    };
+
+    return FillAvailable;
+
+  })(Value);
+
+  module.exports = FillAvailable;
+
+}).call(this);
+
+});
 require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(exports, require, module){
 (function() {
   var Declaration, Filter,
@@ -2864,7 +2936,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
         regexp = utils.regexp("-webkit-(" + type + "-gradient|gradient\\(\\s*" + type + ")", false);
         return new OldValue(prefix + this.name, string, regexp);
       } else {
-        return new OldValue(prefix + this.name);
+        return Gradient.__super__.old.apply(this, arguments);
       }
     };
 
@@ -3199,9 +3271,11 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
 
   Value.register(require('./hacks/gradient'));
 
-  Selector.register(require('./hacks/placeholder'));
+  Value.register(require('./hacks/fill-available'));
 
   Selector.register(require('./hacks/fullscreen'));
+
+  Selector.register(require('./hacks/placeholder'));
 
   Prefixes = (function() {
     function Prefixes(data, browsers) {
@@ -3231,9 +3305,13 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
         }).sort(function(a, b) {
           return b.length - a.length;
         });
-        all = utils.uniq(data.browsers.map(function(i) {
+        all = data.browsers.map(function(i) {
           return _this.browsers.prefix(i);
-        }));
+        });
+        if (data.mistakes) {
+          all = all.concat(data.mistakes);
+        }
+        all = utils.uniq(all);
         if (add.length) {
           add = utils.uniq(add);
           selected.add[name] = add;
@@ -3729,7 +3807,10 @@ require.register("autoprefixer/lib/autoprefixer/selector.js", function(exports, 
 
     function Selector(name, prefixes) {
       this.name = name;
-      this.prefixes = prefixes;
+      this.prefixes = prefixes != null ? prefixes : [];
+      this.prefixes = this.prefixes.sort(function(a, b) {
+        return a.length - b.length;
+      });
     }
 
     Selector.prototype.check = function(selectors) {
@@ -3869,7 +3950,7 @@ require.register("autoprefixer/lib/autoprefixer/updater.js", function(exports, r
     feature: function(file, callback) {
       var url,
         _this = this;
-      url = "Fyrd/caniuse/master/features-json/" + file;
+      url = "Fyrd/caniuse/master/features-json/" + file + ".json";
       return this.github(url, function(data) {
         return callback(_this.parse(data));
       });
@@ -4167,7 +4248,7 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
       }
       return _results;
     };
-    this.feature('border-radius.json', function(browsers) {
+    this.feature('border-radius', function(browsers) {
       prefix('border-radius', {
         browsers: browsers,
         transition: true
@@ -4189,23 +4270,24 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
         transition: true
       });
     });
-    this.feature('css-boxshadow.json', function(browsers) {
+    this.feature('css-boxshadow', function(browsers) {
       return prefix('box-shadow', {
         browsers: browsers,
         transition: true
       });
     });
-    this.feature('css-animation.json', function(browsers) {
+    this.feature('css-animation', function(browsers) {
       return prefix('animation', 'animation-name', 'animation-duration', 'animation-delay', 'animation-direction', 'animation-fill-mode', 'animation-iteration-count', 'animation-play-state', 'animation-timing-function', '@keyframes', {
         browsers: browsers
       });
     });
-    this.feature('css-transitions.json', function(browsers) {
+    this.feature('css-transitions', function(browsers) {
       return prefix('transition', 'transition-property', 'transition-duration', 'transition-delay', 'transition-timing-function', {
+        mistakes: ['-ms-'],
         browsers: browsers
       });
     });
-    this.feature('transforms2d.json', function(browsers) {
+    this.feature('transforms2d', function(browsers) {
       prefix('transform', 'transform-origin', 'perspective', 'perspective-origin', {
         browsers: browsers,
         transition: true
@@ -4214,24 +4296,25 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
         browsers: browsers
       });
     });
-    this.feature('css-gradients.json', function(browsers) {
+    this.feature('css-gradients', function(browsers) {
       return prefix('linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient', {
         props: ['background', 'background-image', 'border-image'],
+        mistakes: ['-ms-'],
         browsers: browsers
       });
     });
-    this.feature('css3-boxsizing.json', function(browsers) {
+    this.feature('css3-boxsizing', function(browsers) {
       return prefix('box-sizing', {
         browsers: browsers
       });
     });
-    this.feature('css-filters.json', function(browsers) {
+    this.feature('css-filters', function(browsers) {
       return prefix('filter', {
         browsers: browsers,
         transition: true
       });
     });
-    this.feature('multicolumn.json', function(browsers) {
+    this.feature('multicolumn', function(browsers) {
       prefix('columns', 'column-width', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-width', {
         browsers: browsers,
         transition: true
@@ -4240,12 +4323,12 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
         browsers: browsers
       });
     });
-    this.feature('user-select-none.json', function(browsers) {
+    this.feature('user-select-none', function(browsers) {
       return prefix('user-select', {
         browsers: browsers
       });
     });
-    this.feature('flexbox.json', function(browsers) {
+    this.feature('flexbox', function(browsers) {
       prefix('display-flex', {
         browsers: browsers
       });
@@ -4257,52 +4340,58 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
         browsers: browsers
       });
     });
-    this.feature('calc.json', function(browsers) {
+    this.feature('calc', function(browsers) {
       return prefix('calc', {
         props: ['*'],
         browsers: browsers
       });
     });
-    this.feature('background-img-opts.json', function(browsers) {
+    this.feature('background-img-opts', function(browsers) {
       return prefix('background-clip', 'background-origin', 'background-size', {
         browsers: browsers
       });
     });
-    this.feature('font-feature.json', function(browsers) {
+    this.feature('font-feature', function(browsers) {
       return prefix('font-feature-settings', 'font-variant-ligatures', 'font-language-override', 'font-kerning', {
         browsers: browsers
       });
     });
-    this.feature('border-image.json', function(browsers) {
+    this.feature('border-image', function(browsers) {
       return prefix('border-image', {
         browsers: browsers
       });
     });
-    this.feature('css-selection.json', function(browsers) {
+    this.feature('css-selection', function(browsers) {
       return prefix('::selection', {
         selector: true,
         browsers: browsers
       });
     });
-    this.feature('css-placeholder.json', function(browsers) {
+    this.feature('css-placeholder', function(browsers) {
       return prefix('::placeholder', {
         selector: true,
         browsers: browsers
       });
     });
-    this.feature('css-hyphens.json', function(browsers) {
+    this.feature('css-hyphens', function(browsers) {
       return prefix('hyphens', {
         browsers: browsers
       });
     });
-    this.feature('fullscreen.json', function(browsers) {
+    this.feature('fullscreen', function(browsers) {
       return prefix(':fullscreen', {
         selector: true,
         browsers: browsers
       });
     });
-    this.feature('css3-tabsize.json', function(browsers) {
+    this.feature('css3-tabsize', function(browsers) {
       return prefix('tab-size', {
+        browsers: browsers
+      });
+    });
+    this.feature('intrinsic-width', function(browsers) {
+      return prefix('max-content', 'min-content', 'fit-content', 'fill-available', {
+        props: ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height'],
         browsers: browsers
       });
     });
