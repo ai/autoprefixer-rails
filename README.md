@@ -32,7 +32,6 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 ```css
 a {
   -webkit-transition: -webkit-transform 1s;
-  transition: -ms-transform 1s;
   transition: transform 1s
 }
 ```
