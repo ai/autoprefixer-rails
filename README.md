@@ -36,8 +36,7 @@ a {
 }
 ```
 
-If you need to specify browsers for your project (by default, it’s
-last 2 versions of each browser, [like Google]), you can save them
+If you need to specify browsers for your project, you can save them
 to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
 
 ```yaml
@@ -53,8 +52,12 @@ You can inspect what properties will be changed using a Rake task:
 rake autoprefixer:inspect
 ```
 
-[like Google]:     http://support.google.com/a/bin/answer.py?answer=33864
+By default, Autoprefixer uses `> 1%, last 2 versions, ff 17, opera 12.1`:
+* Firefox 17 is a latest [ESR].
+* Opera 12.1 will be in list until Opera supports non-Blink 12.x branch.
+
 [browser section]: https://github.com/ai/autoprefixer#browsers
+[ESR]: http://www.mozilla.org/en/firefox/organizations/faq/
 
 ### Sprockets
 
