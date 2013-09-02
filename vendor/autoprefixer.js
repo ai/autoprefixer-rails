@@ -2815,7 +2815,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/fullscreen.js", function(e
 });
 require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exports, require, module){
 (function() {
-  var Gradient, OldValue, Value, utils,
+  var Gradient, OldValue, Value, isDirection, utils,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2824,6 +2824,8 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
   Value = require('../value');
 
   utils = require('../utils');
+
+  isDirection = new RegExp('(top|left|right|bottom)', 'gi');
 
   Gradient = (function(_super) {
     var i, _i, _len, _ref;
@@ -2837,7 +2839,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
     _ref = Gradient.names;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];
-      Gradient.regexps[i] = new RegExp('(^|\\s|,)' + i + '\\(([^)]+)\\)', 'gi');
+      Gradient.regexps[i] = new RegExp('(^|\\s|,)' + i + '\\((.+)\\)', 'gi');
     }
 
     function Gradient(name, prefixes) {
@@ -2848,13 +2850,21 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
 
     Gradient.prototype.addPrefix = function(prefix, string) {
       var _this = this;
-      return string.replace(this.regexp, function(all, before, params) {
-        params = params.trim().split(/\s*,\s*/);
+      return string.replace(this.regexp, function(all, before, args) {
+        var params;
+        params = _this.splitParams(args);
+        params = _this.newDirection(params);
         if (prefix === '-webkit- old') {
           if (_this.name !== 'linear-gradient') {
             return all;
           }
           if (params[0] && params[0].indexOf('deg') !== -1) {
+            return all;
+          }
+          if (args.indexOf('-corner') !== -1) {
+            return all;
+          }
+          if (args.indexOf('-side') !== -1) {
             return all;
           }
           params = _this.oldDirection(params);
@@ -2881,10 +2891,59 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
     };
 
     Gradient.prototype.oldDirections = {
-      top: 'bottom left, top left',
-      left: 'top right, top left',
-      bottom: 'top left, bottom left',
-      right: 'top left, top right'
+      'top': 'bottom left, top left',
+      'left': 'top right, top left',
+      'bottom': 'top left, bottom left',
+      'right': 'top left, top right',
+      'top right': 'bottom left, top right',
+      'top left': 'bottom right, top left',
+      'bottom right': 'top left, bottom right',
+      'bottom left': 'top right, bottom left'
+    };
+
+    Gradient.prototype.splitParams = function(params) {
+      var array, char, func, param, _j, _len1;
+      array = [];
+      param = '';
+      func = 0;
+      for (_j = 0, _len1 = params.length; _j < _len1; _j++) {
+        char = params[_j];
+        if (char === ')' && func > 0) {
+          func -= 1;
+          param += char;
+        } else if (char === '(') {
+          param += char;
+          func += 1;
+        } else if (func > 0) {
+          param += char;
+        } else if (char === ',') {
+          array.push(param.trim());
+          param = '';
+        } else {
+          param += char;
+        }
+      }
+      array.push(param.trim());
+      return array;
+    };
+
+    Gradient.prototype.newDirection = function(params) {
+      var first, value;
+      first = params[0];
+      if (first.indexOf('to ') === -1 && isDirection.test(first)) {
+        first = first.split(' ');
+        first = (function() {
+          var _j, _len1, _results;
+          _results = [];
+          for (_j = 0, _len1 = first.length; _j < _len1; _j++) {
+            value = first[_j];
+            _results.push(this.directions[value.toLowerCase()] || value);
+          }
+          return _results;
+        }).call(this);
+        params[0] = 'to ' + first.join(' ');
+      }
+      return params;
     };
 
     Gradient.prototype.fixDirection = function(param) {
@@ -2932,16 +2991,30 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
 
     Gradient.prototype.colorStops = function(params) {
       return params.map(function(param, i) {
-        var color, position, _ref1;
-        _ref1 = param.split(' '), color = _ref1[0], position = _ref1[1];
+        var color, position, separator;
         if (i === 0) {
           return param;
-        } else if (i === 1) {
+        }
+        separator = param.lastIndexOf(' ');
+        if (separator === -1) {
+          color = param;
+          position = void 0;
+        } else {
+          color = param.slice(0, separator);
+          position = param.slice(separator + 1);
+        }
+        if (position && position.indexOf(')') !== -1) {
+          color += ' ' + position;
+          position = void 0;
+        }
+        if (i === 1) {
           return "from(" + color + ")";
         } else if (i === params.length - 1) {
           return "to(" + color + ")";
-        } else {
+        } else if (position) {
           return "color-stop(" + position + ", " + color + ")";
+        } else {
+          return "color-stop(" + color + ")";
         }
       });
     };
