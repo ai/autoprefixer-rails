@@ -1053,49 +1053,49 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
       prefix: "-webkit-",
       minor: true,
       versions: [4.2, 4.1, 4, 3, 2.3, 2.2, 2.1],
-      popularity: [0.321169, 1.85246, 1.33629, 0.00573516, 1.95569, 0.17779, 0.0802922]
+      popularity: [0.385341, 2.01563, 1.33387, 0.00592833, 1.96228, 0.148208, 0.0711399]
     },
     bb: {
       prefix: "-webkit-",
       minor: true,
       versions: [10, 7],
-      popularity: [0, 0.135764]
+      popularity: [0, 0.14265]
     },
     chrome: {
       prefix: "-webkit-",
       future: [31, 30],
       versions: [29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4],
-      popularity: [0.140505, 19.3814, 11.5297, 0.652935, 0.44631, 0.371925, 0.322335, 0.28101, 0.520695, 0.08265, 0.08265, 0.123975, 0.08265, 0.090915, 0.123975, 0.09918, 0.107445, 0.11571, 0.1653, 0.090915, 0.024795, 0.03306, 0.024795, 0.03306, 0.024795, 0.024795]
+      popularity: [6.7568, 22.9846, 0.7872, 0.5658, 0.4428, 0.3198, 0.2788, 0.2706, 0.5248, 0.082, 0.082, 0.1394, 0.082, 0.0984, 0.123, 0.1066, 0.1066, 0.1148, 0.164, 0.0902, 0.0246, 0.0328, 0.0246, 0.0328, 0.0246, 0.0246]
     },
     ff: {
       prefix: "-moz-",
       future: [25, 24],
       versions: [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3.6, 3.5, 3, 2],
-      popularity: [0.421515, 11.1578, 1.69432, 0.31407, 0.21489, 0.18183, 0.23142, 0.438045, 0.23142, 0.13224, 0.13224, 0.256215, 0.123975, 0.13224, 0.074385, 0.074385, 0.04959, 0.057855, 0.057855, 0.090915, 0.305805, 0.04959, 0.090915, 0.024795]
+      popularity: [6.1582, 6.068, 0.3772, 0.2296, 0.1886, 0.1558, 0.2214, 0.328, 0.1804, 0.123, 0.1312, 0.2378, 0.1148, 0.1312, 0.0738, 0.0738, 0.0492, 0.0492, 0.0574, 0.082, 0.287, 0.0492, 0.0902, 0.0246]
     },
     ie: {
       prefix: "-ms-",
       future: [11],
       versions: [10, 9, 8, 7, 6, 5.5],
-      popularity: [9.16887, 4.45849, 6.40646, 0.369442, 0.167928, 0.009298]
+      popularity: [9.459, 4.33746, 6.89823, 0.39204, 0.191849, 0.009298]
     },
     ios: {
       prefix: "-webkit-",
       future: [7],
       versions: [6, 6.1, 5, 5.1, 4.2, 4.3, 4, 4.1, 3.2],
-      popularity: [3.541995, 3.541995, 0.3241295, 0.3241295, 0.03905175, 0.03905175, 0.00781035, 0.00781035, 0.00781035]
+      popularity: [3.477105, 3.477105, 0.306353, 0.306353, 0.04595295, 0.04595295, 0.0076588, 0.0076588, 0.00765882]
     },
     opera: {
       prefix: "-o-",
       future: [17],
       versions: [16, 15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10, 10.1, 9.5, 9.6],
-      popularity: [0, 0.074385, 0.59508, 0.057855, 0.041325, 0.01653, 0.008265, 0.008265, 0.008265, 0.008392, 0.0123975, 0.0123975, 0.0041325, 0.0041325]
+      popularity: [0.0246, 0.1394, 0.5494, 0.0574, 0.0328, 0.0164, 0.0082, 0.0082, 0.0082, 0.008392, 0.0123, 0.0123, 0.0041, 0.0041]
     },
     safari: {
       prefix: "-webkit-",
       future: [7],
       versions: [6, 5.1, 5, 4, 3.2, 3.1],
-      popularity: [2.01666, 1.23149, 0.36366, 0.107445, 0.008692, 0]
+      popularity: [2.0008, 1.2874, 0.328, 0.0984, 0.008692, 0]
     }
   };
 
@@ -1121,13 +1121,13 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
     },
     "align-content": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "align-items": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "align-self": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     animation: {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"]
@@ -1253,7 +1253,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       transition: true
     },
     "display-flex": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "fill-available": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
@@ -1269,28 +1269,28 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     flex: {
       transition: true,
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-basis": {
       transition: true,
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-direction": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-flow": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-grow": {
       transition: true,
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-shrink": {
       transition: true,
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "flex-wrap": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "font-feature-settings": {
       browsers: ["bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "opera 17", "safari 7"]
@@ -1308,12 +1308,12 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "safari 5.1", "safari 6", "safari 7"]
     },
     "justify-content": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     "linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1~old", "android 2.2~old", "android 2.3~old", "android 3~old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "max-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
@@ -1324,7 +1324,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       browsers: ["bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ios 7", "opera 15", "opera 16", "opera 17", "safari 7"]
     },
     order: {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4~2009", "chrome 5~2009", "chrome 6~2009", "chrome 7~2009", "chrome 8~2009", "chrome 9~2009", "chrome 10~2009", "chrome 11~2009", "chrome 12~2009", "chrome 13~2009", "chrome 14~2009", "chrome 15~2009", "chrome 16~2009", "chrome 17~2009", "chrome 18~2009", "chrome 19~2009", "chrome 20~2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2~2009", "ios 4~2009", "ios 4.1~2009", "ios 4.2~2009", "ios 4.3~2009", "ios 5~2009", "ios 5.1~2009", "ios 6~2009", "ios 6.1~2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1~2009", "safari 3.2~2009", "safari 4~2009", "safari 5~2009", "safari 5.1~2009", "safari 6~2009", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "opera 17", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 7"]
     },
     perspective: {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 7"],
@@ -1337,17 +1337,17 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1~old", "android 2.2~old", "android 2.3~old", "android 3~old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1~old", "android 2.2~old", "android 2.3~old", "android 3~old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1~old", "android 2.2~old", "android 2.3~old", "android 3~old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "tab-size": {
       browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
@@ -2135,11 +2135,10 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-content.js", functio
     AlignContent.prototype.prefixProp = function(prefix) {
       var oldValue, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec.v2012) {
+      if (spec === '2012') {
         oldValue = AlignContent.oldValues[this.value] || this.value;
-        this.insertBefore(prefix + 'flex-line-pack', oldValue);
-      }
-      if (spec.final) {
+        return this.insertBefore(prefix + 'flex-line-pack', oldValue);
+      } else if (spec === 'final') {
         return AlignContent.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2181,13 +2180,11 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-items.js", function(
       var oldValue, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       oldValue = AlignItems.oldValues[this.value] || this.value;
-      if (spec.v2009) {
-        this.insertBefore(prefix + 'box-align', oldValue);
-      }
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex-align', oldValue);
-      }
-      if (spec.final) {
+      if (spec === '2009') {
+        return this.insertBefore(prefix + 'box-align', oldValue);
+      } else if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex-align', oldValue);
+      } else if (spec === 'final') {
         return AlignItems.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2228,11 +2225,10 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-self.js", function(e
     AlignSelf.prototype.prefixProp = function(prefix) {
       var oldValue, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec.v2012) {
+      if (spec === '2012') {
         oldValue = AlignSelf.oldValues[this.value] || this.value;
-        this.insertBefore(prefix + 'flex-item-align', oldValue);
-      }
-      if (spec.final) {
+        return this.insertBefore(prefix + 'flex-item-align', oldValue);
+      } else if (spec === 'final') {
         return AlignSelf.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2376,15 +2372,13 @@ require.register("autoprefixer/lib/autoprefixer/hacks/display-flex.js", function
         return DisplayFlex.__super__.prefixProp.apply(this, arguments);
       } else {
         _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-        if (spec.v2009) {
+        if (spec === '2009') {
           if (!this.inline) {
-            this.prefixDisplay(prefix, 'box');
+            return this.prefixDisplay(prefix, 'box');
           }
-        }
-        if (spec.v2012) {
-          this.prefixDisplay(prefix, this.inline ? 'inline-flexbox' : 'flexbox');
-        }
-        if (spec.final) {
+        } else if (spec === '2012') {
+          return this.prefixDisplay(prefix, this.inline ? 'inline-flexbox' : 'flexbox');
+        } else if (spec === 'final') {
           return this.prefixDisplay(prefix, this.inline ? 'inline-flex' : 'flex');
         }
       }
@@ -2500,10 +2494,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-basis.js", function(e
     FlexBasis.prototype.prefixProp = function(prefix) {
       var spec, _ref1;
       _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex', '0 1 ' + this.value);
-      }
-      if (spec.final) {
+      if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex', '0 1 ' + this.value);
+      } else if (spec === 'final') {
         return FlexBasis.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2535,12 +2528,8 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-declaration.js", func
 
     FlexDeclaration.prototype.flexSpec = function(prefix) {
       var spec;
-      spec = {
-        v2009: prefix === '-webkit-~2009' || prefix === '-moz-',
-        v2012: prefix === '-ms-',
-        final: prefix === '-webkit-'
-      };
-      if (prefix === '-webkit-~2009') {
+      spec = prefix === '-webkit- 2009' || prefix === '-moz-' ? '2009' : prefix === '-ms-' ? '2012' : prefix === '-webkit-' ? 'final' : void 0;
+      if (prefix === '-webkit- 2009') {
         prefix = '-webkit-';
       }
       return [spec, prefix];
@@ -2575,13 +2564,14 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-direction.js", functi
     }
 
     FlexDirection.prototype.prefixProp = function(prefix) {
-      var spec, _ref;
+      var dir, orient, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec.v2009) {
-        this.insertBefore(prefix + 'box-orient', this.value.indexOf('row') !== -1 ? 'horizontal' : 'vertical');
-        this.insertBefore(prefix + 'box-direction', this.value.indexOf('reverse') !== -1 ? 'reverse' : 'normal');
-      }
-      if (spec.v2012 || spec.final) {
+      if (spec === '2009') {
+        orient = this.value.indexOf('row') !== -1 ? 'horizontal' : 'vertical';
+        this.insertBefore(prefix + 'box-orient', orient);
+        dir = this.value.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
+        return this.insertBefore(prefix + 'box-direction', dir);
+      } else {
         return FlexDirection.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2616,10 +2606,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-flow.js", function(ex
     FlexFlow.prototype.prefixProp = function(prefix) {
       var spec, _ref1;
       _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec.v2012) {
-        FlexFlow.__super__.prefixProp.apply(this, arguments);
-      }
-      if (spec.final) {
+      if (spec === '2012') {
+        return FlexFlow.__super__.prefixProp.apply(this, arguments);
+      } else if (spec === 'final') {
         return FlexFlow.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2654,13 +2643,11 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-grow.js", function(ex
     Flex.prototype.prefixProp = function(prefix) {
       var spec, _ref1;
       _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec.v2009) {
-        this.insertBefore(prefix + 'box-flex', this.value);
-      }
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex', this.value);
-      }
-      if (spec.final) {
+      if (spec === '2009') {
+        return this.insertBefore(prefix + 'box-flex', this.value);
+      } else if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex', this.value);
+      } else if (spec === 'final') {
         return Flex.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2695,10 +2682,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-shrink.js", function(
     FlexShrink.prototype.prefixProp = function(prefix) {
       var spec, _ref1;
       _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex', '0 ' + this.value);
-      }
-      if (spec.final) {
+      if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex', '0 ' + this.value);
+      } else if (spec === 'final') {
         return FlexShrink.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2733,10 +2719,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-wrap.js", function(ex
     FlexWrap.prototype.prefixProp = function(prefix) {
       var spec, _ref1;
       _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec.v2012) {
-        FlexWrap.__super__.prefixProp.apply(this, arguments);
-      }
-      if (spec.final) {
+      if (spec === '2012') {
+        return FlexWrap.__super__.prefixProp.apply(this, arguments);
+      } else if (spec === 'final') {
         return FlexWrap.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2772,14 +2757,12 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex.js", function(exports
     Flex.prototype.prefixProp = function(prefix) {
       var first, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec.v2009) {
+      if (spec === '2009') {
         first = this.value.split(' ')[0];
-        this.insertBefore(prefix + 'box-flex', first);
-      }
-      if (spec.v2012) {
-        Flex.__super__.prefixProp.apply(this, arguments);
-      }
-      if (spec.final) {
+        return this.insertBefore(prefix + 'box-flex', first);
+      } else if (spec === '2012') {
+        return Flex.__super__.prefixProp.apply(this, arguments);
+      } else if (spec === 'final') {
         return Flex.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -2867,7 +2850,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       var _this = this;
       return string.replace(this.regexp, function(all, before, params) {
         params = params.trim().split(/\s*,\s*/);
-        if (prefix === '-webkit-~old') {
+        if (prefix === '-webkit- old') {
           if (_this.name !== 'linear-gradient') {
             return all;
           }
@@ -3014,15 +2997,13 @@ require.register("autoprefixer/lib/autoprefixer/hacks/justify-content.js", funct
       var oldValue, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       oldValue = JustifyContent.oldValues[this.value] || this.value;
-      if (spec.v2009) {
+      if (spec === '2009') {
         if (this.value !== 'space-around') {
-          this.insertBefore(prefix + 'box-pack', oldValue);
+          return this.insertBefore(prefix + 'box-pack', oldValue);
         }
-      }
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex-pack', oldValue);
-      }
-      if (spec.final) {
+      } else if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex-pack', oldValue);
+      } else if (spec === 'final') {
         return JustifyContent.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -3058,14 +3039,12 @@ require.register("autoprefixer/lib/autoprefixer/hacks/order.js", function(export
     Order.prototype.prefixProp = function(prefix) {
       var oldValue, spec, _ref;
       _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec.v2009) {
+      if (spec === '2009') {
         oldValue = parseInt(this.value) + 1;
-        this.insertBefore(prefix + 'box-ordinal-group', oldValue.toString());
-      }
-      if (spec.v2012) {
-        this.insertBefore(prefix + 'flex-order', this.value);
-      }
-      if (spec.final) {
+        return this.insertBefore(prefix + 'box-ordinal-group', oldValue.toString());
+      } else if (spec === '2012') {
+        return this.insertBefore(prefix + 'flex-order', this.value);
+      } else if (spec === 'final') {
         return Order.__super__.prefixProp.apply(this, arguments);
       }
     };
@@ -3373,10 +3352,10 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
         data = list[name];
         add = data.browsers.map(function(i) {
           var params;
-          params = i.split('~');
+          params = i.split(' ');
           return {
-            browser: params[0],
-            note: params[1]
+            browser: params[0] + ' ' + params[1],
+            note: params[2]
           };
         });
         add = add.filter(function(i) {
@@ -3385,7 +3364,7 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
           var prefix;
           prefix = _this.browsers.prefix(i.browser);
           if (i.note) {
-            return prefix + '~' + i.note;
+            return prefix + ' ' + i.note;
           } else {
             return prefix;
           }
@@ -4180,10 +4159,10 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
       return clone;
     },
     removeNote: function(string) {
-      if (string.indexOf('~') === -1) {
+      if (string.indexOf(' ') === -1) {
         return string;
       } else {
-        return string.split('~')[0];
+        return string.split(' ')[0];
       }
     },
     escapeRegexp: function(string) {
@@ -4396,7 +4375,7 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
     this.feature('css-gradients', function(browsers) {
       browsers = _this.map(browsers, function(browser, name, version) {
         if (name === 'android' && version < 4) {
-          return browser + '~old';
+          return browser + ' old';
         } else {
           return browser;
         }
@@ -4435,9 +4414,9 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
     this.feature('flexbox', function(browsers) {
       browsers = _this.map(browsers, function(browser, name, version) {
         if ((name === 'safari' || name === 'ios') && version < 7) {
-          return browser + '~2009';
+          return browser + ' 2009';
         } else if (name === 'chrome' && version < 21) {
-          return browser + '~2009';
+          return browser + ' 2009';
         } else {
           return browser;
         }
