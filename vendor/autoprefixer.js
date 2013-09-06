@@ -2459,7 +2459,7 @@ require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(expor
 
     function Filter() {
       Filter.__super__.constructor.apply(this, arguments);
-      if (this.value.indexOf('DXImageTransform.Microsoft') !== -1) {
+      if (this.value.indexOf('DXImageTransform.Microsoft') !== -1 || this.value.indexOf('alpha(') !== -1) {
         this.unprefixed = this.prop = '-ms-filter';
       }
     }
@@ -2876,6 +2876,8 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
               params[0] = _this.fixDirection(params[0]);
             } else if (params[0].indexOf('deg') !== -1) {
               params[0] = _this.fixAngle(params[0]);
+            } else if (params[0].indexOf(' at ') !== -1) {
+              _this.fixRadial(params);
             }
           }
           return before + prefix + _this.name + '(' + params.join(', ') + ')';
@@ -2971,6 +2973,12 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       param = Math.abs(450 - param) % 360;
       param = this.roundFloat(param, 3);
       return "" + param + "deg";
+    };
+
+    Gradient.prototype.fixRadial = function(params) {
+      var first;
+      first = params[0].split(/\s+at\s+/);
+      return params.splice(0, 1, first[1], first[0]);
     };
 
     Gradient.prototype.oldDirection = function(params) {
