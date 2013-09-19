@@ -27,11 +27,13 @@ function require(path, parent, orig) {
   // perform real require()
   // by invoking the module's
   // registered function
-  if (!module.exports) {
+  if (!module._resolving && !module.exports) {
     var mod = {};
     mod.exports = {};
     mod.client = mod.component = true;
+    module._resolving = true;
     module.call(this, mod.exports, require.relative(resolved), mod);
+    delete module._resolving;
     module.exports = mod.exports;
   }
 
@@ -1090,9 +1092,8 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
     },
     ios: {
       prefix: "-webkit-",
-      future: [7],
-      versions: [6, 6.1, 5, 5.1, 4.2, 4.3, 4, 4.1, 3.2],
-      popularity: [3.477105, 3.477105, 0.306353, 0.306353, 0.04595295, 0.04595295, 0.0076588, 0.0076588, 0.00765882]
+      versions: [7, 6, 6.1, 5, 5.1, 4.2, 4.3, 4, 4.1, 3.2],
+      popularity: [0, 3.477105, 3.477105, 0.306353, 0.306353, 0.04595295, 0.04595295, 0.0076588, 0.0076588, 0.00765882]
     },
     opera: {
       prefix: "-o-",
@@ -1322,7 +1323,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "max-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
@@ -1346,17 +1347,17 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "repeating-radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "tab-size": {
       browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
@@ -1534,34 +1535,11 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
     }
 
     Binary.prototype.help = function() {
-      var h;
-      h = [];
-      h.push('Usage: autoprefixer [OPTION...] FILES');
-      h.push('');
-      h.push('Parse CSS files and add prefixed properties and values.');
-      h.push('');
-      h.push('Options:');
-      h.push('  -b, --browsers BROWSERS  add prefixes for selected browsers');
-      h.push('  -o, --output FILE        set output CSS file');
-      h.push('  -i, --inspect            show selected browsers and properties');
-      h.push('  -h, --help               show help text');
-      h.push('  -v, --version            print program version');
-      return h.join("\n");
+      return 'Usage: autoprefixer [OPTION...] FILES\n\nParse CSS files and add prefixed properties and values.\n\nOptions:\n  -b, --browsers BROWSERS  add prefixes for selected browsers\n  -o, --output FILE        set output CSS file\n  -i, --inspect            show selected browsers and properties\n  -h, --help               show help text\n  -v, --version            print program version';
     };
 
     Binary.prototype.desc = function() {
-      var h;
-      h = [];
-      h.push('Files:');
-      h.push("  By default, prefixed CSS will rewrite original files.");
-      h.push("  If you didn't set input files, " + "autoprefixer will read from stdin stream.");
-      h.push("  Output CSS will be written to stdout stream on " + "`-o -' argument or stdin input.");
-      h.push('');
-      h.push('Browsers:');
-      h.push('  Separate browsers by comma. For example, ' + "`-b \"> 1%, opera 12\".");
-      h.push("  You can set browsers by global usage statictics: " + "`-b \"> 1%\"'");
-      h.push("  or last version: `-b \"last 2 versions\"' (by default).");
-      return h.join("\n");
+      return 'Files:\n  By default, prefixed CSS will rewrite original files.\n  If you didn\'t set input files, autoprefixer will +\n    read from stdin stream.\n  Output CSS will be written to stdout stream on +\n    `-o -\' argument or stdin input.\n\nBrowsers:\n  Separate browsers by comma. For example, `-b "> 1%, opera 12"\'.\n  You can set browsers by global usage statictics: `-b \"> 1%\"\'.\n  or last version: `-b "last 2 versions"\' (by default).'.replace(/\+\s+/g, '');
     };
 
     Binary.prototype.print = function(str) {
@@ -1579,35 +1557,48 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
     };
 
     Binary.prototype.parseArguments = function() {
-      var arg, args, _results;
+      var arg, args;
       args = this["arguments"].slice();
-      _results = [];
       while (args.length > 0) {
         arg = args.shift();
-        if (arg === '-h' || arg === '--help') {
-          _results.push(this.command = 'showHelp');
-        } else if (arg === '-v' || arg === '--version') {
-          _results.push(this.command = 'showVersion');
-        } else if (arg === '-i' || arg === '--inspect') {
-          _results.push(this.command = 'inspect');
-        } else if (arg === '-u' || arg === '--update') {
-          _results.push(this.command = 'update');
-        } else if (arg === '-b' || arg === '--browsers') {
-          _results.push(this.requirements = args.shift().split(',').map(function(i) {
-            return i.trim();
-          }));
-        } else if (arg === '-o' || arg === '--output') {
-          _results.push(this.outputFile = args.shift());
-        } else if (arg.match(/^-\w$/) || arg.match(/^--\w[\w-]+$/)) {
-          this.command = void 0;
-          this.error("autoprefixer: Unknown argument " + arg);
-          this.error('');
-          _results.push(this.error(this.help()));
-        } else {
-          _results.push(this.inputFiles.push(arg));
+        switch (arg) {
+          case '-h':
+          case '--help':
+            this.command = 'showHelp';
+            break;
+          case '-v':
+          case '--version':
+            this.command = 'showVersion';
+            break;
+          case '-i':
+          case '--inspect':
+            this.command = 'inspect';
+            break;
+          case '-u':
+          case '--update':
+            this.command = 'update';
+            break;
+          case '-b':
+          case '--browsers':
+            this.requirements = args.shift().split(',').map(function(i) {
+              return i.trim();
+            });
+            break;
+          case '-o':
+          case '--output':
+            this.outputFile = args.shift();
+            break;
+          default:
+            if (arg.match(/^-\w$/) || arg.match(/^--\w[\w-]+$/)) {
+              this.command = void 0;
+              this.error("autoprefixer: Unknown argument " + arg);
+              this.error('');
+              this.error(this.help());
+            } else {
+              this.inputFiles.push(arg);
+            }
         }
       }
-      return _results;
     };
 
     Binary.prototype.showHelp = function(done) {
@@ -1663,6 +1654,11 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
       }
     };
 
+    Binary.prototype.workError = function(str) {
+      this.error(str);
+      return this.endWork();
+    };
+
     Binary.prototype.compiler = function() {
       return this.compilerCache || (this.compilerCache = autoprefixer(this.requirements));
     };
@@ -1689,10 +1685,22 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
       if (!prefixed) {
         return this.endWork();
       }
-      if (file === '-') {
+      if (this.outputFile === '-') {
         this.print(prefixed);
         return this.endWork();
-      } else {
+      } else if (this.outputFile) {
+        try {
+          if (!this.outputInited) {
+            this.outputInited = true;
+            fs.writeFileSync(this.outputFile, '');
+          }
+          fs.appendFileSync(this.outputFile, prefixed);
+          return this.endWork();
+        } catch (_error) {
+          error = _error;
+          return this.workError("autoprefixer: " + error.message);
+        }
+      } else if (file) {
         return fs.writeFile(file, prefixed, function(error) {
           if (error) {
             _this.error("autoprefixer: " + error);
@@ -1703,7 +1711,7 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
     };
 
     Binary.prototype.compile = function(done) {
-      var css, file, _fn, _i, _len, _ref,
+      var css, error, file, _i, _j, _len, _len1, _ref, _ref1,
         _this = this;
       this.waiting = 0;
       this.doneCallback = done;
@@ -1716,31 +1724,31 @@ require.register("autoprefixer/lib/autoprefixer/binary.js", function(exports, re
           return css += chunk;
         });
         return this.stdin.on('end', function() {
-          return _this.compileCSS(css, _this.outputFile);
+          return _this.compileCSS(css);
         });
       } else {
-        fs = require('fs');
         _ref = this.inputFiles;
-        _fn = function(file) {
-          return fs.readFile(file, function(error, css) {
-            if (error) {
-              return _this.error("autoprefixer: " + error);
-            } else {
-              css = css.toString();
-              return _this.compileCSS(css, _this.outputFile || file);
-            }
-          });
-        };
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           file = _ref[_i];
           this.startWork();
-          if (!fs.existsSync(file)) {
-            this.error("autoprefixer: File " + file + " doesn't exists");
-            this.endWork();
-            return;
-          }
-          _fn(file);
         }
+        _ref1 = this.inputFiles;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          file = _ref1[_j];
+          if (!fs.existsSync(file)) {
+            this.workError("autoprefixer: File " + file + " doesn't exists");
+            continue;
+          }
+          try {
+            css = fs.readFileSync(file).toString();
+          } catch (_error) {
+            error = _error;
+            this.workError("autoprefixer: " + error.message);
+            continue;
+          }
+          this.compileCSS(css, file);
+        }
+        return false;
       }
     };
 
@@ -3582,6 +3590,10 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
       }
     };
 
+    Prefixes.prototype.isCustom = function(prefix) {
+      return this.browsers.prefixes().indexOf(prefix) === -1;
+    };
+
     Prefixes.prototype.values = function(type, prop) {
       var data, global, values, _ref, _ref1;
       data = this[type];
@@ -3643,6 +3655,9 @@ require.register("autoprefixer/lib/autoprefixer/processor.js", function(exports,
         });
       }
       css.eachDeclaration(function(decl, vendor) {
+        if (_this.prefixes.isCustom(vendor)) {
+          vendor = null;
+        }
         return _this.prefixes.each(decl.prop, function(prefix) {
           if (vendor && vendor !== utils.removeNote(prefix)) {
             return;
@@ -3655,6 +3670,9 @@ require.register("autoprefixer/lib/autoprefixer/processor.js", function(exports,
       });
       return css.eachDeclaration(function(decl, vendor) {
         var prefix, value, _j, _k, _len1, _len2, _ref1, _ref2;
+        if (_this.prefixes.isCustom(vendor)) {
+          vendor = null;
+        }
         _ref1 = _this.prefixes.values('add', decl.unprefixed);
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           value = _ref1[_j];
