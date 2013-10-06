@@ -22,7 +22,7 @@ and Autoprefixer will apply prefixes for you.
 For example in `app/assets/stylesheet/foobar.sass`:
 
 ```sass
-a
+:fullscreen a
   transition: transform 1s
 ```
 
@@ -30,9 +30,18 @@ Autoprefixer uses Can I Use database with browser statistics and properties
 support to add vendor prefixes automatically using the Asset Pipeline:
 
 ```css
-a {
+:-webkit-full-screen a {
   -webkit-transition: -webkit-transform 1s;
-  transition: transform 1s
+  transition: transform 1s;
+}
+
+:-moz-full-screen a {
+  transition: transform 1s;
+}
+
+:fullscreen a {
+  -webkit-transition: -webkit-transform 1s;
+  transition: transform 1s;
 }
 ```
 
