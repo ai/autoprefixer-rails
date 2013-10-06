@@ -3545,6 +3545,7 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
 
   Rule = (function() {
     function Rule(rules, number, node, prefix) {
+      var match;
       this.rules = rules;
       this.number = number;
       this.node = node;
@@ -3553,6 +3554,12 @@ require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, requ
       this.declarations = this.node.declarations;
       if (this.type === 'rule') {
         this.selectors = this.node.selectors.join(', ');
+        if (!this.prefix) {
+          match = this.selectors.match(/(^|\s|:)(-(\w+)-)/);
+          if (match) {
+            this.prefix = match[2];
+          }
+        }
       }
     }
 
@@ -4019,7 +4026,11 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
       for (key in obj) {
         value = obj[key];
         if (!changes[key]) {
-          clone[key] = value;
+          if (value instanceof Array) {
+            clone[key] = value.slice(0);
+          } else {
+            clone[key] = value;
+          }
         }
       }
       for (key in changes) {
