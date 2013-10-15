@@ -2611,6 +2611,8 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
 
     Gradient.names = ['linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient'];
 
+    Gradient.starts = new RegExp('(^|\\s*)' + Gradient.names.join('|'), 'i');
+
     Gradient.regexps = {};
 
     _ref = Gradient.names;
@@ -2628,37 +2630,46 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
     Gradient.prototype.addPrefix = function(prefix, string) {
       var _this = this;
       return string.replace(this.regexp, function(all, before, args) {
-        var params;
-        params = _this.splitParams(args);
-        params = _this.newDirection(params);
-        if (prefix === '-webkit- old') {
-          if (_this.name !== 'linear-gradient') {
-            return all;
-          }
-          if (params[0] && params[0].indexOf('deg') !== -1) {
-            return all;
-          }
-          if (args.indexOf('-corner') !== -1) {
-            return all;
-          }
-          if (args.indexOf('-side') !== -1) {
-            return all;
-          }
-          params = _this.oldDirection(params);
-          params = _this.colorStops(params);
-          return '-webkit-gradient(linear, ' + params.join(', ') + ')';
-        } else {
-          if (params.length > 0) {
-            if (params[0].slice(0, 3) === 'to ') {
-              params[0] = _this.fixDirection(params[0]);
-            } else if (params[0].indexOf('deg') !== -1) {
-              params[0] = _this.fixAngle(params[0]);
-            } else if (params[0].indexOf(' at ') !== -1) {
-              _this.fixRadial(params);
+        var decl, prefixedDecls, _j, _len1, _ref1;
+        prefixedDecls = [];
+        _ref1 = _this.splitDecls(all);
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          decl = _ref1[_j];
+          prefixedDecls.push(decl.replace(_this.regexp, function(all, before, args) {
+            var params;
+            params = _this.splitParams(args);
+            params = _this.newDirection(params);
+            if (prefix === '-webkit- old') {
+              if (_this.name !== 'linear-gradient') {
+                return all;
+              }
+              if (params[0] && params[0].indexOf('deg') !== -1) {
+                return all;
+              }
+              if (args.indexOf('-corner') !== -1) {
+                return all;
+              }
+              if (args.indexOf('-side') !== -1) {
+                return all;
+              }
+              params = _this.oldDirection(params);
+              params = _this.colorStops(params);
+              return '-webkit-gradient(linear, ' + params.join(', ') + ')';
+            } else {
+              if (params.length > 0) {
+                if (params[0].slice(0, 3) === 'to ') {
+                  params[0] = _this.fixDirection(params[0]);
+                } else if (params[0].indexOf('deg') !== -1) {
+                  params[0] = _this.fixAngle(params[0]);
+                } else if (params[0].indexOf(' at ') !== -1) {
+                  _this.fixRadial(params);
+                }
+              }
+              return before + prefix + _this.name + '(' + params.join(', ') + ')';
             }
-          }
-          return before + prefix + _this.name + '(' + params.join(', ') + ')';
+          }));
         }
+        return prefixedDecls.join(',');
       });
     };
 
@@ -2678,6 +2689,28 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       'top left': 'bottom right, top left',
       'bottom right': 'top left, bottom right',
       'bottom left': 'top right, bottom left'
+    };
+
+    Gradient.prototype.splitDecls = function(decl) {
+      var chunks, currentDecl, decls, _j, _len1;
+      decls = [];
+      chunks = decl.split(',');
+      currentDecl = [];
+      for (_j = 0, _len1 = chunks.length; _j < _len1; _j++) {
+        i = chunks[_j];
+        if (Gradient.starts.test(i)) {
+          if (currentDecl.length === 0) {
+            currentDecl.push(i);
+          } else {
+            decls.push(currentDecl.join(','));
+            currentDecl = [i];
+          }
+        } else {
+          currentDecl.push(i);
+        }
+      }
+      decls.push(currentDecl.join(','));
+      return decls;
     };
 
     Gradient.prototype.splitParams = function(params) {
