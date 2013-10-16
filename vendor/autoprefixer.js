@@ -234,7 +234,8 @@ module.exports = function(css, options){
     return function(node){
       node.position = {
         start: start,
-        end: { line: lineno, column: column }
+        end: { line: lineno, column: column },
+        source: options.source
       };
 
       whitespace();
@@ -382,7 +383,7 @@ module.exports = function(css, options){
     var pos = position();
 
     // prop
-    var prop = match(/^(\*?[-\/\*\w]+)\s*/);
+    var prop = match(/^(\*?[-\/\*\w]+(\[[0-9a-z_-]+\])?)\s*/);
     if (!prop) return;
     prop = trim(prop[0]);
 
@@ -435,7 +436,7 @@ module.exports = function(css, options){
     var vals = [];
     var pos = position();
 
-    while (m = match(/^(from|to|\d+%|\.\d+%|\d+\.\d+%)\s*/)) {
+    while (m = match(/^((\d+\.\d+|\.\d+|\d+)%?|[a-z]+)\s*/)) {
       vals.push(m[1]);
       match(/^,\s*/);
     }
@@ -504,6 +505,28 @@ module.exports = function(css, options){
     return pos({
       type: 'supports',
       supports: supports,
+      rules: style
+    });
+  }
+
+  /**
+   * Parse host.
+   */
+
+  function athost() {
+    var pos = position();
+    var m = match(/^@host */);
+
+    if (!m) return;
+
+    if (!open()) return error("@host missing '{'");
+
+    var style = comments().concat(rules());
+
+    if (!close()) return error("@host missing '}'");
+
+    return pos({
+      type: 'host',
       rules: style
     });
   }
@@ -637,7 +660,8 @@ module.exports = function(css, options){
       || atcharset()
       || atnamespace()
       || atdocument()
-      || atpage();
+      || atpage()
+      || athost();
   }
 
   /**
