@@ -26,7 +26,7 @@ begin
         Rake::AutoprefixerTasks.new(browsers(app))
       end
 
-      initializer :setup_autoprefixer, group: :assets do |app|
+      initializer :setup_autoprefixer, group: :all do |app|
         AutoprefixerRails.install(app.assets, browsers(app))
       end
 
