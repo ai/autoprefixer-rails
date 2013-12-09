@@ -706,6 +706,11 @@ var Identity = require('./lib/identity');
 /**
  * Stringfy the given AST `node`.
  *
+ * Options:
+ *
+ *  - `compress` space-optimized output
+ *  - `sourcemap` return an object with `.code` and `.map`
+ *
  * @param {Object} node
  * @param {Object} [options]
  * @return {String}
@@ -719,12 +724,28 @@ module.exports = function(node, options){
     ? new Compressed(options)
     : new Identity(options);
 
-  return compiler.compile(node);
+  // source maps
+  if (options.sourcemap) {
+    var sourcemaps = require('./lib/source-map-support');
+    sourcemaps(compiler);
+
+    var code = compiler.compile(node);
+    return { code: code, map: compiler.map.toJSON() };
+  }
+
+  var code = compiler.compile(node);
+  return code;
 };
 
 
 });
 require.register("visionmedia-css-stringify/lib/compress.js", function(exports, require, module){
+
+/**
+ * Module dependencies.
+ */
+
+var Base = require('./compiler');
 
 /**
  * Expose compiler.
@@ -737,8 +758,14 @@ module.exports = Compiler;
  */
 
 function Compiler(options) {
-  options = options || {};
+  Base.call(this, options);
 }
+
+/**
+ * Inherit from `Base.prototype`.
+ */
+
+Compiler.prototype.__proto__ = Base.prototype;
 
 /**
  * Compile `node`.
@@ -751,19 +778,11 @@ Compiler.prototype.compile = function(node){
 };
 
 /**
- * Visit `node`.
- */
-
-Compiler.prototype.visit = function(node){
-  return this[node.type](node);
-};
-
-/**
  * Visit comment node.
  */
 
 Compiler.prototype.comment = function(node){
-  return '';
+  return this.emit('', node.position);
 };
 
 /**
@@ -771,7 +790,7 @@ Compiler.prototype.comment = function(node){
  */
 
 Compiler.prototype.import = function(node){
-  return '@import ' + node.import + ';';
+  return this.emit('@import ' + node.import + ';', node.position);
 };
 
 /**
@@ -779,11 +798,10 @@ Compiler.prototype.import = function(node){
  */
 
 Compiler.prototype.media = function(node){
-  return '@media '
-    + node.media
-    + '{'
-    + node.rules.map(this.visit, this).join('')
-    + '}';
+  return this.emit('@media ' + node.media, node.position, true)
+    + this.emit('{')
+    + this.mapVisit(node.rules)
+    + this.emit('}');
 };
 
 /**
@@ -793,10 +811,10 @@ Compiler.prototype.media = function(node){
 Compiler.prototype.document = function(node){
   var doc = '@' + (node.vendor || '') + 'document ' + node.document;
 
-  return doc
-    + '{'
-    + node.rules.map(this.visit, this).join('')
-    + '}';
+  return this.emit(doc, node.position, true)
+    + this.emit('{')
+    + this.mapVisit(node.rules)
+    + this.emit('}');
 };
 
 /**
@@ -804,7 +822,7 @@ Compiler.prototype.document = function(node){
  */
 
 Compiler.prototype.charset = function(node){
-  return '@charset ' + node.charset + ';';
+  return this.emit('@charset ' + node.charset + ';', node.position);
 };
 
 /**
@@ -812,7 +830,7 @@ Compiler.prototype.charset = function(node){
  */
 
 Compiler.prototype.namespace = function(node){
-  return '@namespace ' + node.namespace + ';';
+  return this.emit('@namespace ' + node.namespace + ';', node.position);
 };
 
 /**
@@ -820,11 +838,10 @@ Compiler.prototype.namespace = function(node){
  */
 
 Compiler.prototype.supports = function(node){
-  return '@supports '
-    + node.supports
-    + '{'
-    + node.rules.map(this.visit, this).join('')
-    + '}';
+  return this.emit('@supports ' + node.supports, node.position, true)
+    + this.emit('{')
+    + this.mapVisit(node.rules)
+    + this.emit('}');
 };
 
 /**
@@ -832,13 +849,13 @@ Compiler.prototype.supports = function(node){
  */
 
 Compiler.prototype.keyframes = function(node){
-  return '@'
+  return this.emit('@'
     + (node.vendor || '')
     + 'keyframes '
-    + node.name
-    + '{'
-    + node.keyframes.map(this.visit, this).join('')
-    + '}';
+    + node.name, node.position, true)
+    + this.emit('{')
+    + this.mapVisit(node.keyframes)
+    + this.emit('}');
 };
 
 /**
@@ -848,10 +865,10 @@ Compiler.prototype.keyframes = function(node){
 Compiler.prototype.keyframe = function(node){
   var decls = node.declarations;
 
-  return node.values.join(',')
-    + '{'
-    + decls.map(this.visit, this).join('')
-    + '}';
+  return this.emit(node.values.join(','), node.position, true)
+    + this.emit('{')
+    + this.mapVisit(decls)
+    + this.emit('}');
 };
 
 /**
@@ -863,10 +880,10 @@ Compiler.prototype.page = function(node){
     ? node.selectors.join(', ')
     : '';
 
-  return '@page ' + sel
-    + '{'
-    + node.declarations.map(this.visit, this).join('')
-    + '}';
+  return this.emit('@page ' + sel, node.position, true)
+    + this.emit('{')
+    + this.mapVisit(node.declarations)
+    + this.emit('}');
 };
 
 /**
@@ -877,10 +894,10 @@ Compiler.prototype.rule = function(node){
   var decls = node.declarations;
   if (!decls.length) return '';
 
-  return node.selectors.join(',')
-    + '{'
-    + decls.map(this.visit, this).join('')
-    + '}';
+  return this.emit(node.selectors.join(','), node.position, true)
+    + this.emit('{')
+    + this.mapVisit(decls)
+    + this.emit('}');
 };
 
 /**
@@ -888,12 +905,18 @@ Compiler.prototype.rule = function(node){
  */
 
 Compiler.prototype.declaration = function(node){
-  return node.property + ':' + node.value + ';';
+  return this.emit(node.property + ':' + node.value, node.position) + this.emit(';');
 };
 
 
 });
 require.register("visionmedia-css-stringify/lib/identity.js", function(exports, require, module){
+
+/**
+ * Module dependencies.
+ */
+
+var Base = require('./compiler');
 
 /**
  * Expose compiler.
@@ -907,8 +930,15 @@ module.exports = Compiler;
 
 function Compiler(options) {
   options = options || {};
+  Base.call(this, options);
   this.indentation = options.indent;
 }
+
+/**
+ * Inherit from `Base.prototype`.
+ */
+
+Compiler.prototype.__proto__ = Base.prototype;
 
 /**
  * Compile `node`.
@@ -919,21 +949,11 @@ Compiler.prototype.compile = function(node){
 };
 
 /**
- * Visit `node`.
- */
-
-Compiler.prototype.visit = function(node){
-  return this[node.type](node);
-};
-
-/**
  * Visit stylesheet node.
  */
 
 Compiler.prototype.stylesheet = function(node){
-  return node.stylesheet
-    .rules.map(this.visit, this)
-    .join('\n\n');
+  return this.mapVisit(node.stylesheet.rules, '\n\n');
 };
 
 /**
@@ -941,7 +961,7 @@ Compiler.prototype.stylesheet = function(node){
  */
 
 Compiler.prototype.comment = function(node){
-  return this.indent() + '/*' + node.comment + '*/';
+  return this.emit(this.indent() + '/*' + node.comment + '*/', node.position);
 };
 
 /**
@@ -949,7 +969,7 @@ Compiler.prototype.comment = function(node){
  */
 
 Compiler.prototype.import = function(node){
-  return '@import ' + node.import + ';';
+  return this.emit('@import ' + node.import + ';', node.position);
 };
 
 /**
@@ -957,13 +977,14 @@ Compiler.prototype.import = function(node){
  */
 
 Compiler.prototype.media = function(node){
-  return '@media '
-    + node.media
-    + ' {\n'
-    + this.indent(1)
-    + node.rules.map(this.visit, this).join('\n\n')
-    + this.indent(-1)
-    + '\n}';
+  return this.emit('@media ' + node.media, node.position, true)
+    + this.emit(
+        ' {\n'
+        + this.indent(1))
+    + this.mapVisit(node.rules, '\n\n')
+    + this.emit(
+        this.indent(-1)
+        + '\n}');
 };
 
 /**
@@ -973,12 +994,15 @@ Compiler.prototype.media = function(node){
 Compiler.prototype.document = function(node){
   var doc = '@' + (node.vendor || '') + 'document ' + node.document;
 
-  return doc + ' '
-    + ' {\n'
-    + this.indent(1)
-    + node.rules.map(this.visit, this).join('\n\n')
-    + this.indent(-1)
-    + '\n}';
+  return this.emit(doc, node.position, true)
+    + this.emit(
+        ' '
+      + ' {\n'
+      + this.indent(1))
+    + this.mapVisit(node.rules, '\n\n')
+    + this.emit(
+        this.indent(-1)
+        + '\n}');
 };
 
 /**
@@ -986,7 +1010,7 @@ Compiler.prototype.document = function(node){
  */
 
 Compiler.prototype.charset = function(node){
-  return '@charset ' + node.charset + ';\n';
+  return this.emit('@charset ' + node.charset + ';', node.position);
 };
 
 /**
@@ -994,7 +1018,7 @@ Compiler.prototype.charset = function(node){
  */
 
 Compiler.prototype.namespace = function(node){
-  return '@namespace ' + node.namespace + ';\n';
+  return this.emit('@namespace ' + node.namespace + ';', node.position);
 };
 
 /**
@@ -1002,13 +1026,14 @@ Compiler.prototype.namespace = function(node){
  */
 
 Compiler.prototype.supports = function(node){
-  return '@supports '
-    + node.supports
-    + ' {\n'
-    + this.indent(1)
-    + node.rules.map(this.visit, this).join('\n\n')
-    + this.indent(-1)
-    + '\n}';
+  return this.emit('@supports ' + node.supports, node.position, true)
+    + this.emit(
+      ' {\n'
+      + this.indent(1))
+    + this.mapVisit(node.rules, '\n\n')
+    + this.emit(
+        this.indent(-1)
+        + '\n}');
 };
 
 /**
@@ -1016,15 +1041,14 @@ Compiler.prototype.supports = function(node){
  */
 
 Compiler.prototype.keyframes = function(node){
-  return '@'
-    + (node.vendor || '')
-    + 'keyframes '
-    + node.name
-    + ' {\n'
-    + this.indent(1)
-    + node.keyframes.map(this.visit, this).join('\n')
-    + this.indent(-1)
-    + '}';
+  return this.emit('@' + (node.vendor || '') + 'keyframes ' + node.name, node.position, true)
+    + this.emit(
+      ' {\n'
+      + this.indent(1))
+    + this.mapVisit(node.keyframes, '\n')
+    + this.emit(
+        this.indent(-1)
+        + '}');
 };
 
 /**
@@ -1034,13 +1058,16 @@ Compiler.prototype.keyframes = function(node){
 Compiler.prototype.keyframe = function(node){
   var decls = node.declarations;
 
-  return this.indent()
-    + node.values.join(', ')
-    + ' {\n'
-    + this.indent(1)
-    + decls.map(this.visit, this).join('\n')
-    + this.indent(-1)
-    + '\n' + this.indent() + '}\n';
+  return this.emit(this.indent())
+    + this.emit(node.values.join(', '), node.position, true)
+    + this.emit(
+      ' {\n'
+      + this.indent(1))
+    + this.mapVisit(decls, '\n')
+    + this.emit(
+      this.indent(-1)
+      + '\n'
+      + this.indent() + '}\n');
 };
 
 /**
@@ -1052,12 +1079,12 @@ Compiler.prototype.page = function(node){
     ? node.selectors.join(', ') + ' '
     : '';
 
-  return '@page ' + sel
-    + '{\n'
-    + this.indent(1)
-    + node.declarations.map(this.visit, this).join('\n')
-    + this.indent(-1)
-    + '\n}';
+  return this.emit('@page ' + sel, node.position, true)
+    + this.emit('{\n')
+    + this.emit(this.indent(1))
+    + this.mapVisit(node.declarations, '\n')
+    + this.emit(this.indent(-1))
+    + this.emit('\n}');
 };
 
 /**
@@ -1069,12 +1096,12 @@ Compiler.prototype.rule = function(node){
   var decls = node.declarations;
   if (!decls.length) return '';
 
-  return node.selectors.map(function(s){ return indent + s }).join(',\n')
-    + ' {\n'
-    + this.indent(1)
-    + decls.map(this.visit, this).join('\n')
-    + this.indent(-1)
-    + '\n' + this.indent() + '}';
+  return this.emit(node.selectors.map(function(s){ return indent + s }).join(',\n'), node.position, true)
+    + this.emit(' {\n')
+    + this.emit(this.indent(1))
+    + this.mapVisit(decls, '\n')
+    + this.emit(this.indent(-1))
+    + this.emit('\n' + this.indent() + '}');
 };
 
 /**
@@ -1082,7 +1109,9 @@ Compiler.prototype.rule = function(node){
  */
 
 Compiler.prototype.declaration = function(node){
-  return this.indent() + node.property + ': ' + node.value + ';';
+  return this.emit(this.indent())
+    + this.emit(node.property + ': ' + node.value, node.position)
+    + this.emit(';');
 };
 
 /**
@@ -1101,6 +1130,146 @@ Compiler.prototype.indent = function(level) {
 };
 
 });
+require.register("visionmedia-css-stringify/lib/compiler.js", function(exports, require, module){
+
+/**
+ * Expose `Compiler`.
+ */
+
+module.exports = Compiler;
+
+/**
+ * Initialize a compiler.
+ *
+ * @param {Type} name
+ * @return {Type}
+ * @api public
+ */
+
+function Compiler(opts) {
+  this.options = opts || {};
+}
+
+/**
+ * Emit `str`
+ */
+
+Compiler.prototype.emit = function(str) {
+  return str;
+};
+
+/**
+ * Visit `node`.
+ */
+
+Compiler.prototype.visit = function(node){
+  return this[node.type](node);
+};
+
+/**
+ * Map visit over array of `nodes`, optionally using a `delim`
+ */
+
+Compiler.prototype.mapVisit = function(nodes, delim){
+  var buf = '';
+  delim = delim || '';
+
+  for (var i = 0, length = nodes.length; i < length; i++) {
+    buf += this.visit(nodes[i]);
+    if (delim && i < length - 1) buf += this.emit(delim);
+  }
+
+  return buf;
+};
+
+});
+require.register("visionmedia-css-stringify/lib/source-map-support.js", function(exports, require, module){
+
+/**
+ * Module dependencies.
+ */
+
+var SourceMap = require('source-map').SourceMapGenerator;
+
+/**
+ * Expose `mixin()`.
+ */
+
+module.exports = mixin;
+
+/**
+ * Mixin source map support into `compiler`.
+ *
+ * @param {Compiler} compiler
+ * @api public
+ */
+
+function mixin(compiler) {
+  var file = compiler.options.filename || 'generated.css';
+  compiler.map = new SourceMap({ file: file });
+  compiler.position = { line: 1, column: 1 };
+  for (var k in exports) compiler[k] = exports[k];
+}
+
+/**
+ * Update position.
+ *
+ * @param {String} str
+ * @api private
+ */
+
+exports.updatePosition = function(str) {
+  var lines = str.match(/\n/g);
+  if (lines) this.position.line += lines.length;
+  var i = str.lastIndexOf('\n');
+  this.position.column = ~i ? str.length - i : this.position.column + str.length;
+};
+
+/**
+ * Emit `str`.
+ *
+ * @param {String} str
+ * @param {Number} [pos]
+ * @param {Boolean} [startOnly]
+ * @return {String}
+ * @api private
+ */
+
+exports.emit = function(str, pos, startOnly) {
+  if (pos && pos.start) {
+    this.map.addMapping({
+      source: pos.source || 'source.css',
+      generated: {
+        line: this.position.line,
+        column: Math.max(this.position.column - 1, 0)
+      },
+      original: {
+        line: pos.start.line,
+        column: pos.start.column - 1
+      }
+    });
+  }
+
+  this.updatePosition(str);
+
+  if (!startOnly && pos && pos.end) {
+    this.map.addMapping({
+      source: pos.source || 'source.css',
+      generated: {
+        line: this.position.line,
+        column: Math.max(this.position.column - 1, 0)
+      },
+      original: {
+        line: pos.end.line,
+        column: pos.end.column - 1
+      }
+    });
+  }
+
+  return str;
+};
+
+});
 require.register("autoprefixer/data/browsers.js", function(exports, require, module){
 (function() {
   module.exports = {
@@ -1109,46 +1278,46 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
       minor: true,
       future: [4.4],
       versions: [4.3, 4.2, 4.1, 4, 3, 2.3, 2.2, 2.1],
-      popularity: [0.371819, 0.371819, 1.87417, 0.994867, 0.00502458, 1.32146, 0.0854178, 0.0251229]
+      popularity: [0.393833, 0.393833, 1.98513, 1.05377, 0.00532207, 1.3997, 0.0904751, 0.0266103]
     },
     bb: {
       prefix: "-webkit-",
       minor: true,
       versions: [10, 7],
-      popularity: [0, 0.141419]
+      popularity: [0, 0.160821]
     },
     chrome: {
       prefix: "-webkit-",
       future: [33, 32],
       versions: [31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4],
-      popularity: [0.16058, 24.6089, 5.08236, 0.610204, 0.369334, 0.353276, 0.361305, 0.200725, 0.216783, 0.248899, 0.48174, 0.040145, 0.040145, 0.08029, 0.040145, 0.048174, 0.072261, 0.056203, 0.056203, 0.064232, 0.112406, 0.048174, 0.024087, 0.032116, 0.024087, 0.032116, 0.024087, 0.024087]
+      popularity: [14.7206, 15.7521, 0.631684, 0.415792, 0.335832, 0.391804, 0.263868, 0.175912, 0.191904, 0.231884, 0.47976, 0.03998, 0.03998, 0.095952, 0.031984, 0.047976, 0.071964, 0.055972, 0.055972, 0.063968, 0.111944, 0.03998, 0.023988, 0.031984, 0.023988, 0.031984, 0.023988, 0.023988]
     },
     ff: {
       prefix: "-moz-",
       future: [27, 26],
       versions: [25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3.6, 3.5, 3, 2],
-      popularity: [0.529914, 11.0318, 0.907277, 0.256928, 0.216783, 0.16058, 0.128464, 0.112406, 0.192696, 0.264957, 0.136493, 0.096348, 0.096348, 0.208754, 0.088319, 0.112406, 0.056203, 0.072261, 0.040145, 0.048174, 0.048174, 0.072261, 0.305102, 0.040145, 0.088319, 0.016058]
+      popularity: [9.51524, 2.47076, 0.295852, 0.1999, 0.191904, 0.143928, 0.11994, 0.095952, 0.191904, 0.23988, 0.135932, 0.087956, 0.087956, 0.191904, 0.087956, 0.103948, 0.055972, 0.063968, 0.03998, 0.047976, 0.03998, 0.063968, 0.311844, 0.03998, 0.087956, 0.015992]
     },
     ie: {
       prefix: "-ms-",
       versions: [11, 10, 9, 8, 7, 6, 5.5],
-      popularity: [0.114751, 10.7866, 5.21297, 8.31124, 0.508182, 0.204912, 0.009298]
+      popularity: [1.28176, 9.68717, 4.62585, 7.55911, 0.435471, 0.246493, 0.009298]
     },
     ios: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4.3, 4.2, 4.1, 4, 3.2],
-      popularity: [2.52071, 0.578165, 0.578165, 0.14204, 0.14204, 0.01400395, 0.01400395, 0.00400113, 0.00400113, 0.00400113]
+      popularity: [2.91427, 0.517185, 0.517185, 0.154512, 0.154512, 0.015022, 0.015022, 0.004292, 0.004292, 0.004292]
     },
     opera: {
       prefix: "-o-",
       future: [18],
       versions: [17, 16, 15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10.1, 10, 9.6, 9.5],
-      popularity: [0.16058, 0.104377, 0.032116, 0.48174, 0.040145, 0.032116, 0.016058, 0.008219, 0.008219, 0.008029, 0.008392, 0.008029, 0.008029, 0.0041095, 0.0041095]
+      popularity: [0.191904, 0.03998, 0.023988, 0.447776, 0.03998, 0.023988, 0.015992, 0.008219, 0.008219, 0.007996, 0.008392, 0.007996, 0.007996, 0.003998, 0.003998]
     },
     safari: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4, 3.2, 3.1],
-      popularity: [0.16058, 0.064232, 2.04739, 1.28464, 0.305102, 0.104377, 0.008692, 0]
+      popularity: [0.751624, 0.583708, 0.943528, 1.0075, 0.295852, 0.111944, 0.008692, 0]
     }
   };
 
@@ -1374,7 +1543,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2 old", "ios 4 old", "ios 4.1 old", "ios 4.2 old", "ios 4.3 old", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4 old", "safari 5 old", "safari 5.1", "safari 6"]
     },
     "max-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
@@ -1398,17 +1567,17 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     "radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2 old", "ios 4 old", "ios 4.1 old", "ios 4.2 old", "ios 4.3 old", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4 old", "safari 5 old", "safari 5.1", "safari 6"]
     },
     "repeating-linear-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2 old", "ios 4 old", "ios 4.1 old", "ios 4.2 old", "ios 4.3 old", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4 old", "safari 5 old", "safari 5.1", "safari 6"]
     },
     "repeating-radial-gradient": {
       props: ["background", "background-image", "border-image"],
       mistakes: ["-ms-"],
-      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4", "safari 5", "safari 5.1", "safari 6"]
+      browsers: ["android 2.1 old", "android 2.2 old", "android 2.3 old", "android 3 old", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2 old", "ios 4 old", "ios 4.1 old", "ios 4.2 old", "ios 4.3 old", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 4 old", "safari 5 old", "safari 5.1", "safari 6"]
     },
     "tab-size": {
       browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
@@ -2731,14 +2900,14 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
     };
 
     Gradient.prototype.oldDirections = {
-      'top': 'bottom left, top left',
-      'left': 'top right, top left',
-      'bottom': 'top left, bottom left',
-      'right': 'top left, top right',
-      'top right': 'bottom left, top right',
-      'top left': 'bottom right, top left',
-      'bottom right': 'top left, bottom right',
-      'bottom left': 'top right, bottom left'
+      'top': 'left bottom, left top',
+      'left': 'right top, left top',
+      'bottom': 'left top, left bottom',
+      'right': 'left top, right top',
+      'top right': 'left bottom, right top',
+      'top left': 'right bottom, left top',
+      'bottom right': 'left top, right bottom',
+      'bottom left': 'right top, left bottom'
     };
 
     Gradient.prototype.splitDecls = function(decl) {
@@ -4075,7 +4244,7 @@ require.register("autoprefixer/lib/autoprefixer/updater.js", function(exports, r
         sorted[key] = json[key];
       }
       file = __dirname + ("/../../data/" + name);
-      content = "# Don't edit this files, because it's autogenerated.\n" + "# See updaters/ dir for generator. Run bin/update to update." + "\n\n";
+      content = "# Don't edit this files, because it's autogenerated.\n" + "# See updaters/ dir for generator. " + "Run `bin/autoprefixer --update` to update." + "\n\n";
       content += "module.exports =" + this.stringify(sorted) + ";\n";
       if (fs.existsSync(file + '.js')) {
         file += '.js';
@@ -4354,7 +4523,7 @@ require.register("autoprefixer/updaters/prefixes.js", function(exports, require,
     });
     this.feature('css-gradients', function(browsers) {
       browsers = _this.map(browsers, function(browser, name, version) {
-        if (name === 'android' && version < 4) {
+        if (name === 'android' && version < 4 || name === 'safari' && version < 5.1 || name === 'ios' && version < 5) {
           return browser + ' old';
         } else {
           return browser;
@@ -4491,6 +4660,8 @@ require.alias("visionmedia-css-parse/index.js", "css-parse/index.js");
 require.alias("visionmedia-css-stringify/index.js", "autoprefixer/deps/css-stringify/index.js");
 require.alias("visionmedia-css-stringify/lib/compress.js", "autoprefixer/deps/css-stringify/lib/compress.js");
 require.alias("visionmedia-css-stringify/lib/identity.js", "autoprefixer/deps/css-stringify/lib/identity.js");
+require.alias("visionmedia-css-stringify/lib/compiler.js", "autoprefixer/deps/css-stringify/lib/compiler.js");
+require.alias("visionmedia-css-stringify/lib/source-map-support.js", "autoprefixer/deps/css-stringify/lib/source-map-support.js");
 require.alias("visionmedia-css-stringify/index.js", "css-stringify/index.js");
 
 require.alias("autoprefixer/lib/autoprefixer.js", "autoprefixer/index.js");if (typeof exports == "object") {
