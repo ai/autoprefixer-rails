@@ -7,3 +7,4 @@ gem 'rspec-rails'
 
 gem 'therubyrhino', :platforms =>  'jruby'
 gem 'therubyracer', :platforms => ['mri', 'rbx']
+gem 'racc',         :platforms =>  'rbx'
