@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gemspec
 gem 'rake'
 gem 'rails'
+gem 'sass-rails'
 gem 'rspec-rails'
 
 gem 'therubyrhino', platforms:  'jruby'

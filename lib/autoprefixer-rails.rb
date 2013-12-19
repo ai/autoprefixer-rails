@@ -19,19 +19,7 @@ module AutoprefixerRails
       input  = context.pathname.relative_path_from(root).to_s
       output = input.chomp(File.extname(input)) + '.css'
 
-      if defined?(Sass::Rails) or defined?(Sprockets::Sass)
-        begin
-          instance.process(css, from: input, to: output).css
-        rescue ExecJS::ProgramError => e
-          if e.message =~ /Can't parse CSS/
-            css
-          else
-            raise e
-          end
-        end
-      else
-        instance.process(css, from: input, to: output).css
-      end
+      instance.process(css, from: input, to: output).css
     end
   end
 

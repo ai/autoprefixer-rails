@@ -6,10 +6,10 @@ describe CssController, type: :controller do
     cache.rmtree if cache.exist?
   end
 
-  it "integrates with Rails" do
-    get :test, file: 'test'
+  it "integrates with Rails and Sass" do
+    get :test, file: 'sass'
     response.should be_success
-    response.body.should == PREFIXED
+    response.body.should == "a{-webkit-transition:all 1s;transition:all 1s}\n"
   end
 end
 
