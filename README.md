@@ -90,5 +90,5 @@ If you need to call Autoprefixer from plain Ruby code, it’s very easy:
 
 ```ruby
 require "autoprefixer-rails"
-prefixed = AutoprefixerRails.compile(css)
+prefixed = AutoprefixerRails.process(css)
 ```

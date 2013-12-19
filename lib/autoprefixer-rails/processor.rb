@@ -7,9 +7,15 @@ module AutoprefixerRails
       @browsers = browsers || []
     end
 
-    # Return prefixed `css`
-    def compile(css)
-      processor.call('compile', css)
+    # Process `css` and return result.
+    #
+    # Options can be:
+    # * `from` with input CSS file name. Will be used in error messages.
+    # * `to` with output CSS file name.
+    # * `map` with true to generate new source map or with previous map.
+    def process(css, opts = { })
+      result = processor.call('process', css, opts)
+      Result.new(result['css'], result['map'])
     end
 
     # Return, which browsers and prefixes will be used
@@ -22,7 +28,19 @@ module AutoprefixerRails
       @processor ||= ExecJS.compile(build_js)
     end
 
+    # Deprecated method. Use `process` instead.
+    def compile(css)
+      warn 'autoprefixer-rails: Replace compile() to process(). ' +
+           'Method compile() is deprecated and will be removed in 1.1.'
+      processor.call('process', css)['css']
+    end
+
     private
+
+    # Print warning to logger or STDERR
+    def warn(message)
+      $stderr.puts(message)
+    end
 
     # Cache autoprefixer.js content
     def read_js
@@ -32,7 +50,7 @@ module AutoprefixerRails
     # Return processor JS with some extra methods
     def build_js
       create_global + read_js + create_instance +
-      add_proxy('compile') + add_proxy('info')
+      process_proxy + info_proxy
     end
 
     # Return JS code to create `global` namespace
@@ -50,11 +68,21 @@ module AutoprefixerRails
       end
     end
 
-    # Return JS code to create proxy methods
-    def add_proxy(func)
+    # Return JS code for process method proxy
+    def process_proxy
       <<-JS
-        var #{ func } = function() {
-          return processor.#{ func }.apply(processor, arguments)
+        var process = function() {
+          var result = processor.process.apply(processor, arguments);
+          return { css: result.css, map: result.map };
+        };
+      JS
+    end
+
+    # Return JS code for info method proxy
+    def info_proxy
+      <<-JS
+        var info = function() {
+          return processor.info.apply(processor);
         };
       JS
     end
