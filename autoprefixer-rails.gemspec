@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.author   = 'Andrey "A.I." Sitnik'
   s.email    = 'andrey@sitnik.ru'
   s.homepage = 'https://github.com/ai/autoprefixer-rails'
-  s.license  = 'LGPL-3'
+  s.license  = 'MIT'
 
   s.add_dependency "execjs", [">= 0"]
 end
