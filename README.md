@@ -31,17 +31,18 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 
 ```css
 :-webkit-full-screen a {
-  -webkit-transition: -webkit-transform 1s;
-  transition: transform 1s;
+    -webkit-transition: -webkit-transform 1s;
+    transition: transform 1s
 }
-
 :-moz-full-screen a {
-  transition: transform 1s;
+    transition: transform 1s
 }
-
+:-ms-fullscreen a {
+    transition: transform 1s
+}
 :fullscreen a {
-  -webkit-transition: -webkit-transform 1s;
-  transition: transform 1s;
+    -webkit-transition: -webkit-transform 1s;
+    transition: transform 1s
 }
 ```
 
@@ -52,7 +53,7 @@ to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
 browsers:
   - "last 1 version"
   - "> 1%"
-  - "ie 8"
+  - "ie 10"
 ```
 
 You can get what properties will be changed using a Rake task:
@@ -61,8 +62,8 @@ You can get what properties will be changed using a Rake task:
 rake autoprefixer:info
 ```
 
-By default, Autoprefixer uses `> 1%, last 2 versions, ff 17, opera 12.1`:
-* Firefox 17 is a latest [ESR].
+By default, Autoprefixer uses `> 1%, last 2 versions, ff 24, opera 12.1`:
+* Firefox 24 is a latest [ESR].
 * Opera 12.1 will be in list until Opera supports non-Blink 12.x branch.
 
 [browser section]: https://github.com/ai/autoprefixer#browsers
