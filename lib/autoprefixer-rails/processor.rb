@@ -19,25 +19,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 require 'execjs'
 
 module AutoprefixerRails
-  # Ruby to JS wrapper for Autoprefixer compiler instance
-  class Compiler
+  # Ruby to JS wrapper for Autoprefixer processor instance
+  class Processor
     def initialize(browsers=nil)
       @browsers = browsers || []
     end
 
     # Return prefixed `css`
     def compile(css)
-      compiler.call('compile', css)
+      processor.call('compile', css)
     end
 
     # Return, which browsers and prefixes will be used
     def info
-      compiler.call('info')
+      processor.call('info')
     end
 
     # Lazy load for JS instance
-    def compiler
-      @compiler ||= ExecJS.compile(build_js)
+    def processor
+      @processor ||= ExecJS.compile(build_js)
     end
 
     private
@@ -47,7 +47,7 @@ module AutoprefixerRails
       @@js ||= Pathname(__FILE__).join("../../../vendor/autoprefixer.js").read
     end
 
-    # Return compiler JS with some extra methods
+    # Return processor JS with some extra methods
     def build_js
       create_global + read_js + create_instance +
       add_proxy('compile') + add_proxy('info')
@@ -61,10 +61,10 @@ module AutoprefixerRails
     # Return JS code to create Autoprefixer instance
     def create_instance
       if @browsers.empty?
-        "var compiler = autoprefixer;"
+        "var processor = autoprefixer;"
       else
         browsers = @browsers.map(&:to_s).join("', '")
-        "var compiler = autoprefixer('#{browsers}');"
+        "var processor = autoprefixer('#{browsers}');"
       end
     end
 
@@ -72,7 +72,7 @@ module AutoprefixerRails
     def add_proxy(func)
       <<-JS
         var #{ func } = function() {
-          return compiler.#{ func }.apply(compiler, arguments)
+          return processor.#{ func }.apply(processor, arguments)
         };
       JS
     end

@@ -20,7 +20,7 @@ describe AutoprefixerRails do
   end
 
   it "shows debug" do
-    info = AutoprefixerRails.compiler(['chrome 25']).info
+    info = AutoprefixerRails.processor(['chrome 25']).info
     info.should =~ /Browsers:\n  Chrome: 25\n\n/
     info.should =~ /  transition: webkit/
   end

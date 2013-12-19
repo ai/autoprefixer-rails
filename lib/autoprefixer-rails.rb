@@ -23,13 +23,13 @@ require 'pathname'
 module AutoprefixerRails
   # Parse `css` and add vendor prefixes for `browsers`
   def self.compile(css, browsers = nil)
-    compiler(browsers).compile(css)
+    processor(browsers).compile(css)
   end
 
   # Add Autoprefixer for Sprockets environment in `assets`.
   # You can specify `browsers` actual in your project.
   def self.install(assets, browsers = nil)
-    instance = compiler(browsers)
+    instance = processor(browsers)
     assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
       if defined?(Sass::Rails) or defined?(Sprockets::Sass)
         begin
@@ -47,16 +47,16 @@ module AutoprefixerRails
     end
   end
 
-  # Cache compiler instances
-  def self.compiler(browsers)
+  # Cache processor instances
+  def self.processor(browsers)
     @cache ||= { }
-    @cache[browsers] ||= Compiler.new(browsers)
+    @cache[browsers] ||= Processor.new(browsers)
   end
 end
 
 dir = Pathname(__FILE__).dirname.join('autoprefixer-rails')
 
 require dir.join('version').to_s
-require dir.join('compiler').to_s
+require dir.join('processor').to_s
 
 require dir.join('railtie').to_s if defined?(Rails)

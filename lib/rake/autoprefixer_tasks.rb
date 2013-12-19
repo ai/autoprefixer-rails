@@ -30,7 +30,7 @@ module Rake
 
     def initialize(browsers = [])
       @browsers = browsers
-      @compiler = AutoprefixerRails.compiler(@browsers)
+      @processor = AutoprefixerRails.processor(@browsers)
       define
     end
 
@@ -38,7 +38,7 @@ module Rake
       namespace :autoprefixer do
         desc 'Show selected browsers and prefixed CSS properties and values'
         task :info do
-          puts @compiler.info
+          puts @processor.info
         end
       end
     end
