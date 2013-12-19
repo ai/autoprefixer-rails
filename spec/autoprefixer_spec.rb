@@ -19,9 +19,9 @@ describe AutoprefixerRails do
     assets['test.css'].to_s.should == PREFIXED
   end
 
-  it "inspects" do
-    inspect = AutoprefixerRails.compiler(['chrome 25']).inspect
-    inspect.should =~ /Browsers:\n  Chrome: 25\n\n/
-    inspect.should =~ /  transition: webkit/
+  it "shows debug" do
+    info = AutoprefixerRails.compiler(['chrome 25']).info
+    info.should =~ /Browsers:\n  Chrome: 25\n\n/
+    info.should =~ /  transition: webkit/
   end
 end

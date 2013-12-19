@@ -37,8 +37,8 @@ module Rake
     def define
       namespace :autoprefixer do
         desc 'Show selected browsers and prefixed CSS properties and values'
-        task :inspect do
-          puts @compiler.inspect
+        task :info do
+          puts @compiler.info
         end
       end
     end

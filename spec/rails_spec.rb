@@ -14,9 +14,9 @@ describe CssController, :type => :controller do
 end
 
 describe 'Rake task' do
-  it "inspects" do
-    inspect = `cd spec/app; bundle exec rake autoprefixer:inspect`
-    inspect.should =~ /Browsers:\n  Chrome: 25\n\n/
-    inspect.should =~ /  transition: webkit/
+  it "shows debug" do
+    info = `cd spec/app; bundle exec rake autoprefixer:info`
+    info.should =~ /Browsers:\n  Chrome: 25\n\n/
+    info.should =~ /  transition: webkit/
   end
 end

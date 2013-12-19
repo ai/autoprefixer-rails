@@ -31,7 +31,7 @@ module AutoprefixerRails
     end
 
     # Return, which browsers and prefixes will be used
-    def inspect
+    def info
       compiler.call('info')
     end
 

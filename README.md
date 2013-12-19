@@ -55,10 +55,10 @@ browsers:
   - "ie 8"
 ```
 
-You can inspect what properties will be changed using a Rake task:
+You can get what properties will be changed using a Rake task:
 
 ```sh
-rake autoprefixer:inspect
+rake autoprefixer:info
 ```
 
 By default, Autoprefixer uses `> 1%, last 2 versions, ff 17, opera 12.1`:
