@@ -9,4 +9,4 @@ require 'pp'
 require 'sprockets'
 require 'rspec/rails'
 
-PREFIXED = "a {\n  -webkit-transition: all 1s;\n  transition: all 1s;\n}"
+PREFIXED = "a { -webkit-transition: all 1s; transition: all 1s }\n"

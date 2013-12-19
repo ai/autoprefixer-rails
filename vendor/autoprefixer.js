@@ -1,1276 +1,4 @@
-;(function(){
-
-/**
- * Require the given path.
- *
- * @param {String} path
- * @return {Object} exports
- * @api public
- */
-
-function require(path, parent, orig) {
-  var resolved = require.resolve(path);
-
-  // lookup failed
-  if (null == resolved) {
-    orig = orig || path;
-    parent = parent || 'root';
-    var err = new Error('Failed to require "' + orig + '" from "' + parent + '"');
-    err.path = orig;
-    err.parent = parent;
-    err.require = true;
-    throw err;
-  }
-
-  var module = require.modules[resolved];
-
-  // perform real require()
-  // by invoking the module's
-  // registered function
-  if (!module._resolving && !module.exports) {
-    var mod = {};
-    mod.exports = {};
-    mod.client = mod.component = true;
-    module._resolving = true;
-    module.call(this, mod.exports, require.relative(resolved), mod);
-    delete module._resolving;
-    module.exports = mod.exports;
-  }
-
-  return module.exports;
-}
-
-/**
- * Registered modules.
- */
-
-require.modules = {};
-
-/**
- * Registered aliases.
- */
-
-require.aliases = {};
-
-/**
- * Resolve `path`.
- *
- * Lookup:
- *
- *   - PATH/index.js
- *   - PATH.js
- *   - PATH
- *
- * @param {String} path
- * @return {String} path or null
- * @api private
- */
-
-require.resolve = function(path) {
-  if (path.charAt(0) === '/') path = path.slice(1);
-
-  var paths = [
-    path,
-    path + '.js',
-    path + '.json',
-    path + '/index.js',
-    path + '/index.json'
-  ];
-
-  for (var i = 0; i < paths.length; i++) {
-    var path = paths[i];
-    if (require.modules.hasOwnProperty(path)) return path;
-    if (require.aliases.hasOwnProperty(path)) return require.aliases[path];
-  }
-};
-
-/**
- * Normalize `path` relative to the current path.
- *
- * @param {String} curr
- * @param {String} path
- * @return {String}
- * @api private
- */
-
-require.normalize = function(curr, path) {
-  var segs = [];
-
-  if ('.' != path.charAt(0)) return path;
-
-  curr = curr.split('/');
-  path = path.split('/');
-
-  for (var i = 0; i < path.length; ++i) {
-    if ('..' == path[i]) {
-      curr.pop();
-    } else if ('.' != path[i] && '' != path[i]) {
-      segs.push(path[i]);
-    }
-  }
-
-  return curr.concat(segs).join('/');
-};
-
-/**
- * Register module at `path` with callback `definition`.
- *
- * @param {String} path
- * @param {Function} definition
- * @api private
- */
-
-require.register = function(path, definition) {
-  require.modules[path] = definition;
-};
-
-/**
- * Alias a module definition.
- *
- * @param {String} from
- * @param {String} to
- * @api private
- */
-
-require.alias = function(from, to) {
-  if (!require.modules.hasOwnProperty(from)) {
-    throw new Error('Failed to alias "' + from + '", it does not exist');
-  }
-  require.aliases[to] = from;
-};
-
-/**
- * Return a require function relative to the `parent` path.
- *
- * @param {String} parent
- * @return {Function}
- * @api private
- */
-
-require.relative = function(parent) {
-  var p = require.normalize(parent, '..');
-
-  /**
-   * lastIndexOf helper.
-   */
-
-  function lastIndexOf(arr, obj) {
-    var i = arr.length;
-    while (i--) {
-      if (arr[i] === obj) return i;
-    }
-    return -1;
-  }
-
-  /**
-   * The relative require() itself.
-   */
-
-  function localRequire(path) {
-    var resolved = localRequire.resolve(path);
-    return require(resolved, parent, path);
-  }
-
-  /**
-   * Resolve relative to the parent.
-   */
-
-  localRequire.resolve = function(path) {
-    var c = path.charAt(0);
-    if ('/' == c) return path.slice(1);
-    if ('.' == c) return require.normalize(p, path);
-
-    // resolve deps by returning
-    // the dep in the nearest "deps"
-    // directory
-    var segs = parent.split('/');
-    var i = lastIndexOf(segs, 'deps') + 1;
-    if (!i) i = 0;
-    path = segs.slice(0, i + 1).join('/') + '/deps/' + path;
-    return path;
-  };
-
-  /**
-   * Check if module is defined at `path`.
-   */
-
-  localRequire.exists = function(path) {
-    return require.modules.hasOwnProperty(localRequire.resolve(path));
-  };
-
-  return localRequire;
-};
-require.register("visionmedia-css-parse/index.js", function(exports, require, module){
-
-module.exports = function(css, options){
-  options = options || {};
-
-  /**
-   * Positional.
-   */
-
-  var lineno = 1;
-  var column = 1;
-
-  /**
-   * Update lineno and column based on `str`.
-   */
-
-  function updatePosition(str) {
-    var lines = str.match(/\n/g);
-    if (lines) lineno += lines.length;
-    var i = str.lastIndexOf('\n');
-    column = ~i ? str.length - i : column + str.length;
-  }
-
-  /**
-   * Mark position and patch `node.position`.
-   */
-
-  function position() {
-    var start = { line: lineno, column: column };
-    if (!options.position) return positionNoop;
-
-    return function(node){
-      node.position = {
-        start: start,
-        end: { line: lineno, column: column },
-        source: options.source
-      };
-
-      whitespace();
-      return node;
-    }
-  }
-
-  /**
-   * Return `node`.
-   */
-
-  function positionNoop(node) {
-    whitespace();
-    return node;
-  }
-
-  /**
-   * Error `msg`.
-   */
-
-  function error(msg) {
-    var err = new Error(msg + ' near line ' + lineno + ':' + column);
-    err.line = lineno;
-    err.column = column;
-    err.source = css;
-    throw err;
-  }
-
-  /**
-   * Parse stylesheet.
-   */
-
-  function stylesheet() {
-    return {
-      type: 'stylesheet',
-      stylesheet: {
-        rules: rules()
-      }
-    };
-  }
-
-  /**
-   * Opening brace.
-   */
-
-  function open() {
-    return match(/^{\s*/);
-  }
-
-  /**
-   * Closing brace.
-   */
-
-  function close() {
-    return match(/^}/);
-  }
-
-  /**
-   * Parse ruleset.
-   */
-
-  function rules() {
-    var node;
-    var rules = [];
-    whitespace();
-    comments(rules);
-    while (css.charAt(0) != '}' && (node = atrule() || rule())) {
-      rules.push(node);
-      comments(rules);
-    }
-    return rules;
-  }
-
-  /**
-   * Match `re` and return captures.
-   */
-
-  function match(re) {
-    var m = re.exec(css);
-    if (!m) return;
-    var str = m[0];
-    updatePosition(str);
-    css = css.slice(str.length);
-    return m;
-  }
-
-  /**
-   * Parse whitespace.
-   */
-
-  function whitespace() {
-    match(/^\s*/);
-  }
-
-  /**
-   * Parse comments;
-   */
-
-  function comments(rules) {
-    var c;
-    rules = rules || [];
-    while (c = comment()) rules.push(c);
-    return rules;
-  }
-
-  /**
-   * Parse comment.
-   */
-
-  function comment() {
-    var pos = position();
-    if ('/' != css.charAt(0) || '*' != css.charAt(1)) return;
-
-    var i = 2;
-    while (null != css.charAt(i) && ('*' != css.charAt(i) || '/' != css.charAt(i + 1))) ++i;
-    i += 2;
-
-    var str = css.slice(2, i - 2);
-    column += 2;
-    updatePosition(str);
-    css = css.slice(i);
-    column += 2;
-
-    return pos({
-      type: 'comment',
-      comment: str
-    });
-  }
-
-  /**
-   * Parse selector.
-   */
-
-  function selector() {
-    var m = match(/^([^{]+)/);
-    if (!m) return;
-    return trim(m[0]).split(/\s*,\s*/);
-  }
-
-  /**
-   * Parse declaration.
-   */
-
-  function declaration() {
-    var pos = position();
-
-    // prop
-    var prop = match(/^(\*?[-\/\*\w]+(\[[0-9a-z_-]+\])?)\s*/);
-    if (!prop) return;
-    prop = trim(prop[0]);
-
-    // :
-    if (!match(/^:\s*/)) return error("property missing ':'");
-
-    // val
-    var val = match(/^((?:'(?:\\'|.)*?'|"(?:\\"|.)*?"|\([^\)]*?\)|[^};])+)/);
-    if (!val) return error('property missing value');
-
-    var ret = pos({
-      type: 'declaration',
-      property: prop,
-      value: trim(val[0])
-    });
-
-    // ;
-    match(/^[;\s]*/);
-
-    return ret;
-  }
-
-  /**
-   * Parse declarations.
-   */
-
-  function declarations() {
-    var decls = [];
-
-    if (!open()) return error("missing '{'");
-    comments(decls);
-
-    // declarations
-    var decl;
-    while (decl = declaration()) {
-      decls.push(decl);
-      comments(decls);
-    }
-
-    if (!close()) return error("missing '}'");
-    return decls;
-  }
-
-  /**
-   * Parse keyframe.
-   */
-
-  function keyframe() {
-    var m;
-    var vals = [];
-    var pos = position();
-
-    while (m = match(/^((\d+\.\d+|\.\d+|\d+)%?|[a-z]+)\s*/)) {
-      vals.push(m[1]);
-      match(/^,\s*/);
-    }
-
-    if (!vals.length) return;
-
-    return pos({
-      type: 'keyframe',
-      values: vals,
-      declarations: declarations()
-    });
-  }
-
-  /**
-   * Parse keyframes.
-   */
-
-  function atkeyframes() {
-    var pos = position();
-    var m = match(/^@([-\w]+)?keyframes */);
-
-    if (!m) return;
-    var vendor = m[1];
-
-    // identifier
-    var m = match(/^([-\w]+)\s*/);
-    if (!m) return error("@keyframes missing name");
-    var name = m[1];
-
-    if (!open()) return error("@keyframes missing '{'");
-
-    var frame;
-    var frames = comments();
-    while (frame = keyframe()) {
-      frames.push(frame);
-      frames = frames.concat(comments());
-    }
-
-    if (!close()) return error("@keyframes missing '}'");
-
-    return pos({
-      type: 'keyframes',
-      name: name,
-      vendor: vendor,
-      keyframes: frames
-    });
-  }
-
-  /**
-   * Parse supports.
-   */
-
-  function atsupports() {
-    var pos = position();
-    var m = match(/^@supports *([^{]+)/);
-
-    if (!m) return;
-    var supports = trim(m[1]);
-
-    if (!open()) return error("@supports missing '{'");
-
-    var style = comments().concat(rules());
-
-    if (!close()) return error("@supports missing '}'");
-
-    return pos({
-      type: 'supports',
-      supports: supports,
-      rules: style
-    });
-  }
-
-  /**
-   * Parse host.
-   */
-
-  function athost() {
-    var pos = position();
-    var m = match(/^@host */);
-
-    if (!m) return;
-
-    if (!open()) return error("@host missing '{'");
-
-    var style = comments().concat(rules());
-
-    if (!close()) return error("@host missing '}'");
-
-    return pos({
-      type: 'host',
-      rules: style
-    });
-  }
-
-  /**
-   * Parse media.
-   */
-
-  function atmedia() {
-    var pos = position();
-    var m = match(/^@media *([^{]+)/);
-
-    if (!m) return;
-    var media = trim(m[1]);
-
-    if (!open()) return error("@media missing '{'");
-
-    var style = comments().concat(rules());
-
-    if (!close()) return error("@media missing '}'");
-
-    return pos({
-      type: 'media',
-      media: media,
-      rules: style
-    });
-  }
-
-  /**
-   * Parse paged media.
-   */
-
-  function atpage() {
-    var pos = position();
-    var m = match(/^@page */);
-    if (!m) return;
-
-    var sel = selector() || [];
-
-    if (!open()) return error("@page missing '{'");
-    var decls = comments();
-
-    // declarations
-    var decl;
-    while (decl = declaration()) {
-      decls.push(decl);
-      decls = decls.concat(comments());
-    }
-
-    if (!close()) return error("@page missing '}'");
-
-    return pos({
-      type: 'page',
-      selectors: sel,
-      declarations: decls
-    });
-  }
-
-  /**
-   * Parse document.
-   */
-
-  function atdocument() {
-    var pos = position();
-    var m = match(/^@([-\w]+)?document *([^{]+)/);
-    if (!m) return;
-
-    var vendor = trim(m[1]);
-    var doc = trim(m[2]);
-
-    if (!open()) return error("@document missing '{'");
-
-    var style = comments().concat(rules());
-
-    if (!close()) return error("@document missing '}'");
-
-    return pos({
-      type: 'document',
-      document: doc,
-      vendor: vendor,
-      rules: style
-    });
-  }
-
-  /**
-   * Parse import
-   */
-
-  function atimport() {
-    return _atrule('import');
-  }
-
-  /**
-   * Parse charset
-   */
-
-  function atcharset() {
-    return _atrule('charset');
-  }
-
-  /**
-   * Parse namespace
-   */
-
-  function atnamespace() {
-    return _atrule('namespace')
-  }
-
-  /**
-   * Parse non-block at-rules
-   */
-
-  function _atrule(name) {
-    var pos = position();
-    var m = match(new RegExp('^@' + name + ' *([^;\\n]+);'));
-    if (!m) return;
-    var ret = { type: name };
-    ret[name] = trim(m[1]);
-    return pos(ret);
-  }
-
-  /**
-   * Parse at rule.
-   */
-
-  function atrule() {
-    return atkeyframes()
-      || atmedia()
-      || atsupports()
-      || atimport()
-      || atcharset()
-      || atnamespace()
-      || atdocument()
-      || atpage()
-      || athost();
-  }
-
-  /**
-   * Parse rule.
-   */
-
-  function rule() {
-    var pos = position();
-    var sel = selector();
-
-    if (!sel) return;
-    comments();
-
-    return pos({
-      type: 'rule',
-      selectors: sel,
-      declarations: declarations()
-    });
-  }
-
-  return stylesheet();
-};
-
-/**
- * Trim `str`.
- */
-
-function trim(str) {
-  return (str || '').replace(/^\s+|\s+$/g, '');
-}
-
-});
-require.register("visionmedia-css-stringify/index.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var Compressed = require('./lib/compress');
-var Identity = require('./lib/identity');
-
-/**
- * Stringfy the given AST `node`.
- *
- * Options:
- *
- *  - `compress` space-optimized output
- *  - `sourcemap` return an object with `.code` and `.map`
- *
- * @param {Object} node
- * @param {Object} [options]
- * @return {String}
- * @api public
- */
-
-module.exports = function(node, options){
-  options = options || {};
-
-  var compiler = options.compress
-    ? new Compressed(options)
-    : new Identity(options);
-
-  // source maps
-  if (options.sourcemap) {
-    var sourcemaps = require('./lib/source-map-support');
-    sourcemaps(compiler);
-
-    var code = compiler.compile(node);
-    return { code: code, map: compiler.map.toJSON() };
-  }
-
-  var code = compiler.compile(node);
-  return code;
-};
-
-
-});
-require.register("visionmedia-css-stringify/lib/compress.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var Base = require('./compiler');
-
-/**
- * Expose compiler.
- */
-
-module.exports = Compiler;
-
-/**
- * Initialize a new `Compiler`.
- */
-
-function Compiler(options) {
-  Base.call(this, options);
-}
-
-/**
- * Inherit from `Base.prototype`.
- */
-
-Compiler.prototype.__proto__ = Base.prototype;
-
-/**
- * Compile `node`.
- */
-
-Compiler.prototype.compile = function(node){
-  return node.stylesheet
-    .rules.map(this.visit, this)
-    .join('');
-};
-
-/**
- * Visit comment node.
- */
-
-Compiler.prototype.comment = function(node){
-  return this.emit('', node.position);
-};
-
-/**
- * Visit import node.
- */
-
-Compiler.prototype.import = function(node){
-  return this.emit('@import ' + node.import + ';', node.position);
-};
-
-/**
- * Visit media node.
- */
-
-Compiler.prototype.media = function(node){
-  return this.emit('@media ' + node.media, node.position, true)
-    + this.emit('{')
-    + this.mapVisit(node.rules)
-    + this.emit('}');
-};
-
-/**
- * Visit document node.
- */
-
-Compiler.prototype.document = function(node){
-  var doc = '@' + (node.vendor || '') + 'document ' + node.document;
-
-  return this.emit(doc, node.position, true)
-    + this.emit('{')
-    + this.mapVisit(node.rules)
-    + this.emit('}');
-};
-
-/**
- * Visit charset node.
- */
-
-Compiler.prototype.charset = function(node){
-  return this.emit('@charset ' + node.charset + ';', node.position);
-};
-
-/**
- * Visit namespace node.
- */
-
-Compiler.prototype.namespace = function(node){
-  return this.emit('@namespace ' + node.namespace + ';', node.position);
-};
-
-/**
- * Visit supports node.
- */
-
-Compiler.prototype.supports = function(node){
-  return this.emit('@supports ' + node.supports, node.position, true)
-    + this.emit('{')
-    + this.mapVisit(node.rules)
-    + this.emit('}');
-};
-
-/**
- * Visit keyframes node.
- */
-
-Compiler.prototype.keyframes = function(node){
-  return this.emit('@'
-    + (node.vendor || '')
-    + 'keyframes '
-    + node.name, node.position, true)
-    + this.emit('{')
-    + this.mapVisit(node.keyframes)
-    + this.emit('}');
-};
-
-/**
- * Visit keyframe node.
- */
-
-Compiler.prototype.keyframe = function(node){
-  var decls = node.declarations;
-
-  return this.emit(node.values.join(','), node.position, true)
-    + this.emit('{')
-    + this.mapVisit(decls)
-    + this.emit('}');
-};
-
-/**
- * Visit page node.
- */
-
-Compiler.prototype.page = function(node){
-  var sel = node.selectors.length
-    ? node.selectors.join(', ')
-    : '';
-
-  return this.emit('@page ' + sel, node.position, true)
-    + this.emit('{')
-    + this.mapVisit(node.declarations)
-    + this.emit('}');
-};
-
-/**
- * Visit rule node.
- */
-
-Compiler.prototype.rule = function(node){
-  var decls = node.declarations;
-  if (!decls.length) return '';
-
-  return this.emit(node.selectors.join(','), node.position, true)
-    + this.emit('{')
-    + this.mapVisit(decls)
-    + this.emit('}');
-};
-
-/**
- * Visit declaration node.
- */
-
-Compiler.prototype.declaration = function(node){
-  return this.emit(node.property + ':' + node.value, node.position) + this.emit(';');
-};
-
-
-});
-require.register("visionmedia-css-stringify/lib/identity.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var Base = require('./compiler');
-
-/**
- * Expose compiler.
- */
-
-module.exports = Compiler;
-
-/**
- * Initialize a new `Compiler`.
- */
-
-function Compiler(options) {
-  options = options || {};
-  Base.call(this, options);
-  this.indentation = options.indent;
-}
-
-/**
- * Inherit from `Base.prototype`.
- */
-
-Compiler.prototype.__proto__ = Base.prototype;
-
-/**
- * Compile `node`.
- */
-
-Compiler.prototype.compile = function(node){
-  return this.stylesheet(node);
-};
-
-/**
- * Visit stylesheet node.
- */
-
-Compiler.prototype.stylesheet = function(node){
-  return this.mapVisit(node.stylesheet.rules, '\n\n');
-};
-
-/**
- * Visit comment node.
- */
-
-Compiler.prototype.comment = function(node){
-  return this.emit(this.indent() + '/*' + node.comment + '*/', node.position);
-};
-
-/**
- * Visit import node.
- */
-
-Compiler.prototype.import = function(node){
-  return this.emit('@import ' + node.import + ';', node.position);
-};
-
-/**
- * Visit media node.
- */
-
-Compiler.prototype.media = function(node){
-  return this.emit('@media ' + node.media, node.position, true)
-    + this.emit(
-        ' {\n'
-        + this.indent(1))
-    + this.mapVisit(node.rules, '\n\n')
-    + this.emit(
-        this.indent(-1)
-        + '\n}');
-};
-
-/**
- * Visit document node.
- */
-
-Compiler.prototype.document = function(node){
-  var doc = '@' + (node.vendor || '') + 'document ' + node.document;
-
-  return this.emit(doc, node.position, true)
-    + this.emit(
-        ' '
-      + ' {\n'
-      + this.indent(1))
-    + this.mapVisit(node.rules, '\n\n')
-    + this.emit(
-        this.indent(-1)
-        + '\n}');
-};
-
-/**
- * Visit charset node.
- */
-
-Compiler.prototype.charset = function(node){
-  return this.emit('@charset ' + node.charset + ';', node.position);
-};
-
-/**
- * Visit namespace node.
- */
-
-Compiler.prototype.namespace = function(node){
-  return this.emit('@namespace ' + node.namespace + ';', node.position);
-};
-
-/**
- * Visit supports node.
- */
-
-Compiler.prototype.supports = function(node){
-  return this.emit('@supports ' + node.supports, node.position, true)
-    + this.emit(
-      ' {\n'
-      + this.indent(1))
-    + this.mapVisit(node.rules, '\n\n')
-    + this.emit(
-        this.indent(-1)
-        + '\n}');
-};
-
-/**
- * Visit keyframes node.
- */
-
-Compiler.prototype.keyframes = function(node){
-  return this.emit('@' + (node.vendor || '') + 'keyframes ' + node.name, node.position, true)
-    + this.emit(
-      ' {\n'
-      + this.indent(1))
-    + this.mapVisit(node.keyframes, '\n')
-    + this.emit(
-        this.indent(-1)
-        + '}');
-};
-
-/**
- * Visit keyframe node.
- */
-
-Compiler.prototype.keyframe = function(node){
-  var decls = node.declarations;
-
-  return this.emit(this.indent())
-    + this.emit(node.values.join(', '), node.position, true)
-    + this.emit(
-      ' {\n'
-      + this.indent(1))
-    + this.mapVisit(decls, '\n')
-    + this.emit(
-      this.indent(-1)
-      + '\n'
-      + this.indent() + '}\n');
-};
-
-/**
- * Visit page node.
- */
-
-Compiler.prototype.page = function(node){
-  var sel = node.selectors.length
-    ? node.selectors.join(', ') + ' '
-    : '';
-
-  return this.emit('@page ' + sel, node.position, true)
-    + this.emit('{\n')
-    + this.emit(this.indent(1))
-    + this.mapVisit(node.declarations, '\n')
-    + this.emit(this.indent(-1))
-    + this.emit('\n}');
-};
-
-/**
- * Visit rule node.
- */
-
-Compiler.prototype.rule = function(node){
-  var indent = this.indent();
-  var decls = node.declarations;
-  if (!decls.length) return '';
-
-  return this.emit(node.selectors.map(function(s){ return indent + s }).join(',\n'), node.position, true)
-    + this.emit(' {\n')
-    + this.emit(this.indent(1))
-    + this.mapVisit(decls, '\n')
-    + this.emit(this.indent(-1))
-    + this.emit('\n' + this.indent() + '}');
-};
-
-/**
- * Visit declaration node.
- */
-
-Compiler.prototype.declaration = function(node){
-  return this.emit(this.indent())
-    + this.emit(node.property + ': ' + node.value, node.position)
-    + this.emit(';');
-};
-
-/**
- * Increase, decrease or return current indentation.
- */
-
-Compiler.prototype.indent = function(level) {
-  this.level = this.level || 1;
-
-  if (null != level) {
-    this.level += level;
-    return '';
-  }
-
-  return Array(this.level).join(this.indentation || '  ');
-};
-
-});
-require.register("visionmedia-css-stringify/lib/compiler.js", function(exports, require, module){
-
-/**
- * Expose `Compiler`.
- */
-
-module.exports = Compiler;
-
-/**
- * Initialize a compiler.
- *
- * @param {Type} name
- * @return {Type}
- * @api public
- */
-
-function Compiler(opts) {
-  this.options = opts || {};
-}
-
-/**
- * Emit `str`
- */
-
-Compiler.prototype.emit = function(str) {
-  return str;
-};
-
-/**
- * Visit `node`.
- */
-
-Compiler.prototype.visit = function(node){
-  return this[node.type](node);
-};
-
-/**
- * Map visit over array of `nodes`, optionally using a `delim`
- */
-
-Compiler.prototype.mapVisit = function(nodes, delim){
-  var buf = '';
-  delim = delim || '';
-
-  for (var i = 0, length = nodes.length; i < length; i++) {
-    buf += this.visit(nodes[i]);
-    if (delim && i < length - 1) buf += this.emit(delim);
-  }
-
-  return buf;
-};
-
-});
-require.register("visionmedia-css-stringify/lib/source-map-support.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var SourceMap = require('source-map').SourceMapGenerator;
-
-/**
- * Expose `mixin()`.
- */
-
-module.exports = mixin;
-
-/**
- * Mixin source map support into `compiler`.
- *
- * @param {Compiler} compiler
- * @api public
- */
-
-function mixin(compiler) {
-  var file = compiler.options.filename || 'generated.css';
-  compiler.map = new SourceMap({ file: file });
-  compiler.position = { line: 1, column: 1 };
-  for (var k in exports) compiler[k] = exports[k];
-}
-
-/**
- * Update position.
- *
- * @param {String} str
- * @api private
- */
-
-exports.updatePosition = function(str) {
-  var lines = str.match(/\n/g);
-  if (lines) this.position.line += lines.length;
-  var i = str.lastIndexOf('\n');
-  this.position.column = ~i ? str.length - i : this.position.column + str.length;
-};
-
-/**
- * Emit `str`.
- *
- * @param {String} str
- * @param {Number} [pos]
- * @param {Boolean} [startOnly]
- * @return {String}
- * @api private
- */
-
-exports.emit = function(str, pos, startOnly) {
-  if (pos && pos.start) {
-    this.map.addMapping({
-      source: pos.source || 'source.css',
-      generated: {
-        line: this.position.line,
-        column: Math.max(this.position.column - 1, 0)
-      },
-      original: {
-        line: pos.start.line,
-        column: pos.start.column - 1
-      }
-    });
-  }
-
-  this.updatePosition(str);
-
-  if (!startOnly && pos && pos.end) {
-    this.map.addMapping({
-      source: pos.source || 'source.css',
-      generated: {
-        line: this.position.line,
-        column: Math.max(this.position.column - 1, 0)
-      },
-      original: {
-        line: pos.end.line,
-        column: pos.end.column - 1
-      }
-    });
-  }
-
-  return str;
-};
-
-});
-require.register("autoprefixer/data/browsers.js", function(exports, require, module){
+!function(e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.autoprefixer=e():"undefined"!=typeof global?global.autoprefixer=e():"undefined"!=typeof self&&(self.autoprefixer=e())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function() {
   module.exports = {
     android: {
@@ -1323,8 +51,7 @@ require.register("autoprefixer/data/browsers.js", function(exports, require, mod
 
 }).call(this);
 
-});
-require.register("autoprefixer/data/prefixes.js", function(exports, require, module){
+},{}],2:[function(require,module,exports){
 (function() {
   module.exports = {
     "::placeholder": {
@@ -1475,6 +202,7 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
       transition: true
     },
     "display-flex": {
+      props: ["display"],
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
     },
     "fill-available": {
@@ -1536,6 +264,10 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
     },
     hyphens: {
       browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+    },
+    "inline-flex": {
+      props: ["display"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
     },
     "justify-content": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
@@ -1628,24 +360,19 @@ require.register("autoprefixer/data/prefixes.js", function(exports, require, mod
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, module){
+},{}],3:[function(require,module,exports){
 (function() {
-  var Autoprefixer, Browsers, CSS, Prefixes, autoprefixer, inspectCache, parse, stringify,
+  var Autoprefixer, Browsers, Prefixes, autoprefixer, infoCache, postcss,
     __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  parse = require('css-parse');
+  postcss = require('postcss');
 
-  stringify = require('css-stringify');
+  Browsers = require('./browsers');
 
-  Browsers = require('./autoprefixer/browsers');
+  Prefixes = require('./prefixes');
 
-  Prefixes = require('./autoprefixer/prefixes');
-
-  CSS = require('./autoprefixer/css');
-
-  inspectCache = null;
+  infoCache = null;
 
   autoprefixer = function() {
     var browsers, prefixes, reqs;
@@ -1672,47 +399,48 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     function Autoprefixer(prefixes, data) {
       this.prefixes = prefixes;
       this.data = data;
-      this.rework = __bind(this.rework, this);
+      this.postcss = __bind(this.postcss, this);
       this.browsers = this.prefixes.browsers.selected;
     }
 
-    Autoprefixer.prototype.compile = function(str) {
-      var nodes,
-        _this = this;
-      nodes = this.catchParseErrors(function() {
-        return parse(_this.removeBadComments(str));
-      });
-      this.rework(nodes.stylesheet);
-      return stringify(nodes);
+    Autoprefixer.prototype.process = function(str, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.processor().process(str, options);
     };
 
-    Autoprefixer.prototype.rework = function(stylesheet) {
-      var css;
-      css = new CSS(stylesheet);
+    Autoprefixer.prototype.compile = function(str, options) {
+      var fixed, name, value;
+      if (options == null) {
+        options = {};
+      }
+      fixed = {};
+      for (name in options) {
+        value = options[name];
+        if (name === 'file') {
+          name === 'from';
+        }
+        fixed[name] = value;
+      }
+      if (typeof console !== "undefined" && console !== null) {
+        console.warn('autoprefixer: replace compile() to process(). ' + 'Method compile() is deprecated and will be removed in 1.1.');
+      }
+      return this.process(str, options).css;
+    };
+
+    Autoprefixer.prototype.postcss = function(css) {
       this.prefixes.processor.add(css);
       return this.prefixes.processor.remove(css);
     };
 
-    Autoprefixer.prototype.inspect = function() {
-      inspectCache || (inspectCache = require('./autoprefixer/inspect'));
-      return inspectCache(this.prefixes);
+    Autoprefixer.prototype.info = function() {
+      infoCache || (infoCache = require('./info'));
+      return infoCache(this.prefixes);
     };
 
-    Autoprefixer.prototype.catchParseErrors = function(callback) {
-      var e, error;
-      try {
-        return callback();
-      } catch (_error) {
-        e = _error;
-        error = new Error("Can't parse CSS: " + e.message);
-        error.stack = e.stack;
-        error.css = true;
-        throw error;
-      }
-    };
-
-    Autoprefixer.prototype.removeBadComments = function(css) {
-      return css.replace(/\/\*[^\*]*\}[^\*]*\*\//g, '');
+    Autoprefixer.prototype.processor = function() {
+      return this.processorCache || (this.processorCache = postcss(this.postcss));
     };
 
     return Autoprefixer;
@@ -1725,30 +453,58 @@ require.register("autoprefixer/lib/autoprefixer.js", function(exports, require, 
     return this.defaultCache || (this.defaultCache = autoprefixer(this["default"]));
   };
 
-  autoprefixer.compile = function(str) {
-    return this.loadDefault().compile(str);
+  autoprefixer.process = function(str, options) {
+    if (options == null) {
+      options = {};
+    }
+    return this.loadDefault().process(str, options);
   };
 
-  autoprefixer.rework = function(stylesheet) {
-    return this.loadDefault().rework(stylesheet);
+  autoprefixer.compile = function(str, options) {
+    if (options == null) {
+      options = {};
+    }
+    return this.loadDefault().compile(str, options);
   };
 
-  autoprefixer.inspect = function() {
-    return this.loadDefault().inspect();
+  autoprefixer.postcss = function(css) {
+    return this.loadDefault().postcss(css);
+  };
+
+  autoprefixer.info = function() {
+    return this.loadDefault().info();
   };
 
   module.exports = autoprefixer;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/browsers.js", function(exports, require, module){
+},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":28,"./prefixes":32,"postcss":46}],4:[function(require,module,exports){
 (function() {
   var Browsers, utils;
 
   utils = require('./utils');
 
   Browsers = (function() {
+    Browsers.prefixes = function() {
+      var data, i, name;
+      if (this.prefixesCache) {
+        return this.prefixesCache;
+      }
+      data = require('../data/browsers');
+      return this.prefixesCache = utils.uniq((function() {
+        var _results;
+        _results = [];
+        for (name in data) {
+          i = data[name];
+          _results.push(i.prefix);
+        }
+        return _results;
+      })()).sort(function(a, b) {
+        return b.length - a.length;
+      });
+    };
+
     function Browsers(data, requirements) {
       this.data = data;
       this.selected = this.parse(requirements);
@@ -1869,22 +625,6 @@ require.register("autoprefixer/lib/autoprefixer/browsers.js", function(exports, 
       return selected;
     };
 
-    Browsers.prototype.prefixes = function() {
-      var i, name;
-      return this.prefixesCache || (this.prefixesCache = utils.uniq((function() {
-        var _ref, _results;
-        _ref = this.data;
-        _results = [];
-        for (name in _ref) {
-          i = _ref[name];
-          _results.push(i.prefix);
-        }
-        return _results;
-      }).call(this)).sort(function(a, b) {
-        return b.length - a.length;
-      }));
-    };
-
     Browsers.prototype.prefix = function(browser) {
       var name, version, _ref;
       _ref = browser.split(' '), name = _ref[0], version = _ref[1];
@@ -1907,211 +647,107 @@ require.register("autoprefixer/lib/autoprefixer/browsers.js", function(exports, 
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/css.js", function(exports, require, module){
+},{"../data/browsers":1,"./utils":35}],5:[function(require,module,exports){
 (function() {
-  var CSS, Declaration, Keyframes, Rules;
+  var Browsers, Declaration, Prefixer, vendor, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Rules = require('./rules');
+  Prefixer = require('./prefixer');
 
-  Keyframes = require('./keyframes');
+  Browsers = require('./browsers');
 
-  Declaration = require('./declaration');
+  vendor = require('postcss/lib/vendor');
 
-  CSS = (function() {
-    function CSS(stylesheet) {
-      this.stylesheet = stylesheet;
+  Declaration = (function(_super) {
+    __extends(Declaration, _super);
+
+    function Declaration() {
+      _ref = Declaration.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    CSS.prototype.eachKeyframes = function(callback) {
-      var rule;
-      this.number = 0;
-      while (this.number < this.stylesheet.rules.length) {
-        rule = this.stylesheet.rules[this.number];
-        if (rule.keyframes) {
-          callback(new Keyframes(this, this.number, rule));
+    Declaration.prototype.check = function(decl) {
+      return true;
+    };
+
+    Declaration.prototype.prefixed = function(prop, prefix) {
+      return prefix + prop;
+    };
+
+    Declaration.prototype.normalize = function(prop) {
+      return prop;
+    };
+
+    Declaration.prototype.otherPrefixes = function(value, prefix) {
+      var other, _i, _len, _ref1;
+      _ref1 = Browsers.prefixes();
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        other = _ref1[_i];
+        if (other === prefix) {
+          continue;
         }
-        this.number += 1;
+        if (value.indexOf(other) !== -1) {
+          return true;
+        }
       }
       return false;
     };
 
-    CSS.prototype.containKeyframes = function(rule) {
-      return this.stylesheet.rules.some(function(i) {
-        return i.keyframes && i.name === rule.name && i.vendor === rule.vendor;
-      });
+    Declaration.prototype.set = function(decl, prefix) {
+      decl.prop = this.prefixed(decl.prop, prefix);
+      return decl;
     };
 
-    CSS.prototype.addKeyframes = function(position, rule) {
-      if (this.containKeyframes(rule)) {
+    Declaration.prototype.insert = function(decl, prefix) {
+      var cloned;
+      cloned = this.set(this.clone(decl), prefix);
+      if (cloned) {
+        return decl.parent.insertBefore(decl, cloned);
+      }
+    };
+
+    Declaration.prototype.add = function(decl, prefix) {
+      var already, prefixed;
+      prefixed = this.prefixed(decl.prop, prefix);
+      already = this.all.group(decl).up(function(i) {
+        return i.prop === prefixed;
+      });
+      if (already || this.otherPrefixes(decl.value, prefix)) {
         return;
       }
-      this.stylesheet.rules.splice(position, 0, rule);
-      return this.number += 1;
+      return this.insert(decl, prefix);
     };
 
-    CSS.prototype.removeKeyframes = function(position) {
-      this.stylesheet.rules.splice(position, 1);
-      return this.number -= 1;
-    };
-
-    CSS.prototype.eachRule = function(callback) {
-      return Rules.each(this.stylesheet.rules, callback);
-    };
-
-    CSS.prototype.eachDeclaration = function(callback) {
-      return this.eachRule(function(rule) {
-        return rule.each(callback);
-      });
-    };
-
-    return CSS;
-
-  })();
-
-  module.exports = CSS;
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/declaration.js", function(exports, require, module){
-(function() {
-  var Declaration, utils;
-
-  utils = require('./utils');
-
-  Declaration = (function() {
-    Declaration.register = function(klass) {
-      var name, _i, _len, _ref, _results;
-      _ref = klass.names;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
-        _results.push(this.hacks[name] = klass);
-      }
-      return _results;
-    };
-
-    Declaration.hacks = {};
-
-    Declaration.load = function(rule, number, node) {
-      var klass, prefix, unprefixed, _ref;
-      _ref = this.split(node.property), prefix = _ref[0], unprefixed = _ref[1];
-      klass = this.hacks[unprefixed];
-      if (klass) {
-        return new klass(rule, number, node, prefix, unprefixed);
-      } else {
-        return new Declaration(rule, number, node, prefix, unprefixed);
-      }
-    };
-
-    Declaration.split = function(prop) {
-      var prefix, separator, unprefixed;
-      if (prop[0] === '-') {
-        separator = prop.indexOf('-', 1) + 1;
-        prefix = prop.slice(0, separator);
-        unprefixed = prop.slice(separator);
-        return [prefix, unprefixed];
-      } else {
-        return ['', prop];
-      }
-    };
-
-    function Declaration(rule, number, node, prefix, unprefixed) {
-      this.rule = rule;
-      this.number = number;
-      this.node = node;
-      this.prefix = prefix;
-      this.unprefixed = unprefixed;
-      this.prop = this.node.property;
-      this.value = this.node.value;
-      this.valuesCache = {};
-    }
-
-    Declaration.prototype.valueContain = function(strings) {
-      var _this = this;
-      return strings.some(function(i) {
-        return _this.value.indexOf(i) !== -1;
-      });
-    };
-
-    Declaration.prototype.prefixProp = function(prefix, value) {
-      if (value == null) {
-        value = this.value;
-      }
-      if (this.rule.contain(prefix + this.unprefixed)) {
-        return;
-      }
-      return this.insertBefore(prefix + this.unprefixed, value);
-    };
-
-    Declaration.prototype.insertBefore = function(prop, value) {
-      var clone;
-      if (this.rule.contain(prop, value)) {
-        return;
-      }
-      clone = utils.clone(this.node, {
-        property: prop,
-        value: value
-      });
-      this.rule.add(this.number, clone);
-      return this.number += 1;
-    };
-
-    Declaration.prototype.remove = function() {
-      return this.rule.removeDecl(this.number);
-    };
-
-    Declaration.prototype.prefixValue = function(prefix, value) {
-      var val;
-      val = this.valuesCache[prefix] || this.value;
-      return this.valuesCache[prefix] = value.addPrefix(prefix, val);
-    };
-
-    Declaration.prototype.setValue = function(value) {
-      return this.value = this.node.value = value;
-    };
-
-    Declaration.prototype.saveValues = function() {
-      var prefix, value, vendor, _ref, _results;
-      _ref = this.valuesCache;
-      _results = [];
-      for (prefix in _ref) {
-        value = _ref[prefix];
-        vendor = utils.removeNote(prefix);
-        if (this.rule.prefix && vendor !== this.rule.prefix) {
-          continue;
-        }
-        if (vendor === this.prefix) {
-          _results.push(this.setValue(value));
-        } else if (!this.rule.byProp(vendor + this.unprefixed)) {
-          _results.push(this.insertBefore(this.prop, value));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
+    Declaration.prototype.old = function(prop, prefix) {
+      return [this.prefixed(prop, prefix)];
     };
 
     return Declaration;
 
-  })();
+  })(Prefixer);
 
   module.exports = Declaration;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/align-content.js", function(exports, require, module){
+},{"./browsers":4,"./prefixer":31,"postcss/lib/vendor":52}],6:[function(require,module,exports){
 (function() {
-  var AlignContent, FlexDeclaration,
+  var AlignContent, Declaration, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   AlignContent = (function(_super) {
     __extends(AlignContent, _super);
+
+    function AlignContent() {
+      _ref = AlignContent.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     AlignContent.names = ['align-content', 'flex-line-pack'];
 
@@ -2122,42 +758,56 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-content.js", functio
       'space-around': 'distribute'
     };
 
-    function AlignContent() {
-      AlignContent.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'align-content';
-      this.prop = this.prefix + this.unprefixed;
-    }
+    AlignContent.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        return prefix + 'flex-line-pack';
+      } else {
+        return AlignContent.__super__.prefixed.apply(this, arguments);
+      }
+    };
 
-    AlignContent.prototype.prefixProp = function(prefix) {
-      var oldValue, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === '2012') {
-        oldValue = AlignContent.oldValues[this.value] || this.value;
-        return this.insertBefore(prefix + 'flex-line-pack', oldValue);
+    AlignContent.prototype.normalize = function(prop) {
+      return 'align-content';
+    };
+
+    AlignContent.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2012) {
+        decl.value = AlignContent.oldValues[decl.value] || decl.value;
+        return AlignContent.__super__.set.call(this, decl, prefix);
       } else if (spec === 'final') {
-        return AlignContent.__super__.prefixProp.apply(this, arguments);
+        return AlignContent.__super__.set.apply(this, arguments);
       }
     };
 
     return AlignContent;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = AlignContent;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/align-items.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],7:[function(require,module,exports){
 (function() {
-  var AlignItems, FlexDeclaration,
+  var AlignItems, Declaration, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   AlignItems = (function(_super) {
     __extends(AlignItems, _super);
+
+    function AlignItems() {
+      _ref = AlignItems.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     AlignItems.names = ['align-items', 'flex-align', 'box-align'];
 
@@ -2166,44 +816,58 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-items.js", function(
       'flex-start': 'start'
     };
 
-    function AlignItems() {
-      AlignItems.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'align-items';
-      this.prop = this.prefix + this.unprefixed;
-    }
+    AlignItems.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return prefix + 'box-align';
+      } else if (spec === 2012) {
+        return prefix + 'flex-align';
+      } else {
+        return AlignItems.__super__.prefixed.apply(this, arguments);
+      }
+    };
 
-    AlignItems.prototype.prefixProp = function(prefix) {
-      var oldValue, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      oldValue = AlignItems.oldValues[this.value] || this.value;
-      if (spec === '2009') {
-        return this.insertBefore(prefix + 'box-align', oldValue);
-      } else if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex-align', oldValue);
-      } else if (spec === 'final') {
-        return AlignItems.__super__.prefixProp.apply(this, arguments);
+    AlignItems.prototype.normalize = function(prop) {
+      return 'align-items';
+    };
+
+    AlignItems.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2009 || spec === 2012) {
+        decl.value = AlignItems.oldValues[decl.value] || decl.value;
+        return AlignItems.__super__.set.call(this, decl, prefix);
+      } else {
+        return AlignItems.__super__.set.apply(this, arguments);
       }
     };
 
     return AlignItems;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = AlignItems;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/align-self.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],8:[function(require,module,exports){
 (function() {
-  var AlignSelf, FlexDeclaration,
+  var AlignSelf, Declaration, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   AlignSelf = (function(_super) {
     __extends(AlignSelf, _super);
+
+    function AlignSelf() {
+      _ref = AlignSelf.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     AlignSelf.names = ['align-self', 'flex-item-align'];
 
@@ -2212,33 +876,40 @@ require.register("autoprefixer/lib/autoprefixer/hacks/align-self.js", function(e
       'flex-start': 'start'
     };
 
-    function AlignSelf() {
-      AlignSelf.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'align-self';
-      this.prop = this.prefix + this.unprefixed;
-    }
+    AlignSelf.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        return prefix + 'flex-item-align';
+      } else {
+        return AlignSelf.__super__.prefixed.apply(this, arguments);
+      }
+    };
 
-    AlignSelf.prototype.prefixProp = function(prefix) {
-      var oldValue, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === '2012') {
-        oldValue = AlignSelf.oldValues[this.value] || this.value;
-        return this.insertBefore(prefix + 'flex-item-align', oldValue);
+    AlignSelf.prototype.normalize = function(prop) {
+      return 'align-self';
+    };
+
+    AlignSelf.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2012) {
+        decl.value = AlignSelf.oldValues[decl.value] || decl.value;
+        return AlignSelf.__super__.set.call(this, decl, prefix);
       } else if (spec === 'final') {
-        return AlignSelf.__super__.prefixProp.apply(this, arguments);
+        return AlignSelf.__super__.set.apply(this, arguments);
       }
     };
 
     return AlignSelf;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = AlignSelf;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/border-image.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],9:[function(require,module,exports){
 (function() {
   var BorderImage, Declaration, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -2256,8 +927,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-image.js", function
 
     BorderImage.names = ['border-image'];
 
-    BorderImage.prototype.prefixProp = function(prefix) {
-      return BorderImage.__super__.prefixProp.call(this, prefix, this.value.replace(/\s+fill(\s)/, '$1'));
+    BorderImage.prototype.set = function(decl, prefix) {
+      decl.value = decl.value.replace(/\s+fill(\s)/, '$1');
+      return BorderImage.__super__.set.call(this, decl, prefix);
     };
 
     return BorderImage;
@@ -2268,19 +940,23 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-image.js", function
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", function(exports, require, module){
+},{"../declaration":5}],10:[function(require,module,exports){
 (function() {
-  var BorderRadius, Declaration,
+  var BorderRadius, Declaration, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Declaration = require('../declaration');
 
   BorderRadius = (function(_super) {
-    var hor, mozilla, normal, ver, _i, _j, _len, _len1, _ref, _ref1;
+    var hor, mozilla, normal, ver, _i, _j, _len, _len1, _ref1, _ref2;
 
     __extends(BorderRadius, _super);
+
+    function BorderRadius() {
+      _ref = BorderRadius.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     BorderRadius.names = ['border-radius'];
 
@@ -2288,12 +964,12 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", functio
 
     BorderRadius.toNormal = {};
 
-    _ref = ['top', 'bottom'];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      ver = _ref[_i];
-      _ref1 = ['left', 'right'];
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        hor = _ref1[_j];
+    _ref1 = ['top', 'bottom'];
+    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+      ver = _ref1[_i];
+      _ref2 = ['left', 'right'];
+      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+        hor = _ref2[_j];
         normal = "border-" + ver + "-" + hor + "-radius";
         mozilla = "border-radius-" + ver + hor;
         BorderRadius.names.push(normal);
@@ -2303,25 +979,16 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", functio
       }
     }
 
-    function BorderRadius() {
-      BorderRadius.__super__.constructor.apply(this, arguments);
-      if (this.prefix === '-moz-') {
-        this.unprefixed = BorderRadius.toNormal[this.unprefixed] || this.unprefixed;
-        this.prop = this.prefix + this.unprefixed;
-      }
-    }
-
-    BorderRadius.prototype.prefixProp = function(prefix) {
-      var prop;
+    BorderRadius.prototype.prefixed = function(prop, prefix) {
       if (prefix === '-moz-') {
-        prop = BorderRadius.toMozilla[this.unprefixed] || this.unprefixed;
-        if (this.rule.contain(prefix + prop)) {
-          return;
-        }
-        return this.insertBefore(prefix + prop, this.value);
+        return prefix + (BorderRadius.toMozilla[prop] || prop);
       } else {
-        return BorderRadius.__super__.prefixProp.apply(this, arguments);
+        return BorderRadius.__super__.prefixed.apply(this, arguments);
       }
+    };
+
+    BorderRadius.prototype.normalize = function(prop) {
+      return BorderRadius.toNormal[prop] || prop;
     };
 
     return BorderRadius;
@@ -2332,78 +999,87 @@ require.register("autoprefixer/lib/autoprefixer/hacks/border-radius.js", functio
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/display-flex.js", function(exports, require, module){
+},{"../declaration":5}],11:[function(require,module,exports){
 (function() {
-  var DisplayFlex, FlexDeclaration,
+  var DisplayFlex, OldDisplayFlex, OldValue, Value, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  OldValue = require('../old-value');
+
+  Value = require('../value');
+
+  OldDisplayFlex = (function(_super) {
+    __extends(OldDisplayFlex, _super);
+
+    function OldDisplayFlex(name) {
+      this.name = name;
+    }
+
+    OldDisplayFlex.prototype.check = function(value) {
+      return value === this.name;
+    };
+
+    return OldDisplayFlex;
+
+  })(OldValue);
 
   DisplayFlex = (function(_super) {
     __extends(DisplayFlex, _super);
 
-    DisplayFlex.names = ['display'];
+    DisplayFlex.names = ['display-flex', 'inline-flex'];
 
-    function DisplayFlex() {
-      var name, prefix, _ref;
+    function DisplayFlex(name, prefixes) {
       DisplayFlex.__super__.constructor.apply(this, arguments);
-      _ref = FlexDeclaration.split(this.value), prefix = _ref[0], name = _ref[1];
-      if (name === 'flex' || name === 'box' || name === 'flexbox') {
-        this.prefix = prefix;
-        this.unprefixed = 'display-flex';
-        this.prop = this.prefix + this.unprefixed;
-      } else if (name === 'inline-flex' || name === 'inline-flexbox') {
-        this.prefix = prefix;
-        this.unprefixed = 'display-flex';
-        this.prop = this.prefix + this.unprefixed;
-        this.inline = true;
+      if (name === 'display-flex') {
+        this.name = 'flex';
       }
     }
 
-    DisplayFlex.prototype.prefixProp = function(prefix) {
-      var spec, _ref;
-      if (this.unprefixed !== 'display-flex') {
-        return DisplayFlex.__super__.prefixProp.apply(this, arguments);
-      } else {
-        _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-        if (spec === '2009') {
-          if (!this.inline) {
-            return this.prefixDisplay(prefix, 'box');
-          }
-        } else if (spec === '2012') {
-          return this.prefixDisplay(prefix, this.inline ? 'inline-flexbox' : 'flexbox');
-        } else if (spec === 'final') {
-          return this.prefixDisplay(prefix, this.inline ? 'inline-flex' : 'flex');
-        }
-      }
+    DisplayFlex.prototype.check = function(decl) {
+      return decl.value === this.name;
     };
 
-    DisplayFlex.prototype.prefixDisplay = function(prefix, name) {
-      return this.insertBefore('display', prefix + name);
+    DisplayFlex.prototype.prefixed = function(prefix) {
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
+      if (spec === 2009 && this.name === 'inline-flex') {
+        return;
+      }
+      return prefix + (spec === 2009 ? 'box' : spec === 2012 ? this.name === 'flex' ? 'flexbox' : 'inline-flexbox' : spec === 'final' ? this.name : void 0);
+    };
+
+    DisplayFlex.prototype.replace = function(string, prefix) {
+      return this.prefixed(prefix);
+    };
+
+    DisplayFlex.prototype.old = function(prefix) {
+      var prefixed;
+      prefixed = this.prefixed(prefix);
+      if (prefixed) {
+        return new OldValue(prefixed);
+      }
     };
 
     return DisplayFlex;
 
-  })(FlexDeclaration);
+  })(Value);
 
   module.exports = DisplayFlex;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/fill-available.js", function(exports, require, module){
+},{"../old-value":30,"../value":36,"./flex-spec":19}],12:[function(require,module,exports){
 (function() {
-  var FillAvailable, OldValue, Value, utils, _ref,
+  var FillAvailable, OldValue, Value, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   OldValue = require('../old-value');
 
   Value = require('../value');
-
-  utils = require('../utils');
 
   FillAvailable = (function(_super) {
     __extends(FillAvailable, _super);
@@ -2415,11 +1091,11 @@ require.register("autoprefixer/lib/autoprefixer/hacks/fill-available.js", functi
 
     FillAvailable.names = ['fill-available'];
 
-    FillAvailable.prototype.addPrefix = function(prefix, string) {
+    FillAvailable.prototype.replace = function(string, prefix) {
       if (prefix === '-moz-') {
-        return string.replace(this.regexp, '$1-moz-available$3');
+        return string.replace(this.regexp(), '$1-moz-available$3');
       } else {
-        return FillAvailable.__super__.addPrefix.apply(this, arguments);
+        return FillAvailable.__super__.replace.apply(this, arguments);
       }
     };
 
@@ -2439,10 +1115,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/fill-available.js", functi
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(exports, require, module){
+},{"../old-value":30,"../value":36}],13:[function(require,module,exports){
 (function() {
-  var Declaration, Filter,
+  var Declaration, Filter, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2451,14 +1126,18 @@ require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(expor
   Filter = (function(_super) {
     __extends(Filter, _super);
 
+    function Filter() {
+      _ref = Filter.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
     Filter.names = ['filter'];
 
-    function Filter() {
-      Filter.__super__.constructor.apply(this, arguments);
-      if (this.value.indexOf('DXImageTransform.Microsoft') !== -1 || this.value.indexOf('alpha(') !== -1) {
-        this.unprefixed = this.prop = '-ms-filter';
-      }
-    }
+    Filter.prototype.check = function(decl) {
+      var v;
+      v = decl.value;
+      return v.indexOf('alpha(') === -1 && v.indexOf('DXImageTransform.Microsoft') === -1;
+    };
 
     return Filter;
 
@@ -2468,14 +1147,15 @@ require.register("autoprefixer/lib/autoprefixer/hacks/filter.js", function(expor
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-basis.js", function(exports, require, module){
+},{"../declaration":5}],14:[function(require,module,exports){
 (function() {
-  var FlexBasis, FlexDeclaration, _ref,
+  var Declaration, FlexBasis, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   FlexBasis = (function(_super) {
     __extends(FlexBasis, _super);
@@ -2487,107 +1167,117 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-basis.js", function(e
 
     FlexBasis.names = ['flex-basis'];
 
-    FlexBasis.prototype.prefixProp = function(prefix) {
+    FlexBasis.prototype.normalize = function() {
+      return 'flex';
+    };
+
+    FlexBasis.prototype.prefixed = function(prop, prefix) {
       var spec, _ref1;
-      _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex', '0 1 ' + this.value);
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        return prefix + 'flex';
+      } else {
+        return FlexBasis.__super__.prefixed.apply(this, arguments);
+      }
+    };
+
+    FlexBasis.prototype.set = function(decl, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        decl.prop = prefix + 'flex';
+        decl.value = '0 1 ' + decl.value;
+        return decl;
       } else if (spec === 'final') {
-        return FlexBasis.__super__.prefixProp.apply(this, arguments);
+        return FlexBasis.__super__.set.apply(this, arguments);
       }
     };
 
     return FlexBasis;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = FlexBasis;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-declaration.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],15:[function(require,module,exports){
 (function() {
-  var Declaration, FlexDeclaration, _ref,
+  var Declaration, FlexDirection, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  flexSpec = require('./flex-spec');
 
   Declaration = require('../declaration');
-
-  FlexDeclaration = (function(_super) {
-    __extends(FlexDeclaration, _super);
-
-    function FlexDeclaration() {
-      _ref = FlexDeclaration.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    FlexDeclaration.prototype.flexSpec = function(prefix) {
-      var spec;
-      spec = prefix === '-webkit- 2009' || prefix === '-moz-' ? '2009' : prefix === '-ms-' ? '2012' : prefix === '-webkit-' ? 'final' : void 0;
-      if (prefix === '-webkit- 2009') {
-        prefix = '-webkit-';
-      }
-      return [spec, prefix];
-    };
-
-    return FlexDeclaration;
-
-  })(Declaration);
-
-  module.exports = FlexDeclaration;
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-direction.js", function(exports, require, module){
-(function() {
-  var FlexDeclaration, FlexDirection,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  FlexDeclaration = require('./flex-declaration');
 
   FlexDirection = (function(_super) {
     __extends(FlexDirection, _super);
 
-    FlexDirection.names = ['flex-direction', 'box-direction', 'box-orient'];
-
     function FlexDirection() {
-      FlexDirection.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'flex-direction';
-      this.prop = this.prefix + this.unprefixed;
+      _ref = FlexDirection.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    FlexDirection.prototype.prefixProp = function(prefix) {
-      var dir, orient, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === '2009') {
-        orient = this.value.indexOf('row') !== -1 ? 'horizontal' : 'vertical';
-        this.insertBefore(prefix + 'box-orient', orient);
-        dir = this.value.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
-        return this.insertBefore(prefix + 'box-direction', dir);
+    FlexDirection.names = ['flex-direction', 'box-direction', 'box-orient'];
+
+    FlexDirection.prototype.normalize = function(prop) {
+      return 'flex-direction';
+    };
+
+    FlexDirection.prototype.insert = function(decl, prefix) {
+      var already, cloned, dir, orient, spec, value, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        already = decl.parent.some(function(i) {
+          return i.prop === prefix + 'box-orient' || i.prop === prefix + 'box-direction';
+        });
+        if (already) {
+          return;
+        }
+        value = decl.value;
+        orient = value.indexOf('row') !== -1 ? 'horizontal' : 'vertical';
+        dir = value.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
+        cloned = this.clone(decl);
+        cloned.prop = prefix + 'box-orient';
+        cloned.value = orient;
+        decl.parent.insertBefore(decl, cloned);
+        cloned = this.clone(decl);
+        cloned.prop = prefix + 'box-direction';
+        cloned.value = dir;
+        return decl.parent.insertBefore(decl, cloned);
       } else {
-        return FlexDirection.__super__.prefixProp.apply(this, arguments);
+        return FlexDirection.__super__.insert.apply(this, arguments);
+      }
+    };
+
+    FlexDirection.prototype.old = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return [prefix + 'box-orient', prefix + 'box-direction'];
+      } else {
+        return FlexDirection.__super__.old.apply(this, arguments);
       }
     };
 
     return FlexDirection;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = FlexDirection;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-flow.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],16:[function(require,module,exports){
 (function() {
-  var FlexDeclaration, FlexFlow, _ref,
+  var Declaration, FlexFlow, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   FlexFlow = (function(_super) {
     __extends(FlexFlow, _super);
@@ -2599,32 +1289,33 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-flow.js", function(ex
 
     FlexFlow.names = ['flex-flow'];
 
-    FlexFlow.prototype.prefixProp = function(prefix) {
+    FlexFlow.prototype.set = function(decl, prefix) {
       var spec, _ref1;
-      _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec === '2012') {
-        return FlexFlow.__super__.prefixProp.apply(this, arguments);
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        return FlexFlow.__super__.set.apply(this, arguments);
       } else if (spec === 'final') {
-        return FlexFlow.__super__.prefixProp.apply(this, arguments);
+        return FlexFlow.__super__.set.apply(this, arguments);
       }
     };
 
     return FlexFlow;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = FlexFlow;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-grow.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],17:[function(require,module,exports){
 (function() {
-  var Flex, FlexDeclaration, _ref,
+  var Declaration, Flex, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   Flex = (function(_super) {
     __extends(Flex, _super);
@@ -2636,34 +1327,39 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-grow.js", function(ex
 
     Flex.names = ['flex-grow'];
 
-    Flex.prototype.prefixProp = function(prefix) {
+    Flex.prototype.normalize = function() {
+      return 'flex';
+    };
+
+    Flex.prototype.prefixed = function(prop, prefix) {
       var spec, _ref1;
-      _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec === '2009') {
-        return this.insertBefore(prefix + 'box-flex', this.value);
-      } else if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex', this.value);
-      } else if (spec === 'final') {
-        return Flex.__super__.prefixProp.apply(this, arguments);
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return prefix + 'box-flex';
+      } else if (spec === 2012) {
+        return prefix + 'flex';
+      } else {
+        return Flex.__super__.prefixed.apply(this, arguments);
       }
     };
 
     return Flex;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = Flex;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-shrink.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],18:[function(require,module,exports){
 (function() {
-  var FlexDeclaration, FlexShrink, _ref,
+  var Declaration, FlexShrink, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   FlexShrink = (function(_super) {
     __extends(FlexShrink, _super);
@@ -2675,32 +1371,62 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-shrink.js", function(
 
     FlexShrink.names = ['flex-shrink'];
 
-    FlexShrink.prototype.prefixProp = function(prefix) {
+    FlexShrink.prototype.normalize = function() {
+      return 'flex';
+    };
+
+    FlexShrink.prototype.prefixed = function(prop, prefix) {
       var spec, _ref1;
-      _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex', '0 ' + this.value);
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        return prefix + 'flex';
+      } else {
+        return FlexShrink.__super__.prefixed.apply(this, arguments);
+      }
+    };
+
+    FlexShrink.prototype.set = function(decl, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2012) {
+        decl.prop = prefix + 'flex';
+        decl.value = '0 ' + decl.value;
+        return decl;
       } else if (spec === 'final') {
-        return FlexShrink.__super__.prefixProp.apply(this, arguments);
+        return FlexShrink.__super__.set.apply(this, arguments);
       }
     };
 
     return FlexShrink;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = FlexShrink;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex-wrap.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],19:[function(require,module,exports){
 (function() {
-  var FlexDeclaration, FlexWrap, _ref,
+  module.exports = function(prefix) {
+    var spec;
+    spec = prefix === '-webkit- 2009' || prefix === '-moz-' ? 2009 : prefix === '-ms-' ? 2012 : prefix === '-webkit-' ? 'final' : void 0;
+    if (prefix === '-webkit- 2009') {
+      prefix = '-webkit-';
+    }
+    return [spec, prefix];
+  };
+
+}).call(this);
+
+},{}],20:[function(require,module,exports){
+(function() {
+  var Declaration, FlexWrap, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   FlexWrap = (function(_super) {
     __extends(FlexWrap, _super);
@@ -2712,67 +1438,76 @@ require.register("autoprefixer/lib/autoprefixer/hacks/flex-wrap.js", function(ex
 
     FlexWrap.names = ['flex-wrap'];
 
-    FlexWrap.prototype.prefixProp = function(prefix) {
-      var spec, _ref1;
-      _ref1 = this.flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
-      if (spec === '2012') {
-        return FlexWrap.__super__.prefixProp.apply(this, arguments);
-      } else if (spec === 'final') {
-        return FlexWrap.__super__.prefixProp.apply(this, arguments);
+    FlexWrap.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec !== 2009) {
+        return FlexWrap.__super__.set.apply(this, arguments);
       }
     };
 
     return FlexWrap;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = FlexWrap;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/flex.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],21:[function(require,module,exports){
 (function() {
-  var Flex, FlexDeclaration,
+  var Declaration, Flex, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   Flex = (function(_super) {
     __extends(Flex, _super);
 
-    Flex.names = ['flex', 'box-flex'];
-
     function Flex() {
-      Flex.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'flex';
-      this.prop = this.prefix + this.unprefixed;
+      _ref = Flex.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    Flex.prototype.prefixProp = function(prefix) {
-      var first, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === '2009') {
-        first = this.value.split(' ')[0];
-        return this.insertBefore(prefix + 'box-flex', first);
-      } else if (spec === '2012') {
-        return Flex.__super__.prefixProp.apply(this, arguments);
-      } else if (spec === 'final') {
-        return Flex.__super__.prefixProp.apply(this, arguments);
+    Flex.names = ['flex', 'box-flex'];
+
+    Flex.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return prefix + 'box-flex';
+      } else {
+        return Flex.__super__.prefixed.apply(this, arguments);
+      }
+    };
+
+    Flex.prototype.normalize = function(prop) {
+      return 'flex';
+    };
+
+    Flex.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2009) {
+        decl.value = decl.value.split(' ')[0];
+        return Flex.__super__.set.call(this, decl, prefix);
+      } else {
+        return Flex.__super__.set.apply(this, arguments);
       }
     };
 
     return Flex;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = Flex;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/fullscreen.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],22:[function(require,module,exports){
 (function() {
   var Fullscreen, Selector, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -2808,10 +1543,9 @@ require.register("autoprefixer/lib/autoprefixer/hacks/fullscreen.js", function(e
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exports, require, module){
+},{"../selector":34}],23:[function(require,module,exports){
 (function() {
-  var Gradient, OldValue, Value, isDirection, utils,
+  var Gradient, OldValue, Value, isDirection, list, utils, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2821,75 +1555,41 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
 
   utils = require('../utils');
 
+  list = require('postcss/lib/list');
+
   isDirection = new RegExp('(top|left|right|bottom)', 'gi');
 
   Gradient = (function(_super) {
-    var i, _i, _len, _ref;
-
     __extends(Gradient, _super);
+
+    function Gradient() {
+      _ref = Gradient.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     Gradient.names = ['linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient'];
 
-    Gradient.starts = new RegExp('(^|\\s*)' + Gradient.names.join('|'), 'i');
-
-    Gradient.regexps = {};
-
-    _ref = Gradient.names;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      i = _ref[_i];
-      Gradient.regexps[i] = new RegExp('(^|\\s|,)' + i + '\\((.+)\\)', 'gi');
-    }
-
-    function Gradient(name, prefixes) {
-      this.name = name;
-      this.prefixes = prefixes;
-      this.regexp = Gradient.regexps[this.name];
-    }
-
-    Gradient.prototype.addPrefix = function(prefix, string) {
-      var _this = this;
-      return string.replace(this.regexp, function(all, before, args) {
-        var decl, prefixedDecls, _j, _len1, _ref1;
-        prefixedDecls = [];
-        _ref1 = _this.splitDecls(all);
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          decl = _ref1[_j];
-          prefixedDecls.push(decl.replace(_this.regexp, function(all, before, args) {
-            var params;
-            params = _this.splitParams(args);
-            params = _this.newDirection(params);
-            if (prefix === '-webkit- old') {
-              if (_this.name !== 'linear-gradient') {
-                return all;
-              }
-              if (params[0] && params[0].indexOf('deg') !== -1) {
-                return all;
-              }
-              if (args.indexOf('-corner') !== -1) {
-                return all;
-              }
-              if (args.indexOf('-side') !== -1) {
-                return all;
-              }
-              params = _this.oldDirection(params);
-              params = _this.colorStops(params);
-              return '-webkit-gradient(linear, ' + params.join(', ') + ')';
-            } else {
-              if (params.length > 0) {
-                if (params[0].slice(0, 3) === 'to ') {
-                  params[0] = _this.fixDirection(params[0]);
-                } else if (params[0].indexOf('deg') !== -1) {
-                  params[0] = _this.fixAngle(params[0]);
-                } else if (params[0].indexOf(' at ') !== -1) {
-                  _this.fixRadial(params);
-                }
-              }
-              return before + prefix + _this.name + '(' + params.join(', ') + ')';
-            }
-          }));
+    Gradient.prototype.replace = function(string, prefix) {
+      var values,
+        _this = this;
+      values = list.comma(string).map(function(value) {
+        var after, args, close, params;
+        if (value.slice(0, +_this.name.length + 1 || 9e9) !== _this.name + '(') {
+          return value;
         }
-        return prefixedDecls.join(',');
+        close = value.lastIndexOf(')');
+        after = value.slice(close + 1);
+        args = value.slice(_this.name.length + 1, +(close - 1) + 1 || 9e9);
+        params = list.comma(args);
+        params = _this.newDirection(params);
+        if (prefix === '-webkit- old') {
+          return _this.oldWebkit(value, args, params, after);
+        } else {
+          _this.convertDirection(params);
+          return prefix + _this.name + '(' + params.join(', ') + ')' + after;
+        }
       });
+      return values.join(', ');
     };
 
     Gradient.prototype.directions = {
@@ -2910,64 +1610,16 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       'bottom left': 'right top, left bottom'
     };
 
-    Gradient.prototype.splitDecls = function(decl) {
-      var chunks, currentDecl, decls, _j, _len1;
-      decls = [];
-      chunks = decl.split(',');
-      currentDecl = [];
-      for (_j = 0, _len1 = chunks.length; _j < _len1; _j++) {
-        i = chunks[_j];
-        if (Gradient.starts.test(i)) {
-          if (currentDecl.length === 0) {
-            currentDecl.push(i);
-          } else {
-            decls.push(currentDecl.join(','));
-            currentDecl = [i];
-          }
-        } else {
-          currentDecl.push(i);
-        }
-      }
-      decls.push(currentDecl.join(','));
-      return decls;
-    };
-
-    Gradient.prototype.splitParams = function(params) {
-      var array, char, func, param, _j, _len1;
-      array = [];
-      param = '';
-      func = 0;
-      for (_j = 0, _len1 = params.length; _j < _len1; _j++) {
-        char = params[_j];
-        if (char === ')' && func > 0) {
-          func -= 1;
-          param += char;
-        } else if (char === '(') {
-          param += char;
-          func += 1;
-        } else if (func > 0) {
-          param += char;
-        } else if (char === ',') {
-          array.push(param.trim());
-          param = '';
-        } else {
-          param += char;
-        }
-      }
-      array.push(param.trim());
-      return array;
-    };
-
     Gradient.prototype.newDirection = function(params) {
       var first, value;
       first = params[0];
       if (first.indexOf('to ') === -1 && isDirection.test(first)) {
         first = first.split(' ');
         first = (function() {
-          var _j, _len1, _results;
+          var _i, _len, _results;
           _results = [];
-          for (_j = 0, _len1 = first.length; _j < _len1; _j++) {
-            value = first[_j];
+          for (_i = 0, _len = first.length; _i < _len; _i++) {
+            value = first[_i];
             _results.push(this.directions[value.toLowerCase()] || value);
           }
           return _results;
@@ -2977,15 +1629,45 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       return params;
     };
 
+    Gradient.prototype.oldWebkit = function(value, args, params, after) {
+      if (this.name !== 'linear-gradient') {
+        return value;
+      }
+      if (params[0] && params[0].indexOf('deg') !== -1) {
+        return value;
+      }
+      if (args.indexOf('-corner') !== -1) {
+        return value;
+      }
+      if (args.indexOf('-side') !== -1) {
+        return value;
+      }
+      params = this.oldDirection(params);
+      params = this.colorStops(params);
+      return '-webkit-gradient(linear, ' + params.join(', ') + ')' + after;
+    };
+
+    Gradient.prototype.convertDirection = function(params) {
+      if (params.length > 0) {
+        if (params[0].slice(0, 3) === 'to ') {
+          return params[0] = this.fixDirection(params[0]);
+        } else if (params[0].indexOf('deg') !== -1) {
+          return params[0] = this.fixAngle(params[0]);
+        } else if (params[0].indexOf(' at ') !== -1) {
+          return this.fixRadial(params);
+        }
+      }
+    };
+
     Gradient.prototype.fixDirection = function(param) {
       var value;
       param = param.split(' ');
       param.splice(0, 1);
       param = (function() {
-        var _j, _len1, _results;
+        var _i, _len, _results;
         _results = [];
-        for (_j = 0, _len1 = param.length; _j < _len1; _j++) {
-          value = param[_j];
+        for (_i = 0, _len = param.length; _i < _len; _i++) {
+          value = param[_i];
           _results.push(this.directions[value.toLowerCase()] || value);
         }
         return _results;
@@ -3002,12 +1684,6 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       param = Math.abs(450 - param) % 360;
       param = this.roundFloat(param, 3);
       return "" + param + "deg";
-    };
-
-    Gradient.prototype.fixRadial = function(params) {
-      var first;
-      first = params[0].split(/\s+at\s+/);
-      return params.splice(0, 1, first[1], first[0]);
     };
 
     Gradient.prototype.oldDirection = function(params) {
@@ -3056,6 +1732,12 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
       });
     };
 
+    Gradient.prototype.fixRadial = function(params) {
+      var first;
+      first = params[0].split(/\s+at\s+/);
+      return params.splice(0, 1, first[1], first[0]);
+    };
+
     Gradient.prototype.old = function(prefix) {
       var regexp, string, type;
       if (prefix === '-webkit-') {
@@ -3076,17 +1758,23 @@ require.register("autoprefixer/lib/autoprefixer/hacks/gradient.js", function(exp
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/justify-content.js", function(exports, require, module){
+},{"../old-value":30,"../utils":35,"../value":36,"postcss/lib/list":43}],24:[function(require,module,exports){
 (function() {
-  var FlexDeclaration, JustifyContent,
+  var Declaration, JustifyContent, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   JustifyContent = (function(_super) {
     __extends(JustifyContent, _super);
+
+    function JustifyContent() {
+      _ref = JustifyContent.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
 
     JustifyContent.names = ['justify-content', 'flex-pack', 'box-pack'];
 
@@ -3097,78 +1785,100 @@ require.register("autoprefixer/lib/autoprefixer/hacks/justify-content.js", funct
       'space-around': 'distribute'
     };
 
-    function JustifyContent() {
-      JustifyContent.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'justify-content';
-      this.prop = this.prefix + this.unprefixed;
-    }
+    JustifyContent.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return prefix + 'box-pack';
+      } else if (spec === 2012) {
+        return prefix + 'flex-pack';
+      } else {
+        return JustifyContent.__super__.prefixed.apply(this, arguments);
+      }
+    };
 
-    JustifyContent.prototype.prefixProp = function(prefix) {
-      var oldValue, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      oldValue = JustifyContent.oldValues[this.value] || this.value;
-      if (spec === '2009') {
-        if (this.value !== 'space-around') {
-          return this.insertBefore(prefix + 'box-pack', oldValue);
+    JustifyContent.prototype.normalize = function(prop) {
+      return 'justify-content';
+    };
+
+    JustifyContent.prototype.set = function(decl, prefix) {
+      var spec, value;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2009 || spec === 2012) {
+        value = JustifyContent.oldValues[decl.value] || decl.value;
+        decl.value = value;
+        if (spec !== 2009 || value !== 'distribute') {
+          return JustifyContent.__super__.set.call(this, decl, prefix);
         }
-      } else if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex-pack', oldValue);
       } else if (spec === 'final') {
-        return JustifyContent.__super__.prefixProp.apply(this, arguments);
+        return JustifyContent.__super__.set.apply(this, arguments);
       }
     };
 
     return JustifyContent;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = JustifyContent;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/order.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],25:[function(require,module,exports){
 (function() {
-  var FlexDeclaration, Order,
+  var Declaration, Order, flexSpec, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  FlexDeclaration = require('./flex-declaration');
+  flexSpec = require('./flex-spec');
+
+  Declaration = require('../declaration');
 
   Order = (function(_super) {
     __extends(Order, _super);
 
-    Order.names = ['order', 'flex-order', 'box-ordinal-group'];
-
     function Order() {
-      Order.__super__.constructor.apply(this, arguments);
-      this.unprefixed = 'order';
-      this.prop = this.prefix + this.unprefixed;
+      _ref = Order.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    Order.prototype.prefixProp = function(prefix) {
-      var oldValue, spec, _ref;
-      _ref = this.flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === '2009') {
-        oldValue = parseInt(this.value) + 1;
-        return this.insertBefore(prefix + 'box-ordinal-group', oldValue.toString());
-      } else if (spec === '2012') {
-        return this.insertBefore(prefix + 'flex-order', this.value);
-      } else if (spec === 'final') {
-        return Order.__super__.prefixProp.apply(this, arguments);
+    Order.names = ['order', 'flex-order', 'box-ordinal-group'];
+
+    Order.prototype.prefixed = function(prop, prefix) {
+      var spec, _ref1;
+      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      if (spec === 2009) {
+        return prefix + 'box-ordinal-group';
+      } else if (spec === 2012) {
+        return prefix + 'flex-order';
+      } else {
+        return Order.__super__.prefixed.apply(this, arguments);
+      }
+    };
+
+    Order.prototype.normalize = function(prop) {
+      return 'order';
+    };
+
+    Order.prototype.set = function(decl, prefix) {
+      var spec;
+      spec = flexSpec(prefix)[0];
+      if (spec === 2009) {
+        decl.value = (parseInt(decl.value) + 1).toString();
+        return Order.__super__.set.call(this, decl, prefix);
+      } else {
+        return Order.__super__.set.apply(this, arguments);
       }
     };
 
     return Order;
 
-  })(FlexDeclaration);
+  })(Declaration);
 
   module.exports = Order;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/placeholder.js", function(exports, require, module){
+},{"../declaration":5,"./flex-spec":19}],26:[function(require,module,exports){
 (function() {
   var Placeholder, Selector, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -3204,43 +1914,41 @@ require.register("autoprefixer/lib/autoprefixer/hacks/placeholder.js", function(
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/hacks/transition.js", function(exports, require, module){
+},{"../selector":34}],27:[function(require,module,exports){
 (function() {
-  var Declaration, Transition, _ref,
+  var Transform, Value, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Declaration = require('../declaration');
+  Value = require('../value');
 
-  Transition = (function(_super) {
-    __extends(Transition, _super);
+  Transform = (function(_super) {
+    __extends(Transform, _super);
 
-    function Transition() {
-      _ref = Transition.__super__.constructor.apply(this, arguments);
+    function Transform() {
+      _ref = Transform.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    Transition.names = ['transition', 'transition-property'];
+    Transform.names = ['transform'];
 
-    Transition.prototype.prefixValue = function(prefix, value) {
-      if (prefix === '-ms-' && value.name === 'transform') {
-
+    Transform.prototype.replace = function(value, prefix) {
+      if (prefix === '-ms-') {
+        return value;
       } else {
-        return Transition.__super__.prefixValue.apply(this, arguments);
+        return Transform.__super__.replace.apply(this, arguments);
       }
     };
 
-    return Transition;
+    return Transform;
 
-  })(Declaration);
+  })(Value);
 
-  module.exports = Transition;
+  module.exports = Transform;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/inspect.js", function(exports, require, module){
+},{"../value":36}],28:[function(require,module,exports){
 (function() {
   var capitalize, names, prefix;
 
@@ -3334,60 +2042,50 @@ require.register("autoprefixer/lib/autoprefixer/inspect.js", function(exports, r
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/keyframes.js", function(exports, require, module){
+},{}],29:[function(require,module,exports){
 (function() {
-  var Keyframes, utils;
+  var Keyframes, Prefixer, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  utils = require('./utils');
+  Prefixer = require('./prefixer');
 
-  Keyframes = (function() {
-    function Keyframes(css, number, rule) {
-      this.css = css;
-      this.number = number;
-      this.rule = rule;
-      this.prefix = this.rule.vendor;
+  Keyframes = (function(_super) {
+    __extends(Keyframes, _super);
+
+    function Keyframes() {
+      _ref = Keyframes.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    Keyframes.prototype.clone = function() {
-      return utils.clone(this.rule, {
-        keyframes: this.rule.keyframes.map(function(i) {
-          if (i.type === 'keyframe') {
-            return utils.clone(i, {
-              values: i.values.slice(),
-              declarations: i.declarations.map(function(decl) {
-                return utils.clone(decl);
-              })
-            });
-          } else {
-            return utils.clone(i);
-          }
-        })
+    Keyframes.prototype.check = function(atRule) {
+      return atRule.name === 'keyframes';
+    };
+
+    Keyframes.prototype.add = function(atRule, prefix) {
+      var already, cloned, prefixed;
+      prefixed = prefix + atRule.name;
+      already = atRule.parent.some(function(i) {
+        return i.name === prefixed && i.params === atRule.params;
       });
-    };
-
-    Keyframes.prototype.cloneWithPrefix = function(prefix) {
-      var clone;
-      clone = this.clone();
-      clone.vendor = prefix;
-      this.css.addKeyframes(this.number, clone);
-      return this.number += 1;
-    };
-
-    Keyframes.prototype.remove = function() {
-      return this.css.removeKeyframes(this.number);
+      if (already) {
+        return;
+      }
+      cloned = this.clone(atRule, {
+        name: prefixed
+      });
+      return atRule.parent.insertBefore(atRule, cloned);
     };
 
     return Keyframes;
 
-  })();
+  })(Prefixer);
 
   module.exports = Keyframes;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/old-value.js", function(exports, require, module){
+},{"./prefixer":31}],30:[function(require,module,exports){
 (function() {
   var OldValue, utils;
 
@@ -3418,26 +2116,153 @@ require.register("autoprefixer/lib/autoprefixer/old-value.js", function(exports,
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, require, module){
+},{"./utils":35}],31:[function(require,module,exports){
 (function() {
-  var Prefixes, Processor, Selector, Value, utils;
+  var Browsers, Prefixer, utils, vendor;
+
+  Browsers = require('./browsers');
+
+  vendor = require('postcss/lib/vendor');
 
   utils = require('./utils');
 
+  Prefixer = (function() {
+    Prefixer.hack = function(klass) {
+      var name, _i, _len, _ref, _results;
+      this.hacks || (this.hacks = {});
+      _ref = klass.names;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        name = _ref[_i];
+        _results.push(this.hacks[name] = klass);
+      }
+      return _results;
+    };
+
+    Prefixer.load = function(name, prefixes, all) {
+      var klass, _ref;
+      klass = (_ref = this.hacks) != null ? _ref[name] : void 0;
+      if (klass) {
+        return new klass(name, prefixes, all);
+      } else {
+        return new this(name, prefixes, all);
+      }
+    };
+
+    Prefixer.clone = function(node, overrides) {
+      var cloned;
+      cloned = node.clone(overrides);
+      delete cloned._autoprefixerPrefix;
+      delete cloned._autoprefixerValues;
+      return cloned;
+    };
+
+    function Prefixer(name, prefixes, all) {
+      this.name = name;
+      this.prefixes = prefixes;
+      this.all = all;
+    }
+
+    Prefixer.prototype.parentPrefix = function(node) {
+      var prefix;
+      prefix = node._autoprefixerPrefix != null ? node._autoprefixerPrefix : node.type === 'decl' && node.prop[0] === '-' ? vendor.prefix(node.prop) : node.type === 'root' ? false : node.type === 'rule' && node.selector.indexOf(':-') !== -1 ? node.selector.match(/:(-\w+-)/)[1] : node.type === 'atrule' && node.name[0] === '-' ? vendor.prefix(node.name) : this.parentPrefix(node.parent);
+      if (Browsers.prefixes().indexOf(prefix) === -1) {
+        prefix = false;
+      }
+      return node._autoprefixerPrefix = prefix;
+    };
+
+    Prefixer.prototype.process = function(node) {
+      var parent, prefix, _i, _len, _ref, _results;
+      if (!this.check(node)) {
+        return;
+      }
+      parent = this.parentPrefix(node);
+      _ref = this.prefixes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        prefix = _ref[_i];
+        if (parent && parent !== utils.removeNote(prefix)) {
+          continue;
+        }
+        _results.push(this.add(node, prefix));
+      }
+      return _results;
+    };
+
+    Prefixer.prototype.clone = function(node, overrides) {
+      return Prefixer.clone(node, overrides);
+    };
+
+    return Prefixer;
+
+  })();
+
+  module.exports = Prefixer;
+
+}).call(this);
+
+},{"./browsers":4,"./utils":35,"postcss/lib/vendor":52}],32:[function(require,module,exports){
+(function() {
+  var Declaration, Keyframes, Prefixes, Processor, Selector, Value, declsCache, utils, vendor;
+
+  utils = require('./utils');
+
+  vendor = require('postcss/lib/vendor');
+
   Processor = require('./processor');
+
+  Declaration = require('./declaration');
+
+  Keyframes = require('./keyframes');
 
   Selector = require('./selector');
 
   Value = require('./value');
 
-  Value.register(require('./hacks/gradient'));
+  Selector.hack(require('./hacks/fullscreen'));
 
-  Value.register(require('./hacks/fill-available'));
+  Selector.hack(require('./hacks/placeholder'));
 
-  Selector.register(require('./hacks/fullscreen'));
+  Declaration.hack(require('./hacks/flex'));
 
-  Selector.register(require('./hacks/placeholder'));
+  Declaration.hack(require('./hacks/order'));
+
+  Declaration.hack(require('./hacks/filter'));
+
+  Declaration.hack(require('./hacks/flex-flow'));
+
+  Declaration.hack(require('./hacks/flex-grow'));
+
+  Declaration.hack(require('./hacks/flex-wrap'));
+
+  Declaration.hack(require('./hacks/align-self'));
+
+  Declaration.hack(require('./hacks/flex-basis'));
+
+  Declaration.hack(require('./hacks/align-items'));
+
+  Declaration.hack(require('./hacks/flex-shrink'));
+
+  Declaration.hack(require('./hacks/border-image'));
+
+  Declaration.hack(require('./hacks/align-content'));
+
+  Declaration.hack(require('./hacks/border-radius'));
+
+  Declaration.hack(require('./hacks/flex-direction'));
+
+  Declaration.hack(require('./hacks/justify-content'));
+
+  Value.hack(require('./hacks/gradient'));
+
+  Value.hack(require('./hacks/transform'));
+
+  Value.hack(require('./hacks/display-flex'));
+
+  Value.hack(require('./hacks/fill-available'));
+
+  declsCache = {};
 
   Prefixes = (function() {
     function Prefixes(data, browsers) {
@@ -3445,14 +2270,13 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
       this.data = data;
       this.browsers = browsers;
       _ref = this.preprocess(this.select(this.data)), this.add = _ref[0], this.remove = _ref[1];
-      this.otherCache = {};
       this.processor = new Processor(this);
     }
 
     Prefixes.prototype.transitionProps = ['transition', 'transition-property'];
 
     Prefixes.prototype.select = function(list) {
-      var add, all, data, name, selected,
+      var add, all, data, name, notes, selected,
         _this = this;
       selected = {
         add: {},
@@ -3468,6 +2292,12 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
             note: params[2]
           };
         });
+        notes = add.filter(function(i) {
+          return i.note;
+        }).map(function(i) {
+          return _this.browsers.prefix(i.browser) + ' ' + i.note;
+        });
+        notes = utils.uniq(notes);
         add = add.filter(function(i) {
           return _this.browsers.isSelected(i.browser);
         }).map(function(i) {
@@ -3488,6 +2318,7 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
         if (data.mistakes) {
           all = all.concat(data.mistakes);
         }
+        all = all.concat(notes);
         all = utils.uniq(all);
         if (add.length) {
           selected.add[name] = add;
@@ -3504,77 +2335,91 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
     };
 
     Prefixes.prototype.preprocess = function(selected) {
-      var add, name, old, prefix, prefixed, prefixes, prop, props, remove, selector, value, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref, _ref1;
+      var add, name, old, olds, prefix, prefixed, prefixes, prop, props, remove, selector, value, values, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _m, _n, _o, _ref, _ref1, _ref2;
       add = {
         selectors: []
       };
       _ref = selected.add;
       for (name in _ref) {
         prefixes = _ref[name];
-        if (this.data[name].selector) {
-          add.selectors.push(Selector.load(name, prefixes));
+        if (name === '@keyframes') {
+          add[name] = new Keyframes(name, prefixes, this);
+        } else if (this.data[name].selector) {
+          add.selectors.push(Selector.load(name, prefixes, this));
         } else {
           props = this.data[name].transition ? this.transitionProps : this.data[name].props;
           if (props) {
-            value = Value.load(name, prefixes);
+            value = Value.load(name, prefixes, this);
             for (_i = 0, _len = props.length; _i < _len; _i++) {
               prop = props[_i];
               if (!add[prop]) {
-                add[prop] = {};
-              }
-              if (!add[prop].values) {
-                add[prop].values = [];
+                add[prop] = {
+                  values: []
+                };
               }
               add[prop].values.push(value);
             }
           }
           if (!this.data[name].props) {
-            if (!add[name]) {
-              add[name] = {};
-            }
-            add[name].prefixes = prefixes;
+            values = ((_ref1 = add[name]) != null ? _ref1.values : void 0) || [];
+            add[name] = Declaration.load(name, prefixes, this);
+            add[name].values = values;
           }
         }
       }
       remove = {
         selectors: []
       };
-      _ref1 = selected.remove;
-      for (name in _ref1) {
-        prefixes = _ref1[name];
+      _ref2 = selected.remove;
+      for (name in _ref2) {
+        prefixes = _ref2[name];
         if (this.data[name].selector) {
           selector = Selector.load(name, prefixes);
           for (_j = 0, _len1 = prefixes.length; _j < _len1; _j++) {
             prefix = prefixes[_j];
             remove.selectors.push(selector.prefixed(prefix));
           }
+        } else if (name[0] === '@') {
+          for (_k = 0, _len2 = prefixes.length; _k < _len2; _k++) {
+            prefix = prefixes[_k];
+            prefixed = '@' + prefix + name.slice(1);
+            remove[prefixed] = {
+              remove: true
+            };
+          }
         } else {
           props = this.data[name].transition ? this.transitionProps : this.data[name].props;
           if (props) {
             value = Value.load(name);
-            for (_k = 0, _len2 = prefixes.length; _k < _len2; _k++) {
-              prefix = prefixes[_k];
+            for (_l = 0, _len3 = prefixes.length; _l < _len3; _l++) {
+              prefix = prefixes[_l];
               old = value.old(prefix);
-              for (_l = 0, _len3 = props.length; _l < _len3; _l++) {
-                prop = props[_l];
-                if (!remove[prop]) {
-                  remove[prop] = {};
+              if (old) {
+                for (_m = 0, _len4 = props.length; _m < _len4; _m++) {
+                  prop = props[_m];
+                  if (!remove[prop]) {
+                    remove[prop] = {};
+                  }
+                  if (!remove[prop].values) {
+                    remove[prop].values = [];
+                  }
+                  remove[prop].values.push(old);
                 }
-                if (!remove[prop].values) {
-                  remove[prop].values = [];
-                }
-                remove[prop].values.push(old);
               }
             }
           }
           if (!this.data[name].props) {
-            for (_m = 0, _len4 = prefixes.length; _m < _len4; _m++) {
-              prefix = prefixes[_m];
-              prefixed = prefix + name;
-              if (!remove[prefixed]) {
-                remove[prefixed] = {};
+            for (_n = 0, _len5 = prefixes.length; _n < _len5; _n++) {
+              prefix = prefixes[_n];
+              prop = vendor.unprefixed(name);
+              olds = this.decl(name).old(name, prefix);
+              for (_o = 0, _len6 = olds.length; _o < _len6; _o++) {
+                prefixed = olds[_o];
+                if (!remove[prefixed]) {
+                  remove[prefixed] = {};
+                }
+                remove[prefixed].remove = true;
               }
-              remove[prefixed].remove = true;
             }
           }
         }
@@ -3582,28 +2427,24 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
       return [add, remove];
     };
 
-    Prefixes.prototype.other = function(prefix) {
-      var _base;
-      return (_base = this.otherCache)[prefix] || (_base[prefix] = this.browsers.prefixes().filter(function(i) {
-        return i !== prefix;
-      }));
-    };
-
-    Prefixes.prototype.each = function(prop, callback) {
-      var prefix, _i, _len, _ref, _results;
-      if (this.add[prop] && this.add[prop].prefixes) {
-        _ref = this.add[prop].prefixes;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          prefix = _ref[_i];
-          _results.push(callback(prefix));
-        }
-        return _results;
+    Prefixes.prototype.decl = function(prop) {
+      var decl;
+      decl = declsCache[prop];
+      if (decl) {
+        return decl;
+      } else {
+        return declsCache[prop] = Declaration.load(prop);
       }
     };
 
-    Prefixes.prototype.isCustom = function(prefix) {
-      return this.browsers.prefixes().indexOf(prefix) === -1;
+    Prefixes.prototype.unprefixed = function(prop) {
+      prop = vendor.unprefixed(prop);
+      return this.decl(prop).normalize(prop);
+    };
+
+    Prefixes.prototype.prefixed = function(prop, prefix) {
+      prop = vendor.unprefixed(prop);
+      return this.decl(prop).prefixed(prop, prefix);
     };
 
     Prefixes.prototype.values = function(type, prop) {
@@ -3618,9 +2459,35 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
       }
     };
 
-    Prefixes.prototype.toRemove = function(prop) {
-      var _ref;
-      return (_ref = this.remove[prop]) != null ? _ref.remove : void 0;
+    Prefixes.prototype.group = function(decl) {
+      var checker, index, length, rule, unprefixed,
+        _this = this;
+      rule = decl.parent;
+      index = rule.index(decl);
+      length = rule.decls.length;
+      unprefixed = this.unprefixed(decl.prop);
+      checker = function(step, callback) {
+        var other;
+        index += step;
+        while (index >= 0 && index < length) {
+          other = rule.decls[index];
+          if (_this.unprefixed(other.prop) !== unprefixed) {
+            break;
+          } else if (callback(other) === true) {
+            return true;
+          }
+          index += step;
+        }
+        return false;
+      };
+      return {
+        up: function(callback) {
+          return checker(-1, callback);
+        },
+        down: function(callback) {
+          return checker(+1, callback);
+        }
+      };
     };
 
     return Prefixes;
@@ -3631,10 +2498,13 @@ require.register("autoprefixer/lib/autoprefixer/prefixes.js", function(exports, 
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/processor.js", function(exports, require, module){
+},{"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/border-image":9,"./hacks/border-radius":10,"./hacks/display-flex":11,"./hacks/fill-available":12,"./hacks/filter":13,"./hacks/flex":21,"./hacks/flex-basis":14,"./hacks/flex-direction":15,"./hacks/flex-flow":16,"./hacks/flex-grow":17,"./hacks/flex-shrink":18,"./hacks/flex-wrap":20,"./hacks/fullscreen":22,"./hacks/gradient":23,"./hacks/justify-content":24,"./hacks/order":25,"./hacks/placeholder":26,"./hacks/transform":27,"./keyframes":29,"./processor":33,"./selector":34,"./utils":35,"./value":36,"postcss/lib/vendor":52}],33:[function(require,module,exports){
 (function() {
-  var Processor, utils;
+  var Processor, Value, utils, vendor;
+
+  vendor = require('postcss/lib/vendor');
+
+  Value = require('./value');
 
   utils = require('./utils');
 
@@ -3644,99 +2514,75 @@ require.register("autoprefixer/lib/autoprefixer/processor.js", function(exports,
     }
 
     Processor.prototype.add = function(css) {
-      var selector, _i, _len, _ref,
+      var prefixer, selector, _i, _len, _ref,
         _this = this;
-      css.eachKeyframes(function(keyframes) {
-        if (keyframes.prefix) {
-          return;
-        }
-        return _this.prefixes.each('@keyframes', function(prefix) {
-          return keyframes.cloneWithPrefix(prefix);
+      prefixer = this.prefixes.add['@keyframes'];
+      if (prefixer) {
+        css.eachAtRule(function(rule) {
+          return prefixer.process(rule);
         });
-      });
+      }
       _ref = this.prefixes.add.selectors;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         selector = _ref[_i];
         css.eachRule(function(rule) {
-          if (!rule.selectors) {
-            return;
-          }
-          if (selector.check(rule.selectors)) {
-            return rule.prefixSelector(selector);
-          }
+          return selector.process(rule);
         });
       }
-      css.eachDeclaration(function(decl, vendor) {
-        if (_this.prefixes.isCustom(vendor)) {
-          vendor = null;
+      css.eachDecl(function(decl) {
+        var prefix;
+        prefix = _this.prefixes.add[decl.prop];
+        if (prefix && prefix.prefixes) {
+          return prefix.process(decl);
         }
-        return _this.prefixes.each(decl.prop, function(prefix) {
-          if (vendor && vendor !== utils.removeNote(prefix)) {
-            return;
-          }
-          if (decl.valueContain(_this.prefixes.other(prefix))) {
-            return;
-          }
-          return decl.prefixProp(prefix);
-        });
       });
-      return css.eachDeclaration(function(decl, vendor) {
-        var prefix, value, _j, _k, _len1, _len2, _ref1, _ref2;
-        if (_this.prefixes.isCustom(vendor)) {
-          vendor = null;
-        }
-        _ref1 = _this.prefixes.values('add', decl.unprefixed);
+      return css.eachDecl(function(decl) {
+        var unprefixed, value, _j, _len1, _ref1;
+        unprefixed = _this.prefixes.unprefixed(decl.prop);
+        _ref1 = _this.prefixes.values('add', unprefixed);
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           value = _ref1[_j];
-          if (!value.check(decl.value)) {
-            continue;
-          }
-          _ref2 = value.prefixes;
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            prefix = _ref2[_k];
-            if (vendor && vendor !== utils.removeNote(prefix)) {
-              continue;
-            }
-            decl.prefixValue(prefix, value);
-          }
+          value.process(decl);
         }
-        return decl.saveValues();
+        return Value.save(_this.prefixes, decl);
       });
     };
 
     Processor.prototype.remove = function(css) {
       var selector, _i, _len, _ref,
         _this = this;
-      css.eachKeyframes(function(keyframes) {
-        if (_this.prefixes.toRemove(keyframes.prefix + '@keyframes')) {
-          return keyframes.remove();
+      css.eachAtRule(function(rule, i) {
+        if (_this.prefixes.remove['@' + rule.name]) {
+          return rule.parent.remove(i);
         }
       });
       _ref = this.prefixes.remove.selectors;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         selector = _ref[_i];
-        css.eachRule(function(rule) {
-          if (!rule.selectors) {
-            return;
-          }
-          if (rule.selectors.indexOf(selector) !== -1) {
-            return rule.remove();
+        css.eachRule(function(rule, i) {
+          if (rule.selector.indexOf(selector) !== -1) {
+            return rule.parent.remove(i);
           }
         });
       }
-      return css.eachDeclaration(function(decl, vendor) {
-        var checker, _j, _len1, _ref1;
-        if (_this.prefixes.toRemove(decl.prop)) {
-          if (decl.rule.byProp(decl.unprefixed)) {
-            decl.remove();
+      return css.eachDecl(function(decl, i) {
+        var checker, notHack, rule, unprefixed, _j, _len1, _ref1, _ref2;
+        rule = decl.parent;
+        unprefixed = _this.prefixes.unprefixed(decl.prop);
+        if ((_ref1 = _this.prefixes.remove[decl.prop]) != null ? _ref1.remove : void 0) {
+          notHack = _this.prefixes.group(decl).down(function(i) {
+            return i.prop === unprefixed;
+          });
+          if (notHack) {
+            rule.remove(i);
             return;
           }
         }
-        _ref1 = _this.prefixes.values('remove', decl.unprefixed);
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          checker = _ref1[_j];
+        _ref2 = _this.prefixes.values('remove', unprefixed);
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          checker = _ref2[_j];
           if (checker.check(decl.value)) {
-            decl.remove();
+            rule.remove(i);
             return;
           }
         }
@@ -3751,270 +2597,26 @@ require.register("autoprefixer/lib/autoprefixer/processor.js", function(exports,
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/rule.js", function(exports, require, module){
+},{"./utils":35,"./value":36,"postcss/lib/vendor":52}],34:[function(require,module,exports){
 (function() {
-  var Declaration, Rule, utils;
+  var Prefixer, Selector, utils, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Prefixer = require('./prefixer');
 
   utils = require('./utils');
 
-  Declaration = require('./declaration');
+  Selector = (function(_super) {
+    __extends(Selector, _super);
 
-  Declaration.register(require('./hacks/filter'));
-
-  Declaration.register(require('./hacks/border-radius'));
-
-  Declaration.register(require('./hacks/flex'));
-
-  Declaration.register(require('./hacks/order'));
-
-  Declaration.register(require('./hacks/flex-grow'));
-
-  Declaration.register(require('./hacks/flex-wrap'));
-
-  Declaration.register(require('./hacks/flex-flow'));
-
-  Declaration.register(require('./hacks/transition'));
-
-  Declaration.register(require('./hacks/align-self'));
-
-  Declaration.register(require('./hacks/flex-basis'));
-
-  Declaration.register(require('./hacks/flex-shrink'));
-
-  Declaration.register(require('./hacks/align-items'));
-
-  Declaration.register(require('./hacks/border-image'));
-
-  Declaration.register(require('./hacks/display-flex'));
-
-  Declaration.register(require('./hacks/align-content'));
-
-  Declaration.register(require('./hacks/flex-direction'));
-
-  Declaration.register(require('./hacks/justify-content'));
-
-  Rule = (function() {
-    function Rule(rules, number, node, prefix) {
-      var match;
-      this.rules = rules;
-      this.number = number;
-      this.node = node;
-      this.prefix = prefix;
-      this.type = this.node.type;
-      this.declarations = this.node.declarations;
-      if (this.type === 'rule') {
-        this.selectors = this.node.selectors.join(', ');
-        if (!this.prefix) {
-          match = this.selectors.match(/(^|\s|:)(-(\w+)-)/);
-          if (match) {
-            this.prefix = match[2];
-          }
-        }
-      }
+    function Selector() {
+      _ref = Selector.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
-    Rule.prototype.each = function(callback) {
-      var decl, item;
-      this.number = 0;
-      while (this.number < this.declarations.length) {
-        item = this.declarations[this.number];
-        if (item.property) {
-          decl = Declaration.load(this, this.number, item);
-          callback(decl, decl.prefix || this.prefix);
-        }
-        this.number += 1;
-      }
-      return false;
-    };
-
-    Rule.prototype.prefixSelector = function(selector) {
-      var clone, prefix, prefixed, _i, _len, _ref, _results;
-      _ref = selector.prefixes;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        prefix = _ref[_i];
-        prefixed = selector.replace(this.selectors, prefix);
-        if (!this.rules.contain(prefixed)) {
-          clone = utils.clone(this.node, {
-            selectors: prefixed.split(', ')
-          });
-          _results.push(this.rules.add(this.number, clone));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    };
-
-    Rule.prototype.contain = function(prop, value) {
-      if (value != null) {
-        return this.declarations.some(function(i) {
-          return i.property === prop && i.value === value;
-        });
-      } else {
-        return this.declarations.some(function(i) {
-          return i.property === prop;
-        });
-      }
-    };
-
-    Rule.prototype.byProp = function(prop) {
-      var decl, i, node, _i, _len, _ref;
-      _ref = this.declarations;
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        node = _ref[i];
-        if (node.property) {
-          decl = Declaration.load(this, i, node);
-          if (decl.prop === prop) {
-            return decl;
-          }
-        }
-      }
-      return null;
-    };
-
-    Rule.prototype.remove = function() {
-      return this.rules.remove(this.number);
-    };
-
-    Rule.prototype.add = function(position, decl) {
-      this.declarations.splice(position, 0, decl);
-      return this.number += 1;
-    };
-
-    Rule.prototype.removeDecl = function(position) {
-      this.declarations.splice(position, 1);
-      return this.number -= 1;
-    };
-
-    return Rule;
-
-  })();
-
-  module.exports = Rule;
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/rules.js", function(exports, require, module){
-(function() {
-  var Rule, Rules;
-
-  Rule = require('./rule');
-
-  Rules = (function() {
-    Rules.each = function(list, callback) {
-      var rules;
-      rules = new Rules(list);
-      return rules.each(callback);
-    };
-
-    function Rules(list) {
-      this.list = list;
-    }
-
-    Rules.prototype.each = function(callback) {
-      var i, keyframe, rule, _i, _len, _ref;
-      this.number = 0;
-      while (this.number < this.list.length) {
-        i = this.list[this.number];
-        if (i.rules) {
-          Rules.each(i.rules, callback);
-        }
-        if (i.keyframes) {
-          _ref = i.keyframes;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            keyframe = _ref[_i];
-            if (keyframe.type === 'keyframe') {
-              rule = new Rule(this, this.number, keyframe, i.vendor);
-              callback(rule);
-            }
-          }
-        }
-        if (i.declarations) {
-          rule = new Rule(this, this.number, i, i.vendor);
-          callback(rule);
-        }
-        this.number += 1;
-      }
-      return false;
-    };
-
-    Rules.prototype.contain = function(selector) {
-      var i, _i, _len, _ref;
-      _ref = this.list;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        i = _ref[_i];
-        if (!i.selectors) {
-          continue;
-        }
-        if (i.selectors.join(', ') === selector) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    Rules.prototype.add = function(position, rule) {
-      this.list.splice(position, 0, rule);
-      return this.number += 1;
-    };
-
-    Rules.prototype.remove = function(position) {
-      this.list.splice(position, 1);
-      return this.number -= 1;
-    };
-
-    return Rules;
-
-  })();
-
-  module.exports = Rules;
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/selector.js", function(exports, require, module){
-(function() {
-  var Selector, utils;
-
-  utils = require('./utils');
-
-  Selector = (function() {
-    Selector.register = function(klass) {
-      var name, _i, _len, _ref, _results;
-      _ref = klass.names;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
-        _results.push(this.hacks[name] = klass);
-      }
-      return _results;
-    };
-
-    Selector.hacks = {};
-
-    Selector.load = function(name, prefixes) {
-      var klass;
-      klass = this.hacks[name];
-      if (klass) {
-        return new klass(name, prefixes);
-      } else {
-        return new Selector(name, prefixes);
-      }
-    };
-
-    function Selector(name, prefixes) {
-      this.name = name;
-      this.prefixes = prefixes != null ? prefixes : [];
-      this.prefixes = this.prefixes.sort(function(a, b) {
-        return a.length - b.length;
-      });
-    }
-
-    Selector.prototype.check = function(selectors) {
-      return selectors.indexOf(this.name) !== -1;
+    Selector.prototype.check = function(rule) {
+      return rule.selector.indexOf(this.name) !== -1;
     };
 
     Selector.prototype.prefixed = function(prefix) {
@@ -4025,244 +2627,33 @@ require.register("autoprefixer/lib/autoprefixer/selector.js", function(exports, 
       return this.regexpCache || (this.regexpCache = new RegExp(utils.escapeRegexp(this.name), 'gi'));
     };
 
-    Selector.prototype.replace = function(selectors, prefix) {
-      return selectors.replace(this.regexp(), this.prefixed(prefix));
+    Selector.prototype.replace = function(selector, prefix) {
+      return selector.replace(this.regexp(), this.prefixed(prefix));
+    };
+
+    Selector.prototype.add = function(rule, prefix) {
+      var cloned, prefixed;
+      prefixed = this.replace(rule.selector, prefix);
+      if (rule.parent.some(function(i) {
+        return i.selector === prefixed;
+      })) {
+        return;
+      }
+      cloned = this.clone(rule, {
+        selector: prefixed
+      });
+      return rule.parent.insertBefore(rule, cloned);
     };
 
     return Selector;
 
-  })();
+  })(Prefixer);
 
   module.exports = Selector;
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/updater.js", function(exports, require, module){
-(function() {
-  var coffee, fs, https;
-
-  coffee = require('coffee-script');
-
-  https = require('https');
-
-  fs = require('fs');
-
-  module.exports = {
-    browsers: {
-      firefox: 'ff',
-      chrome: 'chrome',
-      safari: 'safari',
-      ios_saf: 'ios',
-      opera: 'opera',
-      ie: 'ie',
-      bb: 'bb',
-      android: 'android'
-    },
-    run: function() {
-      var i, updaters, _i, _len, _ref, _results;
-      updaters = __dirname + '/../../updaters/';
-      _ref = fs.readdirSync(updaters).sort();
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        i = _ref[_i];
-        if (!i.match(/\.(coffee|js)$/)) {
-          continue;
-        }
-        _results.push(require(updaters + i).apply(this));
-      }
-      return _results;
-    },
-    requests: 0,
-    doneCallbacks: [],
-    requestCallbacks: [],
-    done: function(callback) {
-      this.doneCallbacks || (this.doneCallbacks = []);
-      return this.doneCallbacks.push(callback);
-    },
-    error: function(message) {
-      process.stderr.write("\n" + message + "\n");
-      return process.exit(1);
-    },
-    request: function(callback) {
-      this.requestCallbacks || (this.requestCallbacks = []);
-      return this.requestCallbacks.push(callback);
-    },
-    github: function(path, callback) {
-      var _this = this;
-      this.requests += 1;
-      return https.get("https://raw.github.com/" + path, function(res) {
-        var data;
-        data = '';
-        res.on('data', function(chunk) {
-          return data += chunk;
-        });
-        return res.on('end', function() {
-          var e, func, title, _i, _j, _len, _len1, _ref, _ref1, _results;
-          try {
-            callback(JSON.parse(data));
-          } catch (_error) {
-            e = _error;
-            title = data.match(/<title>([^<]+)<\/title>/);
-            if (title) {
-              _this.error("" + title[1] + " on " + path);
-            } else {
-              _this.error("Parsing error in " + path + ":\n" + e.message);
-            }
-          }
-          _this.requests -= 1;
-          _ref = _this.requestCallbacks;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            func = _ref[_i];
-            func();
-          }
-          if (_this.requests === 0) {
-            _ref1 = _this.doneCallbacks.reverse();
-            _results = [];
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              func = _ref1[_j];
-              _results.push(func());
-            }
-            return _results;
-          }
-        });
-      });
-    },
-    sort: function(browsers) {
-      return browsers.sort(function(a, b) {
-        a = a.split(' ');
-        b = b.split(' ');
-        if (a[0] > b[0]) {
-          return 1;
-        } else if (a[0] < b[0]) {
-          return -1;
-        } else {
-          return parseFloat(a[1]) - parseFloat(b[1]);
-        }
-      });
-    },
-    parse: function(data) {
-      var browser, interval, need, support, version, versions, _i, _len, _ref, _ref1;
-      need = [];
-      _ref = data.stats;
-      for (browser in _ref) {
-        versions = _ref[browser];
-        for (interval in versions) {
-          support = versions[interval];
-          _ref1 = interval.split('-');
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            version = _ref1[_i];
-            if (this.browsers[browser] && support.match(/\sx($|\s)/)) {
-              version = version.replace(/\.0$/, '');
-              need.push(this.browsers[browser] + ' ' + version);
-            }
-          }
-        }
-      }
-      return this.sort(need);
-    },
-    feature: function(file, callback) {
-      var url,
-        _this = this;
-      url = "Fyrd/caniuse/master/features-json/" + file + ".json";
-      return this.github(url, function(data) {
-        return callback(_this.parse(data));
-      });
-    },
-    fork: function(fork, file, callback) {
-      var branch, url, user, _ref,
-        _this = this;
-      _ref = fork.split('/'), user = _ref[0], branch = _ref[1];
-      branch || (branch = 'master');
-      url = "" + user + "/caniuse/" + branch + "/features-json/" + file + ".json";
-      return this.github(url, function(data) {
-        return callback(_this.parse(data));
-      });
-    },
-    all: function(callback) {
-      var browsers, data, list, name, version, _i, _len, _ref;
-      browsers = require('../../data/browsers');
-      list = [];
-      for (name in browsers) {
-        data = browsers[name];
-        _ref = data.versions;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          version = _ref[_i];
-          list.push(name + ' ' + version);
-        }
-      }
-      return callback(this.sort(list));
-    },
-    map: function(browsers, callback) {
-      var browser, name, version, _i, _len, _ref, _results;
-      _results = [];
-      for (_i = 0, _len = browsers.length; _i < _len; _i++) {
-        browser = browsers[_i];
-        _ref = browser.split(' '), name = _ref[0], version = _ref[1];
-        version = parseFloat(version);
-        _results.push(callback(browser, name, version));
-      }
-      return _results;
-    },
-    stringify: function(obj, indent) {
-      var key, local, processed, value,
-        _this = this;
-      if (indent == null) {
-        indent = '';
-      }
-      if (obj instanceof Array) {
-        local = indent + '  ';
-        return ("[\n" + local) + obj.map(function(i) {
-          return _this.stringify(i, local);
-        }).join("\n" + local) + ("\n" + indent + "]");
-      } else if (typeof obj === 'object') {
-        local = indent + '  ';
-        processed = [];
-        for (key in obj) {
-          value = obj[key];
-          if (key.match(/'|-|@|:/)) {
-            key = "\"" + key + "\"";
-          }
-          value = this.stringify(value, local);
-          if (value[0] !== "\n") {
-            value = ' ' + value;
-          }
-          processed.push(key + ':' + value);
-        }
-        return "\n" + local + processed.join("\n" + local) + "\n";
-      } else {
-        return JSON.stringify(obj);
-      }
-    },
-    changed: [],
-    save: function(name, json) {
-      var content, file, key, sorted, _i, _len, _ref;
-      sorted = {};
-      _ref = Object.keys(json).sort();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        key = _ref[_i];
-        sorted[key] = json[key];
-      }
-      file = __dirname + ("/../../data/" + name);
-      content = "# Don't edit this files, because it's autogenerated.\n" + "# See updaters/ dir for generator. " + "Run `bin/autoprefixer --update` to update." + "\n\n";
-      content += "module.exports =" + this.stringify(sorted) + ";\n";
-      if (fs.existsSync(file + '.js')) {
-        file += '.js';
-        content = coffee.compile(content);
-      } else {
-        file += '.coffee';
-      }
-      if (fs.readFileSync(file).toString() !== content) {
-        this.changed.push(name);
-        return fs.writeFileSync(file, content);
-      }
-    }
-  };
-
-}).call(this);
-
-});
-require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, require, module){
+},{"./prefixer":31,"./utils":35}],35:[function(require,module,exports){
 (function() {
   module.exports = {
     error: function(text) {
@@ -4281,28 +2672,6 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
         }
       }
       return filtered;
-    },
-    clone: function(obj, changes) {
-      var clone, key, value;
-      if (changes == null) {
-        changes = {};
-      }
-      clone = {};
-      for (key in obj) {
-        value = obj[key];
-        if (!changes[key]) {
-          if (value instanceof Array) {
-            clone[key] = value.slice(0);
-          } else {
-            clone[key] = value;
-          }
-        }
-      }
-      for (key in changes) {
-        value = changes[key];
-        clone[key] = value;
-      }
-      return clone;
     },
     removeNote: function(string) {
       if (string.indexOf(' ') === -1) {
@@ -4327,57 +2696,91 @@ require.register("autoprefixer/lib/autoprefixer/utils.js", function(exports, req
 
 }).call(this);
 
-});
-require.register("autoprefixer/lib/autoprefixer/value.js", function(exports, require, module){
+},{}],36:[function(require,module,exports){
 (function() {
-  var OldValue, Value, utils;
+  var OldValue, Prefixer, Value, utils, vendor, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  utils = require('./utils');
+  Prefixer = require('./prefixer');
 
   OldValue = require('./old-value');
 
-  Value = (function() {
-    Value.register = function(klass) {
-      var name, _i, _len, _ref, _results;
-      _ref = klass.names;
+  vendor = require('postcss/lib/vendor');
+
+  utils = require('./utils');
+
+  Value = (function(_super) {
+    __extends(Value, _super);
+
+    function Value() {
+      _ref = Value.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    Value.save = function(prefixes, decl) {
+      var cloned, prefix, prefixed, propPrefix, rule, value, _ref1, _results;
+      _ref1 = decl._autoprefixerValues;
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
-        _results.push(this.hacks[name] = klass);
+      for (prefix in _ref1) {
+        value = _ref1[prefix];
+        if (value === decl.value) {
+          continue;
+        }
+        propPrefix = vendor.prefix(decl.prop);
+        if (propPrefix === utils.removeNote(prefix)) {
+          _results.push(decl.value = value);
+        } else if (propPrefix === '-pie-') {
+          continue;
+        } else {
+          prefixed = prefixes.prefixed(decl.prop, prefix);
+          rule = decl.parent;
+          if (rule.every(function(i) {
+            return i.prop !== prefixed;
+          })) {
+            if (rule.every(function(i) {
+              return i.prop !== decl.prop || i.value !== value;
+            })) {
+              cloned = this.clone(decl, {
+                value: value
+              });
+              _results.push(decl.parent.insertBefore(decl, cloned));
+            } else {
+              _results.push(void 0);
+            }
+          } else {
+            _results.push(void 0);
+          }
+        }
       }
       return _results;
     };
 
-    Value.hacks = {};
-
-    Value.load = function(name, prefixes) {
-      var klass;
-      klass = this.hacks[name];
-      if (klass) {
-        return new klass(name, prefixes);
+    Value.prototype.check = function(decl) {
+      var value;
+      value = decl.value;
+      if (value.indexOf(this.name) !== -1) {
+        return !!value.match(this.regexp());
       } else {
-        return new Value(name, prefixes);
+        return false;
       }
     };
 
-    Value.regexps = {};
-
-    Value.regexp = function(name) {
-      var _base;
-      return (_base = this.regexps)[name] || (_base[name] = utils.regexp(name));
+    Value.prototype.regexp = function() {
+      return this.regexpCache || (this.regexpCache = utils.regexp(this.name));
     };
 
-    function Value(name, prefixes) {
-      this.name = name;
-      this.prefixes = prefixes;
-      this.regexp = Value.regexp(this.name);
-    }
+    Value.prototype.replace = function(string, prefix) {
+      return string.replace(this.regexp(), '$1' + prefix + '$2');
+    };
 
-    Value.prototype.check = function(value) {
-      if (value.indexOf(this.name) !== -1) {
-        return !!value.match(this.regexp);
-      } else {
-        return false;
+    Value.prototype.add = function(decl, prefix) {
+      var value;
+      decl._autoprefixerValues || (decl._autoprefixerValues = {});
+      value = decl._autoprefixerValues[prefix] || decl.value;
+      value = this.replace(value, prefix);
+      if (value) {
+        return decl._autoprefixerValues[prefix] = value;
       }
     };
 
@@ -4385,289 +2788,3754 @@ require.register("autoprefixer/lib/autoprefixer/value.js", function(exports, req
       return new OldValue(prefix + this.name);
     };
 
-    Value.prototype.addPrefix = function(prefix, string) {
-      return string.replace(this.regexp, '$1' + prefix + '$2');
-    };
-
     return Value;
 
-  })();
+  })(Prefixer);
 
   module.exports = Value;
 
 }).call(this);
 
-});
-require.register("autoprefixer/updaters/browsers.js", function(exports, require, module){
-(function() {
-  module.exports = function() {
-    var minor,
-      _this = this;
-    minor = ['bb', 'android'];
-    return this.github('Fyrd/caniuse/master/data.json', function(data) {
-      var agent, browsers, caniuse, internal, intervals, normalize, _ref;
-      normalize = function(array) {
-        return array.reverse().filter(function(i) {
-          return i;
-        });
-      };
-      intervals = function(array) {
-        var i, interval, result, splited, sub, _i, _len;
-        result = [];
-        for (_i = 0, _len = array.length; _i < _len; _i++) {
-          interval = array[_i];
-          splited = interval.split('-').map(function(i) {
-            return parseFloat(i);
-          });
-          splited = splited.sort().reverse();
-          sub = (function() {
-            var _j, _len1, _results;
-            _results = [];
-            for (_j = 0, _len1 = splited.length; _j < _len1; _j++) {
-              i = splited[_j];
-              _results.push([i, interval, splited.length]);
+},{"./old-value":30,"./prefixer":31,"./utils":35,"postcss/lib/vendor":52}],37:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
             }
-            return _results;
-          })();
-          result = result.concat(sub);
-        }
-        return result;
-      };
-      agent = function(name) {
-        var future, info, result, versions;
-        info = data.agents[name];
-        future = normalize(info.versions.slice(-2)).map(function(i) {
-          return parseFloat(i);
-        });
-        versions = intervals(normalize(info.versions.slice(0, -2)));
-        result = {
-          prefix: "-" + info.prefix + "-"
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
         };
-        if (minor.indexOf(name) !== -1) {
-          result.minor = true;
-        }
-        if (future.length) {
-          result.future = future;
-        }
-        result.versions = versions.map(function(i) {
-          return i[0];
-        });
-        result.popularity = versions.map(function(i) {
-          return info.usage_global[i[1]] / i[2];
-        });
-        return result;
-      };
-      browsers = {};
-      _ref = _this.browsers;
-      for (caniuse in _ref) {
-        internal = _ref[caniuse];
-        browsers[internal] = agent(caniuse);
-      }
-      return _this.save('browsers', browsers);
-    });
-  };
+    }
 
-}).call(this);
-
-});
-require.register("autoprefixer/updaters/prefixes.js", function(exports, require, module){
-(function() {
-  var __slice = [].slice;
-
-  module.exports = function(updater) {
-    var prefix, prefixes,
-      _this = this;
-    prefixes = {};
-    prefix = function() {
-      var data, name, names, _i, _j, _len, _results;
-      names = 2 <= arguments.length ? __slice.call(arguments, 0, _i = arguments.length - 1) : (_i = 0, []), data = arguments[_i++];
-      _results = [];
-      for (_j = 0, _len = names.length; _j < _len; _j++) {
-        name = names[_j];
-        _results.push(prefixes[name] = data);
-      }
-      return _results;
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
     };
-    this.feature('border-radius', function(browsers) {
-      return prefix('border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius', {
-        mistakes: ['-ms-'],
-        browsers: browsers,
-        transition: true
-      });
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],38:[function(require,module,exports){
+var process=require("__browserify_process");// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+},{"__browserify_process":37}],39:[function(require,module,exports){
+(function() {
+  var AtRule, Container, name, _fn, _i, _len, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Container = require('./container');
+
+  AtRule = (function(_super) {
+    __extends(AtRule, _super);
+
+    function AtRule() {
+      this.type = 'atrule';
+      AtRule.__super__.constructor.apply(this, arguments);
+    }
+
+    AtRule.prototype.addMixin = function(type) {
+      var mixin, name, value, _ref;
+      mixin = type === 'rules' ? Container.WithRules : Container.WithDecls;
+      if (!mixin) {
+        return;
+      }
+      _ref = mixin.prototype;
+      for (name in _ref) {
+        value = _ref[name];
+        if (name === 'constructor') {
+          continue;
+        }
+        this[name] = value;
+      }
+      return mixin.apply(this);
+    };
+
+    AtRule.raw('params');
+
+    AtRule.prototype.stringify = function(builder, last) {
+      var params, semicolon;
+      if (this.rules || this.decls) {
+        params = this._params.stringify({
+          before: ' ',
+          after: ' '
+        });
+        return this.stringifyBlock(builder, '@' + this.name + params + '{');
+      } else {
+        if (this.before) {
+          builder(this.before);
+        }
+        semicolon = !last || this.semicolon ? ';' : '';
+        return builder('@' + this.name + this._params.stringify({
+          before: ' '
+        }) + semicolon, this);
+      }
+    };
+
+    return AtRule;
+
+  })(Container);
+
+  _ref = ['append', 'prepend'];
+  _fn = function(name) {
+    return AtRule.prototype[name] = function(child) {
+      this.addMixin(child.type + 's');
+      return this[name](child);
+    };
+  };
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    name = _ref[_i];
+    _fn(name);
+  }
+
+  module.exports = AtRule;
+
+}).call(this);
+
+},{"./container":40}],40:[function(require,module,exports){
+(function() {
+  var Container, Declaration, Node, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Node = require('./node');
+
+  Declaration = require('./declaration');
+
+  Container = (function(_super) {
+    __extends(Container, _super);
+
+    function Container() {
+      _ref = Container.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    Container.prototype.stringifyContent = function(builder) {
+      var last,
+        _this = this;
+      if (!this.rules && !this.decls) {
+        return;
+      }
+      if (this.rules) {
+        last = this.rules.length - 1;
+        return this.rules.map(function(rule, i) {
+          return rule.stringify(builder, last === i);
+        });
+      } else if (this.decls) {
+        last = this.decls.length - 1;
+        return this.decls.map(function(decl, i) {
+          return decl.stringify(builder, last !== i || _this.semicolon);
+        });
+      }
+    };
+
+    Container.prototype.stringifyBlock = function(builder, start) {
+      if (this.before) {
+        builder(this.before);
+      }
+      builder(start, this, 'start');
+      this.stringifyContent(builder);
+      if (this.after) {
+        builder(this.after);
+      }
+      return builder('}', this, 'end');
+    };
+
+    Container.prototype.push = function(child) {
+      child.parent = this;
+      this.list.push(child);
+      return this;
+    };
+
+    Container.prototype.each = function(callback) {
+      var id, index, list;
+      this.lastEach || (this.lastEach = 0);
+      this.indexes || (this.indexes = {});
+      this.lastEach += 1;
+      id = this.lastEach;
+      this.indexes[id] = 0;
+      list = this.list;
+      while (this.indexes[id] < list.length) {
+        index = this.indexes[id];
+        callback(list[index], index);
+        this.indexes[id] += 1;
+      }
+      delete this.indexes[id];
+      return this;
+    };
+
+    Container.prototype.eachDecl = function(callback) {};
+
+    Container.prototype.append = function(child) {
+      child = this.normalize(child, this.list[this.list.length - 1]);
+      this.list.push(child);
+      return this;
+    };
+
+    Container.prototype.prepend = function(child) {
+      var id, index, _ref1;
+      child = this.normalize(child, this.list[0], 'prepend');
+      this.list.unshift(child);
+      _ref1 = this.indexes;
+      for (id in _ref1) {
+        index = _ref1[id];
+        this.indexes[id] = index + 1;
+      }
+      return this;
+    };
+
+    Container.prototype.insertBefore = function(exist, add) {
+      var id, index, _ref1;
+      exist = this.index(exist);
+      add = this.normalize(add, this.list[exist], exist === 0 ? 'prepend' : void 0);
+      this.list.splice(exist, 0, add);
+      _ref1 = this.indexes;
+      for (id in _ref1) {
+        index = _ref1[id];
+        if (index >= exist) {
+          this.indexes[id] = index + 1;
+        }
+      }
+      return this;
+    };
+
+    Container.prototype.insertAfter = function(exist, add) {
+      var id, index, _ref1;
+      exist = this.index(exist);
+      add = this.normalize(add, this.list[exist]);
+      this.list.splice(exist + 1, 0, add);
+      _ref1 = this.indexes;
+      for (id in _ref1) {
+        index = _ref1[id];
+        if (index > exist) {
+          this.indexes[id] = index + 1;
+        }
+      }
+      return this;
+    };
+
+    Container.prototype.remove = function(child) {
+      var id, index, _ref1;
+      child = this.index(child);
+      this.list.splice(child, 1);
+      _ref1 = this.indexes;
+      for (id in _ref1) {
+        index = _ref1[id];
+        if (index >= child) {
+          this.indexes[id] = index - 1;
+        }
+      }
+      return this;
+    };
+
+    Container.prototype.every = function(condition) {
+      return this.list.every(condition);
+    };
+
+    Container.prototype.some = function(condition) {
+      return this.list.some(condition);
+    };
+
+    Container.prototype.index = function(child) {
+      if (typeof child === 'number') {
+        return child;
+      } else {
+        return this.list.indexOf(child);
+      }
+    };
+
+    Container.prop('list', {
+      get: function() {
+        return this.rules || this.decls;
+      }
     });
-    this.feature('css-boxshadow', function(browsers) {
-      return prefix('box-shadow', {
-        browsers: browsers,
-        transition: true
+
+    Container.prototype.normalize = function(child, sample) {
+      child.parent = this;
+      if ((child.before == null) && sample) {
+        child.before = sample.before;
+      }
+      return child;
+    };
+
+    return Container;
+
+  })(Node);
+
+  Container.WithRules = (function(_super) {
+    __extends(WithRules, _super);
+
+    function WithRules() {
+      this.rules = [];
+      WithRules.__super__.constructor.apply(this, arguments);
+    }
+
+    WithRules.prototype.eachDecl = function(callback) {
+      this.each(function(child) {
+        return child.eachDecl(callback);
       });
-    });
-    this.feature('css-animation', function(browsers) {
-      return prefix('animation', 'animation-name', 'animation-duration', 'animation-delay', 'animation-direction', 'animation-fill-mode', 'animation-iteration-count', 'animation-play-state', 'animation-timing-function', '@keyframes', {
-        browsers: browsers
-      });
-    });
-    this.feature('css-transitions', function(browsers) {
-      return prefix('transition', 'transition-property', 'transition-duration', 'transition-delay', 'transition-timing-function', {
-        mistakes: ['-ms-'],
-        browsers: browsers
-      });
-    });
-    this.feature('transforms2d', function(browsers) {
-      prefix('transform', 'transform-origin', 'perspective', 'perspective-origin', {
-        browsers: browsers,
-        transition: true
-      });
-      return prefix('transform-style', 'backface-visibility', {
-        browsers: browsers
-      });
-    });
-    this.feature('css-gradients', function(browsers) {
-      browsers = _this.map(browsers, function(browser, name, version) {
-        if (name === 'android' && version < 4 || name === 'safari' && version < 5.1 || name === 'ios' && version < 5) {
-          return browser + ' old';
-        } else {
-          return browser;
+      return this;
+    };
+
+    WithRules.prototype.eachRule = function(callback) {
+      var _this = this;
+      this.each(function(child, i) {
+        if (child.type === 'rule') {
+          return callback(child, i);
+        } else if (child.eachRule) {
+          return child.eachRule(callback);
         }
       });
-      return prefix('linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient', {
-        props: ['background', 'background-image', 'border-image'],
-        mistakes: ['-ms-'],
-        browsers: browsers
-      });
-    });
-    this.feature('css3-boxsizing', function(browsers) {
-      return prefix('box-sizing', {
-        browsers: browsers
-      });
-    });
-    this.feature('css-filters', function(browsers) {
-      return prefix('filter', {
-        browsers: browsers,
-        transition: true
-      });
-    });
-    this.feature('multicolumn', function(browsers) {
-      prefix('columns', 'column-width', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-width', {
-        browsers: browsers,
-        transition: true
-      });
-      return prefix('column-count', 'column-rule-style', 'column-span', 'column-fill', 'break-before', 'break-after', 'break-inside', {
-        browsers: browsers
-      });
-    });
-    this.feature('user-select-none', function(browsers) {
-      return prefix('user-select', {
-        browsers: browsers
-      });
-    });
-    this.feature('flexbox', function(browsers) {
-      browsers = _this.map(browsers, function(browser, name, version) {
-        if ((name === 'safari' || name === 'ios') && version < 7) {
-          return browser + ' 2009';
-        } else if (name === 'chrome' && version < 21) {
-          return browser + ' 2009';
-        } else {
-          return browser;
+      return this;
+    };
+
+    WithRules.prototype.eachAtRule = function(callback) {
+      var _this = this;
+      this.each(function(child, i) {
+        if (child.type === 'atrule') {
+          callback(child, i);
+          if (child.eachAtRule) {
+            return child.eachAtRule(callback);
+          }
         }
       });
-      prefix('display-flex', {
-        browsers: browsers
+      return this;
+    };
+
+    return WithRules;
+
+  })(Container);
+
+  Container.WithDecls = (function(_super) {
+    __extends(WithDecls, _super);
+
+    function WithDecls() {
+      this.decls = [];
+      WithDecls.__super__.constructor.apply(this, arguments);
+    }
+
+    WithDecls.prototype.normalize = function(child, sample) {
+      if (!child.type) {
+        child = new Declaration(child);
+      }
+      return WithDecls.__super__.normalize.call(this, child, sample);
+    };
+
+    WithDecls.prototype.eachDecl = function(callback) {
+      var _this = this;
+      this.each(function(decl, i) {
+        return callback(decl, i);
       });
-      prefix('flex', 'flex-grow', 'flex-shrink', 'flex-basis', {
-        transition: true,
-        browsers: browsers
+      return this;
+    };
+
+    return WithDecls;
+
+  })(Container);
+
+  module.exports = Container;
+
+}).call(this);
+
+},{"./declaration":41,"./node":44}],41:[function(require,module,exports){
+(function() {
+  var Declaration, Node, vendor,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Node = require('./node');
+
+  vendor = require('./vendor');
+
+  Declaration = (function(_super) {
+    __extends(Declaration, _super);
+
+    function Declaration() {
+      this.type = 'decl';
+      Declaration.__super__.constructor.apply(this, arguments);
+    }
+
+    Declaration.raw('value');
+
+    Declaration.prototype.stringify = function(builder, semicolon) {
+      var string;
+      if (this.before) {
+        builder(this.before);
+      }
+      string = this.prop + (this.between || '') + ':' + this._value.stringify({
+        before: ' '
       });
-      return prefix('flex-direction', 'flex-wrap', 'flex-flow', 'justify-content', 'order', 'align-items', 'align-self', 'align-content', {
-        browsers: browsers
-      });
+      if (semicolon) {
+        string += ';';
+      }
+      return builder(string, this);
+    };
+
+    Declaration.prototype.removeSelf = function() {
+      if (!this.parent) {
+        return;
+      }
+      this.parent.remove(this);
+      return this;
+    };
+
+    Declaration.prototype.clone = function(obj) {
+      var cloned;
+      cloned = Declaration.__super__.clone.apply(this, arguments);
+      delete cloned.before;
+      return cloned;
+    };
+
+    return Declaration;
+
+  })(Node);
+
+  module.exports = Declaration;
+
+}).call(this);
+
+},{"./node":44,"./vendor":52}],42:[function(require,module,exports){
+(function() {
+  var Result, SourceMap, generateMap;
+
+  SourceMap = require('source-map');
+
+  Result = require('./result');
+
+  generateMap = function(css, opts) {
+    var builder, column, line, map, prev, result;
+    map = new SourceMap.SourceMapGenerator({
+      file: opts.to || 'to.css'
     });
-    this.feature('calc', function(browsers) {
-      return prefix('calc', {
-        props: ['*'],
-        browsers: browsers
+    result = new Result(css, '');
+    line = 1;
+    column = 1;
+    builder = function(str, node, type) {
+      var last, lines, _ref, _ref1;
+      result.css += str;
+      if ((node != null ? (_ref = node.source) != null ? _ref.start : void 0 : void 0) && type !== 'end') {
+        map.addMapping({
+          source: node.source.file || 'from.css',
+          original: {
+            line: node.source.start.line,
+            column: node.source.start.column - 1
+          },
+          generated: {
+            line: line,
+            column: column - 1
+          }
+        });
+      }
+      lines = str.match(/\n/g);
+      if (lines) {
+        line += lines.length;
+        last = str.lastIndexOf("\n");
+        column = str.length - last;
+      } else {
+        column = column + str.length;
+      }
+      if ((node != null ? (_ref1 = node.source) != null ? _ref1.end : void 0 : void 0) && type !== 'start') {
+        return map.addMapping({
+          source: node.source.file || 'from.css',
+          original: {
+            line: node.source.end.line,
+            column: node.source.end.column
+          },
+          generated: {
+            line: line,
+            column: column
+          }
+        });
+      }
+    };
+    css.stringify(builder);
+    if (typeof opts.map === 'string') {
+      prev = new SourceMap.SourceMapConsumer(opts.map);
+      map.applySourceMap(prev);
+    }
+    result.map = map.toString();
+    return result;
+  };
+
+  module.exports = generateMap;
+
+}).call(this);
+
+},{"./result":48,"source-map":53}],43:[function(require,module,exports){
+(function() {
+  var list;
+
+  list = {
+    split: function(string, separators, last) {
+      var array, current, escape, func, letter, quote, separator, split, _i, _j, _len, _len1;
+      array = [];
+      current = '';
+      split = false;
+      func = 0;
+      quote = false;
+      escape = false;
+      for (_i = 0, _len = string.length; _i < _len; _i++) {
+        letter = string[_i];
+        if (quote) {
+          if (escape) {
+            escape = false;
+          } else if (letter === '\\') {
+            escape = true;
+          } else if (letter === quote) {
+            quote = false;
+          }
+        } else if (letter === '"' || letter === "'") {
+          quote = letter;
+        } else if (letter === '(') {
+          func += 1;
+        } else if (letter === ')') {
+          if (func > 0) {
+            func -= 1;
+          }
+        } else if (func === 0) {
+          for (_j = 0, _len1 = separators.length; _j < _len1; _j++) {
+            separator = separators[_j];
+            if (letter === separator) {
+              split = true;
+            }
+          }
+        }
+        if (split) {
+          if (current !== '') {
+            array.push(current.trim());
+          }
+          current = '';
+          split = false;
+        } else {
+          current += letter;
+        }
+      }
+      if (last || current !== '') {
+        array.push(current.trim());
+      }
+      return array;
+    },
+    space: function(string) {
+      return this.split(string, [' ', "\n", "\t"]);
+    },
+    comma: function(string) {
+      return this.split(string, [','], true);
+    }
+  };
+
+  module.exports = list;
+
+}).call(this);
+
+},{}],44:[function(require,module,exports){
+(function() {
+  var Node, Raw, clone,
+    __hasProp = {}.hasOwnProperty;
+
+  Raw = require('./raw');
+
+  clone = function(obj, parent) {
+    var cloned, name, value;
+    if (typeof obj !== 'object') {
+      return obj;
+    }
+    cloned = new obj.constructor();
+    for (name in obj) {
+      if (!__hasProp.call(obj, name)) continue;
+      value = obj[name];
+      if (name === 'parent' && typeof value === 'object') {
+        if (parent) {
+          cloned[name] = parent;
+        }
+      } else if (value instanceof Array) {
+        cloned[name] = value.map(function(i) {
+          return clone(i, cloned);
+        });
+      } else {
+        cloned[name] = clone(value, cloned);
+      }
+    }
+    return cloned;
+  };
+
+  Node = (function() {
+    function Node(defaults) {
+      var name, value;
+      if (defaults == null) {
+        defaults = {};
+      }
+      for (name in defaults) {
+        value = defaults[name];
+        this[name] = value;
+      }
+    }
+
+    Node.prop = function(name, params) {
+      return Object.defineProperty(this.prototype, name, params);
+    };
+
+    Node.raw = function(name) {
+      var hidden;
+      hidden = '_' + name;
+      this.prototype[hidden] = Raw.empty;
+      return this.prop(name, {
+        get: function() {
+          var _ref;
+          return (_ref = this[hidden]) != null ? _ref.trimmed : void 0;
+        },
+        set: function(value) {
+          if (value instanceof Raw) {
+            return this[hidden] = value;
+          } else {
+            if (this[hidden] === Raw.empty) {
+              this[hidden] = new Raw();
+            }
+            return this[hidden].set(value);
+          }
+        }
       });
-    });
-    this.feature('background-img-opts', function(browsers) {
-      return prefix('background-clip', 'background-origin', 'background-size', {
-        browsers: browsers
-      });
-    });
-    this.feature('font-feature', function(browsers) {
-      return prefix('font-feature-settings', 'font-variant-ligatures', 'font-language-override', 'font-kerning', {
-        browsers: browsers
-      });
-    });
-    this.feature('border-image', function(browsers) {
-      return prefix('border-image', {
-        browsers: browsers
-      });
-    });
-    this.feature('css-selection', function(browsers) {
-      return prefix('::selection', {
-        selector: true,
-        browsers: browsers
-      });
-    });
-    this.feature('css-placeholder', function(browsers) {
-      return prefix('::placeholder', {
-        selector: true,
-        browsers: browsers
-      });
-    });
-    this.feature('css-hyphens', function(browsers) {
-      return prefix('hyphens', {
-        browsers: browsers
-      });
-    });
-    this.feature('fullscreen', function(browsers) {
-      return prefix(':fullscreen', {
-        selector: true,
-        browsers: browsers
-      });
-    });
-    this.feature('css3-tabsize', function(browsers) {
-      return prefix('tab-size', {
-        browsers: browsers
-      });
-    });
-    this.feature('intrinsic-width', function(browsers) {
-      return prefix('max-content', 'min-content', 'fit-content', 'fill-available', {
-        props: ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height'],
-        browsers: browsers
-      });
-    });
-    this.feature('css3-cursors-newer', function(browsers) {
-      return prefix('zoom-in', 'zoom-out', 'grab', 'grabbing', {
-        props: ['cursor'],
-        browsers: browsers
-      });
-    });
-    return this.done(function() {
-      return _this.save('prefixes', prefixes);
-    });
+    };
+
+    Node.prototype.removeSelf = function() {
+      if (!this.parent) {
+        return;
+      }
+      this.parent.remove(this);
+      return this;
+    };
+
+    Node.prototype.toString = function() {
+      var builder, result;
+      result = '';
+      builder = function(str) {
+        return result += str;
+      };
+      this.stringify(builder);
+      return result;
+    };
+
+    Node.prototype.clone = function(overrides) {
+      var cloned, name, value;
+      if (overrides == null) {
+        overrides = {};
+      }
+      cloned = clone(this);
+      for (name in overrides) {
+        value = overrides[name];
+        cloned[name] = value;
+      }
+      return cloned;
+    };
+
+    Node.prototype.toJSON = function() {
+      var fixed, name, value;
+      fixed = {};
+      for (name in this) {
+        if (!__hasProp.call(this, name)) continue;
+        value = this[name];
+        if (name === 'parent') {
+          continue;
+        }
+        fixed[name] = value instanceof Array ? value.map(function(i) {
+          if (typeof i === 'object' && i.toJSON) {
+            return i.toJSON();
+          } else {
+            return i;
+          }
+        }) : typeof value === 'object' && value.toJSON ? value.toJSON() : value;
+      }
+      return fixed;
+    };
+
+    return Node;
+
+  })();
+
+  module.exports = Node;
+
+}).call(this);
+
+},{"./raw":47}],45:[function(require,module,exports){
+(function() {
+  var AtRule, Declaration, Parser, Raw, Root, Rule, SyntexError;
+
+  SyntexError = require('./syntax-error');
+
+  Declaration = require('./declaration');
+
+  AtRule = require('./at-rule');
+
+  Root = require('./root');
+
+  Rule = require('./rule');
+
+  Raw = require('./raw');
+
+  Parser = (function() {
+    function Parser(source, opts) {
+      this.opts = opts;
+      this.source = source.toString();
+      this.root = new Root();
+      this.current = this.root;
+      this.parents = [this.current];
+      this.type = 'rules';
+      this.types = [this.type];
+      this.pos = -1;
+      this.line = 1;
+      this.lines = [];
+      this.column = 0;
+      this.buffer = '';
+    }
+
+    Parser.prototype.loop = function() {
+      while (this.pos < this.source.length - 1) {
+        this.move();
+        this.nextLetter();
+      }
+      return this.endFile();
+    };
+
+    Parser.prototype.nextLetter = function() {
+      this.inString() || this.inComment() || this.isComment() || this.isString() || this.isWrong() || this.inAtrule() || this.isAtrule() || this.isBlockEnd() || this.inSelector() || this.isSelector() || this.inProperty() || this.isProperty() || this.inValue();
+      return this.unknown();
+    };
+
+    Parser.prototype.inString = function() {
+      if (this.quote) {
+        if (this.escape) {
+          this.escape = false;
+        } else if (this.letter === '\\') {
+          this.escape = true;
+        } else if (this.letter === this.quote) {
+          this.quote = void 0;
+        }
+        this.trimmed += this.letter;
+        return true;
+      }
+    };
+
+    Parser.prototype.isString = function() {
+      if (this.letter === '"' || this.letter === "'") {
+        this.quote = this.letter;
+        this.quotePos = {
+          line: this.line,
+          column: this.column
+        };
+        this.trimmed += this.letter;
+        return true;
+      }
+    };
+
+    Parser.prototype.inComment = function() {
+      if (this.inside('comment')) {
+        if (this.next('*/')) {
+          this.popType();
+          this.move();
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.isComment = function() {
+      if (this.next('/*')) {
+        this.commentPos = {
+          line: this.line,
+          column: this.column
+        };
+        this.addType('comment');
+        this.move();
+        return true;
+      }
+    };
+
+    Parser.prototype.isWrong = function() {
+      if (this.letter === '{' && (this.inside('decls') || this.inside('value'))) {
+        this.error("Unexpected {");
+      }
+      if (this.inside('property') && (this.letter === '}' || this.letter === ';')) {
+        return this.error('Missing property value');
+      }
+    };
+
+    Parser.prototype.isAtrule = function() {
+      if (this.letter === '@' && this.inside('rules')) {
+        this.init(new AtRule());
+        this.current.name = '';
+        this.addType('atrule-name');
+        return true;
+      }
+    };
+
+    Parser.prototype.inAtrule = function(close) {
+      if (this.inside('atrule-name')) {
+        if (this.space()) {
+          this.checkAtruleName();
+          this.buffer = this.buffer.slice(this.current.name.length);
+          this.trimmed = '';
+          this.setType('atrule-param');
+        } else if (this.letter === ';' || this.letter === '{' || close) {
+          this.checkAtruleName();
+          this.endAtruleParams();
+        } else {
+          this.current.name += this.letter;
+        }
+        return true;
+      } else if (this.inside('atrule-param')) {
+        if (this.letter === ';' || this.letter === '{' || close) {
+          this.current.params = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          this.endAtruleParams();
+        } else {
+          this.trimmed += this.letter;
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.inSelector = function() {
+      if (this.inside('selector')) {
+        if (this.letter === '{') {
+          this.current.selector = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          this.semicolon = false;
+          this.buffer = '';
+          this.setType('decls');
+        } else {
+          this.trimmed += this.letter;
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.isSelector = function() {
+      if (!this.space() && this.inside('rules')) {
+        this.init(new Rule());
+        if (this.letter === '{') {
+          this.addType('decls');
+          this.current.selector = new Raw('', '');
+          this.semicolon = false;
+          this.buffer = '';
+        } else {
+          this.addType('selector');
+          this.buffer = this.letter;
+          this.trimmed = this.letter;
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.isBlockEnd = function() {
+      if (this.letter === '}') {
+        if (this.parents.length === 1) {
+          this.error('Unexpected }');
+        } else {
+          if (this.inside('value')) {
+            this.fixEnd(function() {
+              return this.inValue('close');
+            });
+          } else {
+            if (this.semicolon) {
+              this.current.semicolon = true;
+            }
+            this.current.after = this.prevBuffer();
+          }
+          this.pop();
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.inProperty = function() {
+      if (this.inside('property')) {
+        if (this.letter === ':') {
+          if (this.buffer[0] === '*' || this.buffer[0] === '_') {
+            this.current.before += this.buffer[0];
+            this.trimmed = this.trimmed.slice(1);
+            this.buffer = this.buffer.slice(1);
+          }
+          this.current.prop = this.trim(this.trimmed);
+          this.current.between = this.prevBuffer().slice(this.current.prop.length);
+          this.buffer = '';
+          this.setType('value');
+          this.trimmed = '';
+        } else if (this.letter === '{') {
+          this.error('Unexpected { in decls');
+        } else {
+          this.trimmed += this.letter;
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.isProperty = function() {
+      if (this.inside('decls') && !this.space() && this.letter !== ';') {
+        this.init(new Declaration());
+        this.addType('property');
+        this.buffer = this.letter;
+        this.trimmed = this.letter;
+        this.semicolon = false;
+        return true;
+      }
+    };
+
+    Parser.prototype.inValue = function(close) {
+      if (this.inside('value')) {
+        if (this.letter === '(') {
+          this.inBrackets = true;
+        } else if (this.inBrackets && this.letter === ')') {
+          this.inBrackets = false;
+        }
+        if ((this.letter === ';' && !this.inBrackets) || close) {
+          if (this.letter === ';') {
+            this.semicolon = true;
+          }
+          this.current.value = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          this.pop();
+        } else {
+          this.trimmed += this.letter;
+        }
+        return true;
+      }
+    };
+
+    Parser.prototype.unknown = function() {
+      if (!this.space) {
+        return this.error("Unexpected symbol " + this.letter);
+      }
+    };
+
+    Parser.prototype.endFile = function() {
+      if (this.inside('atrule-param') || this.inside('atrule-name')) {
+        this.fixEnd(function() {
+          return this.inAtrule('close');
+        });
+      }
+      if (this.parents.length > 1) {
+        return this.error('Unclosed block', this.current.source.start);
+      } else if (this.inside('comment')) {
+        return this.error('Unclosed comment', this.commentPos);
+      } else if (this.quote) {
+        return this.error('Unclosed quote', this.quotePos);
+      } else {
+        return this.root.after = this.buffer;
+      }
+    };
+
+    Parser.prototype.error = function(message, position) {
+      if (position == null) {
+        position = {
+          line: this.line,
+          column: this.column
+        };
+      }
+      throw new SyntexError(message, this.source, position, this.opts.from);
+    };
+
+    Parser.prototype.move = function() {
+      this.pos += 1;
+      this.column += 1;
+      this.letter = this.source[this.pos];
+      this.buffer += this.letter;
+      if (this.letter === "\n") {
+        this.lines[this.line] = this.column - 1;
+        this.line += 1;
+        return this.column = 0;
+      }
+    };
+
+    Parser.prototype.prevBuffer = function() {
+      return this.buffer.slice(0, -1);
+    };
+
+    Parser.prototype.inside = function(type) {
+      return this.type === type;
+    };
+
+    Parser.prototype.next = function(string) {
+      return this.source.slice(this.pos, +(this.pos + string.length - 1) + 1 || 9e9) === string;
+    };
+
+    Parser.prototype.space = function() {
+      return this.letter === ' ' || this.letter === "\t" || this.letter === "\n" || this.letter === "\f" || this.letter === "\r";
+    };
+
+    Parser.prototype.init = function(node) {
+      this.current.push(node);
+      this.parents.push(node);
+      this.current = node;
+      this.current.source = {
+        start: {
+          line: this.line,
+          column: this.column
+        }
+      };
+      if (this.opts.from) {
+        this.current.source.file = this.opts.from;
+      }
+      this.current.before = this.buffer.slice(0, -1);
+      return this.buffer = '';
+    };
+
+    Parser.prototype.fixEnd = function(callback) {
+      var after, all, el, last, lines, start;
+      if (this.letter === '}') {
+        start = this.buffer.search(/\s*\}$/);
+        after = this.buffer.slice(start, -1);
+      } else {
+        start = this.buffer.search(/\s*$/);
+        after = this.buffer.slice(start);
+      }
+      this.buffer = this.buffer.slice(0, +start + 1 || 9e9);
+      el = this.current;
+      callback.apply(this);
+      lines = after.match(/\n/g);
+      if (lines) {
+        el.source.end.line -= lines.length;
+        all = this.lines[el.source.end.line];
+        last = after.indexOf("\n");
+        if (last === -1) {
+          last = after.length;
+        }
+        el.source.end.column = all - last;
+      } else {
+        el.source.end.column -= after.length;
+      }
+      this.current.after = after;
+      return this.buffer = after;
+    };
+
+    Parser.prototype.pop = function() {
+      this.current.source.end = {
+        line: this.line,
+        column: this.column
+      };
+      this.popType();
+      this.parents.pop();
+      this.current = this.parents[this.parents.length - 1];
+      return this.buffer = '';
+    };
+
+    Parser.prototype.addType = function(type) {
+      this.types.push(type);
+      return this.type = type;
+    };
+
+    Parser.prototype.setType = function(type) {
+      this.types[this.types.length - 1] = type;
+      return this.type = type;
+    };
+
+    Parser.prototype.popType = function() {
+      this.types.pop();
+      return this.type = this.types[this.types.length - 1];
+    };
+
+    Parser.prototype.atruleType = function() {
+      var name;
+      name = this.current.name.toLowerCase();
+      if (name === 'page' || name === 'font-face' || name.slice(-8) === 'viewport') {
+        return 'decls';
+      } else {
+        return 'rules';
+      }
+    };
+
+    Parser.prototype.endAtruleParams = function() {
+      var type;
+      if (this.letter === '{') {
+        type = this.atruleType();
+        this.current.addMixin(type);
+        this.setType(type);
+        return this.buffer = '';
+      } else {
+        if (this.letter === ';') {
+          this.current.semicolon = true;
+        }
+        return this.pop();
+      }
+    };
+
+    Parser.prototype.checkAtruleName = function() {
+      if (this.current.name === '') {
+        return this.error('At-rule without name');
+      }
+    };
+
+    Parser.prototype.trim = function(string) {
+      return string.replace(/^\s*/, '').replace(/\s*$/, '');
+    };
+
+    return Parser;
+
+  })();
+
+  module.exports = function(source, opts) {
+    var parser;
+    if (opts == null) {
+      opts = {};
+    }
+    parser = new Parser(source, opts);
+    parser.loop();
+    return parser.root;
   };
 
 }).call(this);
 
+},{"./at-rule":39,"./declaration":41,"./raw":47,"./root":49,"./rule":50,"./syntax-error":51}],46:[function(require,module,exports){
+(function() {
+  var AtRule, Declaration, PostCSS, Result, Root, Rule, generateMap, postcss,
+    __slice = [].slice;
+
+  generateMap = require('./generate-map');
+
+  Declaration = require('./declaration');
+
+  AtRule = require('./at-rule');
+
+  Result = require('./result');
+
+  Rule = require('./rule');
+
+  Root = require('./root');
+
+  PostCSS = (function() {
+    function PostCSS(processors) {
+      this.processors = processors != null ? processors : [];
+    }
+
+    PostCSS.prototype.use = function(processor) {
+      this.processors.push(processor);
+      return this;
+    };
+
+    PostCSS.prototype.process = function(css, opts) {
+      var parsed, processor, returned, _i, _len, _ref;
+      if (opts == null) {
+        opts = {};
+      }
+      parsed = postcss.parse(css, opts);
+      _ref = this.processors;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        processor = _ref[_i];
+        returned = processor(parsed);
+        if (returned instanceof Root) {
+          parsed = returned;
+        }
+      }
+      if (opts.map) {
+        return generateMap(parsed, opts);
+      } else {
+        return new Result(parsed, parsed.toString());
+      }
+    };
+
+    return PostCSS;
+
+  })();
+
+  postcss = function() {
+    var processors;
+    processors = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    return new PostCSS(processors);
+  };
+
+  postcss.parse = require('./parse');
+
+  postcss.decl = function(defaults) {
+    return new Declaration(defaults);
+  };
+
+  postcss.atRule = function(defaults) {
+    return new AtRule(defaults);
+  };
+
+  postcss.rule = function(defaults) {
+    return new Rule(defaults);
+  };
+
+  postcss.root = function(defaults) {
+    return new Root(defaults);
+  };
+
+  module.exports = postcss;
+
+}).call(this);
+
+},{"./at-rule":39,"./declaration":41,"./generate-map":42,"./parse":45,"./result":48,"./root":49,"./rule":50}],47:[function(require,module,exports){
+(function() {
+  var Raw;
+
+  Raw = (function() {
+    function Raw(raw, trimmed) {
+      this.raw = raw;
+      this.trimmed = trimmed;
+    }
+
+    Raw.prototype.set = function(value) {
+      if (this.trimmed !== value) {
+        this.changed = true;
+        return this.trimmed = value;
+      }
+    };
+
+    Raw.prototype.stringify = function(opts) {
+      if (opts == null) {
+        opts = {};
+      }
+      if (!this.changed) {
+        return this.raw || '';
+      } else if (!this.raw) {
+        return (opts.before || '') + this.trimmed + (opts.after || '');
+      } else {
+        return (this.raw[0] === ' ' ? ' ' : '') + this.trimmed + (this.raw.slice(-1) === ' ' ? ' ' : '');
+      }
+    };
+
+    return Raw;
+
+  })();
+
+  Raw.empty = new Raw();
+
+  module.exports = Raw;
+
+}).call(this);
+
+},{}],48:[function(require,module,exports){
+(function() {
+  var Result;
+
+  Result = (function() {
+    function Result(parsed, css) {
+      this.parsed = parsed;
+      this.css = css;
+    }
+
+    Result.prototype.toString = function() {
+      return this.css;
+    };
+
+    return Result;
+
+  })();
+
+  module.exports = Result;
+
+}).call(this);
+
+},{}],49:[function(require,module,exports){
+(function() {
+  var Container, Root,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Container = require('./container');
+
+  Root = (function(_super) {
+    __extends(Root, _super);
+
+    function Root() {
+      this.type = 'root';
+      this.rules = [];
+      Root.__super__.constructor.apply(this, arguments);
+    }
+
+    Root.prototype.normalize = function(child, sample, type) {
+      child = Root.__super__.normalize.apply(this, arguments);
+      if (type === 'prepend') {
+        sample.before = this.rules.length > 1 ? this.rules[1].before : this.after;
+      }
+      return child;
+    };
+
+    Root.prototype.stringify = function(builder) {
+      this.stringifyContent(builder);
+      if (this.after) {
+        return builder(this.after);
+      }
+    };
+
+    return Root;
+
+  })(Container.WithRules);
+
+  module.exports = Root;
+
+}).call(this);
+
+},{"./container":40}],50:[function(require,module,exports){
+(function() {
+  var Container, Declaration, Rule,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Container = require('./container');
+
+  Declaration = require('./declaration');
+
+  Rule = (function(_super) {
+    __extends(Rule, _super);
+
+    function Rule() {
+      this.type = 'rule';
+      Rule.__super__.constructor.apply(this, arguments);
+    }
+
+    Rule.raw('selector');
+
+    Rule.prototype.stringify = function(builder) {
+      return this.stringifyBlock(builder, this._selector.stringify({
+        after: ' '
+      }) + '{');
+    };
+
+    return Rule;
+
+  })(Container.WithDecls);
+
+  module.exports = Rule;
+
+}).call(this);
+
+},{"./container":40,"./declaration":41}],51:[function(require,module,exports){
+(function() {
+  var SyntaxError,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  SyntaxError = (function(_super) {
+    __extends(SyntaxError, _super);
+
+    function SyntaxError(text, source, pos, file) {
+      this.source = source;
+      this.file = file;
+      this.line = pos.line;
+      this.column = pos.column;
+      this.message = "Can't parse CSS: " + text;
+      this.message += " at line " + pos.line + ":" + pos.column;
+      if (this.file) {
+        this.message += " in " + this.file;
+      }
+    }
+
+    return SyntaxError;
+
+  })(Error);
+
+  module.exports = SyntaxError;
+
+}).call(this);
+
+},{}],52:[function(require,module,exports){
+(function() {
+  var vendor;
+
+  vendor = {
+    prefix: function(prop) {
+      var separator;
+      if (prop[0] === '-') {
+        separator = prop.indexOf('-', 1) + 1;
+        return prop.slice(0, separator);
+      } else {
+        return '';
+      }
+    },
+    unprefixed: function(prop) {
+      var separator;
+      if (prop[0] === '-') {
+        separator = prop.indexOf('-', 1) + 1;
+        return prop.slice(separator);
+      } else {
+        return prop;
+      }
+    }
+  };
+
+  module.exports = vendor;
+
+}).call(this);
+
+},{}],53:[function(require,module,exports){
+/*
+ * Copyright 2009-2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE.txt or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+exports.SourceMapGenerator = require('./source-map/source-map-generator').SourceMapGenerator;
+exports.SourceMapConsumer = require('./source-map/source-map-consumer').SourceMapConsumer;
+exports.SourceNode = require('./source-map/source-node').SourceNode;
+
+},{"./source-map/source-map-consumer":58,"./source-map/source-map-generator":59,"./source-map/source-node":60}],54:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  var util = require('./util');
+
+  /**
+   * A data structure which is a combination of an array and a set. Adding a new
+   * member is O(1), testing for membership is O(1), and finding the index of an
+   * element is O(1). Removing elements from the set is not supported. Only
+   * strings are supported for membership.
+   */
+  function ArraySet() {
+    this._array = [];
+    this._set = {};
+  }
+
+  /**
+   * Static method for creating ArraySet instances from an existing array.
+   */
+  ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+    var set = new ArraySet();
+    for (var i = 0, len = aArray.length; i < len; i++) {
+      set.add(aArray[i], aAllowDuplicates);
+    }
+    return set;
+  };
+
+  /**
+   * Add the given string to this set.
+   *
+   * @param String aStr
+   */
+  ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+    var isDuplicate = this.has(aStr);
+    var idx = this._array.length;
+    if (!isDuplicate || aAllowDuplicates) {
+      this._array.push(aStr);
+    }
+    if (!isDuplicate) {
+      this._set[util.toSetString(aStr)] = idx;
+    }
+  };
+
+  /**
+   * Is the given string a member of this set?
+   *
+   * @param String aStr
+   */
+  ArraySet.prototype.has = function ArraySet_has(aStr) {
+    return Object.prototype.hasOwnProperty.call(this._set,
+                                                util.toSetString(aStr));
+  };
+
+  /**
+   * What is the index of the given string in the array?
+   *
+   * @param String aStr
+   */
+  ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
+    if (this.has(aStr)) {
+      return this._set[util.toSetString(aStr)];
+    }
+    throw new Error('"' + aStr + '" is not in the set.');
+  };
+
+  /**
+   * What is the element at the given index?
+   *
+   * @param Number aIdx
+   */
+  ArraySet.prototype.at = function ArraySet_at(aIdx) {
+    if (aIdx >= 0 && aIdx < this._array.length) {
+      return this._array[aIdx];
+    }
+    throw new Error('No element indexed by ' + aIdx);
+  };
+
+  /**
+   * Returns the array representation of this set (which has the proper indices
+   * indicated by indexOf). Note that this is a copy of the internal array used
+   * for storing the members so that no one can mess with internal state.
+   */
+  ArraySet.prototype.toArray = function ArraySet_toArray() {
+    return this._array.slice();
+  };
+
+  exports.ArraySet = ArraySet;
+
 });
 
+},{"./util":61,"amdefine":62}],55:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ *
+ * Based on the Base 64 VLQ implementation in Closure Compiler:
+ * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
+ *
+ * Copyright 2011 The Closure Compiler Authors. All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above
+ *    copyright notice, this list of conditions and the following
+ *    disclaimer in the documentation and/or other materials provided
+ *    with the distribution.
+ *  * Neither the name of Google Inc. nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
 
+  var base64 = require('./base64');
 
+  // A single base 64 digit can contain 6 bits of data. For the base 64 variable
+  // length quantities we use in the source map spec, the first bit is the sign,
+  // the next four bits are the actual value, and the 6th bit is the
+  // continuation bit. The continuation bit tells us whether there are more
+  // digits in this value following this digit.
+  //
+  //   Continuation
+  //   |    Sign
+  //   |    |
+  //   V    V
+  //   101011
 
-require.alias("visionmedia-css-parse/index.js", "autoprefixer/deps/css-parse/index.js");
-require.alias("visionmedia-css-parse/index.js", "css-parse/index.js");
+  var VLQ_BASE_SHIFT = 5;
 
-require.alias("visionmedia-css-stringify/index.js", "autoprefixer/deps/css-stringify/index.js");
-require.alias("visionmedia-css-stringify/lib/compress.js", "autoprefixer/deps/css-stringify/lib/compress.js");
-require.alias("visionmedia-css-stringify/lib/identity.js", "autoprefixer/deps/css-stringify/lib/identity.js");
-require.alias("visionmedia-css-stringify/lib/compiler.js", "autoprefixer/deps/css-stringify/lib/compiler.js");
-require.alias("visionmedia-css-stringify/lib/source-map-support.js", "autoprefixer/deps/css-stringify/lib/source-map-support.js");
-require.alias("visionmedia-css-stringify/index.js", "css-stringify/index.js");
+  // binary: 100000
+  var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
 
-require.alias("autoprefixer/lib/autoprefixer.js", "autoprefixer/index.js");if (typeof exports == "object") {
-  module.exports = require("autoprefixer");
-} else if (typeof define == "function" && define.amd) {
-  define(function(){ return require("autoprefixer"); });
-} else {
-  this["autoprefixer"] = require("autoprefixer");
-}})();
+  // binary: 011111
+  var VLQ_BASE_MASK = VLQ_BASE - 1;
+
+  // binary: 100000
+  var VLQ_CONTINUATION_BIT = VLQ_BASE;
+
+  /**
+   * Converts from a two-complement value to a value where the sign bit is
+   * is placed in the least significant bit.  For example, as decimals:
+   *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+   *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+   */
+  function toVLQSigned(aValue) {
+    return aValue < 0
+      ? ((-aValue) << 1) + 1
+      : (aValue << 1) + 0;
+  }
+
+  /**
+   * Converts to a two-complement value from a value where the sign bit is
+   * is placed in the least significant bit.  For example, as decimals:
+   *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+   *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+   */
+  function fromVLQSigned(aValue) {
+    var isNegative = (aValue & 1) === 1;
+    var shifted = aValue >> 1;
+    return isNegative
+      ? -shifted
+      : shifted;
+  }
+
+  /**
+   * Returns the base 64 VLQ encoded value.
+   */
+  exports.encode = function base64VLQ_encode(aValue) {
+    var encoded = "";
+    var digit;
+
+    var vlq = toVLQSigned(aValue);
+
+    do {
+      digit = vlq & VLQ_BASE_MASK;
+      vlq >>>= VLQ_BASE_SHIFT;
+      if (vlq > 0) {
+        // There are still more digits in this value, so we must make sure the
+        // continuation bit is marked.
+        digit |= VLQ_CONTINUATION_BIT;
+      }
+      encoded += base64.encode(digit);
+    } while (vlq > 0);
+
+    return encoded;
+  };
+
+  /**
+   * Decodes the next base 64 VLQ value from the given string and returns the
+   * value and the rest of the string.
+   */
+  exports.decode = function base64VLQ_decode(aStr) {
+    var i = 0;
+    var strLen = aStr.length;
+    var result = 0;
+    var shift = 0;
+    var continuation, digit;
+
+    do {
+      if (i >= strLen) {
+        throw new Error("Expected more digits in base 64 VLQ value.");
+      }
+      digit = base64.decode(aStr.charAt(i++));
+      continuation = !!(digit & VLQ_CONTINUATION_BIT);
+      digit &= VLQ_BASE_MASK;
+      result = result + (digit << shift);
+      shift += VLQ_BASE_SHIFT;
+    } while (continuation);
+
+    return {
+      value: fromVLQSigned(result),
+      rest: aStr.slice(i)
+    };
+  };
+
+});
+
+},{"./base64":56,"amdefine":62}],56:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  var charToIntMap = {};
+  var intToCharMap = {};
+
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    .split('')
+    .forEach(function (ch, index) {
+      charToIntMap[ch] = index;
+      intToCharMap[index] = ch;
+    });
+
+  /**
+   * Encode an integer in the range of 0 to 63 to a single base 64 digit.
+   */
+  exports.encode = function base64_encode(aNumber) {
+    if (aNumber in intToCharMap) {
+      return intToCharMap[aNumber];
+    }
+    throw new TypeError("Must be between 0 and 63: " + aNumber);
+  };
+
+  /**
+   * Decode a single base 64 digit to an integer.
+   */
+  exports.decode = function base64_decode(aChar) {
+    if (aChar in charToIntMap) {
+      return charToIntMap[aChar];
+    }
+    throw new TypeError("Not a valid base 64 digit: " + aChar);
+  };
+
+});
+
+},{"amdefine":62}],57:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  /**
+   * Recursive implementation of binary search.
+   *
+   * @param aLow Indices here and lower do not contain the needle.
+   * @param aHigh Indices here and higher do not contain the needle.
+   * @param aNeedle The element being searched for.
+   * @param aHaystack The non-empty array being searched.
+   * @param aCompare Function which takes two elements and returns -1, 0, or 1.
+   */
+  function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare) {
+    // This function terminates when one of the following is true:
+    //
+    //   1. We find the exact element we are looking for.
+    //
+    //   2. We did not find the exact element, but we can return the next
+    //      closest element that is less than that element.
+    //
+    //   3. We did not find the exact element, and there is no next-closest
+    //      element which is less than the one we are searching for, so we
+    //      return null.
+    var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+    var cmp = aCompare(aNeedle, aHaystack[mid], true);
+    if (cmp === 0) {
+      // Found the element we are looking for.
+      return aHaystack[mid];
+    }
+    else if (cmp > 0) {
+      // aHaystack[mid] is greater than our needle.
+      if (aHigh - mid > 1) {
+        // The element is in the upper half.
+        return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare);
+      }
+      // We did not find an exact match, return the next closest one
+      // (termination case 2).
+      return aHaystack[mid];
+    }
+    else {
+      // aHaystack[mid] is less than our needle.
+      if (mid - aLow > 1) {
+        // The element is in the lower half.
+        return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare);
+      }
+      // The exact needle element was not found in this haystack. Determine if
+      // we are in termination case (2) or (3) and return the appropriate thing.
+      return aLow < 0
+        ? null
+        : aHaystack[aLow];
+    }
+  }
+
+  /**
+   * This is an implementation of binary search which will always try and return
+   * the next lowest value checked if there is no exact hit. This is because
+   * mappings between original and generated line/col pairs are single points,
+   * and there is an implicit region between each of them, so a miss just means
+   * that you aren't on the very start of a region.
+   *
+   * @param aNeedle The element you are looking for.
+   * @param aHaystack The array that is being searched.
+   * @param aCompare A function which takes the needle and an element in the
+   *     array and returns -1, 0, or 1 depending on whether the needle is less
+   *     than, equal to, or greater than the element, respectively.
+   */
+  exports.search = function search(aNeedle, aHaystack, aCompare) {
+    return aHaystack.length > 0
+      ? recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack, aCompare)
+      : null;
+  };
+
+});
+
+},{"amdefine":62}],58:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  var util = require('./util');
+  var binarySearch = require('./binary-search');
+  var ArraySet = require('./array-set').ArraySet;
+  var base64VLQ = require('./base64-vlq');
+
+  /**
+   * A SourceMapConsumer instance represents a parsed source map which we can
+   * query for information about the original file positions by giving it a file
+   * position in the generated source.
+   *
+   * The only parameter is the raw source map (either as a JSON string, or
+   * already parsed to an object). According to the spec, source maps have the
+   * following attributes:
+   *
+   *   - version: Which version of the source map spec this map is following.
+   *   - sources: An array of URLs to the original source files.
+   *   - names: An array of identifiers which can be referrenced by individual mappings.
+   *   - sourceRoot: Optional. The URL root from which all sources are relative.
+   *   - sourcesContent: Optional. An array of contents of the original source files.
+   *   - mappings: A string of base64 VLQs which contain the actual mappings.
+   *   - file: The generated file this source map is associated with.
+   *
+   * Here is an example source map, taken from the source map spec[0]:
+   *
+   *     {
+   *       version : 3,
+   *       file: "out.js",
+   *       sourceRoot : "",
+   *       sources: ["foo.js", "bar.js"],
+   *       names: ["src", "maps", "are", "fun"],
+   *       mappings: "AA,AB;;ABCDE;"
+   *     }
+   *
+   * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
+   */
+  function SourceMapConsumer(aSourceMap) {
+    var sourceMap = aSourceMap;
+    if (typeof aSourceMap === 'string') {
+      sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ''));
+    }
+
+    var version = util.getArg(sourceMap, 'version');
+    var sources = util.getArg(sourceMap, 'sources');
+    // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
+    // requires the array) to play nice here.
+    var names = util.getArg(sourceMap, 'names', []);
+    var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
+    var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
+    var mappings = util.getArg(sourceMap, 'mappings');
+    var file = util.getArg(sourceMap, 'file', null);
+
+    // Once again, Sass deviates from the spec and supplies the version as a
+    // string rather than a number, so we use loose equality checking here.
+    if (version != this._version) {
+      throw new Error('Unsupported version: ' + version);
+    }
+
+    // Pass `true` below to allow duplicate names and sources. While source maps
+    // are intended to be compressed and deduplicated, the TypeScript compiler
+    // sometimes generates source maps with duplicates in them. See Github issue
+    // #72 and bugzil.la/889492.
+    this._names = ArraySet.fromArray(names, true);
+    this._sources = ArraySet.fromArray(sources, true);
+
+    this.sourceRoot = sourceRoot;
+    this.sourcesContent = sourcesContent;
+    this._mappings = mappings;
+    this.file = file;
+  }
+
+  /**
+   * Create a SourceMapConsumer from a SourceMapGenerator.
+   *
+   * @param SourceMapGenerator aSourceMap
+   *        The source map that will be consumed.
+   * @returns SourceMapConsumer
+   */
+  SourceMapConsumer.fromSourceMap =
+    function SourceMapConsumer_fromSourceMap(aSourceMap) {
+      var smc = Object.create(SourceMapConsumer.prototype);
+
+      smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
+      smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
+      smc.sourceRoot = aSourceMap._sourceRoot;
+      smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
+                                                              smc.sourceRoot);
+      smc.file = aSourceMap._file;
+
+      smc.__generatedMappings = aSourceMap._mappings.slice()
+        .sort(util.compareByGeneratedPositions);
+      smc.__originalMappings = aSourceMap._mappings.slice()
+        .sort(util.compareByOriginalPositions);
+
+      return smc;
+    };
+
+  /**
+   * The version of the source mapping spec that we are consuming.
+   */
+  SourceMapConsumer.prototype._version = 3;
+
+  /**
+   * The list of original sources.
+   */
+  Object.defineProperty(SourceMapConsumer.prototype, 'sources', {
+    get: function () {
+      return this._sources.toArray().map(function (s) {
+        return this.sourceRoot ? util.join(this.sourceRoot, s) : s;
+      }, this);
+    }
+  });
+
+  // `__generatedMappings` and `__originalMappings` are arrays that hold the
+  // parsed mapping coordinates from the source map's "mappings" attribute. They
+  // are lazily instantiated, accessed via the `_generatedMappings` and
+  // `_originalMappings` getters respectively, and we only parse the mappings
+  // and create these arrays once queried for a source location. We jump through
+  // these hoops because there can be many thousands of mappings, and parsing
+  // them is expensive, so we only want to do it if we must.
+  //
+  // Each object in the arrays is of the form:
+  //
+  //     {
+  //       generatedLine: The line number in the generated code,
+  //       generatedColumn: The column number in the generated code,
+  //       source: The path to the original source file that generated this
+  //               chunk of code,
+  //       originalLine: The line number in the original source that
+  //                     corresponds to this chunk of generated code,
+  //       originalColumn: The column number in the original source that
+  //                       corresponds to this chunk of generated code,
+  //       name: The name of the original symbol which generated this chunk of
+  //             code.
+  //     }
+  //
+  // All properties except for `generatedLine` and `generatedColumn` can be
+  // `null`.
+  //
+  // `_generatedMappings` is ordered by the generated positions.
+  //
+  // `_originalMappings` is ordered by the original positions.
+
+  SourceMapConsumer.prototype.__generatedMappings = null;
+  Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
+    get: function () {
+      if (!this.__generatedMappings) {
+        this.__generatedMappings = [];
+        this.__originalMappings = [];
+        this._parseMappings(this._mappings, this.sourceRoot);
+      }
+
+      return this.__generatedMappings;
+    }
+  });
+
+  SourceMapConsumer.prototype.__originalMappings = null;
+  Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
+    get: function () {
+      if (!this.__originalMappings) {
+        this.__generatedMappings = [];
+        this.__originalMappings = [];
+        this._parseMappings(this._mappings, this.sourceRoot);
+      }
+
+      return this.__originalMappings;
+    }
+  });
+
+  /**
+   * Parse the mappings in a string in to a data structure which we can easily
+   * query (the ordered arrays in the `this.__generatedMappings` and
+   * `this.__originalMappings` properties).
+   */
+  SourceMapConsumer.prototype._parseMappings =
+    function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+      var generatedLine = 1;
+      var previousGeneratedColumn = 0;
+      var previousOriginalLine = 0;
+      var previousOriginalColumn = 0;
+      var previousSource = 0;
+      var previousName = 0;
+      var mappingSeparator = /^[,;]/;
+      var str = aStr;
+      var mapping;
+      var temp;
+
+      while (str.length > 0) {
+        if (str.charAt(0) === ';') {
+          generatedLine++;
+          str = str.slice(1);
+          previousGeneratedColumn = 0;
+        }
+        else if (str.charAt(0) === ',') {
+          str = str.slice(1);
+        }
+        else {
+          mapping = {};
+          mapping.generatedLine = generatedLine;
+
+          // Generated column.
+          temp = base64VLQ.decode(str);
+          mapping.generatedColumn = previousGeneratedColumn + temp.value;
+          previousGeneratedColumn = mapping.generatedColumn;
+          str = temp.rest;
+
+          if (str.length > 0 && !mappingSeparator.test(str.charAt(0))) {
+            // Original source.
+            temp = base64VLQ.decode(str);
+            mapping.source = this._sources.at(previousSource + temp.value);
+            previousSource += temp.value;
+            str = temp.rest;
+            if (str.length === 0 || mappingSeparator.test(str.charAt(0))) {
+              throw new Error('Found a source, but no line and column');
+            }
+
+            // Original line.
+            temp = base64VLQ.decode(str);
+            mapping.originalLine = previousOriginalLine + temp.value;
+            previousOriginalLine = mapping.originalLine;
+            // Lines are stored 0-based
+            mapping.originalLine += 1;
+            str = temp.rest;
+            if (str.length === 0 || mappingSeparator.test(str.charAt(0))) {
+              throw new Error('Found a source and line, but no column');
+            }
+
+            // Original column.
+            temp = base64VLQ.decode(str);
+            mapping.originalColumn = previousOriginalColumn + temp.value;
+            previousOriginalColumn = mapping.originalColumn;
+            str = temp.rest;
+
+            if (str.length > 0 && !mappingSeparator.test(str.charAt(0))) {
+              // Original name.
+              temp = base64VLQ.decode(str);
+              mapping.name = this._names.at(previousName + temp.value);
+              previousName += temp.value;
+              str = temp.rest;
+            }
+          }
+
+          this.__generatedMappings.push(mapping);
+          if (typeof mapping.originalLine === 'number') {
+            this.__originalMappings.push(mapping);
+          }
+        }
+      }
+
+      this.__originalMappings.sort(util.compareByOriginalPositions);
+    };
+
+  /**
+   * Find the mapping that best matches the hypothetical "needle" mapping that
+   * we are searching for in the given "haystack" of mappings.
+   */
+  SourceMapConsumer.prototype._findMapping =
+    function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
+                                           aColumnName, aComparator) {
+      // To return the position we are searching for, we must first find the
+      // mapping for the given position and then return the opposite position it
+      // points to. Because the mappings are sorted, we can use binary search to
+      // find the best mapping.
+
+      if (aNeedle[aLineName] <= 0) {
+        throw new TypeError('Line must be greater than or equal to 1, got '
+                            + aNeedle[aLineName]);
+      }
+      if (aNeedle[aColumnName] < 0) {
+        throw new TypeError('Column must be greater than or equal to 0, got '
+                            + aNeedle[aColumnName]);
+      }
+
+      return binarySearch.search(aNeedle, aMappings, aComparator);
+    };
+
+  /**
+   * Returns the original source, line, and column information for the generated
+   * source's line and column positions provided. The only argument is an object
+   * with the following properties:
+   *
+   *   - line: The line number in the generated source.
+   *   - column: The column number in the generated source.
+   *
+   * and an object is returned with the following properties:
+   *
+   *   - source: The original source file, or null.
+   *   - line: The line number in the original source, or null.
+   *   - column: The column number in the original source, or null.
+   *   - name: The original identifier, or null.
+   */
+  SourceMapConsumer.prototype.originalPositionFor =
+    function SourceMapConsumer_originalPositionFor(aArgs) {
+      var needle = {
+        generatedLine: util.getArg(aArgs, 'line'),
+        generatedColumn: util.getArg(aArgs, 'column')
+      };
+
+      var mapping = this._findMapping(needle,
+                                      this._generatedMappings,
+                                      "generatedLine",
+                                      "generatedColumn",
+                                      util.compareByGeneratedPositions);
+
+      if (mapping) {
+        var source = util.getArg(mapping, 'source', null);
+        if (source && this.sourceRoot) {
+          source = util.join(this.sourceRoot, source);
+        }
+        return {
+          source: source,
+          line: util.getArg(mapping, 'originalLine', null),
+          column: util.getArg(mapping, 'originalColumn', null),
+          name: util.getArg(mapping, 'name', null)
+        };
+      }
+
+      return {
+        source: null,
+        line: null,
+        column: null,
+        name: null
+      };
+    };
+
+  /**
+   * Returns the original source content. The only argument is the url of the
+   * original source file. Returns null if no original source content is
+   * availible.
+   */
+  SourceMapConsumer.prototype.sourceContentFor =
+    function SourceMapConsumer_sourceContentFor(aSource) {
+      if (!this.sourcesContent) {
+        return null;
+      }
+
+      if (this.sourceRoot) {
+        aSource = util.relative(this.sourceRoot, aSource);
+      }
+
+      if (this._sources.has(aSource)) {
+        return this.sourcesContent[this._sources.indexOf(aSource)];
+      }
+
+      var url;
+      if (this.sourceRoot
+          && (url = util.urlParse(this.sourceRoot))) {
+        // XXX: file:// URIs and absolute paths lead to unexpected behavior for
+        // many users. We can help them out when they expect file:// URIs to
+        // behave like it would if they were running a local HTTP server. See
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
+        var fileUriAbsPath = aSource.replace(/^file:\/\//, "");
+        if (url.scheme == "file"
+            && this._sources.has(fileUriAbsPath)) {
+          return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
+        }
+
+        if ((!url.path || url.path == "/")
+            && this._sources.has("/" + aSource)) {
+          return this.sourcesContent[this._sources.indexOf("/" + aSource)];
+        }
+      }
+
+      throw new Error('"' + aSource + '" is not in the SourceMap.');
+    };
+
+  /**
+   * Returns the generated line and column information for the original source,
+   * line, and column positions provided. The only argument is an object with
+   * the following properties:
+   *
+   *   - source: The filename of the original source.
+   *   - line: The line number in the original source.
+   *   - column: The column number in the original source.
+   *
+   * and an object is returned with the following properties:
+   *
+   *   - line: The line number in the generated source, or null.
+   *   - column: The column number in the generated source, or null.
+   */
+  SourceMapConsumer.prototype.generatedPositionFor =
+    function SourceMapConsumer_generatedPositionFor(aArgs) {
+      var needle = {
+        source: util.getArg(aArgs, 'source'),
+        originalLine: util.getArg(aArgs, 'line'),
+        originalColumn: util.getArg(aArgs, 'column')
+      };
+
+      if (this.sourceRoot) {
+        needle.source = util.relative(this.sourceRoot, needle.source);
+      }
+
+      var mapping = this._findMapping(needle,
+                                      this._originalMappings,
+                                      "originalLine",
+                                      "originalColumn",
+                                      util.compareByOriginalPositions);
+
+      if (mapping) {
+        return {
+          line: util.getArg(mapping, 'generatedLine', null),
+          column: util.getArg(mapping, 'generatedColumn', null)
+        };
+      }
+
+      return {
+        line: null,
+        column: null
+      };
+    };
+
+  SourceMapConsumer.GENERATED_ORDER = 1;
+  SourceMapConsumer.ORIGINAL_ORDER = 2;
+
+  /**
+   * Iterate over each mapping between an original source/line/column and a
+   * generated line/column in this source map.
+   *
+   * @param Function aCallback
+   *        The function that is called with each mapping.
+   * @param Object aContext
+   *        Optional. If specified, this object will be the value of `this` every
+   *        time that `aCallback` is called.
+   * @param aOrder
+   *        Either `SourceMapConsumer.GENERATED_ORDER` or
+   *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
+   *        iterate over the mappings sorted by the generated file's line/column
+   *        order or the original's source/line/column order, respectively. Defaults to
+   *        `SourceMapConsumer.GENERATED_ORDER`.
+   */
+  SourceMapConsumer.prototype.eachMapping =
+    function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+      var context = aContext || null;
+      var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+
+      var mappings;
+      switch (order) {
+      case SourceMapConsumer.GENERATED_ORDER:
+        mappings = this._generatedMappings;
+        break;
+      case SourceMapConsumer.ORIGINAL_ORDER:
+        mappings = this._originalMappings;
+        break;
+      default:
+        throw new Error("Unknown order of iteration.");
+      }
+
+      var sourceRoot = this.sourceRoot;
+      mappings.map(function (mapping) {
+        var source = mapping.source;
+        if (source && sourceRoot) {
+          source = util.join(sourceRoot, source);
+        }
+        return {
+          source: source,
+          generatedLine: mapping.generatedLine,
+          generatedColumn: mapping.generatedColumn,
+          originalLine: mapping.originalLine,
+          originalColumn: mapping.originalColumn,
+          name: mapping.name
+        };
+      }).forEach(aCallback, context);
+    };
+
+  exports.SourceMapConsumer = SourceMapConsumer;
+
+});
+
+},{"./array-set":54,"./base64-vlq":55,"./binary-search":57,"./util":61,"amdefine":62}],59:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  var base64VLQ = require('./base64-vlq');
+  var util = require('./util');
+  var ArraySet = require('./array-set').ArraySet;
+
+  /**
+   * An instance of the SourceMapGenerator represents a source map which is
+   * being built incrementally. To create a new one, you must pass an object
+   * with the following properties:
+   *
+   *   - file: The filename of the generated source.
+   *   - sourceRoot: An optional root for all URLs in this source map.
+   */
+  function SourceMapGenerator(aArgs) {
+    this._file = util.getArg(aArgs, 'file');
+    this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
+    this._sources = new ArraySet();
+    this._names = new ArraySet();
+    this._mappings = [];
+    this._sourcesContents = null;
+  }
+
+  SourceMapGenerator.prototype._version = 3;
+
+  /**
+   * Creates a new SourceMapGenerator based on a SourceMapConsumer
+   *
+   * @param aSourceMapConsumer The SourceMap.
+   */
+  SourceMapGenerator.fromSourceMap =
+    function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
+      var sourceRoot = aSourceMapConsumer.sourceRoot;
+      var generator = new SourceMapGenerator({
+        file: aSourceMapConsumer.file,
+        sourceRoot: sourceRoot
+      });
+      aSourceMapConsumer.eachMapping(function (mapping) {
+        var newMapping = {
+          generated: {
+            line: mapping.generatedLine,
+            column: mapping.generatedColumn
+          }
+        };
+
+        if (mapping.source) {
+          newMapping.source = mapping.source;
+          if (sourceRoot) {
+            newMapping.source = util.relative(sourceRoot, newMapping.source);
+          }
+
+          newMapping.original = {
+            line: mapping.originalLine,
+            column: mapping.originalColumn
+          };
+
+          if (mapping.name) {
+            newMapping.name = mapping.name;
+          }
+        }
+
+        generator.addMapping(newMapping);
+      });
+      aSourceMapConsumer.sources.forEach(function (sourceFile) {
+        var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+        if (content) {
+          generator.setSourceContent(sourceFile, content);
+        }
+      });
+      return generator;
+    };
+
+  /**
+   * Add a single mapping from original source line and column to the generated
+   * source's line and column for this source map being created. The mapping
+   * object should have the following properties:
+   *
+   *   - generated: An object with the generated line and column positions.
+   *   - original: An object with the original line and column positions.
+   *   - source: The original source file (relative to the sourceRoot).
+   *   - name: An optional original token name for this mapping.
+   */
+  SourceMapGenerator.prototype.addMapping =
+    function SourceMapGenerator_addMapping(aArgs) {
+      var generated = util.getArg(aArgs, 'generated');
+      var original = util.getArg(aArgs, 'original', null);
+      var source = util.getArg(aArgs, 'source', null);
+      var name = util.getArg(aArgs, 'name', null);
+
+      this._validateMapping(generated, original, source, name);
+
+      if (source && !this._sources.has(source)) {
+        this._sources.add(source);
+      }
+
+      if (name && !this._names.has(name)) {
+        this._names.add(name);
+      }
+
+      this._mappings.push({
+        generatedLine: generated.line,
+        generatedColumn: generated.column,
+        originalLine: original != null && original.line,
+        originalColumn: original != null && original.column,
+        source: source,
+        name: name
+      });
+    };
+
+  /**
+   * Set the source content for a source file.
+   */
+  SourceMapGenerator.prototype.setSourceContent =
+    function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
+      var source = aSourceFile;
+      if (this._sourceRoot) {
+        source = util.relative(this._sourceRoot, source);
+      }
+
+      if (aSourceContent !== null) {
+        // Add the source content to the _sourcesContents map.
+        // Create a new _sourcesContents map if the property is null.
+        if (!this._sourcesContents) {
+          this._sourcesContents = {};
+        }
+        this._sourcesContents[util.toSetString(source)] = aSourceContent;
+      } else {
+        // Remove the source file from the _sourcesContents map.
+        // If the _sourcesContents map is empty, set the property to null.
+        delete this._sourcesContents[util.toSetString(source)];
+        if (Object.keys(this._sourcesContents).length === 0) {
+          this._sourcesContents = null;
+        }
+      }
+    };
+
+  /**
+   * Applies the mappings of a sub-source-map for a specific source file to the
+   * source map being generated. Each mapping to the supplied source file is
+   * rewritten using the supplied source map. Note: The resolution for the
+   * resulting mappings is the minimium of this map and the supplied map.
+   *
+   * @param aSourceMapConsumer The source map to be applied.
+   * @param aSourceFile Optional. The filename of the source file.
+   *        If omitted, SourceMapConsumer's file property will be used.
+   */
+  SourceMapGenerator.prototype.applySourceMap =
+    function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile) {
+      // If aSourceFile is omitted, we will use the file property of the SourceMap
+      if (!aSourceFile) {
+        aSourceFile = aSourceMapConsumer.file;
+      }
+      var sourceRoot = this._sourceRoot;
+      // Make "aSourceFile" relative if an absolute Url is passed.
+      if (sourceRoot) {
+        aSourceFile = util.relative(sourceRoot, aSourceFile);
+      }
+      // Applying the SourceMap can add and remove items from the sources and
+      // the names array.
+      var newSources = new ArraySet();
+      var newNames = new ArraySet();
+
+      // Find mappings for the "aSourceFile"
+      this._mappings.forEach(function (mapping) {
+        if (mapping.source === aSourceFile && mapping.originalLine) {
+          // Check if it can be mapped by the source map, then update the mapping.
+          var original = aSourceMapConsumer.originalPositionFor({
+            line: mapping.originalLine,
+            column: mapping.originalColumn
+          });
+          if (original.source !== null) {
+            // Copy mapping
+            if (sourceRoot) {
+              mapping.source = util.relative(sourceRoot, original.source);
+            } else {
+              mapping.source = original.source;
+            }
+            mapping.originalLine = original.line;
+            mapping.originalColumn = original.column;
+            if (original.name !== null && mapping.name !== null) {
+              // Only use the identifier name if it's an identifier
+              // in both SourceMaps
+              mapping.name = original.name;
+            }
+          }
+        }
+
+        var source = mapping.source;
+        if (source && !newSources.has(source)) {
+          newSources.add(source);
+        }
+
+        var name = mapping.name;
+        if (name && !newNames.has(name)) {
+          newNames.add(name);
+        }
+
+      }, this);
+      this._sources = newSources;
+      this._names = newNames;
+
+      // Copy sourcesContents of applied map.
+      aSourceMapConsumer.sources.forEach(function (sourceFile) {
+        var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+        if (content) {
+          if (sourceRoot) {
+            sourceFile = util.relative(sourceRoot, sourceFile);
+          }
+          this.setSourceContent(sourceFile, content);
+        }
+      }, this);
+    };
+
+  /**
+   * A mapping can have one of the three levels of data:
+   *
+   *   1. Just the generated position.
+   *   2. The Generated position, original position, and original source.
+   *   3. Generated and original position, original source, as well as a name
+   *      token.
+   *
+   * To maintain consistency, we validate that any new mapping being added falls
+   * in to one of these categories.
+   */
+  SourceMapGenerator.prototype._validateMapping =
+    function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
+                                                aName) {
+      if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+          && aGenerated.line > 0 && aGenerated.column >= 0
+          && !aOriginal && !aSource && !aName) {
+        // Case 1.
+        return;
+      }
+      else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+               && aOriginal && 'line' in aOriginal && 'column' in aOriginal
+               && aGenerated.line > 0 && aGenerated.column >= 0
+               && aOriginal.line > 0 && aOriginal.column >= 0
+               && aSource) {
+        // Cases 2 and 3.
+        return;
+      }
+      else {
+        throw new Error('Invalid mapping: ' + JSON.stringify({
+          generated: aGenerated,
+          source: aSource,
+          orginal: aOriginal,
+          name: aName
+        }));
+      }
+    };
+
+  /**
+   * Serialize the accumulated mappings in to the stream of base 64 VLQs
+   * specified by the source map format.
+   */
+  SourceMapGenerator.prototype._serializeMappings =
+    function SourceMapGenerator_serializeMappings() {
+      var previousGeneratedColumn = 0;
+      var previousGeneratedLine = 1;
+      var previousOriginalColumn = 0;
+      var previousOriginalLine = 0;
+      var previousName = 0;
+      var previousSource = 0;
+      var result = '';
+      var mapping;
+
+      // The mappings must be guaranteed to be in sorted order before we start
+      // serializing them or else the generated line numbers (which are defined
+      // via the ';' separators) will be all messed up. Note: it might be more
+      // performant to maintain the sorting as we insert them, rather than as we
+      // serialize them, but the big O is the same either way.
+      this._mappings.sort(util.compareByGeneratedPositions);
+
+      for (var i = 0, len = this._mappings.length; i < len; i++) {
+        mapping = this._mappings[i];
+
+        if (mapping.generatedLine !== previousGeneratedLine) {
+          previousGeneratedColumn = 0;
+          while (mapping.generatedLine !== previousGeneratedLine) {
+            result += ';';
+            previousGeneratedLine++;
+          }
+        }
+        else {
+          if (i > 0) {
+            if (!util.compareByGeneratedPositions(mapping, this._mappings[i - 1])) {
+              continue;
+            }
+            result += ',';
+          }
+        }
+
+        result += base64VLQ.encode(mapping.generatedColumn
+                                   - previousGeneratedColumn);
+        previousGeneratedColumn = mapping.generatedColumn;
+
+        if (mapping.source) {
+          result += base64VLQ.encode(this._sources.indexOf(mapping.source)
+                                     - previousSource);
+          previousSource = this._sources.indexOf(mapping.source);
+
+          // lines are stored 0-based in SourceMap spec version 3
+          result += base64VLQ.encode(mapping.originalLine - 1
+                                     - previousOriginalLine);
+          previousOriginalLine = mapping.originalLine - 1;
+
+          result += base64VLQ.encode(mapping.originalColumn
+                                     - previousOriginalColumn);
+          previousOriginalColumn = mapping.originalColumn;
+
+          if (mapping.name) {
+            result += base64VLQ.encode(this._names.indexOf(mapping.name)
+                                       - previousName);
+            previousName = this._names.indexOf(mapping.name);
+          }
+        }
+      }
+
+      return result;
+    };
+
+  SourceMapGenerator.prototype._generateSourcesContent =
+    function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
+      return aSources.map(function (source) {
+        if (!this._sourcesContents) {
+          return null;
+        }
+        if (aSourceRoot) {
+          source = util.relative(aSourceRoot, source);
+        }
+        var key = util.toSetString(source);
+        return Object.prototype.hasOwnProperty.call(this._sourcesContents,
+                                                    key)
+          ? this._sourcesContents[key]
+          : null;
+      }, this);
+    };
+
+  /**
+   * Externalize the source map.
+   */
+  SourceMapGenerator.prototype.toJSON =
+    function SourceMapGenerator_toJSON() {
+      var map = {
+        version: this._version,
+        file: this._file,
+        sources: this._sources.toArray(),
+        names: this._names.toArray(),
+        mappings: this._serializeMappings()
+      };
+      if (this._sourceRoot) {
+        map.sourceRoot = this._sourceRoot;
+      }
+      if (this._sourcesContents) {
+        map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
+      }
+
+      return map;
+    };
+
+  /**
+   * Render the source map being generated to a string.
+   */
+  SourceMapGenerator.prototype.toString =
+    function SourceMapGenerator_toString() {
+      return JSON.stringify(this);
+    };
+
+  exports.SourceMapGenerator = SourceMapGenerator;
+
+});
+
+},{"./array-set":54,"./base64-vlq":55,"./util":61,"amdefine":62}],60:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  var SourceMapGenerator = require('./source-map-generator').SourceMapGenerator;
+  var util = require('./util');
+
+  /**
+   * SourceNodes provide a way to abstract over interpolating/concatenating
+   * snippets of generated JavaScript source code while maintaining the line and
+   * column information associated with the original source code.
+   *
+   * @param aLine The original line number.
+   * @param aColumn The original column number.
+   * @param aSource The original source's filename.
+   * @param aChunks Optional. An array of strings which are snippets of
+   *        generated JS, or other SourceNodes.
+   * @param aName The original identifier.
+   */
+  function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
+    this.children = [];
+    this.sourceContents = {};
+    this.line = aLine === undefined ? null : aLine;
+    this.column = aColumn === undefined ? null : aColumn;
+    this.source = aSource === undefined ? null : aSource;
+    this.name = aName === undefined ? null : aName;
+    if (aChunks != null) this.add(aChunks);
+  }
+
+  /**
+   * Creates a SourceNode from generated code and a SourceMapConsumer.
+   *
+   * @param aGeneratedCode The generated code
+   * @param aSourceMapConsumer The SourceMap for the generated code
+   */
+  SourceNode.fromStringWithSourceMap =
+    function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer) {
+      // The SourceNode we want to fill with the generated code
+      // and the SourceMap
+      var node = new SourceNode();
+
+      // The generated code
+      // Processed fragments are removed from this array.
+      var remainingLines = aGeneratedCode.split('\n');
+
+      // We need to remember the position of "remainingLines"
+      var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+
+      // The generate SourceNodes we need a code range.
+      // To extract it current and last mapping is used.
+      // Here we store the last mapping.
+      var lastMapping = null;
+
+      aSourceMapConsumer.eachMapping(function (mapping) {
+        if (lastMapping === null) {
+          // We add the generated code until the first mapping
+          // to the SourceNode without any mapping.
+          // Each line is added as separate string.
+          while (lastGeneratedLine < mapping.generatedLine) {
+            node.add(remainingLines.shift() + "\n");
+            lastGeneratedLine++;
+          }
+          if (lastGeneratedColumn < mapping.generatedColumn) {
+            var nextLine = remainingLines[0];
+            node.add(nextLine.substr(0, mapping.generatedColumn));
+            remainingLines[0] = nextLine.substr(mapping.generatedColumn);
+            lastGeneratedColumn = mapping.generatedColumn;
+          }
+        } else {
+          // We add the code from "lastMapping" to "mapping":
+          // First check if there is a new line in between.
+          if (lastGeneratedLine < mapping.generatedLine) {
+            var code = "";
+            // Associate full lines with "lastMapping"
+            do {
+              code += remainingLines.shift() + "\n";
+              lastGeneratedLine++;
+              lastGeneratedColumn = 0;
+            } while (lastGeneratedLine < mapping.generatedLine);
+            // When we reached the correct line, we add code until we
+            // reach the correct column too.
+            if (lastGeneratedColumn < mapping.generatedColumn) {
+              var nextLine = remainingLines[0];
+              code += nextLine.substr(0, mapping.generatedColumn);
+              remainingLines[0] = nextLine.substr(mapping.generatedColumn);
+              lastGeneratedColumn = mapping.generatedColumn;
+            }
+            // Create the SourceNode.
+            addMappingWithCode(lastMapping, code);
+          } else {
+            // There is no new line in between.
+            // Associate the code between "lastGeneratedColumn" and
+            // "mapping.generatedColumn" with "lastMapping"
+            var nextLine = remainingLines[0];
+            var code = nextLine.substr(0, mapping.generatedColumn -
+                                          lastGeneratedColumn);
+            remainingLines[0] = nextLine.substr(mapping.generatedColumn -
+                                                lastGeneratedColumn);
+            lastGeneratedColumn = mapping.generatedColumn;
+            addMappingWithCode(lastMapping, code);
+          }
+        }
+        lastMapping = mapping;
+      }, this);
+      // We have processed all mappings.
+      // Associate the remaining code in the current line with "lastMapping"
+      // and add the remaining lines without any mapping
+      addMappingWithCode(lastMapping, remainingLines.join("\n"));
+
+      // Copy sourcesContent into SourceNode
+      aSourceMapConsumer.sources.forEach(function (sourceFile) {
+        var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+        if (content) {
+          node.setSourceContent(sourceFile, content);
+        }
+      });
+
+      return node;
+
+      function addMappingWithCode(mapping, code) {
+        if (mapping === null || mapping.source === undefined) {
+          node.add(code);
+        } else {
+          node.add(new SourceNode(mapping.originalLine,
+                                  mapping.originalColumn,
+                                  mapping.source,
+                                  code,
+                                  mapping.name));
+        }
+      }
+    };
+
+  /**
+   * Add a chunk of generated JS to this source node.
+   *
+   * @param aChunk A string snippet of generated JS code, another instance of
+   *        SourceNode, or an array where each member is one of those things.
+   */
+  SourceNode.prototype.add = function SourceNode_add(aChunk) {
+    if (Array.isArray(aChunk)) {
+      aChunk.forEach(function (chunk) {
+        this.add(chunk);
+      }, this);
+    }
+    else if (aChunk instanceof SourceNode || typeof aChunk === "string") {
+      if (aChunk) {
+        this.children.push(aChunk);
+      }
+    }
+    else {
+      throw new TypeError(
+        "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+      );
+    }
+    return this;
+  };
+
+  /**
+   * Add a chunk of generated JS to the beginning of this source node.
+   *
+   * @param aChunk A string snippet of generated JS code, another instance of
+   *        SourceNode, or an array where each member is one of those things.
+   */
+  SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
+    if (Array.isArray(aChunk)) {
+      for (var i = aChunk.length-1; i >= 0; i--) {
+        this.prepend(aChunk[i]);
+      }
+    }
+    else if (aChunk instanceof SourceNode || typeof aChunk === "string") {
+      this.children.unshift(aChunk);
+    }
+    else {
+      throw new TypeError(
+        "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+      );
+    }
+    return this;
+  };
+
+  /**
+   * Walk over the tree of JS snippets in this node and its children. The
+   * walking function is called once for each snippet of JS and is passed that
+   * snippet and the its original associated source's line/column location.
+   *
+   * @param aFn The traversal function.
+   */
+  SourceNode.prototype.walk = function SourceNode_walk(aFn) {
+    var chunk;
+    for (var i = 0, len = this.children.length; i < len; i++) {
+      chunk = this.children[i];
+      if (chunk instanceof SourceNode) {
+        chunk.walk(aFn);
+      }
+      else {
+        if (chunk !== '') {
+          aFn(chunk, { source: this.source,
+                       line: this.line,
+                       column: this.column,
+                       name: this.name });
+        }
+      }
+    }
+  };
+
+  /**
+   * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
+   * each of `this.children`.
+   *
+   * @param aSep The separator.
+   */
+  SourceNode.prototype.join = function SourceNode_join(aSep) {
+    var newChildren;
+    var i;
+    var len = this.children.length;
+    if (len > 0) {
+      newChildren = [];
+      for (i = 0; i < len-1; i++) {
+        newChildren.push(this.children[i]);
+        newChildren.push(aSep);
+      }
+      newChildren.push(this.children[i]);
+      this.children = newChildren;
+    }
+    return this;
+  };
+
+  /**
+   * Call String.prototype.replace on the very right-most source snippet. Useful
+   * for trimming whitespace from the end of a source node, etc.
+   *
+   * @param aPattern The pattern to replace.
+   * @param aReplacement The thing to replace the pattern with.
+   */
+  SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
+    var lastChild = this.children[this.children.length - 1];
+    if (lastChild instanceof SourceNode) {
+      lastChild.replaceRight(aPattern, aReplacement);
+    }
+    else if (typeof lastChild === 'string') {
+      this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
+    }
+    else {
+      this.children.push(''.replace(aPattern, aReplacement));
+    }
+    return this;
+  };
+
+  /**
+   * Set the source content for a source file. This will be added to the SourceMapGenerator
+   * in the sourcesContent field.
+   *
+   * @param aSourceFile The filename of the source file
+   * @param aSourceContent The content of the source file
+   */
+  SourceNode.prototype.setSourceContent =
+    function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
+      this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
+    };
+
+  /**
+   * Walk over the tree of SourceNodes. The walking function is called for each
+   * source file content and is passed the filename and source content.
+   *
+   * @param aFn The traversal function.
+   */
+  SourceNode.prototype.walkSourceContents =
+    function SourceNode_walkSourceContents(aFn) {
+      for (var i = 0, len = this.children.length; i < len; i++) {
+        if (this.children[i] instanceof SourceNode) {
+          this.children[i].walkSourceContents(aFn);
+        }
+      }
+
+      var sources = Object.keys(this.sourceContents);
+      for (var i = 0, len = sources.length; i < len; i++) {
+        aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
+      }
+    };
+
+  /**
+   * Return the string representation of this source node. Walks over the tree
+   * and concatenates all the various snippets together to one string.
+   */
+  SourceNode.prototype.toString = function SourceNode_toString() {
+    var str = "";
+    this.walk(function (chunk) {
+      str += chunk;
+    });
+    return str;
+  };
+
+  /**
+   * Returns the string representation of this source node along with a source
+   * map.
+   */
+  SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
+    var generated = {
+      code: "",
+      line: 1,
+      column: 0
+    };
+    var map = new SourceMapGenerator(aArgs);
+    var sourceMappingActive = false;
+    var lastOriginalSource = null;
+    var lastOriginalLine = null;
+    var lastOriginalColumn = null;
+    var lastOriginalName = null;
+    this.walk(function (chunk, original) {
+      generated.code += chunk;
+      if (original.source !== null
+          && original.line !== null
+          && original.column !== null) {
+        if(lastOriginalSource !== original.source
+           || lastOriginalLine !== original.line
+           || lastOriginalColumn !== original.column
+           || lastOriginalName !== original.name) {
+          map.addMapping({
+            source: original.source,
+            original: {
+              line: original.line,
+              column: original.column
+            },
+            generated: {
+              line: generated.line,
+              column: generated.column
+            },
+            name: original.name
+          });
+        }
+        lastOriginalSource = original.source;
+        lastOriginalLine = original.line;
+        lastOriginalColumn = original.column;
+        lastOriginalName = original.name;
+        sourceMappingActive = true;
+      } else if (sourceMappingActive) {
+        map.addMapping({
+          generated: {
+            line: generated.line,
+            column: generated.column
+          }
+        });
+        lastOriginalSource = null;
+        sourceMappingActive = false;
+      }
+      chunk.split('').forEach(function (ch) {
+        if (ch === '\n') {
+          generated.line++;
+          generated.column = 0;
+        } else {
+          generated.column++;
+        }
+      });
+    });
+    this.walkSourceContents(function (sourceFile, sourceContent) {
+      map.setSourceContent(sourceFile, sourceContent);
+    });
+
+    return { code: generated.code, map: map };
+  };
+
+  exports.SourceNode = SourceNode;
+
+});
+
+},{"./source-map-generator":59,"./util":61,"amdefine":62}],61:[function(require,module,exports){
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module, require);
+}
+define(function (require, exports, module) {
+
+  /**
+   * This is a helper function for getting values from parameter/options
+   * objects.
+   *
+   * @param args The object we are extracting values from
+   * @param name The name of the property we are getting.
+   * @param defaultValue An optional value to return if the property is missing
+   * from the object. If this is not specified and the property is missing, an
+   * error will be thrown.
+   */
+  function getArg(aArgs, aName, aDefaultValue) {
+    if (aName in aArgs) {
+      return aArgs[aName];
+    } else if (arguments.length === 3) {
+      return aDefaultValue;
+    } else {
+      throw new Error('"' + aName + '" is a required argument.');
+    }
+  }
+  exports.getArg = getArg;
+
+  var urlRegexp = /([\w+\-.]+):\/\/((\w+:\w+)@)?([\w.]+)?(:(\d+))?(\S+)?/;
+  var dataUrlRegexp = /^data:.+\,.+/;
+
+  function urlParse(aUrl) {
+    var match = aUrl.match(urlRegexp);
+    if (!match) {
+      return null;
+    }
+    return {
+      scheme: match[1],
+      auth: match[3],
+      host: match[4],
+      port: match[6],
+      path: match[7]
+    };
+  }
+  exports.urlParse = urlParse;
+
+  function urlGenerate(aParsedUrl) {
+    var url = aParsedUrl.scheme + "://";
+    if (aParsedUrl.auth) {
+      url += aParsedUrl.auth + "@"
+    }
+    if (aParsedUrl.host) {
+      url += aParsedUrl.host;
+    }
+    if (aParsedUrl.port) {
+      url += ":" + aParsedUrl.port
+    }
+    if (aParsedUrl.path) {
+      url += aParsedUrl.path;
+    }
+    return url;
+  }
+  exports.urlGenerate = urlGenerate;
+
+  function join(aRoot, aPath) {
+    var url;
+
+    if (aPath.match(urlRegexp) || aPath.match(dataUrlRegexp)) {
+      return aPath;
+    }
+
+    if (aPath.charAt(0) === '/' && (url = urlParse(aRoot))) {
+      url.path = aPath;
+      return urlGenerate(url);
+    }
+
+    return aRoot.replace(/\/$/, '') + '/' + aPath;
+  }
+  exports.join = join;
+
+  /**
+   * Because behavior goes wacky when you set `__proto__` on objects, we
+   * have to prefix all the strings in our set with an arbitrary character.
+   *
+   * See https://github.com/mozilla/source-map/pull/31 and
+   * https://github.com/mozilla/source-map/issues/30
+   *
+   * @param String aStr
+   */
+  function toSetString(aStr) {
+    return '$' + aStr;
+  }
+  exports.toSetString = toSetString;
+
+  function fromSetString(aStr) {
+    return aStr.substr(1);
+  }
+  exports.fromSetString = fromSetString;
+
+  function relative(aRoot, aPath) {
+    aRoot = aRoot.replace(/\/$/, '');
+
+    var url = urlParse(aRoot);
+    if (aPath.charAt(0) == "/" && url && url.path == "/") {
+      return aPath.slice(1);
+    }
+
+    return aPath.indexOf(aRoot + '/') === 0
+      ? aPath.substr(aRoot.length + 1)
+      : aPath;
+  }
+  exports.relative = relative;
+
+  function strcmp(aStr1, aStr2) {
+    var s1 = aStr1 || "";
+    var s2 = aStr2 || "";
+    return (s1 > s2) - (s1 < s2);
+  }
+
+  /**
+   * Comparator between two mappings where the original positions are compared.
+   *
+   * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+   * mappings with the same original source/line/column, but different generated
+   * line and column the same. Useful when searching for a mapping with a
+   * stubbed out mapping.
+   */
+  function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+    var cmp;
+
+    cmp = strcmp(mappingA.source, mappingB.source);
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.originalLine - mappingB.originalLine;
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.originalColumn - mappingB.originalColumn;
+    if (cmp || onlyCompareOriginal) {
+      return cmp;
+    }
+
+    cmp = strcmp(mappingA.name, mappingB.name);
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.generatedLine - mappingB.generatedLine;
+    if (cmp) {
+      return cmp;
+    }
+
+    return mappingA.generatedColumn - mappingB.generatedColumn;
+  };
+  exports.compareByOriginalPositions = compareByOriginalPositions;
+
+  /**
+   * Comparator between two mappings where the generated positions are
+   * compared.
+   *
+   * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+   * mappings with the same generated line and column, but different
+   * source/name/original line and column the same. Useful when searching for a
+   * mapping with a stubbed out mapping.
+   */
+  function compareByGeneratedPositions(mappingA, mappingB, onlyCompareGenerated) {
+    var cmp;
+
+    cmp = mappingA.generatedLine - mappingB.generatedLine;
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+    if (cmp || onlyCompareGenerated) {
+      return cmp;
+    }
+
+    cmp = strcmp(mappingA.source, mappingB.source);
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.originalLine - mappingB.originalLine;
+    if (cmp) {
+      return cmp;
+    }
+
+    cmp = mappingA.originalColumn - mappingB.originalColumn;
+    if (cmp) {
+      return cmp;
+    }
+
+    return strcmp(mappingA.name, mappingB.name);
+  };
+  exports.compareByGeneratedPositions = compareByGeneratedPositions;
+
+});
+
+},{"amdefine":62}],62:[function(require,module,exports){
+var process=require("__browserify_process"),__filename="/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js";/** vim: et:ts=4:sw=4:sts=4
+ * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/amdefine for details
+ */
+
+/*jslint node: true */
+/*global module, process */
+'use strict';
+
+/**
+ * Creates a define for node.
+ * @param {Object} module the "module" object that is defined by Node for the
+ * current module.
+ * @param {Function} [requireFn]. Node's require function for the current module.
+ * It only needs to be passed in Node versions before 0.5, when module.require
+ * did not exist.
+ * @returns {Function} a define function that is usable for the current node
+ * module.
+ */
+function amdefine(module, requireFn) {
+    'use strict';
+    var defineCache = {},
+        loaderCache = {},
+        alreadyCalled = false,
+        path = require('path'),
+        makeRequire, stringRequire;
+
+    /**
+     * Trims the . and .. from an array of path segments.
+     * It will keep a leading path segment if a .. will become
+     * the first path segment, to help with module name lookups,
+     * which act like paths, but can be remapped. But the end result,
+     * all paths that use this function should look normalized.
+     * NOTE: this method MODIFIES the input array.
+     * @param {Array} ary the array of path segments.
+     */
+    function trimDots(ary) {
+        var i, part;
+        for (i = 0; ary[i]; i+= 1) {
+            part = ary[i];
+            if (part === '.') {
+                ary.splice(i, 1);
+                i -= 1;
+            } else if (part === '..') {
+                if (i === 1 && (ary[2] === '..' || ary[0] === '..')) {
+                    //End of the line. Keep at least one non-dot
+                    //path segment at the front so it can be mapped
+                    //correctly to disk. Otherwise, there is likely
+                    //no path mapping for a path starting with '..'.
+                    //This can still fail, but catches the most reasonable
+                    //uses of ..
+                    break;
+                } else if (i > 0) {
+                    ary.splice(i - 1, 2);
+                    i -= 2;
+                }
+            }
+        }
+    }
+
+    function normalize(name, baseName) {
+        var baseParts;
+
+        //Adjust any relative paths.
+        if (name && name.charAt(0) === '.') {
+            //If have a base name, try to normalize against it,
+            //otherwise, assume it is a top-level require that will
+            //be relative to baseUrl in the end.
+            if (baseName) {
+                baseParts = baseName.split('/');
+                baseParts = baseParts.slice(0, baseParts.length - 1);
+                baseParts = baseParts.concat(name.split('/'));
+                trimDots(baseParts);
+                name = baseParts.join('/');
+            }
+        }
+
+        return name;
+    }
+
+    /**
+     * Create the normalize() function passed to a loader plugin's
+     * normalize method.
+     */
+    function makeNormalize(relName) {
+        return function (name) {
+            return normalize(name, relName);
+        };
+    }
+
+    function makeLoad(id) {
+        function load(value) {
+            loaderCache[id] = value;
+        }
+
+        load.fromText = function (id, text) {
+            //This one is difficult because the text can/probably uses
+            //define, and any relative paths and requires should be relative
+            //to that id was it would be found on disk. But this would require
+            //bootstrapping a module/require fairly deeply from node core.
+            //Not sure how best to go about that yet.
+            throw new Error('amdefine does not implement load.fromText');
+        };
+
+        return load;
+    }
+
+    makeRequire = function (systemRequire, exports, module, relId) {
+        function amdRequire(deps, callback) {
+            if (typeof deps === 'string') {
+                //Synchronous, single module require('')
+                return stringRequire(systemRequire, exports, module, deps, relId);
+            } else {
+                //Array of dependencies with a callback.
+
+                //Convert the dependencies to modules.
+                deps = deps.map(function (depName) {
+                    return stringRequire(systemRequire, exports, module, depName, relId);
+                });
+
+                //Wait for next tick to call back the require call.
+                process.nextTick(function () {
+                    callback.apply(null, deps);
+                });
+            }
+        }
+
+        amdRequire.toUrl = function (filePath) {
+            if (filePath.indexOf('.') === 0) {
+                return normalize(filePath, path.dirname(module.filename));
+            } else {
+                return filePath;
+            }
+        };
+
+        return amdRequire;
+    };
+
+    //Favor explicit value, passed in if the module wants to support Node 0.4.
+    requireFn = requireFn || function req() {
+        return module.require.apply(module, arguments);
+    };
+
+    function runFactory(id, deps, factory) {
+        var r, e, m, result;
+
+        if (id) {
+            e = loaderCache[id] = {};
+            m = {
+                id: id,
+                uri: __filename,
+                exports: e
+            };
+            r = makeRequire(requireFn, e, m, id);
+        } else {
+            //Only support one define call per file
+            if (alreadyCalled) {
+                throw new Error('amdefine with no module ID cannot be called more than once per file.');
+            }
+            alreadyCalled = true;
+
+            //Use the real variables from node
+            //Use module.exports for exports, since
+            //the exports in here is amdefine exports.
+            e = module.exports;
+            m = module;
+            r = makeRequire(requireFn, e, m, module.id);
+        }
+
+        //If there are dependencies, they are strings, so need
+        //to convert them to dependency values.
+        if (deps) {
+            deps = deps.map(function (depName) {
+                return r(depName);
+            });
+        }
+
+        //Call the factory with the right dependencies.
+        if (typeof factory === 'function') {
+            result = factory.apply(m.exports, deps);
+        } else {
+            result = factory;
+        }
+
+        if (result !== undefined) {
+            m.exports = result;
+            if (id) {
+                loaderCache[id] = m.exports;
+            }
+        }
+    }
+
+    stringRequire = function (systemRequire, exports, module, id, relId) {
+        //Split the ID by a ! so that
+        var index = id.indexOf('!'),
+            originalId = id,
+            prefix, plugin;
+
+        if (index === -1) {
+            id = normalize(id, relId);
+
+            //Straight module lookup. If it is one of the special dependencies,
+            //deal with it, otherwise, delegate to node.
+            if (id === 'require') {
+                return makeRequire(systemRequire, exports, module, relId);
+            } else if (id === 'exports') {
+                return exports;
+            } else if (id === 'module') {
+                return module;
+            } else if (loaderCache.hasOwnProperty(id)) {
+                return loaderCache[id];
+            } else if (defineCache[id]) {
+                runFactory.apply(null, defineCache[id]);
+                return loaderCache[id];
+            } else {
+                if(systemRequire) {
+                    return systemRequire(originalId);
+                } else {
+                    throw new Error('No module with ID: ' + id);
+                }
+            }
+        } else {
+            //There is a plugin in play.
+            prefix = id.substring(0, index);
+            id = id.substring(index + 1, id.length);
+
+            plugin = stringRequire(systemRequire, exports, module, prefix, relId);
+
+            if (plugin.normalize) {
+                id = plugin.normalize(id, makeNormalize(relId));
+            } else {
+                //Normalize the ID normally.
+                id = normalize(id, relId);
+            }
+
+            if (loaderCache[id]) {
+                return loaderCache[id];
+            } else {
+                plugin.load(id, makeRequire(systemRequire, exports, module, relId), makeLoad(id), {});
+
+                return loaderCache[id];
+            }
+        }
+    };
+
+    //Create a define function specific to the module asking for amdefine.
+    function define(id, deps, factory) {
+        if (Array.isArray(id)) {
+            factory = deps;
+            deps = id;
+            id = undefined;
+        } else if (typeof id !== 'string') {
+            factory = id;
+            id = deps = undefined;
+        }
+
+        if (deps && !Array.isArray(deps)) {
+            factory = deps;
+            deps = undefined;
+        }
+
+        if (!deps) {
+            deps = ['require', 'exports', 'module'];
+        }
+
+        //Set up properties for this module. If an ID, then use
+        //internal cache. If no ID, then use the external variables
+        //for this node module.
+        if (id) {
+            //Put the module in deep freeze until there is a
+            //require call for it.
+            defineCache[id] = [id, deps, factory];
+        } else {
+            runFactory(id, deps, factory);
+        }
+    }
+
+    //define.require, which has access to all the values in the
+    //cache. Useful for AMD modules that all have IDs in the file,
+    //but need to finally export a value to node based on one of those
+    //IDs.
+    define.require = function (id) {
+        if (loaderCache[id]) {
+            return loaderCache[id];
+        }
+
+        if (defineCache[id]) {
+            runFactory.apply(null, defineCache[id]);
+            return loaderCache[id];
+        }
+    };
+
+    define.amd = {};
+
+    return define;
+}
+
+module.exports = amdefine;
+
+},{"__browserify_process":37,"path":38}]},{},[3])
+(3)
+});
+;

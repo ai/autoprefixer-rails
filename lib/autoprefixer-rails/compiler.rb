@@ -32,7 +32,7 @@ module AutoprefixerRails
 
     # Return, which browsers and prefixes will be used
     def inspect
-      compiler.call('inspect')
+      compiler.call('info')
     end
 
     # Lazy load for JS instance
@@ -49,7 +49,13 @@ module AutoprefixerRails
 
     # Return compiler JS with some extra methods
     def build_js
-      read_js + create_instance + add_proxy('compile') + add_proxy('inspect')
+      create_global + read_js + create_instance +
+      add_proxy('compile') + add_proxy('info')
+    end
+
+    # Return JS code to create `global` namespace
+    def create_global
+      'var global = this;'
     end
 
     # Return JS code to create Autoprefixer instance
