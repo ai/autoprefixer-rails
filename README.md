@@ -90,5 +90,41 @@ If you need to call Autoprefixer from plain Ruby code, it’s very easy:
 
 ```ruby
 require "autoprefixer-rails"
-prefixed = AutoprefixerRails.process(css)
+prefixed = AutoprefixerRails.process(css, from: 'main.css').css
+```
+
+You can specify browsers by `browsers` option:
+
+```ruby
+AutoprefixerRails.process(css, browsers: ['> 1%', 'ie 10']).css
+```
+
+### Source Map
+
+Autoprefixer will generate source map, if you set `map` option to `true` in
+`process` method.
+
+You must set input and output CSS files paths (by `from` and `to` options)
+to generate correct map.
+
+```ruby
+result = AutoprefixerRails.process(css,
+    map:   true,
+    from: 'main.css',
+    to:   'main.out.css')
+
+result.css #=> Prefixed CSS
+result.map //=> Source map content
+```
+
+Autoprefixer can also modify previous source map (for example, from Sass
+compilation). Just set original source map content (as string) to `map` option:
+
+```ruby
+result = AutoprefixerRails.process(css, {
+    map:   File.read('main.sass.css.map'),
+    from: 'main.sass.css',
+    to:   'main.min.css')
+
+result.map //=> Source map from main.sass to main.min.css
 ```
