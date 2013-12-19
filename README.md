@@ -96,7 +96,7 @@ prefixed = AutoprefixerRails.process(css, from: 'main.css').css
 You can specify browsers by `browsers` option:
 
 ```ruby
-AutoprefixerRails.process(css, browsers: ['> 1%', 'ie 10']).css
+AutoprefixerRails.process(css, from: 'a.css', browsers: ['> 1%', 'ie 10']).css
 ```
 
 ### Source Map
@@ -114,7 +114,7 @@ result = AutoprefixerRails.process(css,
     to:   'main.out.css')
 
 result.css #=> Prefixed CSS
-result.map //=> Source map content
+result.map #=> Source map content
 ```
 
 Autoprefixer can also modify previous source map (for example, from Sass
@@ -126,5 +126,5 @@ result = AutoprefixerRails.process(css, {
     from: 'main.sass.css',
     to:   'main.min.css')
 
-result.map //=> Source map from main.sass to main.min.css
+result.map #=> Source map from main.sass to main.min.css
 ```
