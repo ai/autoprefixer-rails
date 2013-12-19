@@ -19,7 +19,7 @@ describe AutoprefixerRails do
     result.map.should be_a(String)
   end
 
-  it "uses file name in syntax errors" do
+  it "uses file name in syntax errors", not_jruby: true do
     lambda {
       AutoprefixerRails.process('a {', from: 'a.css')
     }.should raise_error(/in a.css/)
@@ -42,7 +42,7 @@ describe AutoprefixerRails do
       @assets['test.css'].to_s.should == PREFIXED
     end
 
-    it "shows file name from Sprockets" do
+    it "shows file name from Sprockets", not_jruby: true do
       lambda { @assets['wrong.css'] }.should raise_error(/in wrong.css/)
     end
 
