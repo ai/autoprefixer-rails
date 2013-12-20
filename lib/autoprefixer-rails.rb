@@ -3,6 +3,8 @@ require 'pathname'
 # Ruby integration with Autoprefixer JS library, which parse CSS and adds
 # only actual prefixed
 module AutoprefixerRails
+  autoload :Sprockets, 'autoprefixer-rails/sprockets'
+
   # Add prefixes to `css`. See `Processor#process` for options.
   def self.process(css, opts = { })
     browsers = opts.delete(:browsers)
@@ -12,15 +14,7 @@ module AutoprefixerRails
   # Add Autoprefixer for Sprockets environment in `assets`.
   # You can specify `browsers` actual in your project.
   def self.install(assets, browsers = nil)
-    instance = processor(browsers)
-    assets.register_postprocessor 'text/css', :autoprefixer do |context, css|
-
-      root   = Pathname.new(context.root_path)
-      input  = context.pathname.relative_path_from(root).to_s
-      output = input.chomp(File.extname(input)) + '.css'
-
-      instance.process(css, from: input, to: output).css
-    end
+    Sprockets.new( processor(browsers) ).install(assets)
   end
 
   # Cache processor instances
