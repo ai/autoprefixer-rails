@@ -533,7 +533,10 @@
     };
 
     Browsers.prototype.aliases = {
-      fx: 'ff'
+      fx: 'ff',
+      firefox: 'ff',
+      explorer: 'ie',
+      blackberry: 'bb'
     };
 
     Browsers.prototype.requirements = {
@@ -555,6 +558,16 @@
           });
         }
       },
+      lastByBrowser: {
+        regexp: /^last (\d+) (\w+) versions?$/i,
+        select: function(versions, browser) {
+          var data;
+          data = this.byName(browser);
+          return data.versions.slice(0, versions).map(function(v) {
+            return "" + data.name + " " + v;
+          });
+        }
+      },
       globalStatistics: {
         regexp: /^> (\d+(\.\d+)?)%$/,
         select: function(popularity) {
@@ -569,12 +582,8 @@
         regexp: /^(\w+) (>=?)\s*([\d\.]+)/,
         select: function(browser, sign, version) {
           var data, filter;
-          browser = this.aliases[browser] || browser;
-          data = this.data[browser];
+          data = this.byName(browser);
           version = parseFloat(version);
-          if (!data) {
-            utils.error("Unknown browser " + browser);
-          }
           if (sign === '>') {
             filter = function(v) {
               return v > version;
@@ -585,7 +594,7 @@
             };
           }
           return data.versions.filter(filter).map(function(v) {
-            return "" + browser + " " + v;
+            return "" + data.name + " " + v;
           });
         }
       },
@@ -593,12 +602,8 @@
         regexp: /^(\w+) ([\d\.]+)$/,
         select: function(browser, version) {
           var data, first, last;
-          browser = this.aliases[browser] || browser;
-          data = this.data[browser];
+          data = this.byName(browser);
           version = parseFloat(version);
-          if (!data) {
-            utils.error("Unknown browser " + browser);
-          }
           last = data.future ? data.future[0] : data.versions[0];
           first = data.versions[data.versions.length - 1];
           if (version > last) {
@@ -606,7 +611,7 @@
           } else if (version < first) {
             version = first;
           }
-          return ["" + browser + " " + version];
+          return ["" + data.name + " " + version];
         }
       }
     };
@@ -637,6 +642,18 @@
 
     Browsers.prototype.isSelected = function(browser) {
       return this.selected.indexOf(browser) !== -1;
+    };
+
+    Browsers.prototype.byName = function(name) {
+      var data;
+      name = name.toLowerCase();
+      name = this.aliases[name] || name;
+      data = this.data[name];
+      if (!data) {
+        utils.error("Unknown browser " + browser);
+      }
+      data.name = name;
+      return data;
     };
 
     return Browsers;
@@ -6538,4 +6555,3 @@ module.exports = amdefine;
 },{"__browserify_process":37,"path":38}]},{},[3])
 (3)
 });
-;
