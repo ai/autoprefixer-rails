@@ -2,6 +2,7 @@
 * Source map support.
 * Save origin indents and code formatting.
 * Change CSS parser to PostCSS.
+* Show syntax errors if fixed sass-rails version if used.
 * Rename compile() to process() and return result object, instead of CSS string.
 * Rename inspect() to info().
 * Allow to select last versions for specified browser.
