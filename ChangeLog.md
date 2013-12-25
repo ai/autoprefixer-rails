@@ -17,6 +17,11 @@
 * Don’t prefix values for CSS3 PIE properties.
 * Use browserify to build standalone version.
 
+### 20131225:
+
+* Add ::placeholder support for Firefix >= 18.
+* Fix vendor prefixes order.
+
 ## 0.8 “Unbowed, Unbent, Unbroken”
 * Add more browsers to defaults ("> 1%, last 2 versions, ff 17, opera 12.1"
   instead of just "last 2 browsers").
