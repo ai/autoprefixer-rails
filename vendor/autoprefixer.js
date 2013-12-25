@@ -56,7 +56,7 @@
   module.exports = {
     "::placeholder": {
       selector: true,
-      browsers: ["android 4.4", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "ff 4 old", "ff 5 old", "ff 6 old", "ff 7 old", "ff 8 old", "ff 9 old", "ff 10 old", "ff 11 old", "ff 12 old", "ff 13 old", "ff 14 old", "ff 15 old", "ff 16 old", "ff 17 old", "ff 18 old", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "::selection": {
       selector: true,
@@ -419,14 +419,14 @@
       for (name in options) {
         value = options[name];
         if (name === 'file') {
-          name === 'from';
+          name = 'from';
         }
         fixed[name] = value;
       }
       if (typeof console !== "undefined" && console !== null) {
         console.warn('autoprefixer: replace compile() to process(). ' + 'Method compile() is deprecated and will be removed in 1.1.');
       }
-      return this.process(str, options).css;
+      return this.process(str, fixed).css;
     };
 
     Autoprefixer.prototype.postcss = function(css) {
@@ -1918,6 +1918,8 @@
         return '::-webkit-input-placeholder';
       } else if ('-ms-' === prefix) {
         return ':-ms-input-placeholder';
+      } else if ('-moz- old' === prefix) {
+        return ':-moz-placeholder';
       } else {
         return "::" + prefix + "placeholder";
       }
@@ -2326,9 +2328,7 @@
             return prefix;
           }
         });
-        add = utils.uniq(add).sort(function(a, b) {
-          return b.length - a.length;
-        });
+        add = this.sort(utils.uniq(add));
         all = data.browsers.map(function(i) {
           return _this.browsers.prefix(i);
         });
@@ -2349,6 +2349,19 @@
         }
       }
       return selected;
+    };
+
+    Prefixes.prototype.sort = function(prefixes) {
+      return prefixes.sort(function(a, b) {
+        var aLength, bLength;
+        aLength = utils.removeNote(a).length;
+        bLength = utils.removeNote(b).length;
+        if (aLength === bLength) {
+          return b.length - a.length;
+        } else {
+          return bLength - aLength;
+        }
+      });
     };
 
     Prefixes.prototype.preprocess = function(selected) {
