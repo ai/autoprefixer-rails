@@ -37,11 +37,6 @@ module AutoprefixerRails
 
     private
 
-    # Print warning to logger or STDERR
-    def warn(message)
-      $stderr.puts(message)
-    end
-
     # Cache autoprefixer.js content
     def read_js
       @@js ||= Pathname(__FILE__).join("../../../vendor/autoprefixer.js").read
