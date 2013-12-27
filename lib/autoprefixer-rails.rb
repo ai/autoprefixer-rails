@@ -29,10 +29,8 @@ module AutoprefixerRails
   end
 end
 
-dir = Pathname(__FILE__).dirname.join('autoprefixer-rails')
+require_relative 'autoprefixer-rails/result'
+require_relative 'autoprefixer-rails/version'
+require_relative 'autoprefixer-rails/processor'
 
-require dir.join('result').to_s
-require dir.join('version').to_s
-require dir.join('processor').to_s
-
-require dir.join('railtie').to_s if defined?(Rails)
+require_relative 'autoprefixer-rails/railtie' if defined?(Rails)
