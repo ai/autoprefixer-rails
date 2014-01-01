@@ -1,8 +1,9 @@
-require File.expand_path('../spec_helper', __FILE__)
+require_relative 'spec_helper'
 
 describe AutoprefixerRails do
   before :all do
-    @css = DIR.join('app/app/assets/stylesheets/test.css').read
+    @dir = Pathname(__FILE__).dirname
+    @css = @dir.join('app/app/assets/stylesheets/test.css').read
   end
 
   it "process CSS" do
@@ -34,7 +35,7 @@ describe AutoprefixerRails do
   context 'Sprockets' do
     before :all do
       @assets = Sprockets::Environment.new
-      @assets.append_path(DIR.join('app/app/assets/stylesheets'))
+      @assets.append_path(@dir.join('app/app/assets/stylesheets'))
       AutoprefixerRails.install(@assets, ['chrome 25'])
     end
 

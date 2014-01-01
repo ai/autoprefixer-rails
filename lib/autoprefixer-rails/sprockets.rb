@@ -1,3 +1,5 @@
+require 'pathname'
+
 module AutoprefixerRails
   # Register autoprefixer postprocessor in Sprockets and fix common issues
   class Sprockets
