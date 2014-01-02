@@ -1,4 +1,4 @@
-require './lib/autoprefixer-rails/version'
+require_relative 'lib/autoprefixer-rails/version'
 
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README.md', 'LICENSE', 'ChangeLog.md']
   s.require_path     = 'lib'
 
-  s.author   = 'Andrey "A.I." Sitnik'
+  s.author   = 'Andrey Sitnik'
   s.email    = 'andrey@sitnik.ru'
   s.homepage = 'https://github.com/ai/autoprefixer-rails'
   s.license  = 'MIT'
 
-  s.add_dependency "execjs", [">= 0"]
+  s.add_dependency 'execjs', '>= 0'
 end
