@@ -1,4 +1,4 @@
-require_relative 'lib/autoprefixer-rails/version'
+require File.expand_path('../lib/autoprefixer-rails/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
