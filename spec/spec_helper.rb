@@ -1,8 +1,5 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'pp'
-require 'sprockets'
-
 require_relative 'app/config/environment'
 require_relative '../lib/autoprefixer-rails'
 
