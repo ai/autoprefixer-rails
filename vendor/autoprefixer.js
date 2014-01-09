@@ -434,8 +434,8 @@
     };
 
     Autoprefixer.prototype.postcss = function(css) {
-      this.prefixes.processor.add(css);
-      return this.prefixes.processor.remove(css);
+      this.prefixes.processor.remove(css);
+      return this.prefixes.processor.add(css);
     };
 
     Autoprefixer.prototype.info = function() {
@@ -1996,7 +1996,7 @@
   };
 
   module.exports = function(prefixes) {
-    var browser, data, list, name, needTransition, out, props, string, transitionProp, useTransition, value, values, version, versions, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4;
+    var atrules, browser, data, list, name, needTransition, out, props, selector, selectors, string, transitionProp, useTransition, value, values, version, versions, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
     if (prefixes.browsers.selected.length === 0) {
       return "No browsers selected";
     }
@@ -2020,14 +2020,36 @@
       });
       out += '  ' + browser + ': ' + list.join(', ') + "\n";
     }
+    atrules = '';
+    _ref2 = prefixes.add;
+    for (name in _ref2) {
+      data = _ref2[name];
+      if (name[0] === '@' && data.prefixes) {
+        atrules += prefix(name, false, data.prefixes);
+      }
+    }
+    if (atrules !== '') {
+      out += "\nAt-Rules:\n" + atrules;
+    }
+    selectors = '';
+    _ref3 = prefixes.add.selectors;
+    for (_j = 0, _len1 = _ref3.length; _j < _len1; _j++) {
+      selector = _ref3[_j];
+      if (selector.prefixes) {
+        selectors += prefix(selector.name, false, selector.prefixes);
+      }
+    }
+    if (selectors !== '') {
+      out += "\nSelectors:\n" + selectors;
+    }
     values = '';
     props = '';
     useTransition = false;
-    needTransition = (_ref2 = prefixes.add.transition) != null ? _ref2.prefixes : void 0;
-    _ref3 = prefixes.add;
-    for (name in _ref3) {
-      data = _ref3[name];
-      if (data.prefixes) {
+    needTransition = (_ref4 = prefixes.add.transition) != null ? _ref4.prefixes : void 0;
+    _ref5 = prefixes.add;
+    for (name in _ref5) {
+      data = _ref5[name];
+      if (name[0] !== '@' && data.prefixes) {
         transitionProp = needTransition && prefixes.data[name].transition;
         if (transitionProp) {
           useTransition = true;
@@ -2042,9 +2064,9 @@
       })) {
         continue;
       }
-      _ref4 = data.values;
-      for (_j = 0, _len1 = _ref4.length; _j < _len1; _j++) {
-        value = _ref4[_j];
+      _ref6 = data.values;
+      for (_k = 0, _len2 = _ref6.length; _k < _len2; _k++) {
+        value = _ref6[_k];
         string = prefix(value.name, false, value.prefixes);
         if (values.indexOf(string) === -1) {
           values += string;
@@ -2411,7 +2433,7 @@
           selector = Selector.load(name, prefixes);
           for (_j = 0, _len1 = prefixes.length; _j < _len1; _j++) {
             prefix = prefixes[_j];
-            remove.selectors.push(selector.prefixed(prefix));
+            remove.selectors.push(selector.checker(prefix));
           }
         } else if (name[0] === '@') {
           for (_k = 0, _len2 = prefixes.length; _k < _len2; _k++) {
@@ -2583,7 +2605,7 @@
     };
 
     Processor.prototype.remove = function(css) {
-      var selector, _i, _len, _ref,
+      var checker, _i, _len, _ref,
         _this = this;
       css.eachAtRule(function(rule, i) {
         if (_this.prefixes.remove['@' + rule.name]) {
@@ -2592,15 +2614,15 @@
       });
       _ref = this.prefixes.remove.selectors;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        selector = _ref[_i];
+        checker = _ref[_i];
         css.eachRule(function(rule, i) {
-          if (rule.selector.indexOf(selector) !== -1) {
+          if (checker(rule)) {
             return rule.parent.remove(i);
           }
         });
       }
       return css.eachDecl(function(decl, i) {
-        var checker, notHack, rule, unprefixed, _j, _len1, _ref1, _ref2;
+        var notHack, rule, unprefixed, _j, _len1, _ref1, _ref2;
         rule = decl.parent;
         unprefixed = _this.prefixes.unprefixed(decl.prop);
         if ((_ref1 = _this.prefixes.remove[decl.prop]) != null ? _ref1.remove : void 0) {
@@ -2633,7 +2655,7 @@
 
 },{"./utils":35,"./value":36,"postcss/lib/vendor":52}],34:[function(require,module,exports){
 (function() {
-  var Prefixer, Selector, utils, _ref,
+  var Prefixer, Selector, utils,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2644,25 +2666,45 @@
   Selector = (function(_super) {
     __extends(Selector, _super);
 
-    function Selector() {
-      _ref = Selector.__super__.constructor.apply(this, arguments);
-      return _ref;
+    function Selector(name, prefixes, all) {
+      this.name = name;
+      this.prefixes = prefixes;
+      this.all = all;
+      this.regexpCache = {};
     }
 
-    Selector.prototype.check = function(rule) {
-      return rule.selector.indexOf(this.name) !== -1;
+    Selector.prototype.check = function(rule, prefix) {
+      var name;
+      name = prefix ? this.prefixed(prefix) : this.name;
+      if (rule.selector.indexOf(name) !== -1) {
+        return !!rule.selector.match(this.regexp(prefix));
+      } else {
+        return false;
+      }
+    };
+
+    Selector.prototype.checker = function(prefix) {
+      var _this = this;
+      return function(rule) {
+        return _this.check(rule, prefix);
+      };
     };
 
     Selector.prototype.prefixed = function(prefix) {
       return this.name.replace(/^([^\w]*)/, '$1' + prefix);
     };
 
-    Selector.prototype.regexp = function() {
-      return this.regexpCache || (this.regexpCache = new RegExp(utils.escapeRegexp(this.name), 'gi'));
+    Selector.prototype.regexp = function(prefix) {
+      var name;
+      if (this.regexpCache[prefix]) {
+        return this.regexpCache[prefix];
+      }
+      name = prefix ? this.prefixed(prefix) : this.name;
+      return this.regexpCache = new RegExp('(^|[^:])' + utils.escapeRegexp(name), 'gi');
     };
 
     Selector.prototype.replace = function(selector, prefix) {
-      return selector.replace(this.regexp(), this.prefixed(prefix));
+      return selector.replace(this.regexp(), '$1' + this.prefixed(prefix));
     };
 
     Selector.prototype.add = function(rule, prefix) {
