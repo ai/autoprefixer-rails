@@ -53,7 +53,7 @@ to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
 browsers:
   - "last 1 version"
   - "> 1%"
-  - "explorer 10"
+  - "Explorer 10"
 ```
 
 You can get what properties will be changed using a Rake task:
@@ -62,12 +62,12 @@ You can get what properties will be changed using a Rake task:
 rake autoprefixer:info
 ```
 
-By default, Autoprefixer uses `> 1%, last 2 versions, firefox 24, opera 12.1`:
-* Firefox 24 is a latest [ESR].
+By default, Autoprefixer uses `> 1%, last 2 versions, Firefox ESR, Opera 12.1`:
+* Latest [Firefox ESR] is a 24 version.
 * Opera 12.1 will be in list until Opera supports non-Blink 12.x branch.
 
 [browser section]: https://github.com/ai/autoprefixer#browsers
-[ESR]: http://www.mozilla.org/en/firefox/organizations/faq/
+[Firefox ESR]:     http://www.mozilla.org/en/firefox/organizations/faq/
 
 ### Sprockets
 
