@@ -5,5 +5,3 @@ rvm:
   - 2.1.0
   - jruby-19mode
   - rbx-2
-before_install:
-  - gem install bundler -v '>= 1.5.1'
