@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.autoprefixer=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.autoprefixer=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 (function() {
   module.exports = {
     android: {
@@ -16,13 +16,13 @@
     },
     chrome: {
       prefix: "-webkit-",
-      future: [34, 33],
+      future: [35, 34, 33],
       versions: [32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4],
       popularity: [0.513153, 30.1841, 0.628038, 0.528471, 0.329337, 0.359973, 0.30636, 0.15318, 0.091908, 0.107226, 0.130203, 0.444222, 0.045954, 0.038295, 0.107226, 0.030636, 0.045954, 0.068931, 0.053613, 0.053613, 0.068931, 0.122544, 0.038295, 0.022977, 0.030636, 0.022977, 0.030636, 0.022977, 0.030636]
     },
     ff: {
       prefix: "-moz-",
-      future: [28, 27],
+      future: [29, 28, 27],
       versions: [26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3.6, 3.5, 3, 2],
       popularity: [4.77922, 7.50582, 0.359973, 0.199134, 0.168498, 0.183816, 0.137862, 0.107226, 0.091908, 0.160839, 0.176157, 0.107226, 0.084249, 0.084249, 0.191475, 0.084249, 0.107226, 0.053613, 0.068931, 0.038295, 0.045954, 0.038295, 0.061272, 0.260406, 0.038295, 0.091908, 0.015318]
     },
@@ -51,23 +51,23 @@
 
 }).call(this);
 
-},{}],2:[function(require,module,exports){
+},{}],2:[function(_dereq_,module,exports){
 (function() {
   module.exports = {
     "::placeholder": {
       selector: true,
-      browsers: ["android 4.4", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4 old", "ff 5 old", "ff 6 old", "ff 7 old", "ff 8 old", "ff 9 old", "ff 10 old", "ff 11 old", "ff 12 old", "ff 13 old", "ff 14 old", "ff 15 old", "ff 16 old", "ff 17 old", "ff 18 old", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4 old", "ff 5 old", "ff 6 old", "ff 7 old", "ff 8 old", "ff 9 old", "ff 10 old", "ff 11 old", "ff 12 old", "ff 13 old", "ff 14 old", "ff 15 old", "ff 16 old", "ff 17 old", "ff 18 old", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "::selection": {
       selector: true,
-      browsers: ["ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28"]
+      browsers: ["ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29"]
     },
     ":fullscreen": {
       selector: true,
-      browsers: ["chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 11", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ie 11", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "@keyframes": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "align-content": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
@@ -79,34 +79,34 @@
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
     },
     animation: {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-delay": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-direction": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-duration": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-fill-mode": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-iteration-count": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-name": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-play-state": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "animation-timing-function": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "backface-visibility": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "background-clip": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "ff 3.6", "opera 10", "opera 10.1"]
@@ -153,52 +153,52 @@
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "bb 7", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "safari 3.1", "safari 3.2", "safari 4", "safari 5"]
     },
     "break-after": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "break-before": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "break-inside": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     calc: {
       props: ["*"],
       browsers: ["bb 10", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 6", "ios 6.1", "safari 6"]
     },
     "column-count": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "column-fill": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "column-gap": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "column-rule": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "column-rule-color": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "column-rule-style": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "column-rule-width": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "column-span": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "column-width": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     columns: {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "display-flex": {
@@ -207,15 +207,15 @@
     },
     "fill-available": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
-      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     filter: {
-      browsers: ["android 4.4", "bb 10", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 4.4", "bb 10", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "fit-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
-      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     flex: {
       transition: true,
@@ -243,27 +243,27 @@
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
     },
     "font-feature-settings": {
-      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     "font-kerning": {
-      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     "font-language-override": {
-      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     "font-variant-ligatures": {
-      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     grab: {
       props: ["cursor"],
-      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     grabbing: {
       props: ["cursor"],
-      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     hyphens: {
-      browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ie 10", "ie 11", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "inline-flex": {
       props: ["display"],
@@ -279,21 +279,21 @@
     },
     "max-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
-      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     "min-content": {
       props: ["width", "min-width", "max-width", "height", "min-height", "max-height"],
-      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
+      browsers: ["android 4.4", "bb 10", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 6.1", "safari 7"]
     },
     order: {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4 2009", "chrome 5 2009", "chrome 6 2009", "chrome 7 2009", "chrome 8 2009", "chrome 9 2009", "chrome 10 2009", "chrome 11 2009", "chrome 12 2009", "chrome 13 2009", "chrome 14 2009", "chrome 15 2009", "chrome 16 2009", "chrome 17 2009", "chrome 18 2009", "chrome 19 2009", "chrome 20 2009", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ie 10", "ios 3.2 2009", "ios 4 2009", "ios 4.1 2009", "ios 4.2 2009", "ios 4.3 2009", "ios 5 2009", "ios 5.1 2009", "ios 6 2009", "ios 6.1 2009", "ios 7", "opera 15", "opera 16", "safari 3.1 2009", "safari 3.2 2009", "safari 4 2009", "safari 5 2009", "safari 5.1 2009", "safari 6 2009", "safari 6.1 2009", "safari 7"]
     },
     perspective: {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "perspective-origin": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "radial-gradient": {
@@ -316,18 +316,18 @@
       browsers: ["ios 6", "ios 6.1", "ios 7", "safari 6.1", "safari 7"]
     },
     "tab-size": {
-      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
+      browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
     },
     transform: {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "transform-origin": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"],
       transition: true
     },
     "transform-style": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ie 9", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     transition: {
       mistakes: ["-ms-"],
@@ -350,31 +350,31 @@
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "bb 7", "bb 10", "chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "opera 10.5", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6"]
     },
     "user-select": {
-      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ie 10", "ie 11", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ie 10", "ie 11", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "zoom-in": {
       props: ["cursor"],
-      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     },
     "zoom-out": {
       props: ["cursor"],
-      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+      browsers: ["chrome 4", "chrome 5", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
     }
   };
 
 }).call(this);
 
-},{}],3:[function(require,module,exports){
+},{}],3:[function(_dereq_,module,exports){
 (function() {
   var Autoprefixer, Browsers, Prefixes, autoprefixer, infoCache, postcss,
     __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  postcss = require('postcss');
+  postcss = _dereq_('postcss');
 
-  Browsers = require('./browsers');
+  Browsers = _dereq_('./browsers');
 
-  Prefixes = require('./prefixes');
+  Prefixes = _dereq_('./prefixes');
 
   infoCache = null;
 
@@ -395,8 +395,8 @@
   };
 
   autoprefixer.data = {
-    browsers: require('../data/browsers'),
-    prefixes: require('../data/prefixes')
+    browsers: _dereq_('../data/browsers'),
+    prefixes: _dereq_('../data/prefixes')
   };
 
   Autoprefixer = (function() {
@@ -439,7 +439,7 @@
     };
 
     Autoprefixer.prototype.info = function() {
-      infoCache || (infoCache = require('./info'));
+      infoCache || (infoCache = _dereq_('./info'));
       return infoCache(this.prefixes);
     };
 
@@ -483,11 +483,11 @@
 
 }).call(this);
 
-},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":28,"./prefixes":32,"postcss":46}],4:[function(require,module,exports){
+},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":29,"./prefixes":33,"postcss":47}],4:[function(_dereq_,module,exports){
 (function() {
   var Browsers, utils;
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   Browsers = (function() {
     Browsers.prefixes = function() {
@@ -495,7 +495,7 @@
       if (this.prefixesCache) {
         return this.prefixesCache;
       }
-      data = require('../data/browsers');
+      data = _dereq_('../data/browsers');
       return this.prefixesCache = utils.uniq((function() {
         var _results;
         _results = [];
@@ -515,24 +515,25 @@
     }
 
     Browsers.prototype.parse = function(requirements) {
-      var selected,
-        _this = this;
+      var selected;
       if (!(requirements instanceof Array)) {
         requirements = [requirements];
       }
       selected = [];
-      requirements.map(function(req) {
-        var i, match, name, _ref;
-        _ref = _this.requirements;
-        for (name in _ref) {
-          i = _ref[name];
-          if (match = req.match(i.regexp)) {
-            selected = selected.concat(i.select.apply(_this, match.slice(1)));
-            return;
+      requirements.map((function(_this) {
+        return function(req) {
+          var i, match, name, _ref;
+          _ref = _this.requirements;
+          for (name in _ref) {
+            i = _ref[name];
+            if (match = req.match(i.regexp)) {
+              selected = selected.concat(i.select.apply(_this, match.slice(1)));
+              return;
+            }
           }
-        }
-        return utils.error("Unknown browser requirement `" + req + "`");
-      });
+          return utils.error("Unknown browser requirement `" + req + "`");
+        };
+      })(this));
       return utils.uniq(selected);
     };
 
@@ -674,24 +675,23 @@
 
 }).call(this);
 
-},{"../data/browsers":1,"./utils":35}],5:[function(require,module,exports){
+},{"../data/browsers":1,"./utils":36}],5:[function(_dereq_,module,exports){
 (function() {
-  var Browsers, Declaration, Prefixer, vendor, _ref,
+  var Browsers, Declaration, Prefixer, vendor,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Prefixer = require('./prefixer');
+  Prefixer = _dereq_('./prefixer');
 
-  Browsers = require('./browsers');
+  Browsers = _dereq_('./browsers');
 
-  vendor = require('postcss/lib/vendor');
+  vendor = _dereq_('postcss/lib/vendor');
 
   Declaration = (function(_super) {
     __extends(Declaration, _super);
 
     function Declaration() {
-      _ref = Declaration.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Declaration.__super__.constructor.apply(this, arguments);
     }
 
     Declaration.prototype.check = function(decl) {
@@ -707,10 +707,10 @@
     };
 
     Declaration.prototype.otherPrefixes = function(value, prefix) {
-      var other, _i, _len, _ref1;
-      _ref1 = Browsers.prefixes();
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        other = _ref1[_i];
+      var other, _i, _len, _ref;
+      _ref = Browsers.prefixes();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        other = _ref[_i];
         if (other === prefix) {
           continue;
         }
@@ -758,22 +758,21 @@
 
 }).call(this);
 
-},{"./browsers":4,"./prefixer":31,"postcss/lib/vendor":52}],6:[function(require,module,exports){
+},{"./browsers":4,"./prefixer":32,"postcss/lib/vendor":53}],6:[function(_dereq_,module,exports){
 (function() {
-  var AlignContent, Declaration, flexSpec, _ref,
+  var AlignContent, Declaration, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   AlignContent = (function(_super) {
     __extends(AlignContent, _super);
 
     function AlignContent() {
-      _ref = AlignContent.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return AlignContent.__super__.constructor.apply(this, arguments);
     }
 
     AlignContent.names = ['align-content', 'flex-line-pack'];
@@ -786,8 +785,8 @@
     };
 
     AlignContent.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         return prefix + 'flex-line-pack';
       } else {
@@ -818,22 +817,21 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],7:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],7:[function(_dereq_,module,exports){
 (function() {
-  var AlignItems, Declaration, flexSpec, _ref,
+  var AlignItems, Declaration, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   AlignItems = (function(_super) {
     __extends(AlignItems, _super);
 
     function AlignItems() {
-      _ref = AlignItems.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return AlignItems.__super__.constructor.apply(this, arguments);
     }
 
     AlignItems.names = ['align-items', 'flex-align', 'box-align'];
@@ -844,8 +842,8 @@
     };
 
     AlignItems.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return prefix + 'box-align';
       } else if (spec === 2012) {
@@ -878,22 +876,21 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],8:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],8:[function(_dereq_,module,exports){
 (function() {
-  var AlignSelf, Declaration, flexSpec, _ref,
+  var AlignSelf, Declaration, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   AlignSelf = (function(_super) {
     __extends(AlignSelf, _super);
 
     function AlignSelf() {
-      _ref = AlignSelf.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return AlignSelf.__super__.constructor.apply(this, arguments);
     }
 
     AlignSelf.names = ['align-self', 'flex-item-align'];
@@ -904,8 +901,8 @@
     };
 
     AlignSelf.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         return prefix + 'flex-item-align';
       } else {
@@ -936,20 +933,19 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],9:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],9:[function(_dereq_,module,exports){
 (function() {
-  var BorderImage, Declaration, _ref,
+  var BorderImage, Declaration,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   BorderImage = (function(_super) {
     __extends(BorderImage, _super);
 
     function BorderImage() {
-      _ref = BorderImage.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return BorderImage.__super__.constructor.apply(this, arguments);
     }
 
     BorderImage.names = ['border-image'];
@@ -967,22 +963,21 @@
 
 }).call(this);
 
-},{"../declaration":5}],10:[function(require,module,exports){
+},{"../declaration":5}],10:[function(_dereq_,module,exports){
 (function() {
-  var BorderRadius, Declaration, _ref,
+  var BorderRadius, Declaration,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   BorderRadius = (function(_super) {
-    var hor, mozilla, normal, ver, _i, _j, _len, _len1, _ref1, _ref2;
+    var hor, mozilla, normal, ver, _i, _j, _len, _len1, _ref, _ref1;
 
     __extends(BorderRadius, _super);
 
     function BorderRadius() {
-      _ref = BorderRadius.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return BorderRadius.__super__.constructor.apply(this, arguments);
     }
 
     BorderRadius.names = ['border-radius'];
@@ -991,12 +986,12 @@
 
     BorderRadius.toNormal = {};
 
-    _ref1 = ['top', 'bottom'];
-    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-      ver = _ref1[_i];
-      _ref2 = ['left', 'right'];
-      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-        hor = _ref2[_j];
+    _ref = ['top', 'bottom'];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      ver = _ref[_i];
+      _ref1 = ['left', 'right'];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        hor = _ref1[_j];
         normal = "border-" + ver + "-" + hor + "-radius";
         mozilla = "border-radius-" + ver + hor;
         BorderRadius.names.push(normal);
@@ -1026,17 +1021,17 @@
 
 }).call(this);
 
-},{"../declaration":5}],11:[function(require,module,exports){
+},{"../declaration":5}],11:[function(_dereq_,module,exports){
 (function() {
   var DisplayFlex, OldDisplayFlex, OldValue, Value, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  OldValue = require('../old-value');
+  OldValue = _dereq_('../old-value');
 
-  Value = require('../value');
+  Value = _dereq_('../value');
 
   OldDisplayFlex = (function(_super) {
     __extends(OldDisplayFlex, _super);
@@ -1098,22 +1093,21 @@
 
 }).call(this);
 
-},{"../old-value":30,"../value":36,"./flex-spec":19}],12:[function(require,module,exports){
+},{"../old-value":31,"../value":37,"./flex-spec":19}],12:[function(_dereq_,module,exports){
 (function() {
-  var FillAvailable, OldValue, Value, _ref,
+  var FillAvailable, OldValue, Value,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  OldValue = require('../old-value');
+  OldValue = _dereq_('../old-value');
 
-  Value = require('../value');
+  Value = _dereq_('../value');
 
   FillAvailable = (function(_super) {
     __extends(FillAvailable, _super);
 
     function FillAvailable() {
-      _ref = FillAvailable.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FillAvailable.__super__.constructor.apply(this, arguments);
     }
 
     FillAvailable.names = ['fill-available'];
@@ -1142,20 +1136,19 @@
 
 }).call(this);
 
-},{"../old-value":30,"../value":36}],13:[function(require,module,exports){
+},{"../old-value":31,"../value":37}],13:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, Filter, _ref,
+  var Declaration, Filter,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   Filter = (function(_super) {
     __extends(Filter, _super);
 
     function Filter() {
-      _ref = Filter.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Filter.__super__.constructor.apply(this, arguments);
     }
 
     Filter.names = ['filter'];
@@ -1174,22 +1167,21 @@
 
 }).call(this);
 
-},{"../declaration":5}],14:[function(require,module,exports){
+},{"../declaration":5}],14:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, FlexBasis, flexSpec, _ref,
+  var Declaration, FlexBasis, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   FlexBasis = (function(_super) {
     __extends(FlexBasis, _super);
 
     function FlexBasis() {
-      _ref = FlexBasis.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FlexBasis.__super__.constructor.apply(this, arguments);
     }
 
     FlexBasis.names = ['flex-basis'];
@@ -1199,8 +1191,8 @@
     };
 
     FlexBasis.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         return prefix + 'flex';
       } else {
@@ -1209,8 +1201,8 @@
     };
 
     FlexBasis.prototype.set = function(decl, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         decl.prop = prefix + 'flex';
         decl.value = '0 1 ' + decl.value;
@@ -1228,22 +1220,21 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],15:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],15:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, FlexDirection, flexSpec, _ref,
+  var Declaration, FlexDirection, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   FlexDirection = (function(_super) {
     __extends(FlexDirection, _super);
 
     function FlexDirection() {
-      _ref = FlexDirection.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FlexDirection.__super__.constructor.apply(this, arguments);
     }
 
     FlexDirection.names = ['flex-direction', 'box-direction', 'box-orient'];
@@ -1253,8 +1244,8 @@
     };
 
     FlexDirection.prototype.insert = function(decl, prefix) {
-      var already, cloned, dir, orient, spec, value, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var already, cloned, dir, orient, spec, value, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         already = decl.parent.some(function(i) {
           return i.prop === prefix + 'box-orient' || i.prop === prefix + 'box-direction';
@@ -1279,8 +1270,8 @@
     };
 
     FlexDirection.prototype.old = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return [prefix + 'box-orient', prefix + 'box-direction'];
       } else {
@@ -1296,29 +1287,28 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],16:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],16:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, FlexFlow, flexSpec, _ref,
+  var Declaration, FlexFlow, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   FlexFlow = (function(_super) {
     __extends(FlexFlow, _super);
 
     function FlexFlow() {
-      _ref = FlexFlow.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FlexFlow.__super__.constructor.apply(this, arguments);
     }
 
     FlexFlow.names = ['flex-flow'];
 
     FlexFlow.prototype.set = function(decl, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         return FlexFlow.__super__.set.apply(this, arguments);
       } else if (spec === 'final') {
@@ -1334,22 +1324,21 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],17:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],17:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, Flex, flexSpec, _ref,
+  var Declaration, Flex, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   Flex = (function(_super) {
     __extends(Flex, _super);
 
     function Flex() {
-      _ref = Flex.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Flex.__super__.constructor.apply(this, arguments);
     }
 
     Flex.names = ['flex-grow'];
@@ -1359,8 +1348,8 @@
     };
 
     Flex.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return prefix + 'box-flex';
       } else if (spec === 2012) {
@@ -1378,22 +1367,21 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],18:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],18:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, FlexShrink, flexSpec, _ref,
+  var Declaration, FlexShrink, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   FlexShrink = (function(_super) {
     __extends(FlexShrink, _super);
 
     function FlexShrink() {
-      _ref = FlexShrink.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FlexShrink.__super__.constructor.apply(this, arguments);
     }
 
     FlexShrink.names = ['flex-shrink'];
@@ -1403,8 +1391,8 @@
     };
 
     FlexShrink.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         return prefix + 'flex';
       } else {
@@ -1413,8 +1401,8 @@
     };
 
     FlexShrink.prototype.set = function(decl, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
         decl.prop = prefix + 'flex';
         decl.value = '0 ' + decl.value;
@@ -1432,7 +1420,7 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],19:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],19:[function(_dereq_,module,exports){
 (function() {
   module.exports = function(prefix) {
     var spec;
@@ -1445,22 +1433,21 @@
 
 }).call(this);
 
-},{}],20:[function(require,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, FlexWrap, flexSpec, _ref,
+  var Declaration, FlexWrap, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   FlexWrap = (function(_super) {
     __extends(FlexWrap, _super);
 
     function FlexWrap() {
-      _ref = FlexWrap.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return FlexWrap.__super__.constructor.apply(this, arguments);
     }
 
     FlexWrap.names = ['flex-wrap'];
@@ -1481,29 +1468,28 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],21:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],21:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, Flex, flexSpec, _ref,
+  var Declaration, Flex, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   Flex = (function(_super) {
     __extends(Flex, _super);
 
     function Flex() {
-      _ref = Flex.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Flex.__super__.constructor.apply(this, arguments);
     }
 
     Flex.names = ['flex', 'box-flex'];
 
     Flex.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return prefix + 'box-flex';
       } else {
@@ -1534,20 +1520,19 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],22:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],22:[function(_dereq_,module,exports){
 (function() {
-  var Fullscreen, Selector, _ref,
+  var Fullscreen, Selector,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Selector = require('../selector');
+  Selector = _dereq_('../selector');
 
   Fullscreen = (function(_super) {
     __extends(Fullscreen, _super);
 
     function Fullscreen() {
-      _ref = Fullscreen.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Fullscreen.__super__.constructor.apply(this, arguments);
     }
 
     Fullscreen.names = [':fullscreen'];
@@ -1570,19 +1555,19 @@
 
 }).call(this);
 
-},{"../selector":34}],23:[function(require,module,exports){
+},{"../selector":35}],23:[function(_dereq_,module,exports){
 (function() {
-  var Gradient, OldValue, Value, isDirection, list, utils, _ref,
+  var Gradient, OldValue, Value, isDirection, list, utils,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  OldValue = require('../old-value');
+  OldValue = _dereq_('../old-value');
 
-  Value = require('../value');
+  Value = _dereq_('../value');
 
-  utils = require('../utils');
+  utils = _dereq_('../utils');
 
-  list = require('postcss/lib/list');
+  list = _dereq_('postcss/lib/list');
 
   isDirection = new RegExp('(top|left|right|bottom)', 'gi');
 
@@ -1590,32 +1575,32 @@
     __extends(Gradient, _super);
 
     function Gradient() {
-      _ref = Gradient.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Gradient.__super__.constructor.apply(this, arguments);
     }
 
     Gradient.names = ['linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient'];
 
     Gradient.prototype.replace = function(string, prefix) {
-      var values,
-        _this = this;
-      values = list.comma(string).map(function(value) {
-        var after, args, close, params;
-        if (value.slice(0, +_this.name.length + 1 || 9e9) !== _this.name + '(') {
-          return value;
-        }
-        close = value.lastIndexOf(')');
-        after = value.slice(close + 1);
-        args = value.slice(_this.name.length + 1, +(close - 1) + 1 || 9e9);
-        params = list.comma(args);
-        params = _this.newDirection(params);
-        if (prefix === '-webkit- old') {
-          return _this.oldWebkit(value, args, params, after);
-        } else {
-          _this.convertDirection(params);
-          return prefix + _this.name + '(' + params.join(', ') + ')' + after;
-        }
-      });
+      var values;
+      values = list.comma(string).map((function(_this) {
+        return function(value) {
+          var after, args, close, params;
+          if (value.slice(0, +_this.name.length + 1 || 9e9) !== _this.name + '(') {
+            return value;
+          }
+          close = value.lastIndexOf(')');
+          after = value.slice(close + 1);
+          args = value.slice(_this.name.length + 1, +(close - 1) + 1 || 9e9);
+          params = list.comma(args);
+          params = _this.newDirection(params);
+          if (prefix === '-webkit- old') {
+            return _this.oldWebkit(value, args, params, after);
+          } else {
+            _this.convertDirection(params);
+            return prefix + _this.name + '(' + params.join(', ') + ')' + after;
+          }
+        };
+      })(this));
       return values.join(', ');
     };
 
@@ -1785,22 +1770,21 @@
 
 }).call(this);
 
-},{"../old-value":30,"../utils":35,"../value":36,"postcss/lib/list":43}],24:[function(require,module,exports){
+},{"../old-value":31,"../utils":36,"../value":37,"postcss/lib/list":44}],24:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, JustifyContent, flexSpec, _ref,
+  var Declaration, JustifyContent, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   JustifyContent = (function(_super) {
     __extends(JustifyContent, _super);
 
     function JustifyContent() {
-      _ref = JustifyContent.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return JustifyContent.__super__.constructor.apply(this, arguments);
     }
 
     JustifyContent.names = ['justify-content', 'flex-pack', 'box-pack'];
@@ -1813,8 +1797,8 @@
     };
 
     JustifyContent.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return prefix + 'box-pack';
       } else if (spec === 2012) {
@@ -1850,29 +1834,28 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],25:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],25:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, Order, flexSpec, _ref,
+  var Declaration, Order, flexSpec,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  flexSpec = require('./flex-spec');
+  flexSpec = _dereq_('./flex-spec');
 
-  Declaration = require('../declaration');
+  Declaration = _dereq_('../declaration');
 
   Order = (function(_super) {
     __extends(Order, _super);
 
     function Order() {
-      _ref = Order.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Order.__super__.constructor.apply(this, arguments);
     }
 
     Order.names = ['order', 'flex-order', 'box-ordinal-group'];
 
     Order.prototype.prefixed = function(prop, prefix) {
-      var spec, _ref1;
-      _ref1 = flexSpec(prefix), spec = _ref1[0], prefix = _ref1[1];
+      var spec, _ref;
+      _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
         return prefix + 'box-ordinal-group';
       } else if (spec === 2012) {
@@ -1905,20 +1888,19 @@
 
 }).call(this);
 
-},{"../declaration":5,"./flex-spec":19}],26:[function(require,module,exports){
+},{"../declaration":5,"./flex-spec":19}],26:[function(_dereq_,module,exports){
 (function() {
-  var Placeholder, Selector, _ref,
+  var Placeholder, Selector,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Selector = require('../selector');
+  Selector = _dereq_('../selector');
 
   Placeholder = (function(_super) {
     __extends(Placeholder, _super);
 
     function Placeholder() {
-      _ref = Placeholder.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Placeholder.__super__.constructor.apply(this, arguments);
     }
 
     Placeholder.names = ['::placeholder'];
@@ -1943,20 +1925,19 @@
 
 }).call(this);
 
-},{"../selector":34}],27:[function(require,module,exports){
+},{"../selector":35}],27:[function(_dereq_,module,exports){
 (function() {
-  var Transform, Value, _ref,
+  var Transform, Value,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Value = require('../value');
+  Value = _dereq_('../value');
 
   Transform = (function(_super) {
     __extends(Transform, _super);
 
     function Transform() {
-      _ref = Transform.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Transform.__super__.constructor.apply(this, arguments);
     }
 
     Transform.names = ['transform'];
@@ -1977,7 +1958,46 @@
 
 }).call(this);
 
-},{"../value":36}],28:[function(require,module,exports){
+},{"../value":37}],28:[function(_dereq_,module,exports){
+(function() {
+  var OldValue, Transition, Value,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  OldValue = _dereq_('../old-value');
+
+  Value = _dereq_('../value');
+
+  Transition = (function(_super) {
+    __extends(Transition, _super);
+
+    function Transition() {
+      return Transition.__super__.constructor.apply(this, arguments);
+    }
+
+    Transition.names = ['flex', 'flex-grow', 'flex-shrink', 'flex-basis'];
+
+    Transition.prototype.prefixed = function(prefix) {
+      return this.all.prefixed(this.name, prefix);
+    };
+
+    Transition.prototype.replace = function(string, prefix) {
+      return string.replace(this.regexp(), '$1' + this.prefixed(prefix) + '$3');
+    };
+
+    Transition.prototype.old = function(prefix) {
+      return new OldValue(this.prefixed(prefix));
+    };
+
+    return Transition;
+
+  })(Value);
+
+  module.exports = Transition;
+
+}).call(this);
+
+},{"../old-value":31,"../value":37}],29:[function(_dereq_,module,exports){
 (function() {
   var capitalize, names, prefix;
 
@@ -2093,20 +2113,19 @@
 
 }).call(this);
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(_dereq_,module,exports){
 (function() {
-  var Keyframes, Prefixer, _ref,
+  var Keyframes, Prefixer,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Prefixer = require('./prefixer');
+  Prefixer = _dereq_('./prefixer');
 
   Keyframes = (function(_super) {
     __extends(Keyframes, _super);
 
     function Keyframes() {
-      _ref = Keyframes.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Keyframes.__super__.constructor.apply(this, arguments);
     }
 
     Keyframes.prototype.check = function(atRule) {
@@ -2136,11 +2155,11 @@
 
 }).call(this);
 
-},{"./prefixer":31}],30:[function(require,module,exports){
+},{"./prefixer":32}],31:[function(_dereq_,module,exports){
 (function() {
   var OldValue, utils;
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   OldValue = (function() {
     function OldValue(name, string, regexp) {
@@ -2167,15 +2186,15 @@
 
 }).call(this);
 
-},{"./utils":35}],31:[function(require,module,exports){
+},{"./utils":36}],32:[function(_dereq_,module,exports){
 (function() {
   var Browsers, Prefixer, utils, vendor;
 
-  Browsers = require('./browsers');
+  Browsers = _dereq_('./browsers');
 
-  vendor = require('postcss/lib/vendor');
+  vendor = _dereq_('postcss/lib/vendor');
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   Prefixer = (function() {
     Prefixer.hack = function(klass) {
@@ -2253,65 +2272,67 @@
 
 }).call(this);
 
-},{"./browsers":4,"./utils":35,"postcss/lib/vendor":52}],32:[function(require,module,exports){
+},{"./browsers":4,"./utils":36,"postcss/lib/vendor":53}],33:[function(_dereq_,module,exports){
 (function() {
   var Declaration, Keyframes, Prefixes, Processor, Selector, Value, declsCache, utils, vendor;
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
-  vendor = require('postcss/lib/vendor');
+  vendor = _dereq_('postcss/lib/vendor');
 
-  Processor = require('./processor');
+  Processor = _dereq_('./processor');
 
-  Declaration = require('./declaration');
+  Declaration = _dereq_('./declaration');
 
-  Keyframes = require('./keyframes');
+  Keyframes = _dereq_('./keyframes');
 
-  Selector = require('./selector');
+  Selector = _dereq_('./selector');
 
-  Value = require('./value');
+  Value = _dereq_('./value');
 
-  Selector.hack(require('./hacks/fullscreen'));
+  Selector.hack(_dereq_('./hacks/fullscreen'));
 
-  Selector.hack(require('./hacks/placeholder'));
+  Selector.hack(_dereq_('./hacks/placeholder'));
 
-  Declaration.hack(require('./hacks/flex'));
+  Declaration.hack(_dereq_('./hacks/flex'));
 
-  Declaration.hack(require('./hacks/order'));
+  Declaration.hack(_dereq_('./hacks/order'));
 
-  Declaration.hack(require('./hacks/filter'));
+  Declaration.hack(_dereq_('./hacks/filter'));
 
-  Declaration.hack(require('./hacks/flex-flow'));
+  Declaration.hack(_dereq_('./hacks/flex-flow'));
 
-  Declaration.hack(require('./hacks/flex-grow'));
+  Declaration.hack(_dereq_('./hacks/flex-grow'));
 
-  Declaration.hack(require('./hacks/flex-wrap'));
+  Declaration.hack(_dereq_('./hacks/flex-wrap'));
 
-  Declaration.hack(require('./hacks/align-self'));
+  Declaration.hack(_dereq_('./hacks/align-self'));
 
-  Declaration.hack(require('./hacks/flex-basis'));
+  Declaration.hack(_dereq_('./hacks/flex-basis'));
 
-  Declaration.hack(require('./hacks/align-items'));
+  Declaration.hack(_dereq_('./hacks/align-items'));
 
-  Declaration.hack(require('./hacks/flex-shrink'));
+  Declaration.hack(_dereq_('./hacks/flex-shrink'));
 
-  Declaration.hack(require('./hacks/border-image'));
+  Declaration.hack(_dereq_('./hacks/border-image'));
 
-  Declaration.hack(require('./hacks/align-content'));
+  Declaration.hack(_dereq_('./hacks/align-content'));
 
-  Declaration.hack(require('./hacks/border-radius'));
+  Declaration.hack(_dereq_('./hacks/border-radius'));
 
-  Declaration.hack(require('./hacks/flex-direction'));
+  Declaration.hack(_dereq_('./hacks/flex-direction'));
 
-  Declaration.hack(require('./hacks/justify-content'));
+  Declaration.hack(_dereq_('./hacks/justify-content'));
 
-  Value.hack(require('./hacks/gradient'));
+  Value.hack(_dereq_('./hacks/gradient'));
 
-  Value.hack(require('./hacks/transform'));
+  Value.hack(_dereq_('./hacks/transform'));
 
-  Value.hack(require('./hacks/display-flex'));
+  Value.hack(_dereq_('./hacks/transition'));
 
-  Value.hack(require('./hacks/fill-available'));
+  Value.hack(_dereq_('./hacks/display-flex'));
+
+  Value.hack(_dereq_('./hacks/fill-available'));
 
   declsCache = {};
 
@@ -2327,8 +2348,7 @@
     Prefixes.prototype.transitionProps = ['transition', 'transition-property'];
 
     Prefixes.prototype.select = function(list) {
-      var add, all, data, name, notes, selected,
-        _this = this;
+      var add, all, data, name, notes, selected;
       selected = {
         add: {},
         remove: {}
@@ -2345,25 +2365,33 @@
         });
         notes = add.filter(function(i) {
           return i.note;
-        }).map(function(i) {
-          return _this.browsers.prefix(i.browser) + ' ' + i.note;
-        });
+        }).map((function(_this) {
+          return function(i) {
+            return _this.browsers.prefix(i.browser) + ' ' + i.note;
+          };
+        })(this));
         notes = utils.uniq(notes);
-        add = add.filter(function(i) {
-          return _this.browsers.isSelected(i.browser);
-        }).map(function(i) {
-          var prefix;
-          prefix = _this.browsers.prefix(i.browser);
-          if (i.note) {
-            return prefix + ' ' + i.note;
-          } else {
-            return prefix;
-          }
-        });
+        add = add.filter((function(_this) {
+          return function(i) {
+            return _this.browsers.isSelected(i.browser);
+          };
+        })(this)).map((function(_this) {
+          return function(i) {
+            var prefix;
+            prefix = _this.browsers.prefix(i.browser);
+            if (i.note) {
+              return prefix + ' ' + i.note;
+            } else {
+              return prefix;
+            }
+          };
+        })(this));
         add = this.sort(utils.uniq(add));
-        all = data.browsers.map(function(i) {
-          return _this.browsers.prefix(i);
-        });
+        all = data.browsers.map((function(_this) {
+          return function(i) {
+            return _this.browsers.prefix(i);
+          };
+        })(this));
         if (data.mistakes) {
           all = all.concat(data.mistakes);
         }
@@ -2452,7 +2480,7 @@
         } else {
           props = this.data[name].transition ? this.transitionProps : this.data[name].props;
           if (props) {
-            value = Value.load(name);
+            value = Value.load(name, [], this);
             for (_l = 0, _len3 = prefixes.length; _l < _len3; _l++) {
               prefix = prefixes[_l];
               old = value.old(prefix);
@@ -2522,26 +2550,27 @@
     };
 
     Prefixes.prototype.group = function(decl) {
-      var checker, index, length, rule, unprefixed,
-        _this = this;
+      var checker, index, length, rule, unprefixed;
       rule = decl.parent;
       index = rule.index(decl);
       length = rule.decls.length;
       unprefixed = this.unprefixed(decl.prop);
-      checker = function(step, callback) {
-        var other;
-        index += step;
-        while (index >= 0 && index < length) {
-          other = rule.decls[index];
-          if (_this.unprefixed(other.prop) !== unprefixed) {
-            break;
-          } else if (callback(other) === true) {
-            return true;
-          }
+      checker = (function(_this) {
+        return function(step, callback) {
+          var other;
           index += step;
-        }
-        return false;
-      };
+          while (index >= 0 && index < length) {
+            other = rule.decls[index];
+            if (_this.unprefixed(other.prop) !== unprefixed) {
+              break;
+            } else if (callback(other) === true) {
+              return true;
+            }
+            index += step;
+          }
+          return false;
+        };
+      })(this);
       return {
         up: function(callback) {
           return checker(-1, callback);
@@ -2560,15 +2589,15 @@
 
 }).call(this);
 
-},{"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/border-image":9,"./hacks/border-radius":10,"./hacks/display-flex":11,"./hacks/fill-available":12,"./hacks/filter":13,"./hacks/flex":21,"./hacks/flex-basis":14,"./hacks/flex-direction":15,"./hacks/flex-flow":16,"./hacks/flex-grow":17,"./hacks/flex-shrink":18,"./hacks/flex-wrap":20,"./hacks/fullscreen":22,"./hacks/gradient":23,"./hacks/justify-content":24,"./hacks/order":25,"./hacks/placeholder":26,"./hacks/transform":27,"./keyframes":29,"./processor":33,"./selector":34,"./utils":35,"./value":36,"postcss/lib/vendor":52}],33:[function(require,module,exports){
+},{"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/border-image":9,"./hacks/border-radius":10,"./hacks/display-flex":11,"./hacks/fill-available":12,"./hacks/filter":13,"./hacks/flex":21,"./hacks/flex-basis":14,"./hacks/flex-direction":15,"./hacks/flex-flow":16,"./hacks/flex-grow":17,"./hacks/flex-shrink":18,"./hacks/flex-wrap":20,"./hacks/fullscreen":22,"./hacks/gradient":23,"./hacks/justify-content":24,"./hacks/order":25,"./hacks/placeholder":26,"./hacks/transform":27,"./hacks/transition":28,"./keyframes":30,"./processor":34,"./selector":35,"./utils":36,"./value":37,"postcss/lib/vendor":53}],34:[function(_dereq_,module,exports){
 (function() {
   var Processor, Value, utils, vendor;
 
-  vendor = require('postcss/lib/vendor');
+  vendor = _dereq_('postcss/lib/vendor');
 
-  Value = require('./value');
+  Value = _dereq_('./value');
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   Processor = (function() {
     function Processor(prefixes) {
@@ -2576,8 +2605,7 @@
     }
 
     Processor.prototype.add = function(css) {
-      var prefixer, selector, _i, _len, _ref,
-        _this = this;
+      var prefixer, selector, _i, _len, _ref;
       prefixer = this.prefixes.add['@keyframes'];
       if (prefixer) {
         css.eachAtRule(function(rule) {
@@ -2591,64 +2619,73 @@
           return selector.process(rule);
         });
       }
-      css.eachDecl(function(decl) {
-        var prefix;
-        prefix = _this.prefixes.add[decl.prop];
-        if (prefix && prefix.prefixes) {
-          return prefix.process(decl);
-        }
-      });
-      return css.eachDecl(function(decl) {
-        var unprefixed, value, _j, _len1, _ref1;
-        unprefixed = _this.prefixes.unprefixed(decl.prop);
-        _ref1 = _this.prefixes.values('add', unprefixed);
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          value = _ref1[_j];
-          value.process(decl);
-        }
-        return Value.save(_this.prefixes, decl);
-      });
+      css.eachDecl((function(_this) {
+        return function(decl) {
+          var prefix;
+          prefix = _this.prefixes.add[decl.prop];
+          if (prefix && prefix.prefixes) {
+            return prefix.process(decl);
+          }
+        };
+      })(this));
+      return css.eachDecl((function(_this) {
+        return function(decl) {
+          var unprefixed, value, _j, _len1, _ref1;
+          unprefixed = _this.prefixes.unprefixed(decl.prop);
+          _ref1 = _this.prefixes.values('add', unprefixed);
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            value = _ref1[_j];
+            value.process(decl);
+          }
+          return Value.save(_this.prefixes, decl);
+        };
+      })(this));
     };
 
     Processor.prototype.remove = function(css) {
-      var checker, _i, _len, _ref,
-        _this = this;
-      css.eachAtRule(function(rule, i) {
-        if (_this.prefixes.remove['@' + rule.name]) {
-          return rule.parent.remove(i);
-        }
-      });
+      var checker, _i, _len, _ref;
+      css.eachAtRule((function(_this) {
+        return function(rule, i) {
+          if (_this.prefixes.remove['@' + rule.name]) {
+            return rule.parent.remove(i);
+          }
+        };
+      })(this));
       _ref = this.prefixes.remove.selectors;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         checker = _ref[_i];
-        css.eachRule(function(rule, i) {
-          if (checker(rule)) {
-            return rule.parent.remove(i);
-          }
-        });
+        css.eachRule((function(_this) {
+          return function(rule, i) {
+            if (checker(rule)) {
+              return rule.parent.remove(i);
+            }
+          };
+        })(this));
       }
-      return css.eachDecl(function(decl, i) {
-        var notHack, rule, unprefixed, _j, _len1, _ref1, _ref2;
-        rule = decl.parent;
-        unprefixed = _this.prefixes.unprefixed(decl.prop);
-        if ((_ref1 = _this.prefixes.remove[decl.prop]) != null ? _ref1.remove : void 0) {
-          notHack = _this.prefixes.group(decl).down(function(i) {
-            return i.prop === unprefixed;
-          });
-          if (notHack) {
-            rule.remove(i);
-            return;
+      return css.eachDecl((function(_this) {
+        return function(decl, i) {
+          var notHack, rule, unprefixed, _j, _len1, _ref1, _ref2;
+          rule = decl.parent;
+          unprefixed = _this.prefixes.unprefixed(decl.prop);
+          if ((_ref1 = _this.prefixes.remove[decl.prop]) != null ? _ref1.remove : void 0) {
+            notHack = _this.prefixes.group(decl).down(function(i) {
+              return i.prop === unprefixed;
+            });
+            if (notHack) {
+              rule.remove(i);
+              return;
+            }
           }
-        }
-        _ref2 = _this.prefixes.values('remove', unprefixed);
-        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-          checker = _ref2[_j];
-          if (checker.check(decl.value)) {
-            rule.remove(i);
-            return;
+          _ref2 = _this.prefixes.values('remove', unprefixed);
+          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+            checker = _ref2[_j];
+            if (checker.check(decl.value)) {
+              rule.remove(i);
+              return;
+            }
           }
-        }
-      });
+        };
+      })(this));
     };
 
     return Processor;
@@ -2659,15 +2696,15 @@
 
 }).call(this);
 
-},{"./utils":35,"./value":36,"postcss/lib/vendor":52}],34:[function(require,module,exports){
+},{"./utils":36,"./value":37,"postcss/lib/vendor":53}],35:[function(_dereq_,module,exports){
 (function() {
   var Prefixer, Selector, utils,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Prefixer = require('./prefixer');
+  Prefixer = _dereq_('./prefixer');
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   Selector = (function(_super) {
     __extends(Selector, _super);
@@ -2690,10 +2727,11 @@
     };
 
     Selector.prototype.checker = function(prefix) {
-      var _this = this;
-      return function(rule) {
-        return _this.check(rule, prefix);
-      };
+      return (function(_this) {
+        return function(rule) {
+          return _this.check(rule, prefix);
+        };
+      })(this);
     };
 
     Selector.prototype.prefixed = function(prefix) {
@@ -2735,7 +2773,7 @@
 
 }).call(this);
 
-},{"./prefixer":31,"./utils":35}],35:[function(require,module,exports){
+},{"./prefixer":32,"./utils":36}],36:[function(_dereq_,module,exports){
 (function() {
   module.exports = {
     error: function(text) {
@@ -2778,39 +2816,38 @@
 
 }).call(this);
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 (function() {
-  var OldValue, Prefixer, Value, utils, vendor, _ref,
+  var OldValue, Prefixer, Value, utils, vendor,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Prefixer = require('./prefixer');
+  Prefixer = _dereq_('./prefixer');
 
-  OldValue = require('./old-value');
+  OldValue = _dereq_('./old-value');
 
-  vendor = require('postcss/lib/vendor');
+  vendor = _dereq_('postcss/lib/vendor');
 
-  utils = require('./utils');
+  utils = _dereq_('./utils');
 
   Value = (function(_super) {
     __extends(Value, _super);
 
     function Value() {
-      _ref = Value.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Value.__super__.constructor.apply(this, arguments);
     }
 
     Value.save = function(prefixes, decl) {
-      var cloned, prefix, prefixed, propPrefix, rule, value, _ref1, _results;
-      _ref1 = decl._autoprefixerValues;
+      var cloned, prefix, prefixed, propPrefix, rule, value, _ref, _results;
+      _ref = decl._autoprefixerValues;
       _results = [];
-      for (prefix in _ref1) {
-        value = _ref1[prefix];
+      for (prefix in _ref) {
+        value = _ref[prefix];
         if (value === decl.value) {
           continue;
         }
         propPrefix = vendor.prefix(decl.prop);
-        if (propPrefix === utils.removeNote(prefix)) {
+        if (propPrefix === prefix) {
           _results.push(decl.value = value);
         } else if (propPrefix === '-pie-') {
           continue;
@@ -2878,7 +2915,7 @@
 
 }).call(this);
 
-},{"./old-value":30,"./prefixer":31,"./utils":35,"postcss/lib/vendor":52}],37:[function(require,module,exports){
+},{"./old-value":31,"./prefixer":32,"./utils":36,"postcss/lib/vendor":53}],38:[function(_dereq_,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2933,8 +2970,8 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
-var process=require("__browserify_process");// Copyright Joyent, Inc. and other Node contributors.
+},{}],39:[function(_dereq_,module,exports){
+(function (process){// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -3158,14 +3195,14 @@ var substr = 'ab'.substr(-1) === 'b'
         return str.substr(start, len);
     }
 ;
-
-},{"__browserify_process":37}],39:[function(require,module,exports){
+}).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Container, name, _fn, _i, _len, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Container = require('./container');
+  Container = _dereq_('./container');
 
   AtRule = (function(_super) {
     __extends(AtRule, _super);
@@ -3233,15 +3270,15 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":40}],40:[function(require,module,exports){
+},{"./container":41}],41:[function(_dereq_,module,exports){
 (function() {
   var Container, Declaration, Node, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Node = require('./node');
+  Node = _dereq_('./node');
 
-  Declaration = require('./declaration');
+  Declaration = _dereq_('./declaration');
 
   Container = (function(_super) {
     __extends(Container, _super);
@@ -3478,15 +3515,15 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./declaration":41,"./node":44}],41:[function(require,module,exports){
+},{"./declaration":42,"./node":45}],42:[function(_dereq_,module,exports){
 (function() {
   var Declaration, Node, vendor,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Node = require('./node');
+  Node = _dereq_('./node');
 
-  vendor = require('./vendor');
+  vendor = _dereq_('./vendor');
 
   Declaration = (function(_super) {
     __extends(Declaration, _super);
@@ -3535,13 +3572,13 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./node":44,"./vendor":52}],42:[function(require,module,exports){
+},{"./node":45,"./vendor":53}],43:[function(_dereq_,module,exports){
 (function() {
   var Result, SourceMap, generateMap;
 
-  SourceMap = require('source-map');
+  SourceMap = _dereq_('source-map');
 
-  Result = require('./result');
+  Result = _dereq_('./result');
 
   generateMap = function(css, opts) {
     var builder, column, line, map, prev, result;
@@ -3602,7 +3639,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./result":48,"source-map":53}],43:[function(require,module,exports){
+},{"./result":49,"source-map":54}],44:[function(_dereq_,module,exports){
 (function() {
   var list;
 
@@ -3668,12 +3705,12 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 (function() {
   var Node, Raw, clone,
     __hasProp = {}.hasOwnProperty;
 
-  Raw = require('./raw');
+  Raw = _dereq_('./raw');
 
   clone = function(obj, parent) {
     var cloned, name, value;
@@ -3796,21 +3833,21 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./raw":47}],45:[function(require,module,exports){
+},{"./raw":48}],46:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Declaration, Parser, Raw, Root, Rule, SyntexError;
 
-  SyntexError = require('./syntax-error');
+  SyntexError = _dereq_('./syntax-error');
 
-  Declaration = require('./declaration');
+  Declaration = _dereq_('./declaration');
 
-  AtRule = require('./at-rule');
+  AtRule = _dereq_('./at-rule');
 
-  Root = require('./root');
+  Root = _dereq_('./root');
 
-  Rule = require('./rule');
+  Rule = _dereq_('./rule');
 
-  Raw = require('./raw');
+  Raw = _dereq_('./raw');
 
   Parser = (function() {
     function Parser(source, opts) {
@@ -4220,22 +4257,22 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./at-rule":39,"./declaration":41,"./raw":47,"./root":49,"./rule":50,"./syntax-error":51}],46:[function(require,module,exports){
+},{"./at-rule":40,"./declaration":42,"./raw":48,"./root":50,"./rule":51,"./syntax-error":52}],47:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Declaration, PostCSS, Result, Root, Rule, generateMap, postcss,
     __slice = [].slice;
 
-  generateMap = require('./generate-map');
+  generateMap = _dereq_('./generate-map');
 
-  Declaration = require('./declaration');
+  Declaration = _dereq_('./declaration');
 
-  AtRule = require('./at-rule');
+  AtRule = _dereq_('./at-rule');
 
-  Result = require('./result');
+  Result = _dereq_('./result');
 
-  Rule = require('./rule');
+  Rule = _dereq_('./rule');
 
-  Root = require('./root');
+  Root = _dereq_('./root');
 
   PostCSS = (function() {
     function PostCSS(processors) {
@@ -4278,7 +4315,7 @@ var substr = 'ab'.substr(-1) === 'b'
     return new PostCSS(processors);
   };
 
-  postcss.parse = require('./parse');
+  postcss.parse = _dereq_('./parse');
 
   postcss.decl = function(defaults) {
     return new Declaration(defaults);
@@ -4300,7 +4337,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./at-rule":39,"./declaration":41,"./generate-map":42,"./parse":45,"./result":48,"./root":49,"./rule":50}],47:[function(require,module,exports){
+},{"./at-rule":40,"./declaration":42,"./generate-map":43,"./parse":46,"./result":49,"./root":50,"./rule":51}],48:[function(_dereq_,module,exports){
 (function() {
   var Raw;
 
@@ -4340,7 +4377,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(_dereq_,module,exports){
 (function() {
   var Result;
 
@@ -4362,13 +4399,13 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(_dereq_,module,exports){
 (function() {
   var Container, Root,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Container = require('./container');
+  Container = _dereq_('./container');
 
   Root = (function(_super) {
     __extends(Root, _super);
@@ -4402,15 +4439,15 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":40}],50:[function(require,module,exports){
+},{"./container":41}],51:[function(_dereq_,module,exports){
 (function() {
   var Container, Declaration, Rule,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Container = require('./container');
+  Container = _dereq_('./container');
 
-  Declaration = require('./declaration');
+  Declaration = _dereq_('./declaration');
 
   Rule = (function(_super) {
     __extends(Rule, _super);
@@ -4436,7 +4473,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":40,"./declaration":41}],51:[function(require,module,exports){
+},{"./container":41,"./declaration":42}],52:[function(_dereq_,module,exports){
 (function() {
   var SyntaxError,
     __hasProp = {}.hasOwnProperty,
@@ -4465,7 +4502,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(_dereq_,module,exports){
 (function() {
   var vendor;
 
@@ -4494,17 +4531,17 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(_dereq_,module,exports){
 /*
  * Copyright 2009-2011 Mozilla Foundation and contributors
  * Licensed under the New BSD license. See LICENSE.txt or:
  * http://opensource.org/licenses/BSD-3-Clause
  */
-exports.SourceMapGenerator = require('./source-map/source-map-generator').SourceMapGenerator;
-exports.SourceMapConsumer = require('./source-map/source-map-consumer').SourceMapConsumer;
-exports.SourceNode = require('./source-map/source-node').SourceNode;
+exports.SourceMapGenerator = _dereq_('./source-map/source-map-generator').SourceMapGenerator;
+exports.SourceMapConsumer = _dereq_('./source-map/source-map-consumer').SourceMapConsumer;
+exports.SourceNode = _dereq_('./source-map/source-node').SourceNode;
 
-},{"./source-map/source-map-consumer":58,"./source-map/source-map-generator":59,"./source-map/source-node":60}],54:[function(require,module,exports){
+},{"./source-map/source-map-consumer":59,"./source-map/source-map-generator":60,"./source-map/source-node":61}],55:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4512,11 +4549,11 @@ exports.SourceNode = require('./source-map/source-node').SourceNode;
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
-  var util = require('./util');
+  var util = _dereq_('./util');
 
   /**
    * A data structure which is a combination of an array and a set. Adding a new
@@ -4603,7 +4640,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./util":61,"amdefine":62}],55:[function(require,module,exports){
+},{"./util":62,"amdefine":63}],56:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4641,11 +4678,11 @@ define(function (require, exports, module) {
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
-  var base64 = require('./base64');
+  var base64 = _dereq_('./base64');
 
   // A single base 64 digit can contain 6 bits of data. For the base 64 variable
   // length quantities we use in the source map spec, the first bit is the sign,
@@ -4749,7 +4786,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./base64":56,"amdefine":62}],56:[function(require,module,exports){
+},{"./base64":57,"amdefine":63}],57:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4757,9 +4794,9 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
   var charToIntMap = {};
   var intToCharMap = {};
@@ -4793,7 +4830,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":62}],57:[function(require,module,exports){
+},{"amdefine":63}],58:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4801,9 +4838,9 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
   /**
    * Recursive implementation of binary search.
@@ -4876,7 +4913,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":62}],58:[function(require,module,exports){
+},{"amdefine":63}],59:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4884,14 +4921,14 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
-  var util = require('./util');
-  var binarySearch = require('./binary-search');
-  var ArraySet = require('./array-set').ArraySet;
-  var base64VLQ = require('./base64-vlq');
+  var util = _dereq_('./util');
+  var binarySearch = _dereq_('./binary-search');
+  var ArraySet = _dereq_('./array-set').ArraySet;
+  var base64VLQ = _dereq_('./base64-vlq');
 
   /**
    * A SourceMapConsumer instance represents a parsed source map which we can
@@ -5355,7 +5392,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":54,"./base64-vlq":55,"./binary-search":57,"./util":61,"amdefine":62}],59:[function(require,module,exports){
+},{"./array-set":55,"./base64-vlq":56,"./binary-search":58,"./util":62,"amdefine":63}],60:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5363,13 +5400,13 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
-  var base64VLQ = require('./base64-vlq');
-  var util = require('./util');
-  var ArraySet = require('./array-set').ArraySet;
+  var base64VLQ = _dereq_('./base64-vlq');
+  var util = _dereq_('./util');
+  var ArraySet = _dereq_('./array-set').ArraySet;
 
   /**
    * An instance of the SourceMapGenerator represents a source map which is
@@ -5737,7 +5774,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":54,"./base64-vlq":55,"./util":61,"amdefine":62}],60:[function(require,module,exports){
+},{"./array-set":55,"./base64-vlq":56,"./util":62,"amdefine":63}],61:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5745,12 +5782,12 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
-  var SourceMapGenerator = require('./source-map-generator').SourceMapGenerator;
-  var util = require('./util');
+  var SourceMapGenerator = _dereq_('./source-map-generator').SourceMapGenerator;
+  var util = _dereq_('./util');
 
   /**
    * SourceNodes provide a way to abstract over interpolating/concatenating
@@ -6110,7 +6147,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./source-map-generator":59,"./util":61,"amdefine":62}],61:[function(require,module,exports){
+},{"./source-map-generator":60,"./util":62,"amdefine":63}],62:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6118,9 +6155,9 @@ define(function (require, exports, module) {
  * http://opensource.org/licenses/BSD-3-Clause
  */
 if (typeof define !== 'function') {
-    var define = require('amdefine')(module, require);
+    var define = _dereq_('amdefine')(module, _dereq_);
 }
-define(function (require, exports, module) {
+define(function (_dereq_, exports, module) {
 
   /**
    * This is a helper function for getting values from parameter/options
@@ -6317,8 +6354,8 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":62}],62:[function(require,module,exports){
-var process=require("__browserify_process"),__filename="/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js";/** vim: et:ts=4:sw=4:sts=4
+},{"amdefine":63}],63:[function(_dereq_,module,exports){
+(function (process,__filename){/** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/amdefine for details
@@ -6343,7 +6380,7 @@ function amdefine(module, requireFn) {
     var defineCache = {},
         loaderCache = {},
         alreadyCalled = false,
-        path = require('path'),
+        path = _dereq_('path'),
         makeRequire, stringRequire;
 
     /**
@@ -6617,7 +6654,7 @@ function amdefine(module, requireFn) {
 }
 
 module.exports = amdefine;
-
-},{"__browserify_process":37,"path":38}]},{},[3])
+}).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js")
+},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38,"path":39}]},{},[3])
 (3)
 });
