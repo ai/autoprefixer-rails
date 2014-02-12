@@ -20,11 +20,6 @@ module AutoprefixerRails
     @cache ||= { }
     @cache[browsers] ||= Processor.new(browsers)
   end
-
-  # Deprecated method. Use `process` instead.
-  def self.compile(css, browsers = nil)
-    processor(browsers).compile(css)
-  end
 end
 
 require_relative 'autoprefixer-rails/result'

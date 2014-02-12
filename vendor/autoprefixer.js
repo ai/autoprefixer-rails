@@ -413,25 +413,6 @@
       return this.processor().process(str, options);
     };
 
-    Autoprefixer.prototype.compile = function(str, options) {
-      var fixed, name, value;
-      if (options == null) {
-        options = {};
-      }
-      fixed = {};
-      for (name in options) {
-        value = options[name];
-        if (name === 'file') {
-          name = 'from';
-        }
-        fixed[name] = value;
-      }
-      if (typeof console !== "undefined" && console !== null) {
-        console.warn('autoprefixer: replace compile() to process(). ' + 'Method compile() is deprecated and will be removed in 1.1.');
-      }
-      return this.process(str, fixed).css;
-    };
-
     Autoprefixer.prototype.postcss = function(css) {
       this.prefixes.processor.remove(css);
       return this.prefixes.processor.add(css);

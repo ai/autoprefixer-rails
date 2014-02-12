@@ -29,13 +29,6 @@ module AutoprefixerRails
       @processor ||= ExecJS.compile(build_js)
     end
 
-    # Deprecated method. Use `process` instead.
-    def compile(css)
-      warn 'autoprefixer-rails: Replace compile() to process(). ' +
-           'Method compile() is deprecated and will be removed in 1.1.'
-      processor.call('process', css)['css']
-    end
-
     private
 
     # Cache autoprefixer.js content
