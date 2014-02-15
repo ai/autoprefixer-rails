@@ -4,8 +4,10 @@ require 'execjs'
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
-    def initialize(browsers=nil)
+    def initialize(browsers = nil, opts = {})
       @browsers = browsers || []
+      @options  = opts
+      @options[:cascade] = true unless @options.has_key? :cascade
     end
 
     # Process `css` and return result.
@@ -53,7 +55,8 @@ module AutoprefixerRails
         "var processor = autoprefixer;"
       else
         browsers = @browsers.map(&:to_s).join("', '")
-        "var processor = autoprefixer('#{browsers}');"
+        options  = @options.map { |k, v| "#{k}: #{v.inspect}"}.join(',')
+        "var processor = autoprefixer('#{browsers}', { #{options} });"
       end
     end
 

@@ -9,7 +9,9 @@ describe CssController, type: :controller do
   it "integrates with Rails and Sass" do
     get :test, file: 'sass'
     response.should be_success
-    response.body.should == "a{-webkit-transition:all 1s;transition:all 1s}\n"
+    response.body.should == "a {\n" +
+                            "  -webkit-transition: all 1s;\n" +
+                            "  transition: all 1s; }\n"
   end
 end
 

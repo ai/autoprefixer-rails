@@ -32,7 +32,7 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 ```css
 :-webkit-full-screen a {
     -webkit-transition: -webkit-transform 1s;
-    transition: transform 1s
+            transition: transform 1s
 }
 :-moz-full-screen a {
     transition: transform 1s
@@ -42,7 +42,7 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 }
 :fullscreen a {
     -webkit-transition: -webkit-transform 1s;
-    transition: transform 1s
+            transition: transform 1s
 }
 ```
 
@@ -99,7 +99,23 @@ You can specify browsers by `browsers` option:
 AutoprefixerRails.process(css, from: 'a.css', browsers: ['> 1%', 'ie 10']).css
 ```
 
-### Source Map
+## Visual Cascade
+
+By default, Autoprefixer will change CSS indentation to create nice visual
+cascade of prefixes.
+
+```css
+a {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box
+}
+```
+
+You can disable it by `cascade: false` in `config/autoprefixer.yml`
+or in `process()` options.
+
+## Source Map
 
 Autoprefixer will generate source map, if you set `map` option to `true` in
 `process` method.

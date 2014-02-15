@@ -12,12 +12,24 @@ describe AutoprefixerRails do
 
   it "process CSS for selected browsers" do
     result = AutoprefixerRails.process(@css, browsers: ['chrome 25'])
-    result.css.should == PREFIXED
+    result.css.should == "a {\n" +
+                         "    -webkit-transition: all 1s;\n" +
+                         "            transition: all 1s\n" +
+                         "}\n"
   end
 
   it "generates source map" do
     result = AutoprefixerRails.process(@css, map: true)
     result.map.should be_a(String)
+  end
+
+  it "disable visual cascade on request" do
+    css    = "a {\n  transition: all 1s\n  }"
+    result = AutoprefixerRails.process(@css, cascade: false)
+    result.css.should == "a {\n" +
+                         "    -webkit-transition: all 1s;\n" +
+                         "    transition: all 1s\n" +
+                         "}\n"
   end
 
   it "uses file name in syntax errors", not_jruby: true do
@@ -40,7 +52,10 @@ describe AutoprefixerRails do
     end
 
     it "integrates with Sprockets" do
-      @assets['test.css'].to_s.should == PREFIXED
+      @assets['test.css'].to_s.should == "a {\n" +
+                                         "    -webkit-transition: all 1s;\n" +
+                                         "            transition: all 1s\n" +
+                                         "}\n"
     end
 
     it "shows file name from Sprockets", not_jruby: true do
