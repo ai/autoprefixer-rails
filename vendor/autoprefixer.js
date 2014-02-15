@@ -365,7 +365,7 @@
 
 },{}],3:[function(_dereq_,module,exports){
 (function() {
-  var Autoprefixer, Browsers, Prefixes, autoprefixer, infoCache, postcss,
+  var Autoprefixer, Browsers, Prefixes, autoprefixer, infoCache, isPlainObject, postcss,
     __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -377,19 +377,29 @@
 
   infoCache = null;
 
+  isPlainObject = function(obj) {
+    return Object.prototype.toString.apply(obj) === '[object Object]';
+  };
+
   autoprefixer = function() {
-    var browsers, prefixes, reqs;
+    var browsers, options, prefixes, reqs;
     reqs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    if (reqs.length === 1 && reqs[0] instanceof Array) {
-      reqs = reqs[0];
+    if (reqs.length === 1 && isPlainObject(reqs[0])) {
+      options = reqs[0];
+      reqs = void 0;
     } else if (reqs.length === 0 || (reqs.length === 1 && (reqs[0] == null))) {
       reqs = void 0;
+    } else if (reqs.length <= 2 && (reqs[0] instanceof Array || (reqs[0] == null))) {
+      options = reqs[1];
+      reqs = reqs[0];
+    } else if (typeof reqs[reqs.length - 1] === 'object') {
+      options = reqs.pop();
     }
     if (reqs == null) {
       reqs = autoprefixer["default"];
     }
     browsers = new Browsers(autoprefixer.data.browsers, reqs);
-    prefixes = new Prefixes(autoprefixer.data.prefixes, browsers);
+    prefixes = new Prefixes(autoprefixer.data.prefixes, browsers, options);
     return new Autoprefixer(prefixes, autoprefixer.data);
   };
 
@@ -399,9 +409,10 @@
   };
 
   Autoprefixer = (function() {
-    function Autoprefixer(prefixes, data) {
+    function Autoprefixer(prefixes, data, options) {
       this.prefixes = prefixes;
       this.data = data;
+      this.options = options != null ? options : {};
       this.postcss = __bind(this.postcss, this);
       this.browsers = this.prefixes.browsers.selected;
     }
@@ -463,7 +474,7 @@
 
 }).call(this);
 
-},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":29,"./prefixes":33,"postcss":47}],4:[function(_dereq_,module,exports){
+},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":29,"./prefixes":34,"postcss":51}],4:[function(_dereq_,module,exports){
 (function() {
   var Browsers, utils;
 
@@ -487,6 +498,13 @@
       })()).sort(function(a, b) {
         return b.length - a.length;
       });
+    };
+
+    Browsers.withPrefix = function(value) {
+      if (!this.prefixesRegexp) {
+        this.prefixesRegexp = RegExp("" + (this.prefixes().join('|')));
+      }
+      return this.prefixesRegexp.test(value);
     };
 
     function Browsers(data, requirements) {
@@ -655,9 +673,9 @@
 
 }).call(this);
 
-},{"../data/browsers":1,"./utils":36}],5:[function(_dereq_,module,exports){
+},{"../data/browsers":1,"./utils":37}],5:[function(_dereq_,module,exports){
 (function() {
-  var Browsers, Declaration, Prefixer, vendor,
+  var Browsers, Declaration, Prefixer, utils, vendor,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -666,6 +684,8 @@
   Browsers = _dereq_('./browsers');
 
   vendor = _dereq_('postcss/lib/vendor');
+
+  utils = _dereq_('./utils');
 
   Declaration = (function(_super) {
     __extends(Declaration, _super);
@@ -706,15 +726,69 @@
       return decl;
     };
 
-    Declaration.prototype.insert = function(decl, prefix) {
-      var cloned;
-      cloned = this.set(this.clone(decl), prefix);
-      if (cloned) {
-        return decl.parent.insertBefore(decl, cloned);
-      }
+    Declaration.prototype.needCascade = function(decl) {
+      return decl._autoprefixerCascade || (decl._autoprefixerCascade = !!this.all.options.cascade && decl.before.indexOf("\n") !== -1);
     };
 
-    Declaration.prototype.add = function(decl, prefix) {
+    Declaration.prototype.maxPrefixed = function(prefixes, decl) {
+      var max, prefix, _i, _len;
+      if (decl._autoprefixerMax) {
+        return decl._autoprefixerMax;
+      }
+      max = 0;
+      for (_i = 0, _len = prefixes.length; _i < _len; _i++) {
+        prefix = prefixes[_i];
+        prefix = utils.removeNote(prefix);
+        if (prefix.length > max) {
+          max = prefix.length;
+        }
+      }
+      return decl._autoprefixerMax = max;
+    };
+
+    Declaration.prototype.calcBefore = function(prefixes, decl, prefix) {
+      var before, diff, i, max, _i;
+      if (prefix == null) {
+        prefix = '';
+      }
+      before = decl.before;
+      max = this.maxPrefixed(prefixes, decl);
+      diff = max - utils.removeNote(prefix).length;
+      for (i = _i = 0; 0 <= diff ? _i < diff : _i > diff; i = 0 <= diff ? ++_i : --_i) {
+        before += ' ';
+      }
+      return before;
+    };
+
+    Declaration.prototype.restoreBefore = function(decl) {
+      var lines, min;
+      lines = decl.before.split("\n");
+      min = lines[lines.length - 1];
+      this.all.group(decl).up(function(prefixed) {
+        var array, last;
+        array = prefixed.before.split("\n");
+        last = array[array.length - 1];
+        if (last.length < min.length) {
+          return min = last;
+        }
+      });
+      lines[lines.length - 1] = min;
+      return decl.before = lines.join("\n");
+    };
+
+    Declaration.prototype.insert = function(decl, prefix, prefixes) {
+      var cloned;
+      cloned = this.set(this.clone(decl), prefix);
+      if (!cloned) {
+        return;
+      }
+      if (this.needCascade(decl)) {
+        cloned.before = this.calcBefore(prefixes, decl, prefix);
+      }
+      return decl.parent.insertBefore(decl, cloned);
+    };
+
+    Declaration.prototype.add = function(decl, prefix, prefixes) {
       var already, prefixed;
       prefixed = this.prefixed(decl.prop, prefix);
       already = this.all.group(decl).up(function(i) {
@@ -723,7 +797,19 @@
       if (already || this.otherPrefixes(decl.value, prefix)) {
         return;
       }
-      return this.insert(decl, prefix);
+      return this.insert(decl, prefix, prefixes);
+    };
+
+    Declaration.prototype.process = function(decl) {
+      var prefixes;
+      if (this.needCascade(decl)) {
+        this.restoreBefore(decl);
+        if (prefixes = Declaration.__super__.process.apply(this, arguments)) {
+          return decl.before = this.calcBefore(prefixes, decl);
+        }
+      } else {
+        return Declaration.__super__.process.apply(this, arguments);
+      }
     };
 
     Declaration.prototype.old = function(prop, prefix) {
@@ -738,7 +824,7 @@
 
 }).call(this);
 
-},{"./browsers":4,"./prefixer":32,"postcss/lib/vendor":53}],6:[function(_dereq_,module,exports){
+},{"./browsers":4,"./prefixer":33,"./utils":37,"postcss/lib/vendor":57}],6:[function(_dereq_,module,exports){
 (function() {
   var AlignContent, Declaration, flexSpec,
     __hasProp = {}.hasOwnProperty,
@@ -1073,7 +1159,7 @@
 
 }).call(this);
 
-},{"../old-value":31,"../value":37,"./flex-spec":19}],12:[function(_dereq_,module,exports){
+},{"../old-value":32,"../value":38,"./flex-spec":19}],12:[function(_dereq_,module,exports){
 (function() {
   var FillAvailable, OldValue, Value,
     __hasProp = {}.hasOwnProperty,
@@ -1116,7 +1202,7 @@
 
 }).call(this);
 
-},{"../old-value":31,"../value":37}],13:[function(_dereq_,module,exports){
+},{"../old-value":32,"../value":38}],13:[function(_dereq_,module,exports){
 (function() {
   var Declaration, Filter,
     __hasProp = {}.hasOwnProperty,
@@ -1164,17 +1250,17 @@
       return FlexBasis.__super__.constructor.apply(this, arguments);
     }
 
-    FlexBasis.names = ['flex-basis'];
+    FlexBasis.names = ['flex-basis', 'flex-preferred-size'];
 
     FlexBasis.prototype.normalize = function() {
-      return 'flex';
+      return 'flex-basis';
     };
 
     FlexBasis.prototype.prefixed = function(prop, prefix) {
       var spec, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
-        return prefix + 'flex';
+        return prefix + 'flex-preferred-size';
       } else {
         return FlexBasis.__super__.prefixed.apply(this, arguments);
       }
@@ -1183,11 +1269,7 @@
     FlexBasis.prototype.set = function(decl, prefix) {
       var spec, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === 2012) {
-        decl.prop = prefix + 'flex';
-        decl.value = '0 1 ' + decl.value;
-        return decl;
-      } else if (spec === 'final') {
+      if (spec === 2012 || spec === 'final') {
         return FlexBasis.__super__.set.apply(this, arguments);
       }
     };
@@ -1223,7 +1305,7 @@
       return 'flex-direction';
     };
 
-    FlexDirection.prototype.insert = function(decl, prefix) {
+    FlexDirection.prototype.insert = function(decl, prefix, prefixes) {
       var already, cloned, dir, orient, spec, value, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2009) {
@@ -1239,10 +1321,16 @@
         cloned = this.clone(decl);
         cloned.prop = prefix + 'box-orient';
         cloned.value = orient;
+        if (this.needCascade(decl)) {
+          cloned.before = this.calcBefore(prefixes, decl, prefix);
+        }
         decl.parent.insertBefore(decl, cloned);
         cloned = this.clone(decl);
         cloned.prop = prefix + 'box-direction';
         cloned.value = dir;
+        if (this.needCascade(decl)) {
+          cloned.before = this.calcBefore(prefixes, decl, prefix);
+        }
         return decl.parent.insertBefore(decl, cloned);
       } else {
         return FlexDirection.__super__.insert.apply(this, arguments);
@@ -1321,7 +1409,7 @@
       return Flex.__super__.constructor.apply(this, arguments);
     }
 
-    Flex.names = ['flex-grow'];
+    Flex.names = ['flex-grow', 'flex-positive'];
 
     Flex.prototype.normalize = function() {
       return 'flex';
@@ -1333,7 +1421,7 @@
       if (spec === 2009) {
         return prefix + 'box-flex';
       } else if (spec === 2012) {
-        return prefix + 'flex';
+        return prefix + 'flex-positive';
       } else {
         return Flex.__super__.prefixed.apply(this, arguments);
       }
@@ -1364,17 +1452,17 @@
       return FlexShrink.__super__.constructor.apply(this, arguments);
     }
 
-    FlexShrink.names = ['flex-shrink'];
+    FlexShrink.names = ['flex-shrink', 'flex-negative'];
 
     FlexShrink.prototype.normalize = function() {
-      return 'flex';
+      return 'flex-shrink';
     };
 
     FlexShrink.prototype.prefixed = function(prop, prefix) {
       var spec, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
       if (spec === 2012) {
-        return prefix + 'flex';
+        return prefix + 'flex-negative';
       } else {
         return FlexShrink.__super__.prefixed.apply(this, arguments);
       }
@@ -1383,11 +1471,7 @@
     FlexShrink.prototype.set = function(decl, prefix) {
       var spec, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === 2012) {
-        decl.prop = prefix + 'flex';
-        decl.value = '0 ' + decl.value;
-        return decl;
-      } else if (spec === 'final') {
+      if (spec === 2012 || spec === 'final') {
         return FlexShrink.__super__.set.apply(this, arguments);
       }
     };
@@ -1477,7 +1561,7 @@
       }
     };
 
-    Flex.prototype.normalize = function(prop) {
+    Flex.prototype.normalize = function() {
       return 'flex';
     };
 
@@ -1535,7 +1619,7 @@
 
 }).call(this);
 
-},{"../selector":35}],23:[function(_dereq_,module,exports){
+},{"../selector":36}],23:[function(_dereq_,module,exports){
 (function() {
   var Gradient, OldValue, Value, isDirection, list, utils,
     __hasProp = {}.hasOwnProperty,
@@ -1750,7 +1834,7 @@
 
 }).call(this);
 
-},{"../old-value":31,"../utils":36,"../value":37,"postcss/lib/list":44}],24:[function(_dereq_,module,exports){
+},{"../old-value":32,"../utils":37,"../value":38,"postcss/lib/list":47}],24:[function(_dereq_,module,exports){
 (function() {
   var Declaration, JustifyContent, flexSpec,
     __hasProp = {}.hasOwnProperty,
@@ -1885,6 +1969,10 @@
 
     Placeholder.names = ['::placeholder'];
 
+    Placeholder.prototype.possible = function() {
+      return Placeholder.__super__.possible.apply(this, arguments).concat('-moz- old');
+    };
+
     Placeholder.prototype.prefixed = function(prefix) {
       if ('-webkit-' === prefix) {
         return '::-webkit-input-placeholder';
@@ -1905,7 +1993,7 @@
 
 }).call(this);
 
-},{"../selector":35}],27:[function(_dereq_,module,exports){
+},{"../selector":36}],27:[function(_dereq_,module,exports){
 (function() {
   var Transform, Value,
     __hasProp = {}.hasOwnProperty,
@@ -1938,7 +2026,7 @@
 
 }).call(this);
 
-},{"../value":37}],28:[function(_dereq_,module,exports){
+},{"../value":38}],28:[function(_dereq_,module,exports){
 (function() {
   var OldValue, Transition, Value,
     __hasProp = {}.hasOwnProperty,
@@ -1977,7 +2065,7 @@
 
 }).call(this);
 
-},{"../old-value":31,"../value":37}],29:[function(_dereq_,module,exports){
+},{"../old-value":32,"../value":38}],29:[function(_dereq_,module,exports){
 (function() {
   var capitalize, names, prefix;
 
@@ -2135,7 +2223,77 @@
 
 }).call(this);
 
-},{"./prefixer":32}],31:[function(_dereq_,module,exports){
+},{"./prefixer":33}],31:[function(_dereq_,module,exports){
+(function() {
+  var OldSelector;
+
+  OldSelector = (function() {
+    function OldSelector(selector, prefix) {
+      var _i, _len, _ref;
+      this.prefix = prefix;
+      this.prefixed = selector.prefixed(this.prefix);
+      this.regexp = selector.regexp(this.prefix);
+      this.prefixeds = [];
+      _ref = selector.possible();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        prefix = _ref[_i];
+        this.prefixeds.push([selector.prefixed(prefix), selector.regexp(prefix)]);
+      }
+      this.unprefixed = selector.name;
+      this.nameRegexp = selector.regexp();
+    }
+
+    OldSelector.prototype.isHack = function(rule) {
+      var before, index, regexp, rules, some, string, _i, _len, _ref, _ref1;
+      index = rule.parent.index(rule) + 1;
+      rules = rule.parent.rules;
+      while (index < rules.length) {
+        before = rules[index].selector;
+        if (!before) {
+          return true;
+        }
+        if (before.indexOf(this.unprefixed) !== -1 && before.match(this.nameRegexp)) {
+          return false;
+        }
+        some = false;
+        _ref = this.prefixeds;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          _ref1 = _ref[_i], string = _ref1[0], regexp = _ref1[1];
+          if (before.indexOf(string) !== -1 && before.match(regexp)) {
+            some = true;
+            break;
+          }
+        }
+        if (!some) {
+          return true;
+        }
+        index += 1;
+      }
+      return true;
+    };
+
+    OldSelector.prototype.check = function(rule) {
+      if (rule.selector.indexOf(this.prefixed) === -1) {
+        return false;
+      }
+      if (!rule.selector.match(this.regexp)) {
+        return false;
+      }
+      if (this.isHack(rule)) {
+        return false;
+      }
+      return true;
+    };
+
+    return OldSelector;
+
+  })();
+
+  module.exports = OldSelector;
+
+}).call(this);
+
+},{}],32:[function(_dereq_,module,exports){
 (function() {
   var OldValue, utils;
 
@@ -2166,7 +2324,7 @@
 
 }).call(this);
 
-},{"./utils":36}],32:[function(_dereq_,module,exports){
+},{"./utils":37}],33:[function(_dereq_,module,exports){
 (function() {
   var Browsers, Prefixer, utils, vendor;
 
@@ -2223,21 +2381,25 @@
     };
 
     Prefixer.prototype.process = function(node) {
-      var parent, prefix, _i, _len, _ref, _results;
+      var parent, prefix, prefixes, _i, _j, _len, _len1, _ref;
       if (!this.check(node)) {
         return;
       }
       parent = this.parentPrefix(node);
+      prefixes = [];
       _ref = this.prefixes;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         prefix = _ref[_i];
         if (parent && parent !== utils.removeNote(prefix)) {
           continue;
         }
-        _results.push(this.add(node, prefix));
+        prefixes.push(prefix);
       }
-      return _results;
+      for (_j = 0, _len1 = prefixes.length; _j < _len1; _j++) {
+        prefix = prefixes[_j];
+        this.add(node, prefix, prefixes);
+      }
+      return prefixes;
     };
 
     Prefixer.prototype.clone = function(node, overrides) {
@@ -2252,19 +2414,21 @@
 
 }).call(this);
 
-},{"./browsers":4,"./utils":36,"postcss/lib/vendor":53}],33:[function(_dereq_,module,exports){
+},{"./browsers":4,"./utils":37,"postcss/lib/vendor":57}],34:[function(_dereq_,module,exports){
 (function() {
-  var Declaration, Keyframes, Prefixes, Processor, Selector, Value, declsCache, utils, vendor;
+  var Browsers, Declaration, Keyframes, Prefixes, Processor, Selector, Value, declsCache, utils, vendor;
 
   utils = _dereq_('./utils');
 
   vendor = _dereq_('postcss/lib/vendor');
 
-  Processor = _dereq_('./processor');
-
   Declaration = _dereq_('./declaration');
 
+  Processor = _dereq_('./processor');
+
   Keyframes = _dereq_('./keyframes');
+
+  Browsers = _dereq_('./browsers');
 
   Selector = _dereq_('./selector');
 
@@ -2317,10 +2481,11 @@
   declsCache = {};
 
   Prefixes = (function() {
-    function Prefixes(data, browsers) {
+    function Prefixes(data, browsers, options) {
       var _ref;
       this.data = data;
       this.browsers = browsers;
+      this.options = options != null ? options : {};
       _ref = this.preprocess(this.select(this.data)), this.add = _ref[0], this.remove = _ref[1];
       this.processor = new Processor(this);
     }
@@ -2447,7 +2612,7 @@
           selector = Selector.load(name, prefixes);
           for (_j = 0, _len1 = prefixes.length; _j < _len1; _j++) {
             prefix = prefixes[_j];
-            remove.selectors.push(selector.checker(prefix));
+            remove.selectors.push(selector.old(prefix));
           }
         } else if (name[0] === '@') {
           for (_k = 0, _len2 = prefixes.length; _k < _len2; _k++) {
@@ -2541,10 +2706,22 @@
           index += step;
           while (index >= 0 && index < length) {
             other = rule.decls[index];
-            if (_this.unprefixed(other.prop) !== unprefixed) {
-              break;
-            } else if (callback(other) === true) {
-              return true;
+            if (other.type === 'decl') {
+              if (step === -1 && other.prop === unprefixed) {
+                if (!Browsers.withPrefix(other.value)) {
+                  break;
+                }
+              }
+              if (_this.unprefixed(other.prop) !== unprefixed) {
+                break;
+              } else if (callback(other) === true) {
+                return true;
+              }
+              if (step === +1 && other.prop === unprefixed) {
+                if (!Browsers.withPrefix(other.value)) {
+                  break;
+                }
+              }
             }
             index += step;
           }
@@ -2569,7 +2746,7 @@
 
 }).call(this);
 
-},{"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/border-image":9,"./hacks/border-radius":10,"./hacks/display-flex":11,"./hacks/fill-available":12,"./hacks/filter":13,"./hacks/flex":21,"./hacks/flex-basis":14,"./hacks/flex-direction":15,"./hacks/flex-flow":16,"./hacks/flex-grow":17,"./hacks/flex-shrink":18,"./hacks/flex-wrap":20,"./hacks/fullscreen":22,"./hacks/gradient":23,"./hacks/justify-content":24,"./hacks/order":25,"./hacks/placeholder":26,"./hacks/transform":27,"./hacks/transition":28,"./keyframes":30,"./processor":34,"./selector":35,"./utils":36,"./value":37,"postcss/lib/vendor":53}],34:[function(_dereq_,module,exports){
+},{"./browsers":4,"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/border-image":9,"./hacks/border-radius":10,"./hacks/display-flex":11,"./hacks/fill-available":12,"./hacks/filter":13,"./hacks/flex":21,"./hacks/flex-basis":14,"./hacks/flex-direction":15,"./hacks/flex-flow":16,"./hacks/flex-grow":17,"./hacks/flex-shrink":18,"./hacks/flex-wrap":20,"./hacks/fullscreen":22,"./hacks/gradient":23,"./hacks/justify-content":24,"./hacks/order":25,"./hacks/placeholder":26,"./hacks/transform":27,"./hacks/transition":28,"./keyframes":30,"./processor":35,"./selector":36,"./utils":37,"./value":38,"postcss/lib/vendor":57}],35:[function(_dereq_,module,exports){
 (function() {
   var Processor, Value, utils, vendor;
 
@@ -2636,7 +2813,7 @@
         checker = _ref[_i];
         css.eachRule((function(_this) {
           return function(rule, i) {
-            if (checker(rule)) {
+            if (checker.check(rule)) {
               return rule.parent.remove(i);
             }
           };
@@ -2676,13 +2853,17 @@
 
 }).call(this);
 
-},{"./utils":36,"./value":37,"postcss/lib/vendor":53}],35:[function(_dereq_,module,exports){
+},{"./utils":37,"./value":38,"postcss/lib/vendor":57}],36:[function(_dereq_,module,exports){
 (function() {
-  var Prefixer, Selector, utils,
+  var Browsers, OldSelector, Prefixer, Selector, utils,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  OldSelector = _dereq_('./old-selector');
+
   Prefixer = _dereq_('./prefixer');
+
+  Browsers = _dereq_('./browsers');
 
   utils = _dereq_('./utils');
 
@@ -2696,22 +2877,12 @@
       this.regexpCache = {};
     }
 
-    Selector.prototype.check = function(rule, prefix) {
-      var name;
-      name = prefix ? this.prefixed(prefix) : this.name;
-      if (rule.selector.indexOf(name) !== -1) {
-        return !!rule.selector.match(this.regexp(prefix));
+    Selector.prototype.check = function(rule) {
+      if (rule.selector.indexOf(this.name) !== -1) {
+        return !!rule.selector.match(this.regexp());
       } else {
         return false;
       }
-    };
-
-    Selector.prototype.checker = function(prefix) {
-      return (function(_this) {
-        return function(rule) {
-          return _this.check(rule, prefix);
-        };
-      })(this);
     };
 
     Selector.prototype.prefixed = function(prefix) {
@@ -2724,7 +2895,53 @@
         return this.regexpCache[prefix];
       }
       name = prefix ? this.prefixed(prefix) : this.name;
-      return this.regexpCache = RegExp("(^|[^:\"'=])" + (utils.escapeRegexp(name)), "gi");
+      return this.regexpCache[prefix] = RegExp("(^|[^:\"'=])" + (utils.escapeRegexp(name)), "gi");
+    };
+
+    Selector.prototype.possible = function() {
+      return Browsers.prefixes();
+    };
+
+    Selector.prototype.prefixeds = function(rule) {
+      var prefix, prefixeds, _i, _len, _ref;
+      if (rule._autoprefixerPrefixeds) {
+        return rule._autoprefixerPrefixeds;
+      }
+      prefixeds = {};
+      _ref = this.possible();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        prefix = _ref[_i];
+        prefixeds[prefix] = this.replace(rule.selector, prefix);
+      }
+      return rule._autoprefixerPrefixeds = prefixeds;
+    };
+
+    Selector.prototype.already = function(rule, prefixeds, prefix) {
+      var before, index, key, prefixed, some;
+      index = rule.parent.index(rule) - 1;
+      while (index >= 0) {
+        before = rule.parent.rules[index];
+        if (before.type !== 'rule') {
+          return false;
+        }
+        some = false;
+        for (key in prefixeds) {
+          prefixed = prefixeds[key];
+          if (before.selector === prefixed) {
+            if (prefix === key) {
+              return true;
+            } else {
+              some = true;
+              break;
+            }
+          }
+        }
+        if (!some) {
+          return false;
+        }
+        index -= 1;
+      }
+      return false;
     };
 
     Selector.prototype.replace = function(selector, prefix) {
@@ -2732,17 +2949,19 @@
     };
 
     Selector.prototype.add = function(rule, prefix) {
-      var cloned, prefixed;
-      prefixed = this.replace(rule.selector, prefix);
-      if (rule.parent.some(function(i) {
-        return i.selector === prefixed;
-      })) {
+      var cloned, prefixeds;
+      prefixeds = this.prefixeds(rule);
+      if (this.already(rule, prefixeds, prefix)) {
         return;
       }
       cloned = this.clone(rule, {
-        selector: prefixed
+        selector: prefixeds[prefix]
       });
       return rule.parent.insertBefore(rule, cloned);
+    };
+
+    Selector.prototype.old = function(prefix) {
+      return new OldSelector(this, prefix);
     };
 
     return Selector;
@@ -2753,7 +2972,7 @@
 
 }).call(this);
 
-},{"./prefixer":32,"./utils":36}],36:[function(_dereq_,module,exports){
+},{"./browsers":4,"./old-selector":31,"./prefixer":33,"./utils":37}],37:[function(_dereq_,module,exports){
 (function() {
   module.exports = {
     error: function(text) {
@@ -2796,7 +3015,7 @@
 
 }).call(this);
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 (function() {
   var OldValue, Prefixer, Value, utils, vendor,
     __hasProp = {}.hasOwnProperty,
@@ -2895,7 +3114,9 @@
 
 }).call(this);
 
-},{"./old-value":31,"./prefixer":32,"./utils":36,"postcss/lib/vendor":53}],38:[function(_dereq_,module,exports){
+},{"./old-value":32,"./prefixer":33,"./utils":37,"postcss/lib/vendor":57}],39:[function(_dereq_,module,exports){
+
+},{}],40:[function(_dereq_,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2950,7 +3171,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],41:[function(_dereq_,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -3178,7 +3399,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(_dereq_,module,exports){
+},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],42:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Container, name, _fn, _i, _len, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -3194,8 +3415,25 @@ var substr = 'ab'.substr(-1) === 'b'
       AtRule.__super__.constructor.apply(this, arguments);
     }
 
+    AtRule.prototype.styleType = function() {
+      return this.type + ((this.rules != null) || (this.decls != null) ? '-body' : '-bodiless');
+    };
+
+    AtRule.prototype.defaultStyle = function(type) {
+      if (type === 'atrule-body') {
+        return {
+          between: ' ',
+          after: this.defaultAfter()
+        };
+      } else {
+        return {
+          between: ''
+        };
+      }
+    };
+
     AtRule.prototype.addMixin = function(type) {
-      var mixin, name, value, _ref;
+      var container, detector, mixin, name, value, _ref;
       mixin = type === 'rules' ? Container.WithRules : Container.WithDecls;
       if (!mixin) {
         return;
@@ -3206,6 +3444,11 @@ var substr = 'ab'.substr(-1) === 'b'
         if (name === 'constructor') {
           continue;
         }
+        container = Container.prototype[name] === value;
+        detector = name === 'append' || name === 'prepend';
+        if (container && !detector) {
+          continue;
+        }
         this[name] = value;
       }
       return mixin.apply(this);
@@ -3214,21 +3457,19 @@ var substr = 'ab'.substr(-1) === 'b'
     AtRule.raw('params');
 
     AtRule.prototype.stringify = function(builder, last) {
-      var params, semicolon;
-      if (this.rules || this.decls) {
-        params = this._params.stringify({
-          before: ' ',
-          after: ' '
-        });
-        return this.stringifyBlock(builder, '@' + this.name + params + '{');
+      var name, params, semicolon, style;
+      style = this.style();
+      name = '@' + this.name;
+      params = this._params ? this._params.toString() : '';
+      name += this.afterName != null ? this.afterName : params ? ' ' : '';
+      if ((this.rules != null) || (this.decls != null)) {
+        return this.stringifyBlock(builder, name + params + style.between + '{');
       } else {
         if (this.before) {
           builder(this.before);
         }
         semicolon = !last || this.semicolon ? ';' : '';
-        return builder('@' + this.name + this._params.stringify({
-          before: ' '
-        }) + semicolon, this);
+        return builder(name + params + style.between + semicolon, this);
       }
     };
 
@@ -3239,7 +3480,9 @@ var substr = 'ab'.substr(-1) === 'b'
   _ref = ['append', 'prepend'];
   _fn = function(name) {
     return AtRule.prototype[name] = function(child) {
-      this.addMixin(child.type + 's');
+      var mixin;
+      mixin = child.type === 'decl' ? 'decls' : 'rules';
+      this.addMixin(mixin);
       return this[name](child);
     };
   };
@@ -3252,9 +3495,49 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":41}],41:[function(_dereq_,module,exports){
+},{"./container":44}],43:[function(_dereq_,module,exports){
 (function() {
-  var Container, Declaration, Node, _ref,
+  var Comment, Node,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Node = _dereq_('./node');
+
+  Comment = (function(_super) {
+    __extends(Comment, _super);
+
+    function Comment() {
+      this.type = 'comment';
+      Comment.__super__.constructor.apply(this, arguments);
+    }
+
+    Comment.prototype.defaultStyle = function() {
+      return {
+        left: ' ',
+        right: ' '
+      };
+    };
+
+    Comment.prototype.stringify = function(builder) {
+      var style;
+      if (this.before) {
+        builder(this.before);
+      }
+      style = this.style();
+      return builder("/*" + (style.left + this.text + style.right) + "*/", this);
+    };
+
+    return Comment;
+
+  })(Node);
+
+  module.exports = Comment;
+
+}).call(this);
+
+},{"./node":49}],44:[function(_dereq_,module,exports){
+(function() {
+  var Container, Declaration, Node,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -3266,13 +3549,11 @@ var substr = 'ab'.substr(-1) === 'b'
     __extends(Container, _super);
 
     function Container() {
-      _ref = Container.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Container.__super__.constructor.apply(this, arguments);
     }
 
     Container.prototype.stringifyContent = function(builder) {
-      var last,
-        _this = this;
+      var last;
       if (!this.rules && !this.decls) {
         return;
       }
@@ -3283,20 +3564,35 @@ var substr = 'ab'.substr(-1) === 'b'
         });
       } else if (this.decls) {
         last = this.decls.length - 1;
-        return this.decls.map(function(decl, i) {
-          return decl.stringify(builder, last !== i || _this.semicolon);
-        });
+        return this.decls.map((function(_this) {
+          return function(decl, i) {
+            return decl.stringify(builder, last !== i || _this.semicolon);
+          };
+        })(this));
+      }
+    };
+
+    Container.prototype.defaultAfter = function() {
+      var _ref;
+      if (this.list.length === 0) {
+        return '';
+      } else if (((_ref = this.list[0].before) != null ? _ref.indexOf("\n") : void 0) === -1) {
+        return this.list[0].before;
+      } else {
+        return "\n";
       }
     };
 
     Container.prototype.stringifyBlock = function(builder, start) {
+      var style;
+      style = this.style();
       if (this.before) {
         builder(this.before);
       }
       builder(start, this, 'start');
       this.stringifyContent(builder);
-      if (this.after) {
-        builder(this.after);
+      if (style.after) {
+        builder(style.after);
       }
       return builder('}', this, 'end');
     };
@@ -3308,23 +3604,58 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Container.prototype.each = function(callback) {
-      var id, index, list;
+      var id, index, list, result;
       this.lastEach || (this.lastEach = 0);
       this.indexes || (this.indexes = {});
       this.lastEach += 1;
       id = this.lastEach;
       this.indexes[id] = 0;
       list = this.list;
+      if (!list) {
+        return;
+      }
       while (this.indexes[id] < list.length) {
         index = this.indexes[id];
-        callback(list[index], index);
+        result = callback(list[index], index);
+        if (result === false) {
+          break;
+        }
         this.indexes[id] += 1;
       }
       delete this.indexes[id];
-      return this;
+      if (result === false) {
+        return false;
+      }
+    };
+
+    Container.prototype.eachInside = function(callback) {
+      return this.each((function(_this) {
+        return function(child, i) {
+          var result;
+          result = callback(child, i);
+          if (result !== false && child.eachInside) {
+            result = child.eachInside(callback);
+          }
+          if (result === false) {
+            return result;
+          }
+        };
+      })(this));
     };
 
     Container.prototype.eachDecl = function(callback) {};
+
+    Container.prototype.eachComment = function(callback) {
+      return this.eachInside((function(_this) {
+        return function(child, i) {
+          var result;
+          result = child.type === 'comment' ? callback(child, i) : void 0;
+          if (result === false) {
+            return result;
+          }
+        };
+      })(this));
+    };
 
     Container.prototype.append = function(child) {
       child = this.normalize(child, this.list[this.list.length - 1]);
@@ -3333,25 +3664,25 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Container.prototype.prepend = function(child) {
-      var id, index, _ref1;
+      var id, index, _ref;
       child = this.normalize(child, this.list[0], 'prepend');
       this.list.unshift(child);
-      _ref1 = this.indexes;
-      for (id in _ref1) {
-        index = _ref1[id];
+      _ref = this.indexes;
+      for (id in _ref) {
+        index = _ref[id];
         this.indexes[id] = index + 1;
       }
       return this;
     };
 
     Container.prototype.insertBefore = function(exist, add) {
-      var id, index, _ref1;
+      var id, index, _ref;
       exist = this.index(exist);
       add = this.normalize(add, this.list[exist], exist === 0 ? 'prepend' : void 0);
       this.list.splice(exist, 0, add);
-      _ref1 = this.indexes;
-      for (id in _ref1) {
-        index = _ref1[id];
+      _ref = this.indexes;
+      for (id in _ref) {
+        index = _ref[id];
         if (index >= exist) {
           this.indexes[id] = index + 1;
         }
@@ -3360,13 +3691,13 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Container.prototype.insertAfter = function(exist, add) {
-      var id, index, _ref1;
+      var id, index, _ref;
       exist = this.index(exist);
       add = this.normalize(add, this.list[exist]);
       this.list.splice(exist + 1, 0, add);
-      _ref1 = this.indexes;
-      for (id in _ref1) {
-        index = _ref1[id];
+      _ref = this.indexes;
+      for (id in _ref) {
+        index = _ref[id];
         if (index > exist) {
           this.indexes[id] = index + 1;
         }
@@ -3375,12 +3706,12 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Container.prototype.remove = function(child) {
-      var id, index, _ref1;
+      var id, index, _ref;
       child = this.index(child);
       this.list.splice(child, 1);
-      _ref1 = this.indexes;
-      for (id in _ref1) {
-        index = _ref1[id];
+      _ref = this.indexes;
+      for (id in _ref) {
+        index = _ref[id];
         if (index >= child) {
           this.indexes[id] = index - 1;
         }
@@ -3403,6 +3734,18 @@ var substr = 'ab'.substr(-1) === 'b'
         return this.list.indexOf(child);
       }
     };
+
+    Container.prop('first', {
+      get: function() {
+        return this.list[0];
+      }
+    });
+
+    Container.prop('last', {
+      get: function() {
+        return this.list[this.list.length - 1];
+      }
+    });
 
     Container.prop('list', {
       get: function() {
@@ -3431,35 +3774,40 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 
     WithRules.prototype.eachDecl = function(callback) {
-      this.each(function(child) {
-        return child.eachDecl(callback);
+      return this.each(function(child) {
+        var result;
+        if (!child.eachDecl) {
+          return;
+        }
+        result = child.eachDecl(callback);
+        if (result === false) {
+          return result;
+        }
       });
-      return this;
     };
 
     WithRules.prototype.eachRule = function(callback) {
-      var _this = this;
-      this.each(function(child, i) {
-        if (child.type === 'rule') {
-          return callback(child, i);
-        } else if (child.eachRule) {
-          return child.eachRule(callback);
-        }
-      });
-      return this;
+      return this.each((function(_this) {
+        return function(child, i) {
+          var result;
+          result = child.type === 'rule' ? callback(child, i) : child.eachRule ? child.eachRule(callback) : void 0;
+          if (result === false) {
+            return result;
+          }
+        };
+      })(this));
     };
 
     WithRules.prototype.eachAtRule = function(callback) {
-      var _this = this;
-      this.each(function(child, i) {
-        if (child.type === 'atrule') {
-          callback(child, i);
-          if (child.eachAtRule) {
-            return child.eachAtRule(callback);
+      return this.eachInside((function(_this) {
+        return function(child, i) {
+          var result;
+          result = child.type === 'atrule' ? callback(child, i) : void 0;
+          if (result === false) {
+            return result;
           }
-        }
-      });
-      return this;
+        };
+      })(this));
     };
 
     return WithRules;
@@ -3482,11 +3830,18 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     WithDecls.prototype.eachDecl = function(callback) {
-      var _this = this;
-      this.each(function(decl, i) {
-        return callback(decl, i);
-      });
-      return this;
+      return this.each((function(_this) {
+        return function(node, i) {
+          var result;
+          if (node.type !== 'decl') {
+            return;
+          }
+          result = callback(node, i);
+          if (result === false) {
+            return result;
+          }
+        };
+      })(this));
     };
 
     return WithDecls;
@@ -3497,7 +3852,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./declaration":42,"./node":45}],42:[function(_dereq_,module,exports){
+},{"./declaration":45,"./node":49}],45:[function(_dereq_,module,exports){
 (function() {
   var Declaration, Node, vendor,
     __hasProp = {}.hasOwnProperty,
@@ -3515,28 +3870,42 @@ var substr = 'ab'.substr(-1) === 'b'
       Declaration.__super__.constructor.apply(this, arguments);
     }
 
+    Declaration.prototype.defaultStyle = function() {
+      return {
+        before: "\n    ",
+        between: ': '
+      };
+    };
+
     Declaration.raw('value');
 
-    Declaration.prototype.stringify = function(builder, semicolon) {
-      var string;
-      if (this.before) {
-        builder(this.before);
+    Declaration.prop('important', {
+      get: function() {
+        return !!this._important;
+      },
+      set: function(value) {
+        if (typeof value === 'string' && value !== '') {
+          return this._important = value;
+        } else if (value) {
+          return this._important = ' !important';
+        } else {
+          return this._important = false;
+        }
       }
-      string = this.prop + (this.between || '') + ':' + this._value.stringify({
-        before: ' '
-      });
+    });
+
+    Declaration.prototype.stringify = function(builder, semicolon) {
+      var string, style;
+      style = this.style();
+      if (style.before) {
+        builder(style.before);
+      }
+      string = this.prop + style.between + this._value.toString();
+      string += this._important || '';
       if (semicolon) {
         string += ';';
       }
       return builder(string, this);
-    };
-
-    Declaration.prototype.removeSelf = function() {
-      if (!this.parent) {
-        return;
-      }
-      this.parent.remove(this);
-      return this;
     };
 
     Declaration.prototype.clone = function(obj) {
@@ -3554,74 +3923,27 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./node":45,"./vendor":53}],43:[function(_dereq_,module,exports){
+},{"./node":49,"./vendor":57}],46:[function(_dereq_,module,exports){
 (function() {
-  var Result, SourceMap, generateMap;
+  var lazy;
 
-  SourceMap = _dereq_('source-map');
-
-  Result = _dereq_('./result');
-
-  generateMap = function(css, opts) {
-    var builder, column, line, map, prev, result;
-    map = new SourceMap.SourceMapGenerator({
-      file: opts.to || 'to.css'
-    });
-    result = new Result(css, '');
-    line = 1;
-    column = 1;
-    builder = function(str, node, type) {
-      var last, lines, _ref, _ref1;
-      result.css += str;
-      if ((node != null ? (_ref = node.source) != null ? _ref.start : void 0 : void 0) && type !== 'end') {
-        map.addMapping({
-          source: node.source.file || 'from.css',
-          original: {
-            line: node.source.start.line,
-            column: node.source.start.column - 1
-          },
-          generated: {
-            line: line,
-            column: column - 1
-          }
-        });
-      }
-      lines = str.match(/\n/g);
-      if (lines) {
-        line += lines.length;
-        last = str.lastIndexOf("\n");
-        column = str.length - last;
+  lazy = function(klass, name, callback) {
+    var cache;
+    cache = name + 'Cache';
+    return klass.prototype[name] = function() {
+      if (this[cache] != null) {
+        return this[cache];
       } else {
-        column = column + str.length;
-      }
-      if ((node != null ? (_ref1 = node.source) != null ? _ref1.end : void 0 : void 0) && type !== 'start') {
-        return map.addMapping({
-          source: node.source.file || 'from.css',
-          original: {
-            line: node.source.end.line,
-            column: node.source.end.column
-          },
-          generated: {
-            line: line,
-            column: column
-          }
-        });
+        return this[cache] = callback.apply(this, arguments);
       }
     };
-    css.stringify(builder);
-    if (typeof opts.map === 'string') {
-      prev = new SourceMap.SourceMapConsumer(opts.map);
-      map.applySourceMap(prev);
-    }
-    result.map = map.toString();
-    return result;
   };
 
-  module.exports = generateMap;
+  module.exports = lazy;
 
 }).call(this);
 
-},{"./result":49,"source-map":54}],44:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
 (function() {
   var list;
 
@@ -3687,9 +4009,239 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 (function() {
-  var Node, Raw, clone,
+  var MapGenerator, Result, base64, fs, lazy, mozilla, path;
+
+  mozilla = _dereq_('source-map');
+
+  base64 = _dereq_('base64-js');
+
+  Result = _dereq_('./result');
+
+  lazy = _dereq_('./lazy');
+
+  path = _dereq_('path');
+
+  fs = _dereq_('fs');
+
+  MapGenerator = (function() {
+    function MapGenerator(root, opts) {
+      this.root = root;
+      this.opts = opts;
+    }
+
+    MapGenerator.prototype.startWith = function(string, start) {
+      return string.slice(0, +(start.length - 1) + 1 || 9e9) === start;
+    };
+
+    MapGenerator.prototype.isMap = function() {
+      if (typeof this.opts.map === 'boolean') {
+        return this.opts.map;
+      }
+      return !!this.opts.inlineMap || !!this.prevMap();
+    };
+
+    lazy(MapGenerator, 'isInline', function() {
+      if (this.opts.inlineMap != null) {
+        return this.opts.inlineMap;
+      }
+      return this.isPrevInline();
+    });
+
+    lazy(MapGenerator, 'isPrevInline', function() {
+      var text;
+      if (!this.prevAnnotation()) {
+        return false;
+      }
+      text = this.prevAnnotation().text;
+      return this.startWith(text, '# sourceMappingURL=data:');
+    });
+
+    lazy(MapGenerator, 'prevMap', function() {
+      var byte, bytes, file, map, start, text;
+      if (this.opts.map && typeof this.opts.map !== 'boolean') {
+        return this.opts.map;
+      }
+      if (this.isPrevInline()) {
+        start = '# sourceMappingURL=data:application/json;base64,';
+        text = this.prevAnnotation().text;
+        text = text.slice(start.length);
+        bytes = base64.toByteArray(text);
+        return ((function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = bytes.length; _i < _len; _i++) {
+            byte = bytes[_i];
+            _results.push(String.fromCharCode(byte));
+          }
+          return _results;
+        })()).join('');
+      } else if (this.opts.from) {
+        map = this.opts.from + '.map';
+        if (this.prevAnnotation()) {
+          file = this.prevAnnotation().text.replace('# sourceMappingURL=', '');
+          map = path.join(path.dirname(this.opts.from), file);
+        }
+        if (typeof fs.existsSync === "function" ? fs.existsSync(map) : void 0) {
+          return fs.readFileSync(map).toString();
+        } else {
+          return false;
+        }
+      }
+    });
+
+    lazy(MapGenerator, 'prevAnnotation', function() {
+      var last;
+      last = this.root.last;
+      if (!last) {
+        return null;
+      }
+      if (last.type === 'comment' && this.startWith(last.text, '# sourceMappingURL=')) {
+        return last;
+      } else {
+        return null;
+      }
+    });
+
+    MapGenerator.prototype.clearAnnotation = function() {
+      var _ref;
+      return (_ref = this.prevAnnotation()) != null ? _ref.removeSelf() : void 0;
+    };
+
+    MapGenerator.prototype.applyPrevMap = function() {
+      var prev;
+      if (this.prevMap()) {
+        prev = new mozilla.SourceMapConsumer(this.prevMap());
+        return this.map.applySourceMap(prev, this.relative(this.opts.from));
+      }
+    };
+
+    MapGenerator.prototype.addAnnotation = function() {
+      var bytes, char, content;
+      if (this.opts.mapAnnotation === false) {
+        return;
+      }
+      if (this.prevMap() && !this.prevAnnotation()) {
+        return;
+      }
+      content = this.isInline() ? (bytes = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.map.toString();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          char = _ref[_i];
+          _results.push(char.charCodeAt(0));
+        }
+        return _results;
+      }).call(this), "data:application/json;base64," + base64.fromByteArray(bytes)) : this.outputFile() + '.map';
+      return this.css += "\n/*# sourceMappingURL=" + content + " */";
+    };
+
+    MapGenerator.prototype.outputFile = function() {
+      if (this.opts.to) {
+        return path.basename(this.opts.to);
+      } else {
+        return 'to.css';
+      }
+    };
+
+    MapGenerator.prototype.generateMap = function() {
+      this.stringify();
+      this.applyPrevMap();
+      this.addAnnotation();
+      if (this.isInline()) {
+        return new Result(this.css);
+      } else {
+        return new Result(this.css, this.map.toString());
+      }
+    };
+
+    MapGenerator.prototype.relative = function(file) {
+      var from;
+      from = this.opts.to ? path.dirname(this.opts.to) : '.';
+      file = path.relative(from, file);
+      if (path.sep === '\\') {
+        file = file.replace('\\', '/');
+      }
+      return file;
+    };
+
+    MapGenerator.prototype.sourcePath = function(node) {
+      return this.relative(node.source.file || 'from.css');
+    };
+
+    MapGenerator.prototype.stringify = function() {
+      var builder, column, line;
+      this.css = '';
+      this.map = new mozilla.SourceMapGenerator({
+        file: this.outputFile()
+      });
+      line = 1;
+      column = 1;
+      builder = (function(_this) {
+        return function(str, node, type) {
+          var last, lines, _ref, _ref1;
+          _this.css += str;
+          if ((node != null ? (_ref = node.source) != null ? _ref.start : void 0 : void 0) && type !== 'end') {
+            _this.map.addMapping({
+              source: _this.sourcePath(node),
+              original: {
+                line: node.source.start.line,
+                column: node.source.start.column - 1
+              },
+              generated: {
+                line: line,
+                column: column - 1
+              }
+            });
+          }
+          lines = str.match(/\n/g);
+          if (lines) {
+            line += lines.length;
+            last = str.lastIndexOf("\n");
+            column = str.length - last;
+          } else {
+            column = column + str.length;
+          }
+          if ((node != null ? (_ref1 = node.source) != null ? _ref1.end : void 0 : void 0) && type !== 'start') {
+            return _this.map.addMapping({
+              source: _this.sourcePath(node),
+              original: {
+                line: node.source.end.line,
+                column: node.source.end.column
+              },
+              generated: {
+                line: line,
+                column: column
+              }
+            });
+          }
+        };
+      })(this);
+      return this.root.stringify(builder);
+    };
+
+    MapGenerator.prototype.getResult = function() {
+      this.clearAnnotation();
+      if (this.isMap()) {
+        return this.generateMap();
+      } else {
+        return new Result(this.root.toString());
+      }
+    };
+
+    return MapGenerator;
+
+  })();
+
+  module.exports = MapGenerator;
+
+}).call(this);
+
+},{"./lazy":46,"./result":53,"base64-js":58,"fs":39,"path":41,"source-map":59}],49:[function(_dereq_,module,exports){
+(function() {
+  var Node, Raw, clone, keys,
     __hasProp = {}.hasOwnProperty;
 
   Raw = _dereq_('./raw');
@@ -3718,6 +4270,19 @@ var substr = 'ab'.substr(-1) === 'b'
     return cloned;
   };
 
+  keys = function(obj, keys) {
+    var all, key;
+    all = {};
+    for (key in keys) {
+      if (obj[key] != null) {
+        all[key] = obj[key];
+      } else {
+        return false;
+      }
+    }
+    return all;
+  };
+
   Node = (function() {
     function Node(defaults) {
       var name, value;
@@ -3737,20 +4302,21 @@ var substr = 'ab'.substr(-1) === 'b'
     Node.raw = function(name) {
       var hidden;
       hidden = '_' + name;
-      this.prototype[hidden] = Raw.empty;
       return this.prop(name, {
         get: function() {
-          var _ref;
-          return (_ref = this[hidden]) != null ? _ref.trimmed : void 0;
+          var prop;
+          prop = this[hidden];
+          if (prop instanceof Raw) {
+            return prop.value;
+          } else {
+            return prop;
+          }
         },
         set: function(value) {
           if (value instanceof Raw) {
             return this[hidden] = value;
           } else {
-            if (this[hidden] === Raw.empty) {
-              this[hidden] = new Raw();
-            }
-            return this[hidden].set(value);
+            return this[hidden] = value;
           }
         }
       });
@@ -3807,6 +4373,55 @@ var substr = 'ab'.substr(-1) === 'b'
       return fixed;
     };
 
+    Node.prototype.defaultStyle = function() {
+      return {};
+    };
+
+    Node.prototype.styleType = function() {
+      return this.type;
+    };
+
+    Node.prototype.style = function() {
+      var all, defaults, key, merge, root, style, type;
+      type = this.styleType();
+      defaults = this.defaultStyle(type);
+      all = keys(this, defaults);
+      if (all) {
+        return all;
+      }
+      style = defaults;
+      if (this.parent) {
+        root = this;
+        while (root.parent) {
+          root = root.parent;
+        }
+        root.styleCache || (root.styleCache = {});
+        if (root.styleCache[type]) {
+          style = root.styleCache[type];
+        } else {
+          root.eachInside(function(another) {
+            if (another.styleType() !== type) {
+              return;
+            }
+            if (this === another) {
+              return;
+            }
+            all = keys(another, style);
+            if (all) {
+              style = all;
+              return false;
+            }
+          });
+          root.styleCache[type] = style;
+        }
+      }
+      merge = {};
+      for (key in style) {
+        merge[key] = this[key] != null ? this[key] : style[key];
+      }
+      return merge;
+    };
+
     return Node;
 
   })();
@@ -3815,13 +4430,15 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./raw":48}],46:[function(_dereq_,module,exports){
+},{"./raw":52}],50:[function(_dereq_,module,exports){
 (function() {
-  var AtRule, Declaration, Parser, Raw, Root, Rule, SyntexError;
+  var AtRule, Comment, Declaration, Parser, Raw, Root, Rule, SyntexError;
 
   SyntexError = _dereq_('./syntax-error');
 
   Declaration = _dereq_('./declaration');
+
+  Comment = _dereq_('./comment');
 
   AtRule = _dereq_('./at-rule');
 
@@ -3887,7 +4504,19 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Parser.prototype.inComment = function() {
+      var left, right, text, _ref, _ref1;
       if (this.inside('comment')) {
+        if (this.next('*/')) {
+          _ref = this.startSpaces(this.prevBuffer()), text = _ref[0], left = _ref[1];
+          _ref1 = this.endSpaces(text), text = _ref1[0], right = _ref1[1];
+          this.current.text = text;
+          this.current.left = left;
+          this.current.right = right;
+          this.move();
+          this.pop();
+        }
+        return true;
+      } else if (this.inside('value-comment')) {
         if (this.next('*/')) {
           this.popType();
           this.move();
@@ -3898,13 +4527,20 @@ var substr = 'ab'.substr(-1) === 'b'
 
     Parser.prototype.isComment = function() {
       if (this.next('/*')) {
-        this.commentPos = {
-          line: this.line,
-          column: this.column
-        };
-        this.addType('comment');
-        this.move();
-        return true;
+        if (this.inside('rules') || this.inside('decls')) {
+          this.init(new Comment());
+          this.addType('comment');
+          this.move();
+          return this.buffer = '';
+        } else {
+          this.commentPos = {
+            line: this.line,
+            column: this.column
+          };
+          this.addType('value-comment');
+          this.move();
+          return true;
+        }
       }
     };
 
@@ -3912,7 +4548,7 @@ var substr = 'ab'.substr(-1) === 'b'
       if (this.letter === '{' && (this.inside('decls') || this.inside('value'))) {
         this.error("Unexpected {");
       }
-      if (this.inside('property') && (this.letter === '}' || this.letter === ';')) {
+      if (this.inside('prop') && (this.letter === '}' || this.letter === ';')) {
         return this.error('Missing property value');
       }
     };
@@ -3927,6 +4563,7 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Parser.prototype.inAtrule = function(close) {
+      var left, raw, right, _ref, _ref1;
       if (this.inside('atrule-name')) {
         if (this.space()) {
           this.checkAtruleName();
@@ -3934,6 +4571,7 @@ var substr = 'ab'.substr(-1) === 'b'
           this.trimmed = '';
           this.setType('atrule-param');
         } else if (this.letter === ';' || this.letter === '{' || close) {
+          this.current.between = '';
           this.checkAtruleName();
           this.endAtruleParams();
         } else {
@@ -3942,7 +4580,16 @@ var substr = 'ab'.substr(-1) === 'b'
         return true;
       } else if (this.inside('atrule-param')) {
         if (this.letter === ';' || this.letter === '{' || close) {
-          this.current.params = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          _ref = this.startSpaces(this.prevBuffer()), raw = _ref[0], left = _ref[1];
+          _ref1 = this.endSpaces(raw), raw = _ref1[0], right = _ref1[1];
+          this.current.params = this.raw(this.trimmed.trim(), raw);
+          if (this.current.params) {
+            this.current.afterName = left;
+            this.current.between = right;
+          } else {
+            this.current.afterName = '';
+            this.current.between = left + right;
+          }
           this.endAtruleParams();
         } else {
           this.trimmed += this.letter;
@@ -3952,9 +4599,12 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Parser.prototype.inSelector = function() {
+      var raw, spaces, _ref;
       if (this.inside('selector')) {
         if (this.letter === '{') {
-          this.current.selector = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          _ref = this.endSpaces(this.prevBuffer()), raw = _ref[0], spaces = _ref[1];
+          this.current.selector = this.raw(this.trimmed.trim(), raw);
+          this.current.between = spaces;
           this.semicolon = false;
           this.buffer = '';
           this.setType('decls');
@@ -3970,7 +4620,8 @@ var substr = 'ab'.substr(-1) === 'b'
         this.init(new Rule());
         if (this.letter === '{') {
           this.addType('decls');
-          this.current.selector = new Raw('', '');
+          this.current.selector = '';
+          this.current.between = '';
           this.semicolon = false;
           this.buffer = '';
         } else {
@@ -4004,14 +4655,14 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Parser.prototype.inProperty = function() {
-      if (this.inside('property')) {
+      if (this.inside('prop')) {
         if (this.letter === ':') {
           if (this.buffer[0] === '*' || this.buffer[0] === '_') {
             this.current.before += this.buffer[0];
             this.trimmed = this.trimmed.slice(1);
             this.buffer = this.buffer.slice(1);
           }
-          this.current.prop = this.trim(this.trimmed);
+          this.current.prop = this.trimmed.trim();
           this.current.between = this.prevBuffer().slice(this.current.prop.length);
           this.buffer = '';
           this.setType('value');
@@ -4028,7 +4679,7 @@ var substr = 'ab'.substr(-1) === 'b'
     Parser.prototype.isProperty = function() {
       if (this.inside('decls') && !this.space() && this.letter !== ';') {
         this.init(new Declaration());
-        this.addType('property');
+        this.addType('prop');
         this.buffer = this.letter;
         this.trimmed = this.letter;
         this.semicolon = false;
@@ -4037,6 +4688,7 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     Parser.prototype.inValue = function(close) {
+      var end, match, raw, spaces, trim, _ref;
       if (this.inside('value')) {
         if (this.letter === '(') {
           this.inBrackets = true;
@@ -4047,7 +4699,16 @@ var substr = 'ab'.substr(-1) === 'b'
           if (this.letter === ';') {
             this.semicolon = true;
           }
-          this.current.value = new Raw(this.prevBuffer(), this.trim(this.trimmed));
+          _ref = this.startSpaces(this.prevBuffer()), raw = _ref[0], spaces = _ref[1];
+          trim = this.trimmed.trim();
+          if (match = raw.match(/\s+!important\s*$/)) {
+            this.current._important = match[0];
+            end = -match[0].length - 1;
+            raw = raw.slice(0, +end + 1 || 9e9);
+            trim = trim.replace(/\s+!important$/, '');
+          }
+          this.current.value = this.raw(trim, raw);
+          this.current.between += ':' + spaces;
           this.pop();
         } else {
           this.trimmed += this.letter;
@@ -4068,9 +4729,11 @@ var substr = 'ab'.substr(-1) === 'b'
           return this.inAtrule('close');
         });
       }
-      if (this.parents.length > 1) {
+      if (this.inside('comment')) {
+        return this.error('Unclosed comment', this.current.source.start);
+      } else if (this.parents.length > 1) {
         return this.error('Unclosed block', this.current.source.start);
-      } else if (this.inside('comment')) {
+      } else if (this.inside('value-comment')) {
         return this.error('Unclosed comment', this.commentPos);
       } else if (this.quote) {
         return this.error('Unclosed quote', this.quotePos);
@@ -4132,6 +4795,14 @@ var substr = 'ab'.substr(-1) === 'b'
       }
       this.current.before = this.buffer.slice(0, -1);
       return this.buffer = '';
+    };
+
+    Parser.prototype.raw = function(value, raw) {
+      if (value !== raw) {
+        return new Raw(value, raw);
+      } else {
+        return value;
+      }
     };
 
     Parser.prototype.fixEnd = function(callback) {
@@ -4219,8 +4890,26 @@ var substr = 'ab'.substr(-1) === 'b'
       }
     };
 
-    Parser.prototype.trim = function(string) {
-      return string.replace(/^\s*/, '').replace(/\s*$/, '');
+    Parser.prototype.startSpaces = function(string) {
+      var match, pos;
+      match = string.match(/^\s*/);
+      if (match) {
+        pos = match[0].length;
+        return [string.slice(pos), match[0]];
+      } else {
+        return [string, ''];
+      }
+    };
+
+    Parser.prototype.endSpaces = function(string) {
+      var match, pos;
+      match = string.match(/\s*$/);
+      if (match) {
+        pos = match[0].length + 1;
+        return [string.slice(0, +(-pos) + 1 || 9e9), match[0]];
+      } else {
+        return [string, ''];
+      }
     };
 
     return Parser;
@@ -4239,18 +4928,16 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./at-rule":40,"./declaration":42,"./raw":48,"./root":50,"./rule":51,"./syntax-error":52}],47:[function(_dereq_,module,exports){
+},{"./at-rule":42,"./comment":43,"./declaration":45,"./raw":52,"./root":54,"./rule":55,"./syntax-error":56}],51:[function(_dereq_,module,exports){
 (function() {
-  var AtRule, Declaration, PostCSS, Result, Root, Rule, generateMap, postcss,
+  var AtRule, Comment, Declaration, PostCSS, Root, Rule, postcss,
     __slice = [].slice;
-
-  generateMap = _dereq_('./generate-map');
 
   Declaration = _dereq_('./declaration');
 
-  AtRule = _dereq_('./at-rule');
+  Comment = _dereq_('./comment');
 
-  Result = _dereq_('./result');
+  AtRule = _dereq_('./at-rule');
 
   Rule = _dereq_('./rule');
 
@@ -4280,11 +4967,7 @@ var substr = 'ab'.substr(-1) === 'b'
           parsed = returned;
         }
       }
-      if (opts.map) {
-        return generateMap(parsed, opts);
-      } else {
-        return new Result(parsed, parsed.toString());
-      }
+      return parsed.toResult(opts);
     };
 
     return PostCSS;
@@ -4299,12 +4982,16 @@ var substr = 'ab'.substr(-1) === 'b'
 
   postcss.parse = _dereq_('./parse');
 
-  postcss.decl = function(defaults) {
-    return new Declaration(defaults);
+  postcss.comment = function(defaults) {
+    return new Comment(defaults);
   };
 
   postcss.atRule = function(defaults) {
     return new AtRule(defaults);
+  };
+
+  postcss.decl = function(defaults) {
+    return new Declaration(defaults);
   };
 
   postcss.rule = function(defaults) {
@@ -4319,33 +5006,29 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./at-rule":40,"./declaration":42,"./generate-map":43,"./parse":46,"./result":49,"./root":50,"./rule":51}],48:[function(_dereq_,module,exports){
+},{"./at-rule":42,"./comment":43,"./declaration":45,"./parse":50,"./root":54,"./rule":55}],52:[function(_dereq_,module,exports){
 (function() {
   var Raw;
 
   Raw = (function() {
-    function Raw(raw, trimmed) {
-      this.raw = raw;
-      this.trimmed = trimmed;
-    }
-
-    Raw.prototype.set = function(value) {
-      if (this.trimmed !== value) {
-        this.changed = true;
-        return this.trimmed = value;
+    Raw.load = function(value, raw) {
+      if ((raw != null) && value !== raw) {
+        return new Raw(value, raw);
+      } else {
+        return value;
       }
     };
 
-    Raw.prototype.stringify = function(opts) {
-      if (opts == null) {
-        opts = {};
-      }
-      if (!this.changed) {
-        return this.raw || '';
-      } else if (!this.raw) {
-        return (opts.before || '') + this.trimmed + (opts.after || '');
+    function Raw(value, raw) {
+      this.value = value;
+      this.raw = raw;
+    }
+
+    Raw.prototype.toString = function() {
+      if (this.changed) {
+        return this.value || '';
       } else {
-        return (this.raw[0] === ' ' ? ' ' : '') + this.trimmed + (this.raw.slice(-1) === ' ' ? ' ' : '');
+        return this.raw || this.value || '';
       }
     };
 
@@ -4353,20 +5036,20 @@ var substr = 'ab'.substr(-1) === 'b'
 
   })();
 
-  Raw.empty = new Raw();
-
   module.exports = Raw;
 
 }).call(this);
 
-},{}],49:[function(_dereq_,module,exports){
+},{}],53:[function(_dereq_,module,exports){
 (function() {
   var Result;
 
   Result = (function() {
-    function Result(parsed, css) {
-      this.parsed = parsed;
+    function Result(css, map) {
       this.css = css;
+      if (map) {
+        this.map = map;
+      }
     }
 
     Result.prototype.toString = function() {
@@ -4381,13 +5064,23 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],50:[function(_dereq_,module,exports){
+},{}],54:[function(_dereq_,module,exports){
 (function() {
-  var Container, Root,
+  var AtRule, Comment, Container, Declaration, MapGenerator, Root, Rule,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  MapGenerator = _dereq_('./map-generator');
+
+  Declaration = _dereq_('./declaration');
+
   Container = _dereq_('./container');
+
+  Comment = _dereq_('./comment');
+
+  AtRule = _dereq_('./at-rule');
+
+  Rule = _dereq_('./rule');
 
   Root = (function(_super) {
     __extends(Root, _super);
@@ -4413,6 +5106,15 @@ var substr = 'ab'.substr(-1) === 'b'
       }
     };
 
+    Root.prototype.toResult = function(opts) {
+      var map;
+      if (opts == null) {
+        opts = {};
+      }
+      map = new MapGenerator(this, opts);
+      return map.getResult();
+    };
+
     return Root;
 
   })(Container.WithRules);
@@ -4421,7 +5123,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":41}],51:[function(_dereq_,module,exports){
+},{"./at-rule":42,"./comment":43,"./container":44,"./declaration":45,"./map-generator":48,"./rule":55}],55:[function(_dereq_,module,exports){
 (function() {
   var Container, Declaration, Rule,
     __hasProp = {}.hasOwnProperty,
@@ -4439,12 +5141,37 @@ var substr = 'ab'.substr(-1) === 'b'
       Rule.__super__.constructor.apply(this, arguments);
     }
 
+    Rule.prototype.styleType = function() {
+      return this.type + (this.decls.length ? '-body' : '-empty');
+    };
+
+    Rule.prototype.defaultStyle = function(type) {
+      if (type === 'rule-body') {
+        return {
+          between: ' ',
+          after: this.defaultAfter()
+        };
+      } else {
+        return {
+          between: ' ',
+          after: ''
+        };
+      }
+    };
+
     Rule.raw('selector');
 
+    Rule.prop('selectors', {
+      get: function() {
+        return this.selector.split(/\s*,\s*/);
+      },
+      set: function(values) {
+        return this.selector = values.join(', ');
+      }
+    });
+
     Rule.prototype.stringify = function(builder) {
-      return this.stringifyBlock(builder, this._selector.stringify({
-        after: ' '
-      }) + '{');
+      return this.stringifyBlock(builder, this._selector + this.style().between + '{');
     };
 
     return Rule;
@@ -4455,7 +5182,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./container":41,"./declaration":42}],52:[function(_dereq_,module,exports){
+},{"./container":44,"./declaration":45}],56:[function(_dereq_,module,exports){
 (function() {
   var SyntaxError,
     __hasProp = {}.hasOwnProperty,
@@ -4484,7 +5211,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],53:[function(_dereq_,module,exports){
+},{}],57:[function(_dereq_,module,exports){
 (function() {
   var vendor;
 
@@ -4513,7 +5240,130 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],54:[function(_dereq_,module,exports){
+},{}],58:[function(_dereq_,module,exports){
+var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+;(function (exports) {
+	'use strict';
+
+  var Arr = (typeof Uint8Array !== 'undefined')
+    ? Uint8Array
+    : Array
+
+	var ZERO   = '0'.charCodeAt(0)
+	var PLUS   = '+'.charCodeAt(0)
+	var SLASH  = '/'.charCodeAt(0)
+	var NUMBER = '0'.charCodeAt(0)
+	var LOWER  = 'a'.charCodeAt(0)
+	var UPPER  = 'A'.charCodeAt(0)
+
+	function decode (elt) {
+		var code = elt.charCodeAt(0)
+		if (code === PLUS)
+			return 62 // '+'
+		if (code === SLASH)
+			return 63 // '/'
+		if (code < NUMBER)
+			return -1 //no match
+		if (code < NUMBER + 10)
+			return code - NUMBER + 26 + 26
+		if (code < UPPER + 26)
+			return code - UPPER
+		if (code < LOWER + 26)
+			return code - LOWER + 26
+	}
+
+	function b64ToByteArray (b64) {
+		var i, j, l, tmp, placeHolders, arr
+
+		if (b64.length % 4 > 0) {
+			throw new Error('Invalid string. Length must be a multiple of 4')
+		}
+
+		// the number of equal signs (place holders)
+		// if there are two placeholders, than the two characters before it
+		// represent one byte
+		// if there is only one, then the three characters before it represent 2 bytes
+		// this is just a cheap hack to not do indexOf twice
+		var len = b64.length
+		placeHolders = '=' === b64.charAt(len - 2) ? 2 : '=' === b64.charAt(len - 1) ? 1 : 0
+
+		// base64 is 4/3 + up to two characters of the original data
+		arr = new Arr(b64.length * 3 / 4 - placeHolders)
+
+		// if there are placeholders, only get up to the last complete 4 chars
+		l = placeHolders > 0 ? b64.length - 4 : b64.length
+
+		var L = 0
+
+		function push (v) {
+			arr[L++] = v
+		}
+
+		for (i = 0, j = 0; i < l; i += 4, j += 3) {
+			tmp = (decode(b64.charAt(i)) << 18) | (decode(b64.charAt(i + 1)) << 12) | (decode(b64.charAt(i + 2)) << 6) | decode(b64.charAt(i + 3))
+			push((tmp & 0xFF0000) >> 16)
+			push((tmp & 0xFF00) >> 8)
+			push(tmp & 0xFF)
+		}
+
+		if (placeHolders === 2) {
+			tmp = (decode(b64.charAt(i)) << 2) | (decode(b64.charAt(i + 1)) >> 4)
+			push(tmp & 0xFF)
+		} else if (placeHolders === 1) {
+			tmp = (decode(b64.charAt(i)) << 10) | (decode(b64.charAt(i + 1)) << 4) | (decode(b64.charAt(i + 2)) >> 2)
+			push((tmp >> 8) & 0xFF)
+			push(tmp & 0xFF)
+		}
+
+		return arr
+	}
+
+	function uint8ToBase64 (uint8) {
+		var i,
+			extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
+			output = "",
+			temp, length
+
+		function encode (num) {
+			return lookup.charAt(num)
+		}
+
+		function tripletToBase64 (num) {
+			return encode(num >> 18 & 0x3F) + encode(num >> 12 & 0x3F) + encode(num >> 6 & 0x3F) + encode(num & 0x3F)
+		}
+
+		// go through the array every three bytes, we'll deal with trailing stuff later
+		for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
+			temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+			output += tripletToBase64(temp)
+		}
+
+		// pad the end with zeros, but make sure to not forget the extra bytes
+		switch (extraBytes) {
+			case 1:
+				temp = uint8[uint8.length - 1]
+				output += encode(temp >> 2)
+				output += encode((temp << 4) & 0x3F)
+				output += '=='
+				break
+			case 2:
+				temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1])
+				output += encode(temp >> 10)
+				output += encode((temp >> 4) & 0x3F)
+				output += encode((temp << 2) & 0x3F)
+				output += '='
+				break
+		}
+
+		return output
+	}
+
+	module.exports.toByteArray = b64ToByteArray
+	module.exports.fromByteArray = uint8ToBase64
+}())
+
+},{}],59:[function(_dereq_,module,exports){
 /*
  * Copyright 2009-2011 Mozilla Foundation and contributors
  * Licensed under the New BSD license. See LICENSE.txt or:
@@ -4523,7 +5373,7 @@ exports.SourceMapGenerator = _dereq_('./source-map/source-map-generator').Source
 exports.SourceMapConsumer = _dereq_('./source-map/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = _dereq_('./source-map/source-node').SourceNode;
 
-},{"./source-map/source-map-consumer":59,"./source-map/source-map-generator":60,"./source-map/source-node":61}],55:[function(_dereq_,module,exports){
+},{"./source-map/source-map-consumer":64,"./source-map/source-map-generator":65,"./source-map/source-node":66}],60:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4622,7 +5472,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./util":62,"amdefine":63}],56:[function(_dereq_,module,exports){
+},{"./util":67,"amdefine":68}],61:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4768,7 +5618,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./base64":57,"amdefine":63}],57:[function(_dereq_,module,exports){
+},{"./base64":62,"amdefine":68}],62:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4812,7 +5662,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":63}],58:[function(_dereq_,module,exports){
+},{"amdefine":68}],63:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -4895,7 +5745,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":63}],59:[function(_dereq_,module,exports){
+},{"amdefine":68}],64:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5375,7 +6225,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./array-set":55,"./base64-vlq":56,"./binary-search":58,"./util":62,"amdefine":63}],60:[function(_dereq_,module,exports){
+},{"./array-set":60,"./base64-vlq":61,"./binary-search":63,"./util":67,"amdefine":68}],65:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5757,7 +6607,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./array-set":55,"./base64-vlq":56,"./util":62,"amdefine":63}],61:[function(_dereq_,module,exports){
+},{"./array-set":60,"./base64-vlq":61,"./util":67,"amdefine":68}],66:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6130,7 +6980,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./source-map-generator":60,"./util":62,"amdefine":63}],62:[function(_dereq_,module,exports){
+},{"./source-map-generator":65,"./util":67,"amdefine":68}],67:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6337,7 +7187,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":63}],63:[function(_dereq_,module,exports){
+},{"amdefine":68}],68:[function(_dereq_,module,exports){
 (function (process,__filename){
 /** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
@@ -6640,6 +7490,6 @@ function amdefine(module, requireFn) {
 module.exports = amdefine;
 
 }).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js")
-},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38,"path":39}]},{},[3])
+},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40,"path":41}]},{},[3])
 (3)
 });
