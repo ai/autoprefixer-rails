@@ -4078,11 +4078,11 @@ var substr = 'ab'.substr(-1) === 'b'
 
 },{}],49:[function(_dereq_,module,exports){
 (function() {
-  var MapGenerator, Result, base64, fs, lazy, mozilla, path;
+  var MapGenerator, Result, base64js, fs, lazy, mozilla, path;
+
+  base64js = _dereq_('base64-js');
 
   mozilla = _dereq_('source-map');
-
-  base64 = _dereq_('base64-js');
 
   Result = _dereq_('./result');
 
@@ -4126,24 +4126,12 @@ var substr = 'ab'.substr(-1) === 'b'
     });
 
     lazy(MapGenerator, 'prevMap', function() {
-      var byte, bytes, file, map, start, text;
+      var file, map;
       if (this.opts.map && typeof this.opts.map !== 'boolean') {
         return this.opts.map;
       }
       if (this.isPrevInline()) {
-        start = '# sourceMappingURL=data:application/json;base64,';
-        text = this.prevAnnotation().text;
-        text = text.slice(start.length);
-        bytes = base64.toByteArray(text);
-        return ((function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = bytes.length; _i < _len; _i++) {
-            byte = bytes[_i];
-            _results.push(String.fromCharCode(byte));
-          }
-          return _results;
-        })()).join('');
+        return this.encodeInline(this.prevAnnotation().text);
       } else if (this.opts.from) {
         map = this.opts.from + '.map';
         if (this.prevAnnotation()) {
@@ -4170,6 +4158,29 @@ var substr = 'ab'.substr(-1) === 'b'
         return null;
       }
     });
+
+    MapGenerator.prototype.encodeInline = function(text) {
+      var base64, byte, bytes, uri;
+      uri = '# sourceMappingURL=data:application/json,';
+      base64 = '# sourceMappingURL=data:application/json;base64,';
+      if (this.startWith(text, uri)) {
+        return decodeURIComponent(text.slice(uri.length));
+      } else if (this.startWith(text, base64)) {
+        text = text.slice(base64.length);
+        bytes = base64js.toByteArray(text);
+        return ((function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = bytes.length; _i < _len; _i++) {
+            byte = bytes[_i];
+            _results.push(String.fromCharCode(byte));
+          }
+          return _results;
+        })()).join('');
+      } else {
+        throw new Error('Unknown source map encoding');
+      }
+    };
 
     MapGenerator.prototype.clearAnnotation = function() {
       var _ref;
@@ -4214,7 +4225,7 @@ var substr = 'ab'.substr(-1) === 'b'
           _results.push(char.charCodeAt(0));
         }
         return _results;
-      }).call(this), "data:application/json;base64," + base64.fromByteArray(bytes)) : this.outputFile() + '.map';
+      }).call(this), "data:application/json;base64," + base64js.fromByteArray(bytes)) : this.outputFile() + '.map';
       return this.css += "\n/*# sourceMappingURL=" + content + " */";
     };
 
