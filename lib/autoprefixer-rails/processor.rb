@@ -16,7 +16,7 @@ module AutoprefixerRails
     # * `from` with input CSS file name. Will be used in error messages.
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
-    def process(css, opts = { })
+    def process(css, opts = {})
       result = processor.call('process', css, opts)
       Result.new(result['css'], result['map'])
     end
@@ -51,11 +51,12 @@ module AutoprefixerRails
 
     # Return JS code to create Autoprefixer instance
     def create_instance
+      options = @options.map { |k, v| "#{k}: #{v.inspect}"}.join(', ')
+
       if @browsers.empty?
-        "var processor = autoprefixer;"
+        "var processor = autoprefixer({ #{options} });"
       else
         browsers = @browsers.map(&:to_s).join("', '")
-        options  = @options.map { |k, v| "#{k}: #{v.inspect}"}.join(',')
         "var processor = autoprefixer('#{browsers}', { #{options} });"
       end
     end

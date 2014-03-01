@@ -23,7 +23,16 @@ describe AutoprefixerRails do
     result.map.should be_a(String)
   end
 
-  it "disable visual cascade on request" do
+  it "creates visual cascade by default" do
+    css    = "a {\n  transition: all 1s\n  }"
+    result = AutoprefixerRails.process(@css)
+    result.css.should == "a {\n" +
+                         "    -webkit-transition: all 1s;\n" +
+                         "            transition: all 1s\n" +
+                         "}\n"
+  end
+
+  it "disables visual cascade on request" do
     css    = "a {\n  transition: all 1s\n  }"
     result = AutoprefixerRails.process(@css, cascade: false)
     result.css.should == "a {\n" +
