@@ -5,46 +5,46 @@
       prefix: "-webkit-",
       minor: true,
       versions: [4.4, 4.3, 4.2, 4.1, 4, 3, 2.3, 2.2, 2.1],
-      popularity: [0.0894926, 0.74151, 0.74151, 2.29485, 1.0803, 0.00639233, 1.35517, 0.0831003, 0.0255693]
+      popularity: [0.116989, 0.818925, 0.818925, 2.30729, 1.0464, 0.00649939, 1.29988, 0.0844921, 0.0259976]
     },
     bb: {
       prefix: "-webkit-",
       minor: true,
       versions: [10, 7],
-      popularity: [0, 0.153316]
+      popularity: [0, 0.136974]
     },
     chrome: {
       prefix: "-webkit-",
       future: [36, 35, 34],
       versions: [33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4],
-      popularity: [0.22869, 15.5204, 15.3756, 0.411642, 0.480249, 0.274428, 0.312543, 0.221067, 0.121968, 0.068607, 0.083853, 0.121968, 0.480249, 0.045738, 0.038115, 0.099099, 0.030492, 0.038115, 0.068607, 0.045738, 0.053361, 0.060984, 0.121968, 0.038115, 0.015246, 0.022869, 0.022869, 0.030492, 0.022869, 0.022869]
+      popularity: [2.44037, 27.2658, 1.60432, 0.33894, 0.459452, 0.256088, 0.30128, 0.22596, 0.120512, 0.067788, 0.082852, 0.097916, 0.60256, 0.045192, 0.03766, 0.07532, 0.030128, 0.03766, 0.060256, 0.045192, 0.052724, 0.060256, 0.120512, 0.03766, 0.015064, 0.022596, 0.022596, 0.030128, 0.022596, 0.022596]
     },
     ff: {
       prefix: "-moz-",
       future: [30, 29, 28],
       versions: [27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3.6, 3.5, 3, 2],
-      popularity: [0.472626, 11.9757, 0.411642, 0.266805, 0.15246, 0.137214, 0.15246, 0.114345, 0.106722, 0.099099, 0.137214, 0.160083, 0.099099, 0.07623, 0.083853, 0.175329, 0.07623, 0.106722, 0.045738, 0.068607, 0.030492, 0.045738, 0.038115, 0.060984, 0.251559, 0.038115, 0.091476, 0.015246]
+      popularity: [6.04066, 6.51518, 0.241024, 0.256088, 0.135576, 0.128044, 0.143108, 0.11298, 0.097916, 0.090384, 0.128044, 0.173236, 0.105448, 0.07532, 0.07532, 0.180768, 0.07532, 0.090384, 0.045192, 0.067788, 0.030128, 0.045192, 0.03766, 0.052724, 0.233492, 0.03766, 0.07532, 0.015064]
     },
     ie: {
       prefix: "-ms-",
       versions: [11, 10, 9, 8, 7, 6, 5.5],
-      popularity: [6.40778, 3.74183, 3.18016, 5.65625, 0.213593, 0.28479, 0.009298]
+      popularity: [6.68983, 3.50751, 2.98874, 5.19546, 0.185829, 0.240029, 0.009298]
     },
     ios: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4.3, 4.2, 4.1, 4, 3.2],
-      popularity: [4.18754, 0.4515445, 0.4515445, 0.1317005, 0.1317005, 0.01075105, 0.01075105, 0.00537555, 0.00537555, 0]
+      popularity: [4.20662, 0.468007, 0.468007, 0.1333275, 0.1333275, 0.0108839, 0.0108839, 0.00544195, 0.00544195, 0]
     },
     opera: {
       prefix: "-o-",
       future: [21, 20],
       versions: [19, 18, 17, 16, 15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10.1, 10, 9.6, 9.5],
-      popularity: [0.038115, 0.358281, 0.030492, 0.022869, 0.015246, 0.419265, 0.038115, 0.030492, 0.015246, 0.008219, 0.008219, 0.007623, 0.008392, 0.007623, 0.007623, 0.0038115, 0.0038115]
+      popularity: [0.361536, 0.082852, 0.022596, 0.015064, 0.015064, 0.391664, 0.030128, 0.022596, 0.007532, 0.008219, 0.008219, 0.007532, 0.008392, 0.007532, 0.007532, 0.0038115, 0.0038115]
     },
     safari: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4, 3.2, 3.1],
-      popularity: [1.11296, 0.815661, 0.602217, 0.930006, 0.274428, 0.114345, 0.008692, 0]
+      popularity: [1.26538, 0.760732, 0.497112, 0.881244, 0.256088, 0.090384, 0.008692, 0]
     }
   };
 
@@ -317,6 +317,15 @@
     "tab-size": {
       browsers: ["ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30", "opera 10.6", "opera 11", "opera 11.1", "opera 11.5", "opera 11.6", "opera 12", "opera 12.1"]
     },
+    "text-decoration-color": {
+      browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30"]
+    },
+    "text-decoration-line": {
+      browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30"]
+    },
+    "text-decoration-style": {
+      browsers: ["chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "chrome 36", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "opera 21"]
+    },
     "touch-action": {
       browsers: ["ie 10"]
     },
@@ -353,6 +362,10 @@
     },
     "user-select": {
       browsers: ["android 2.1", "android 2.2", "android 2.3", "android 3", "android 4", "android 4.1", "android 4.2", "android 4.3", "android 4.4", "bb 7", "bb 10", "chrome 6", "chrome 7", "chrome 8", "chrome 9", "chrome 10", "chrome 11", "chrome 12", "chrome 13", "chrome 14", "chrome 15", "chrome 16", "chrome 17", "chrome 18", "chrome 19", "chrome 20", "chrome 21", "chrome 22", "chrome 23", "chrome 24", "chrome 25", "chrome 26", "chrome 27", "chrome 28", "chrome 29", "chrome 30", "chrome 31", "chrome 32", "chrome 33", "chrome 34", "chrome 35", "chrome 36", "ff 2", "ff 3", "ff 3.5", "ff 3.6", "ff 4", "ff 5", "ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30", "ie 10", "ie 11", "ios 3.2", "ios 4", "ios 4.1", "ios 4.2", "ios 4.3", "ios 5", "ios 5.1", "ios 6", "ios 6.1", "ios 7", "opera 15", "opera 16", "opera 17", "opera 18", "opera 19", "opera 20", "opera 21", "safari 3.1", "safari 3.2", "safari 4", "safari 5", "safari 5.1", "safari 6", "safari 6.1", "safari 7"]
+    },
+    wavy: {
+      props: ["text-decoration", "text-decoration-style"],
+      browsers: ["ff 6", "ff 7", "ff 8", "ff 9", "ff 10", "ff 11", "ff 12", "ff 13", "ff 14", "ff 15", "ff 16", "ff 17", "ff 18", "ff 19", "ff 20", "ff 21", "ff 22", "ff 23", "ff 24", "ff 25", "ff 26", "ff 27", "ff 28", "ff 29", "ff 30"]
     },
     "zoom-in": {
       props: ["cursor"],
@@ -4188,23 +4201,13 @@ var substr = 'ab'.substr(-1) === 'b'
     };
 
     MapGenerator.prototype.applyPrevMap = function() {
-      var from, prev, source;
+      var from, prev;
       if (this.prevMap()) {
         prev = this.prevMap();
         prev = typeof prev === 'string' ? JSON.parse(prev) : prev instanceof mozilla.SourceMapConsumer ? mozilla.SourceMapGenerator.fromSourceMap(prev).toJSON() : typeof prev === 'object' && prev.toJSON ? prev.toJSON() : prev;
-        from = path.dirname(this.opts.from);
-        prev.sources = (function() {
-          var _i, _len, _ref, _results;
-          _ref = prev.sources;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            source = _ref[_i];
-            _results.push(this.relative(path.resolve(from, source)));
-          }
-          return _results;
-        }).call(this);
         prev = new mozilla.SourceMapConsumer(prev);
-        return this.map.applySourceMap(prev, this.relative(this.opts.from));
+        from = this.relative(this.opts.from);
+        return this.map.applySourceMap(prev, from, path.dirname(from));
       }
     };
 
@@ -5870,7 +5873,7 @@ define(function (_dereq_, exports, module) {
    *   - sourceRoot: Optional. The URL root from which all sources are relative.
    *   - sourcesContent: Optional. An array of contents of the original source files.
    *   - mappings: A string of base64 VLQs which contain the actual mappings.
-   *   - file: The generated file this source map is associated with.
+   *   - file: Optional. The generated file this source map is associated with.
    *
    * Here is an example source map, taken from the source map spec[0]:
    *
@@ -6154,7 +6157,7 @@ define(function (_dereq_, exports, module) {
                                       "generatedColumn",
                                       util.compareByGeneratedPositions);
 
-      if (mapping) {
+      if (mapping && mapping.generatedLine === needle.generatedLine) {
         var source = util.getArg(mapping, 'source', null);
         if (source && this.sourceRoot) {
           source = util.join(this.sourceRoot, source);
@@ -6336,14 +6339,17 @@ define(function (_dereq_, exports, module) {
 
   /**
    * An instance of the SourceMapGenerator represents a source map which is
-   * being built incrementally. To create a new one, you must pass an object
-   * with the following properties:
+   * being built incrementally. You may pass an object with the following
+   * properties:
    *
    *   - file: The filename of the generated source.
-   *   - sourceRoot: An optional root for all URLs in this source map.
+   *   - sourceRoot: A root for all relative URLs in this source map.
    */
   function SourceMapGenerator(aArgs) {
-    this._file = util.getArg(aArgs, 'file');
+    if (!aArgs) {
+      aArgs = {};
+    }
+    this._file = util.getArg(aArgs, 'file', null);
     this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
     this._sources = new ArraySet();
     this._names = new ArraySet();
@@ -6473,11 +6479,23 @@ define(function (_dereq_, exports, module) {
    * @param aSourceMapConsumer The source map to be applied.
    * @param aSourceFile Optional. The filename of the source file.
    *        If omitted, SourceMapConsumer's file property will be used.
+   * @param aSourceMapPath Optional. The dirname of the path to the source map
+   *        to be applied. If relative, it is relative to the SourceMapConsumer.
+   *        This parameter is needed when the two source maps aren't in the same
+   *        directory, and the source map to be applied contains relative source
+   *        paths. If so, those relative source paths need to be rewritten
+   *        relative to the SourceMapGenerator.
    */
   SourceMapGenerator.prototype.applySourceMap =
-    function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile) {
+    function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
       // If aSourceFile is omitted, we will use the file property of the SourceMap
       if (!aSourceFile) {
+        if (!aSourceMapConsumer.file) {
+          throw new Error(
+            'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
+            'or the source map\'s "file" property. Both were omitted.'
+          );
+        }
         aSourceFile = aSourceMapConsumer.file;
       }
       var sourceRoot = this._sourceRoot;
@@ -6500,10 +6518,12 @@ define(function (_dereq_, exports, module) {
           });
           if (original.source !== null) {
             // Copy mapping
+            mapping.source = original.source;
+            if (aSourceMapPath) {
+              mapping.source = util.join(aSourceMapPath, mapping.source)
+            }
             if (sourceRoot) {
-              mapping.source = util.relative(sourceRoot, original.source);
-            } else {
-              mapping.source = original.source;
+              mapping.source = util.relative(sourceRoot, mapping.source);
             }
             mapping.originalLine = original.line;
             mapping.originalColumn = original.column;
@@ -6762,41 +6782,16 @@ define(function (_dereq_, exports, module) {
       var lastMapping = null;
 
       aSourceMapConsumer.eachMapping(function (mapping) {
-        if (lastMapping === null) {
-          // We add the generated code until the first mapping
-          // to the SourceNode without any mapping.
-          // Each line is added as separate string.
-          while (lastGeneratedLine < mapping.generatedLine) {
-            node.add(remainingLines.shift() + "\n");
-            lastGeneratedLine++;
-          }
-          if (lastGeneratedColumn < mapping.generatedColumn) {
-            var nextLine = remainingLines[0];
-            node.add(nextLine.substr(0, mapping.generatedColumn));
-            remainingLines[0] = nextLine.substr(mapping.generatedColumn);
-            lastGeneratedColumn = mapping.generatedColumn;
-          }
-        } else {
+        if (lastMapping !== null) {
           // We add the code from "lastMapping" to "mapping":
           // First check if there is a new line in between.
           if (lastGeneratedLine < mapping.generatedLine) {
             var code = "";
-            // Associate full lines with "lastMapping"
-            do {
-              code += remainingLines.shift() + "\n";
-              lastGeneratedLine++;
-              lastGeneratedColumn = 0;
-            } while (lastGeneratedLine < mapping.generatedLine);
-            // When we reached the correct line, we add code until we
-            // reach the correct column too.
-            if (lastGeneratedColumn < mapping.generatedColumn) {
-              var nextLine = remainingLines[0];
-              code += nextLine.substr(0, mapping.generatedColumn);
-              remainingLines[0] = nextLine.substr(mapping.generatedColumn);
-              lastGeneratedColumn = mapping.generatedColumn;
-            }
-            // Create the SourceNode.
-            addMappingWithCode(lastMapping, code);
+            // Associate first line with "lastMapping"
+            addMappingWithCode(lastMapping, remainingLines.shift() + "\n");
+            lastGeneratedLine++;
+            lastGeneratedColumn = 0;
+            // The remaining code is added without mapping
           } else {
             // There is no new line in between.
             // Associate the code between "lastGeneratedColumn" and
@@ -6808,14 +6803,37 @@ define(function (_dereq_, exports, module) {
                                                 lastGeneratedColumn);
             lastGeneratedColumn = mapping.generatedColumn;
             addMappingWithCode(lastMapping, code);
+            // No more remaining code, continue
+            lastMapping = mapping;
+            return;
           }
+        }
+        // We add the generated code until the first mapping
+        // to the SourceNode without any mapping.
+        // Each line is added as separate string.
+        while (lastGeneratedLine < mapping.generatedLine) {
+          node.add(remainingLines.shift() + "\n");
+          lastGeneratedLine++;
+        }
+        if (lastGeneratedColumn < mapping.generatedColumn) {
+          var nextLine = remainingLines[0];
+          node.add(nextLine.substr(0, mapping.generatedColumn));
+          remainingLines[0] = nextLine.substr(mapping.generatedColumn);
+          lastGeneratedColumn = mapping.generatedColumn;
         }
         lastMapping = mapping;
       }, this);
       // We have processed all mappings.
-      // Associate the remaining code in the current line with "lastMapping"
-      // and add the remaining lines without any mapping
-      addMappingWithCode(lastMapping, remainingLines.join("\n"));
+      if (remainingLines.length > 0) {
+        if (lastMapping) {
+          // Associate the remaining code in the current line with "lastMapping"
+          var lastLine = remainingLines.shift();
+          if (remainingLines.length > 0) lastLine += "\n";
+          addMappingWithCode(lastMapping, lastLine);
+        }
+        // and add the remaining lines without any mapping
+        node.add(remainingLines.join("\n"));
+      }
 
       // Copy sourcesContent into SourceNode
       aSourceMapConsumer.sources.forEach(function (sourceFile) {
@@ -7053,10 +7071,28 @@ define(function (_dereq_, exports, module) {
         lastOriginalSource = null;
         sourceMappingActive = false;
       }
-      chunk.split('').forEach(function (ch) {
+      chunk.split('').forEach(function (ch, idx, array) {
         if (ch === '\n') {
           generated.line++;
           generated.column = 0;
+          // Mappings end at eol
+          if (idx + 1 === array.length) {
+            lastOriginalSource = null;
+            sourceMappingActive = false;
+          } else if (sourceMappingActive) {
+            map.addMapping({
+              source: original.source,
+              original: {
+                line: original.line,
+                column: original.column
+              },
+              generated: {
+                line: generated.line,
+                column: generated.column
+              },
+              name: original.name
+            });
+          }
         } else {
           generated.column++;
         }
@@ -7106,8 +7142,8 @@ define(function (_dereq_, exports, module) {
   }
   exports.getArg = getArg;
 
-  var urlRegexp = /([\w+\-.]+):\/\/((\w+:\w+)@)?([\w.]+)?(:(\d+))?(\S+)?/;
-  var dataUrlRegexp = /^data:.+\,.+/;
+  var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.]*)(?::(\d+))?(\S*)$/;
+  var dataUrlRegexp = /^data:.+\,.+$/;
 
   function urlParse(aUrl) {
     var match = aUrl.match(urlRegexp);
@@ -7116,18 +7152,22 @@ define(function (_dereq_, exports, module) {
     }
     return {
       scheme: match[1],
-      auth: match[3],
-      host: match[4],
-      port: match[6],
-      path: match[7]
+      auth: match[2],
+      host: match[3],
+      port: match[4],
+      path: match[5]
     };
   }
   exports.urlParse = urlParse;
 
   function urlGenerate(aParsedUrl) {
-    var url = aParsedUrl.scheme + "://";
+    var url = '';
+    if (aParsedUrl.scheme) {
+      url += aParsedUrl.scheme + ':';
+    }
+    url += '//';
     if (aParsedUrl.auth) {
-      url += aParsedUrl.auth + "@"
+      url += aParsedUrl.auth + '@';
     }
     if (aParsedUrl.host) {
       url += aParsedUrl.host;
@@ -7142,19 +7182,112 @@ define(function (_dereq_, exports, module) {
   }
   exports.urlGenerate = urlGenerate;
 
-  function join(aRoot, aPath) {
-    var url;
+  /**
+   * Normalizes a path, or the path portion of a URL:
+   *
+   * - Replaces consequtive slashes with one slash.
+   * - Removes unnecessary '.' parts.
+   * - Removes unnecessary '<dir>/..' parts.
+   *
+   * Based on code in the Node.js 'path' core module.
+   *
+   * @param aPath The path or url to normalize.
+   */
+  function normalize(aPath) {
+    var path = aPath;
+    var url = urlParse(aPath);
+    if (url) {
+      if (!url.path) {
+        return aPath;
+      }
+      path = url.path;
+    }
+    var isAbsolute = (path.charAt(0) === '/');
 
-    if (aPath.match(urlRegexp) || aPath.match(dataUrlRegexp)) {
+    var parts = path.split(/\/+/);
+    for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+      part = parts[i];
+      if (part === '.') {
+        parts.splice(i, 1);
+      } else if (part === '..') {
+        up++;
+      } else if (up > 0) {
+        if (part === '') {
+          // The first part is blank if the path is absolute. Trying to go
+          // above the root is a no-op. Therefore we can remove all '..' parts
+          // directly after the root.
+          parts.splice(i + 1, up);
+          up = 0;
+        } else {
+          parts.splice(i, 2);
+          up--;
+        }
+      }
+    }
+    path = parts.join('/');
+
+    if (path === '') {
+      path = isAbsolute ? '/' : '.';
+    }
+
+    if (url) {
+      url.path = path;
+      return urlGenerate(url);
+    }
+    return path;
+  }
+  exports.normalize = normalize;
+
+  /**
+   * Joins two paths/URLs.
+   *
+   * @param aRoot The root path or URL.
+   * @param aPath The path or URL to be joined with the root.
+   *
+   * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
+   *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
+   *   first.
+   * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
+   *   is updated with the result and aRoot is returned. Otherwise the result
+   *   is returned.
+   *   - If aPath is absolute, the result is aPath.
+   *   - Otherwise the two paths are joined with a slash.
+   * - Joining for example 'http://' and 'www.example.com' is also supported.
+   */
+  function join(aRoot, aPath) {
+    var aPathUrl = urlParse(aPath);
+    var aRootUrl = urlParse(aRoot);
+    if (aRootUrl) {
+      aRoot = aRootUrl.path || '/';
+    }
+
+    // `join(foo, '//www.example.org')`
+    if (aPathUrl && !aPathUrl.scheme) {
+      if (aRootUrl) {
+        aPathUrl.scheme = aRootUrl.scheme;
+      }
+      return urlGenerate(aPathUrl);
+    }
+
+    if (aPathUrl || aPath.match(dataUrlRegexp)) {
       return aPath;
     }
 
-    if (aPath.charAt(0) === '/' && (url = urlParse(aRoot))) {
-      url.path = aPath;
-      return urlGenerate(url);
+    // `join('http://', 'www.example.com')`
+    if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+      aRootUrl.host = aPath;
+      return urlGenerate(aRootUrl);
     }
 
-    return aRoot.replace(/\/$/, '') + '/' + aPath;
+    var joined = aPath.charAt(0) === '/'
+      ? aPath
+      : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
+
+    if (aRootUrl) {
+      aRootUrl.path = joined;
+      return urlGenerate(aRootUrl);
+    }
+    return joined;
   }
   exports.join = join;
 
