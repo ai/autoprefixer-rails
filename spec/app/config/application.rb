@@ -9,5 +9,6 @@ end
 
 module App
   class Application < Rails::Application
+    config.sass.line_comments = false
   end
 end
