@@ -1208,10 +1208,7 @@
     DisplayFlex.prototype.prefixed = function(prefix) {
       var spec, _ref;
       _ref = flexSpec(prefix), spec = _ref[0], prefix = _ref[1];
-      if (spec === 2009 && this.name === 'inline-flex') {
-        return;
-      }
-      return prefix + (spec === 2009 ? 'box' : spec === 2012 ? this.name === 'flex' ? 'flexbox' : 'inline-flexbox' : spec === 'final' ? this.name : void 0);
+      return prefix + (spec === 2009 ? this.name === 'flex' ? 'box' : 'inline-box' : spec === 2012 ? this.name === 'flex' ? 'flexbox' : 'inline-flexbox' : spec === 'final' ? this.name : void 0);
     };
 
     DisplayFlex.prototype.replace = function(string, prefix) {
@@ -1763,8 +1760,12 @@
       'right': 'left top, right top',
       'top right': 'left bottom, right top',
       'top left': 'right bottom, left top',
+      'right top': 'left bottom, right top',
+      'right bottom': 'left top, right bottom',
       'bottom right': 'left top, right bottom',
-      'bottom left': 'right top, left bottom'
+      'bottom left': 'right top, left bottom',
+      'left top': 'right bottom, left top',
+      'left bottom': 'right top, left bottom'
     };
 
     Gradient.prototype.newDirection = function(params) {
@@ -1877,9 +1878,9 @@
           color += ' ' + position;
           position = void 0;
         }
-        if (i === 1) {
+        if (i === 1 && (position === void 0 || position === '0%')) {
           return "from(" + color + ")";
-        } else if (i === params.length - 1) {
+        } else if (i === params.length - 1 && (position === void 0 || position === '100%')) {
           return "to(" + color + ")";
         } else if (position) {
           return "color-stop(" + position + ", " + color + ")";
