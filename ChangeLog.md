@@ -45,6 +45,10 @@
 * Add Chrome 37 data.
 * Fix Chrome 36 data.
 
+## 20140429:
+* Fix `display: inline-flex` support by 2009 spec.
+* Fix old WebKit gradient converter (by Sergey Belov).
+
 ## 1.0 “Plus ultra”
 * Source map support.
 * Save origin indents and code formatting.
