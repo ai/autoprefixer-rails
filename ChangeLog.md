@@ -49,6 +49,11 @@
 * Fix `display: inline-flex` support by 2009 spec.
 * Fix old WebKit gradient converter (by Sergey Belov).
 
+## 20140430:
+* Separate 2D and 3D transform prefixes to clean unnecessary `-ms-` prefixes.
+* Firefox 29 is moved to released versions.
+* Add Firefox 32 data.
+
 ## 1.0 “Plus ultra”
 * Source map support.
 * Save origin indents and code formatting.
