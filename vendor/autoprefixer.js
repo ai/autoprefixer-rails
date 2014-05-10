@@ -5,46 +5,46 @@
       prefix: "-webkit-",
       minor: true,
       versions: [4.4, 4.3, 4.2, 4.1, 4, 3, 2.3, 2.2, 2.1],
-      popularity: [0.342673, 0.89871, 0.89871, 2.22414, 0.92457, 0.00646552, 1.15086, 0.0711207, 0.0258621]
+      popularity: [0.337062, 0.858555, 0.858555, 2.18772, 0.909432, 0.00635967, 1.13202, 0.0699563, 0.0254387]
     },
     bb: {
       prefix: "-webkit-",
       minor: true,
       versions: [10, 7],
-      popularity: [0, 0.13409]
+      popularity: [0, 0.113215]
     },
     chrome: {
       prefix: "-webkit-",
       future: [37, 36, 35],
       versions: [34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4],
-      popularity: [0.171534, 28.4597, 1.56618, 1.07395, 0.253572, 0.440022, 0.201366, 0.328152, 0.193908, 0.089496, 0.052206, 0.067122, 0.126786, 0.454938, 0.03729, 0.029832, 0.067122, 0.022374, 0.03729, 0.052206, 0.044748, 0.044748, 0.052206, 0.119328, 0.029832, 0.014916, 0.022374, 0.022374, 0.029832, 0.022374, 0.022374]
+      popularity: [19.4573, 11.5844, 0.71231, 0.809784, 0.239936, 0.41239, 0.172454, 0.457378, 0.172454, 0.082478, 0.052486, 0.067482, 0.11247, 0.48737, 0.03749, 0.022494, 0.067482, 0.022494, 0.029992, 0.052486, 0.03749, 0.044988, 0.052486, 0.11247, 0.029992, 0.014996, 0.022494, 0.014996, 0.022494, 0.022494, 0.022494]
     },
     ff: {
       prefix: "-moz-",
       future: [32, 31, 30],
       versions: [29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3.6, 3.5, 3, 2],
-      popularity: [0.134244, 1.82721, 10.2175, 0.454938, 0.171534, 0.238656, 0.119328, 0.11187, 0.156618, 0.096954, 0.082038, 0.089496, 0.11187, 0.156618, 0.096954, 0.067122, 0.067122, 0.156618, 0.067122, 0.082038, 0.03729, 0.052206, 0.029832, 0.03729, 0.029832, 0.044748, 0.201366, 0.029832, 0.096954, 0.014916]
+      popularity: [0.48737, 11.382, 0.63733, 0.269928, 0.134964, 0.232438, 0.097474, 0.104972, 0.22494, 0.089976, 0.07498, 0.059984, 0.104972, 0.142462, 0.082478, 0.059984, 0.059984, 0.142462, 0.059984, 0.067482, 0.03749, 0.052486, 0.029992, 0.03749, 0.029992, 0.044988, 0.179952, 0.029992, 0.07498, 0.007498]
     },
     ie: {
       prefix: "-ms-",
       versions: [11, 10, 9, 8, 7, 6, 5.5],
-      popularity: [7.01035, 3.21991, 2.94638, 5.2519, 0.195383, 0.461104, 0.009298]
+      popularity: [7.0483, 3.02851, 2.78654, 4.76912, 0.163914, 0.288801, 0.009298]
     },
     ios: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4.3, 4.2, 4.1, 4, 3.2],
-      popularity: [4.68985, 0.397055, 0.397055, 0.120843, 0.120843, 0.01150885, 0.01150885, 0.0057544, 0.0057544, 0]
+      popularity: [4.58455, 0.3607695, 0.3607695, 0.113781, 0.113781, 0.0111006, 0.0111006, 0.0055503, 0.0055503, 0]
     },
     opera: {
       prefix: "-o-",
       future: [22, 21],
       versions: [20, 19, 18, 17, 16, 15, 12.1, 12, 11.6, 11.5, 11.1, 11, 10.6, 10.5, 10.1, 10, 9.6, 9.5],
-      popularity: [0.350526, 0.11187, 0.044748, 0.014916, 0.014916, 0.014916, 0.365442, 0.029832, 0.022374, 0.007458, 0.008219, 0.022374, 0.007458, 0.008392, 0.011187, 0.011187, 0.003729, 0.003729]
+      popularity: [0.464876, 0.03749, 0.029992, 0.014996, 0.007498, 0.007498, 0.367402, 0.029992, 0.014996, 0.007498, 0.008219, 0.014996, 0.014996, 0.008392, 0.003749, 0.003749, 0.003749, 0.003749]
     },
     safari: {
       prefix: "-webkit-",
       versions: [7, 6.1, 6, 5.1, 5, 4, 3.2, 3.1],
-      popularity: [1.42448, 0.723426, 0.432564, 0.842754, 0.246114, 0.134244, 0.008692, 0]
+      popularity: [1.57458, 0.67482, 0.41239, 0.794788, 0.232438, 0.11247, 0.008692, 0]
     }
   };
 
@@ -2092,6 +2092,8 @@
 
     TransformDecl.names = ['transform', 'transform-origin'];
 
+    TransformDecl.functions3d = ['matrix3d', 'translate3d', 'translateZ', 'scale3d', 'scaleZ', 'rotate3d', 'rotateX', 'rotateY', 'rotateZ', 'perspective'];
+
     TransformDecl.prototype.keykrameParents = function(decl) {
       var parent;
       parent = decl.parent;
@@ -2104,8 +2106,24 @@
       return false;
     };
 
+    TransformDecl.prototype.contain3d = function(decl) {
+      var func, _i, _len, _ref;
+      _ref = TransformDecl.functions3d;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        func = _ref[_i];
+        if (decl.value.indexOf("" + func + "(") !== -1) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     TransformDecl.prototype.insert = function(decl, prefix, prefixes) {
-      if (prefix !== '-ms-' || !this.keykrameParents(decl)) {
+      if (prefix === '-ms-') {
+        if (!this.contain3d(decl) && !this.keykrameParents(decl)) {
+          return TransformDecl.__super__.insert.apply(this, arguments);
+        }
+      } else {
         return TransformDecl.__super__.insert.apply(this, arguments);
       }
     };
@@ -3248,68 +3266,6 @@
 },{"./old-value":34,"./prefixer":35,"./utils":39,"postcss/lib/vendor":59}],41:[function(_dereq_,module,exports){
 
 },{}],42:[function(_dereq_,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-function noop() {}
-
-process.on = noop;
-process.once = noop;
-process.off = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-}
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],43:[function(_dereq_,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -3536,8 +3492,73 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":42}],44:[function(_dereq_,module,exports){
+}).call(this,_dereq_("+xKvab"))
+},{"+xKvab":43}],43:[function(_dereq_,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            var source = ev.source;
+            if ((source === window || source === null) && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],44:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Container, name, _fn, _i, _len, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -4391,7 +4412,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{"./lazy":48,"./result":55,"base64-js":60,"fs":41,"path":43,"source-map":61}],51:[function(_dereq_,module,exports){
+},{"./lazy":48,"./result":55,"base64-js":60,"fs":41,"path":42,"source-map":61}],51:[function(_dereq_,module,exports){
 (function() {
   var Node, Raw, clone, keys,
     __hasProp = {}.hasOwnProperty;
@@ -7773,7 +7794,7 @@ function amdefine(module, requireFn) {
 
 module.exports = amdefine;
 
-}).call(this,_dereq_("/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"),"/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js")
-},{"/home/ai/Dev/autoprefixer/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":42,"path":43}]},{},[3])
+}).call(this,_dereq_("+xKvab"),"/../node_modules/postcss/node_modules/source-map/node_modules/amdefine/amdefine.js")
+},{"+xKvab":43,"path":42}]},{},[3])
 (3)
 });
