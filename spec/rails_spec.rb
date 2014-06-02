@@ -8,17 +8,17 @@ describe CssController, type: :controller do
 
   it "integrates with Rails and Sass" do
     get :test, file: 'sass'
-    response.should be_success
-    response.body.should == "a {\n" +
-                            "  -webkit-transition: all 1s;\n" +
-                            "  transition: all 1s; }\n"
+    expect(response).to be_success
+    expect(response.body).to eq "a {\n" +
+                                "  -webkit-transition: all 1s;\n" +
+                                "  transition: all 1s; }\n"
   end
 end
 
 describe 'Rake task' do
   it "shows debug" do
     info = `cd spec/app; bundle exec rake autoprefixer:info`
-    info.should =~ /Browsers:\n  Chrome: 25\n\n/
-    info.should =~ /  transition: webkit/
+    expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)
+    expect(info).to match(/  transition: webkit/)
   end
 end
