@@ -1,3 +1,8 @@
+## 1.2 “Meiji”
+* Use Can I Use data from official `caniuse-db` npm package.
+* Change versions to `x.x.x.y`, where `x.x.x` is Autoprefixer npm version
+  and `y` is a `caniuse-db` date.
+
 ## 1.1 “Nutrisco et extingo”
 * Add source map annotation comment support.
 * Add inline source map support.

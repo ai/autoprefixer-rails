@@ -1,3 +1,3 @@
 module AutoprefixerRails
-  VERSION = '1.1.20140605'.freeze unless defined? AutoprefixerRails::VERSION
+  VERSION = '1.2.0.20140609'.freeze unless defined? AutoprefixerRails::VERSION
 end
