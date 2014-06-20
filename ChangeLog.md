@@ -1,3 +1,8 @@
+## 1.3 “Tenka Fubu”
+* Add `text-size-adjust` support.
+* Add `background-size` to support Android 2.
+* Update Can I Use data.
+
 ## 1.2 “Meiji”
 * Use Can I Use data from official `caniuse-db` npm package.
 * Change versions to `x.x.x.y`, where `x.x.x` is Autoprefixer npm version
