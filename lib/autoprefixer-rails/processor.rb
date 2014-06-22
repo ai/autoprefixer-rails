@@ -7,7 +7,6 @@ module AutoprefixerRails
     def initialize(browsers = nil, opts = {})
       @browsers = browsers || []
       @options  = opts
-      @options[:cascade] = true unless @options.has_key? :cascade
     end
 
     # Process `css` and return result.
@@ -66,7 +65,8 @@ module AutoprefixerRails
       <<-JS
         var process = function() {
           var result = processor.process.apply(processor, arguments);
-          return { css: result.css, map: result.map };
+          var map    = result.map ? result.map.toString() : null;
+          return { css: result.css, map: map };
         };
       JS
     end
