@@ -1766,8 +1766,7 @@
     Gradient.names = ['linear-gradient', 'repeating-linear-gradient', 'radial-gradient', 'repeating-radial-gradient'];
 
     Gradient.prototype.replace = function(string, prefix) {
-      var values;
-      values = list.comma(string).map((function(_this) {
+      return list.space(string).map((function(_this) {
         return function(value) {
           var after, args, close, params;
           if (value.slice(0, +_this.name.length + 1 || 9e9) !== _this.name + '(') {
@@ -1785,8 +1784,7 @@
             return prefix + _this.name + '(' + params.join(', ') + ')' + after;
           }
         };
-      })(this));
-      return values.join(', ');
+      })(this)).join(' ');
     };
 
     Gradient.prototype.directions = {
