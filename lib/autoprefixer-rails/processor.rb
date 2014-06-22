@@ -16,6 +16,7 @@ module AutoprefixerRails
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
     def process(css, opts = {})
+      opts   = convert_options(opts)
       result = processor.call('process', css, opts)
       Result.new(result['css'], result['map'])
     end
@@ -28,6 +29,21 @@ module AutoprefixerRails
     # Lazy load for JS instance
     def processor
       @processor ||= ExecJS.compile(build_js)
+    end
+
+    # Convert ruby_options to jsOptions
+    def convert_options(opts)
+      converted = { }
+
+      opts.each_pair do |name, value|
+        if name =~ /_/
+          name = name.to_s.gsub(/_\w/) { |i| i.chars[1].upcase }.to_sym
+        end
+        value = convert_options(value) if value.is_a? Hash
+        converted[name] = value
+      end
+
+      converted
     end
 
     private

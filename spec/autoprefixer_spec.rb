@@ -23,22 +23,11 @@ describe AutoprefixerRails do
     expect(result.map).to be_a(String)
   end
 
-  it "creates visual cascade by default" do
-    css    = "a {\n  transition: all 1s\n  }"
-    result = AutoprefixerRails.process(@css)
-    expect(result.css).to eq "a {\n" +
-                             "    -webkit-transition: all 1s;\n" +
-                             "            transition: all 1s\n" +
-                             "}\n"
-  end
-
-  it "disables visual cascade on request" do
-    css    = "a {\n  transition: all 1s\n  }"
-    result = AutoprefixerRails.process(@css, cascade: false)
-    expect(result.css).to eq "a {\n" +
-                             "    -webkit-transition: all 1s;\n" +
-                             "    transition: all 1s\n" +
-                             "}\n"
+  it "convert options" do
+    result = AutoprefixerRails.process @css,
+      from: 'a.css',
+      map:  { sources_content: true }
+    expect(result.map).to include('"sourcesContent":["a {')
   end
 
   it "uses file name in syntax errors", not_jruby: true do

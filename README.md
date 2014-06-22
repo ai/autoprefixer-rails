@@ -144,3 +144,7 @@ result = AutoprefixerRails.process(css, {
 
 result.map #=> Source map from main.sass to main.min.css
 ```
+
+See all options in [PostCSS docs](https://github.com/ai/postcss#source-map-1).
+AutoprefixerRails will convert Ruby style to JS style, so you can use
+`map: { sources_content: true }` instead of camelcase `sourcesContent`.
