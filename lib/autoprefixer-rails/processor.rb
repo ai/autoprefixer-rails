@@ -37,7 +37,7 @@ module AutoprefixerRails
 
       opts.each_pair do |name, value|
         if name =~ /_/
-          name = name.to_s.gsub(/_\w/) { |i| i.chars[1].upcase }.to_sym
+          name = name.to_s.gsub(/_\w/) { |i| i.gsub('_', '').upcase }.to_sym
         end
         value = convert_options(value) if value.is_a? Hash
         converted[name] = value
