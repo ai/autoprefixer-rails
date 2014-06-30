@@ -362,9 +362,15 @@
     });
   });
 
+  feature(_dereq_('caniuse-db/features-json/css-masks'), function(browsers) {
+    return prefix('clip-path', 'mask', 'mask-clip', 'mask-composite', 'mask-image', 'mask-origin', 'mask-position', 'mask-repeat', 'mask-size', {
+      browsers: browsers
+    });
+  });
+
 }).call(this);
 
-},{"./browsers":1,"caniuse-db/features-json/background-img-opts":47,"caniuse-db/features-json/border-image":48,"caniuse-db/features-json/border-radius":49,"caniuse-db/features-json/calc":50,"caniuse-db/features-json/css-animation":51,"caniuse-db/features-json/css-boxshadow":52,"caniuse-db/features-json/css-filters":53,"caniuse-db/features-json/css-gradients":54,"caniuse-db/features-json/css-hyphens":55,"caniuse-db/features-json/css-placeholder":56,"caniuse-db/features-json/css-selection":57,"caniuse-db/features-json/css-sticky":58,"caniuse-db/features-json/css-transitions":59,"caniuse-db/features-json/css3-boxsizing":60,"caniuse-db/features-json/css3-cursors-newer":61,"caniuse-db/features-json/css3-tabsize":62,"caniuse-db/features-json/flexbox":63,"caniuse-db/features-json/font-feature":64,"caniuse-db/features-json/fullscreen":65,"caniuse-db/features-json/intrinsic-width":66,"caniuse-db/features-json/multicolumn":67,"caniuse-db/features-json/pointer":68,"caniuse-db/features-json/text-decoration":69,"caniuse-db/features-json/text-size-adjust":70,"caniuse-db/features-json/transforms2d":71,"caniuse-db/features-json/transforms3d":72,"caniuse-db/features-json/user-select-none":73}],3:[function(_dereq_,module,exports){
+},{"./browsers":1,"caniuse-db/features-json/background-img-opts":47,"caniuse-db/features-json/border-image":48,"caniuse-db/features-json/border-radius":49,"caniuse-db/features-json/calc":50,"caniuse-db/features-json/css-animation":51,"caniuse-db/features-json/css-boxshadow":52,"caniuse-db/features-json/css-filters":53,"caniuse-db/features-json/css-gradients":54,"caniuse-db/features-json/css-hyphens":55,"caniuse-db/features-json/css-masks":56,"caniuse-db/features-json/css-placeholder":57,"caniuse-db/features-json/css-selection":58,"caniuse-db/features-json/css-sticky":59,"caniuse-db/features-json/css-transitions":60,"caniuse-db/features-json/css3-boxsizing":61,"caniuse-db/features-json/css3-cursors-newer":62,"caniuse-db/features-json/css3-tabsize":63,"caniuse-db/features-json/flexbox":64,"caniuse-db/features-json/font-feature":65,"caniuse-db/features-json/fullscreen":66,"caniuse-db/features-json/intrinsic-width":67,"caniuse-db/features-json/multicolumn":68,"caniuse-db/features-json/pointer":69,"caniuse-db/features-json/text-decoration":70,"caniuse-db/features-json/text-size-adjust":71,"caniuse-db/features-json/transforms2d":72,"caniuse-db/features-json/transforms3d":73,"caniuse-db/features-json/user-select-none":74}],3:[function(_dereq_,module,exports){
 (function() {
   var Autoprefixer, Browsers, Prefixes, autoprefixer, infoCache, isPlainObject, postcss,
     __slice = [].slice,
@@ -475,7 +481,7 @@
 
 }).call(this);
 
-},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":32,"./prefixes":37,"postcss":83}],4:[function(_dereq_,module,exports){
+},{"../data/browsers":1,"../data/prefixes":2,"./browsers":4,"./info":32,"./prefixes":37,"postcss":84}],4:[function(_dereq_,module,exports){
 (function() {
   var Browsers, utils;
 
@@ -839,7 +845,7 @@
 
 }).call(this);
 
-},{"./browsers":4,"./prefixer":36,"./utils":41,"postcss/lib/vendor":90}],6:[function(_dereq_,module,exports){
+},{"./browsers":4,"./prefixer":36,"./utils":41,"postcss/lib/vendor":91}],6:[function(_dereq_,module,exports){
 (function() {
   var AlignContent, Declaration, flexSpec,
     __hasProp = {}.hasOwnProperty,
@@ -1322,7 +1328,7 @@
     Filter.prototype.check = function(decl) {
       var v;
       v = decl.value;
-      return v.toLowerCase().indexOf('alpha(') === -1 && v.indexOf('DXImageTransform.Microsoft') === -1 && v.indexOf('url(') === -1;
+      return v.toLowerCase().indexOf('alpha(') === -1 && v.indexOf('DXImageTransform.Microsoft') === -1;
     };
 
     return Filter;
@@ -1942,7 +1948,7 @@
 
 }).call(this);
 
-},{"../old-value":35,"../utils":41,"../value":42,"postcss/lib/list":79}],26:[function(_dereq_,module,exports){
+},{"../old-value":35,"../utils":41,"../value":42,"postcss/lib/list":80}],26:[function(_dereq_,module,exports){
 (function() {
   var Declaration, JustifyContent, flexSpec,
     __hasProp = {}.hasOwnProperty,
@@ -2611,7 +2617,7 @@
 
 }).call(this);
 
-},{"./browsers":4,"./utils":41,"postcss/lib/vendor":90}],37:[function(_dereq_,module,exports){
+},{"./browsers":4,"./utils":41,"postcss/lib/vendor":91}],37:[function(_dereq_,module,exports){
 (function() {
   var Browsers, Declaration, Keyframes, Prefixes, Processor, Selector, Supports, Value, declsCache, utils, vendor;
 
@@ -2965,7 +2971,7 @@
 
 }).call(this);
 
-},{"./browsers":4,"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/background-size":9,"./hacks/border-image":10,"./hacks/border-radius":11,"./hacks/break-inside":12,"./hacks/display-flex":13,"./hacks/fill-available":14,"./hacks/filter":15,"./hacks/flex":23,"./hacks/flex-basis":16,"./hacks/flex-direction":17,"./hacks/flex-flow":18,"./hacks/flex-grow":19,"./hacks/flex-shrink":20,"./hacks/flex-wrap":22,"./hacks/fullscreen":24,"./hacks/gradient":25,"./hacks/justify-content":26,"./hacks/order":27,"./hacks/placeholder":28,"./hacks/transform-decl":29,"./hacks/transform-value":30,"./hacks/transition":31,"./keyframes":33,"./processor":38,"./selector":39,"./supports":40,"./utils":41,"./value":42,"postcss/lib/vendor":90}],38:[function(_dereq_,module,exports){
+},{"./browsers":4,"./declaration":5,"./hacks/align-content":6,"./hacks/align-items":7,"./hacks/align-self":8,"./hacks/background-size":9,"./hacks/border-image":10,"./hacks/border-radius":11,"./hacks/break-inside":12,"./hacks/display-flex":13,"./hacks/fill-available":14,"./hacks/filter":15,"./hacks/flex":23,"./hacks/flex-basis":16,"./hacks/flex-direction":17,"./hacks/flex-flow":18,"./hacks/flex-grow":19,"./hacks/flex-shrink":20,"./hacks/flex-wrap":22,"./hacks/fullscreen":24,"./hacks/gradient":25,"./hacks/justify-content":26,"./hacks/order":27,"./hacks/placeholder":28,"./hacks/transform-decl":29,"./hacks/transform-value":30,"./hacks/transition":31,"./keyframes":33,"./processor":38,"./selector":39,"./supports":40,"./utils":41,"./value":42,"postcss/lib/vendor":91}],38:[function(_dereq_,module,exports){
 (function() {
   var Processor, Value, utils, vendor;
 
@@ -3104,7 +3110,7 @@
 
 }).call(this);
 
-},{"./utils":41,"./value":42,"postcss/lib/vendor":90}],39:[function(_dereq_,module,exports){
+},{"./utils":41,"./value":42,"postcss/lib/vendor":91}],39:[function(_dereq_,module,exports){
 (function() {
   var Browsers, OldSelector, Prefixer, Selector, utils,
     __hasProp = {}.hasOwnProperty,
@@ -3340,7 +3346,7 @@
 
 }).call(this);
 
-},{"./prefixes":37,"./utils":41,"./value":42,"postcss":83,"postcss/lib/list":79}],41:[function(_dereq_,module,exports){
+},{"./prefixes":37,"./utils":41,"./value":42,"postcss":84,"postcss/lib/list":80}],41:[function(_dereq_,module,exports){
 (function() {
   module.exports = {
     error: function(text) {
@@ -3484,7 +3490,7 @@
 
 }).call(this);
 
-},{"./old-value":35,"./prefixer":36,"./utils":41,"postcss/lib/vendor":90}],43:[function(_dereq_,module,exports){
+},{"./old-value":35,"./prefixer":36,"./utils":41,"postcss/lib/vendor":91}],43:[function(_dereq_,module,exports){
 
 },{}],44:[function(_dereq_,module,exports){
 (function (process){
@@ -5605,6 +5611,203 @@ module.exports={
 }
 },{}],56:[function(_dereq_,module,exports){
 module.exports={
+  "title":"CSS Masks",
+  "description":"Method of displaying part of an element, using a selected image as a mask",
+  "spec":"http://www.w3.org/TR/css-masking/",
+  "status":"wd",
+  "links":[
+    {
+      "url":"http://www.html5rocks.com/en/tutorials/masking/adobe/",
+      "title":"HTML5 Rocks article"
+    },
+    {
+      "url":"http://docs.webplatform.org/wiki/css/properties/mask",
+      "title":"WebPlatform Docs"
+    },
+    {
+      "url":"http://thenittygritty.co/css-masking",
+      "title":"Detailed blog post"
+    }
+  ],
+  "bugs":[
+    
+  ],
+  "categories":[
+    "CSS"
+  ],
+  "stats":{
+    "ie":{
+      "5.5":"n",
+      "6":"n",
+      "7":"n",
+      "8":"n",
+      "9":"n",
+      "10":"n",
+      "11":"n"
+    },
+    "firefox":{
+      "2":"n",
+      "3":"n",
+      "3.5":"a",
+      "3.6":"a",
+      "4":"a",
+      "5":"a",
+      "6":"a",
+      "7":"a",
+      "8":"a",
+      "9":"a",
+      "10":"a",
+      "11":"a",
+      "12":"a",
+      "13":"a",
+      "14":"a",
+      "15":"a",
+      "16":"a",
+      "17":"a",
+      "18":"a",
+      "19":"a",
+      "20":"a",
+      "21":"a",
+      "22":"a",
+      "23":"a",
+      "24":"a",
+      "25":"a",
+      "26":"a",
+      "27":"a",
+      "28":"a",
+      "29":"a",
+      "30":"a",
+      "31":"a",
+      "32":"a",
+      "33":"a"
+    },
+    "chrome":{
+      "4":"a x",
+      "5":"a x",
+      "6":"a x",
+      "7":"a x",
+      "8":"a x",
+      "9":"a x",
+      "10":"a x",
+      "11":"a x",
+      "12":"a x",
+      "13":"a x",
+      "14":"a x",
+      "15":"a x",
+      "16":"a x",
+      "17":"a x",
+      "18":"a x",
+      "19":"a x",
+      "20":"a x",
+      "21":"a x",
+      "22":"a x",
+      "23":"a x",
+      "24":"a x",
+      "25":"a x",
+      "26":"a x",
+      "27":"a x",
+      "28":"a x",
+      "29":"a x",
+      "30":"a x",
+      "31":"a x",
+      "32":"a x",
+      "33":"a x",
+      "34":"a x",
+      "35":"a x",
+      "36":"a x",
+      "37":"a x",
+      "38":"a x"
+    },
+    "safari":{
+      "3.1":"n",
+      "3.2":"n",
+      "4":"a x",
+      "5":"a x",
+      "5.1":"a x",
+      "6":"a x",
+      "6.1":"a x",
+      "7":"a x",
+      "8":"a x"
+    },
+    "opera":{
+      "9":"n",
+      "9.5-9.6":"n",
+      "10.0-10.1":"n",
+      "10.5":"n",
+      "10.6":"n",
+      "11":"n",
+      "11.1":"n",
+      "11.5":"n",
+      "11.6":"n",
+      "12":"n",
+      "12.1":"n",
+      "15":"a x",
+      "16":"a x",
+      "17":"a x",
+      "18":"a x",
+      "19":"a x",
+      "20":"a x",
+      "21":"a x",
+      "22":"a x",
+      "23":"a x",
+      "24":"a x"
+    },
+    "ios_saf":{
+      "3.2":"a x",
+      "4.0-4.1":"a x",
+      "4.2-4.3":"a x",
+      "5.0-5.1":"a x",
+      "6.0-6.1":"a x",
+      "7.0-7.1":"a x",
+      "8":"a x"
+    },
+    "op_mini":{
+      "5.0-7.0":"n"
+    },
+    "android":{
+      "2.1":"a x",
+      "2.2":"a x",
+      "2.3":"a x",
+      "3":"a x",
+      "4":"a x",
+      "4.1":"a x",
+      "4.2-4.3":"a x",
+      "4.4":"a x",
+      "4.4.3":"a x"
+    },
+    "bb":{
+      "7":"a x",
+      "10":"a x"
+    },
+    "op_mob":{
+      "10":"n",
+      "11":"n",
+      "11.1":"n",
+      "11.5":"n",
+      "12":"n",
+      "12.1":"n",
+      "0":"a x"
+    },
+    "and_chr":{
+      "0":"a x"
+    },
+    "and_ff":{
+      "0":"a"
+    },
+    "ie_mob":{
+      "10":"n"
+    }
+  },
+  "notes":"Partial support in WebKit/Blink browsers refers to supporting the mask-image and mask-box-image properties, but lacks support for othe parts of the spec. Partial support in Firefox refers to only support for inline SVG mask elements i.e. mask: url(#foo).",
+  "usage_perc_y":0,
+  "usage_perc_a":72.11,
+  "ucprefix":false,
+  "parent":"",
+  "keywords":"",
+  "shown":true
+}
+},{}],57:[function(_dereq_,module,exports){
+module.exports={
   "title":":placeholder-shown CSS pseudo-class",
   "description":"The :placeholder-shown pseudo-class represents the placeholder contents of a form field with placeholder text.",
   "spec":"http://dev.w3.org/csswg/selectors/#placeholder",
@@ -5800,7 +6003,7 @@ module.exports={
   "keywords":"::placeholder,placeholder",
   "shown":true
 }
-},{}],57:[function(_dereq_,module,exports){
+},{}],58:[function(_dereq_,module,exports){
 module.exports={
   "title":"::selection CSS pseudo-element",
   "description":"The ::selection CSS pseudo-element applies rules to the portion of a document that has been highlighted (e.g., selected with the mouse or another pointing device) by the user.",
@@ -5995,7 +6198,7 @@ module.exports={
   "keywords":"::selection,selection",
   "shown":true
 }
-},{}],58:[function(_dereq_,module,exports){
+},{}],59:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS position:sticky",
   "description":"Keeps elements positioned as \"fixed\" or \"relative\" depending on how it appears in the viewport. As a result the element is \"stuck\" when necessary while scrolling.",
@@ -6196,7 +6399,7 @@ module.exports={
   "keywords":"",
   "shown":true
 }
-},{}],59:[function(_dereq_,module,exports){
+},{}],60:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 Transitions",
   "description":"Simple method of animating certain properties of an element",
@@ -6403,7 +6606,7 @@ module.exports={
   "keywords":"css transition",
   "shown":true
 }
-},{}],60:[function(_dereq_,module,exports){
+},{}],61:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 Box-sizing",
   "description":"Method of specifying whether or not an element's borders and padding should be included in size units",
@@ -6616,7 +6819,7 @@ module.exports={
   "keywords":"border-box,content-box,padding-box",
   "shown":true
 }
-},{}],61:[function(_dereq_,module,exports){
+},{}],62:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 Cursors (new values)",
   "description":"Support for zoom-in and zoom-out values for the CSS3 cursor property.",
@@ -6805,7 +7008,7 @@ module.exports={
   "keywords":"cursors, pointers",
   "shown":false
 }
-},{}],62:[function(_dereq_,module,exports){
+},{}],63:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 tab-size",
   "description":"Method of customizing the width of the tab character. Only effective using 'white-space: pre' or 'white-space: pre-wrap'.",
@@ -6994,7 +7197,7 @@ module.exports={
   "keywords":"tab-size,tab-width",
   "shown":true
 }
-},{}],63:[function(_dereq_,module,exports){
+},{}],64:[function(_dereq_,module,exports){
 module.exports={
   "title":"Flexible Box Layout Module",
   "description":"Method of positioning elements in horizontal or vertical stacks.",
@@ -7214,7 +7417,7 @@ module.exports={
   "keywords":"flex",
   "shown":true
 }
-},{}],64:[function(_dereq_,module,exports){
+},{}],65:[function(_dereq_,module,exports){
 module.exports={
   "title":"Font feature settings",
   "description":"Method of applying advanced typographic and language-specific font features to supported OpenType fonts.",
@@ -7415,7 +7618,7 @@ module.exports={
   "keywords":"font-feature,font-feature-settings,kern,kerning,font-variant-alternates,ligatures,font-variant-ligatures",
   "shown":true
 }
-},{}],65:[function(_dereq_,module,exports){
+},{}],66:[function(_dereq_,module,exports){
 module.exports={
   "title":"Full Screen API",
   "description":"API for allowing content (like a video or canvas element) to take up the entire screen.",
@@ -7618,7 +7821,7 @@ module.exports={
   "keywords":"full-screen",
   "shown":true
 }
-},{}],66:[function(_dereq_,module,exports){
+},{}],67:[function(_dereq_,module,exports){
 module.exports={
   "title":"Intrinsic & Extrinsic Sizing",
   "description":"Allows for the heights and widths to be specified in intrinsic values using the fill-available, max-content, min-content, and fit-content properties.",
@@ -7807,7 +8010,7 @@ module.exports={
   "keywords":"fill-available,max-content,min-content,fit-content,contain-floats",
   "shown":true
 }
-},{}],67:[function(_dereq_,module,exports){
+},{}],68:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 Multiple column layout",
   "description":"Method of flowing information in multiple columns",
@@ -8006,7 +8209,7 @@ module.exports={
   "keywords":"column-count",
   "shown":true
 }
-},{}],68:[function(_dereq_,module,exports){
+},{}],69:[function(_dereq_,module,exports){
 module.exports={
   "title":"Pointer events",
   "description":"This specification integrates various inputs from mice, touchscreens, and pens, making separate implementations no longer necessary and authoring for cross-device pointers easier. Not to be mistaken with the unrelated \"pointer-events\" CSS property.",
@@ -8204,7 +8407,7 @@ module.exports={
   "keywords":"pointerdown,pointermove,pointerup,pointercancel,pointerover,pointerout,pointerenter,pointerleave",
   "shown":true
 }
-},{}],69:[function(_dereq_,module,exports){
+},{}],70:[function(_dereq_,module,exports){
 module.exports={
   "title":"text-decoration styling",
   "description":"Method of defining the type, style and color of lines in the text-decoration property.",
@@ -8401,7 +8604,7 @@ module.exports={
   "keywords":"text-decoration-line,text-decoration-style,text-decoration-color",
   "shown":true
 }
-},{}],70:[function(_dereq_,module,exports){
+},{}],71:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS text-size-adjust",
   "description":"On mobile devices, the text-size-adjust CSS property allows Web authors to control if and how the text-inflating algorithm is applied to the textual content of the element it is applied to.",
@@ -8595,7 +8798,7 @@ module.exports={
   "keywords":"",
   "shown":true
 }
-},{}],71:[function(_dereq_,module,exports){
+},{}],72:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 Transforms",
   "description":"Method of transforming an element including rotating, scaling, etc.",
@@ -8816,7 +9019,7 @@ module.exports={
   "keywords":"transformation,translate,rotation,rotate,scale,css-transforms",
   "shown":true
 }
-},{}],72:[function(_dereq_,module,exports){
+},{}],73:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS3 3D Transforms",
   "description":"Method of transforming an element in the third dimension",
@@ -9023,7 +9226,7 @@ module.exports={
   "keywords":"css 3d,3dtransforms,translate3d,transform3d",
   "shown":true
 }
-},{}],73:[function(_dereq_,module,exports){
+},{}],74:[function(_dereq_,module,exports){
 module.exports={
   "title":"CSS user-select: none",
   "description":"Method of preventing text/element selection using CSS. ",
@@ -9220,7 +9423,7 @@ module.exports={
   "keywords":"",
   "shown":true
 }
-},{}],74:[function(_dereq_,module,exports){
+},{}],75:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Container, name, _fn, _i, _len, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -9316,7 +9519,7 @@ module.exports={
 
 }).call(this);
 
-},{"./container":76}],75:[function(_dereq_,module,exports){
+},{"./container":77}],76:[function(_dereq_,module,exports){
 (function() {
   var Comment, Node,
     __hasProp = {}.hasOwnProperty,
@@ -9356,7 +9559,7 @@ module.exports={
 
 }).call(this);
 
-},{"./node":81}],76:[function(_dereq_,module,exports){
+},{"./node":82}],77:[function(_dereq_,module,exports){
 (function() {
   var Container, Declaration, Node,
     __hasProp = {}.hasOwnProperty,
@@ -9708,7 +9911,7 @@ module.exports={
 
 }).call(this);
 
-},{"./declaration":78,"./node":81}],77:[function(_dereq_,module,exports){
+},{"./declaration":79,"./node":82}],78:[function(_dereq_,module,exports){
 (function() {
   var deprected, mozilla;
 
@@ -9770,7 +9973,7 @@ module.exports={
 
 }).call(this);
 
-},{"source-map":92}],78:[function(_dereq_,module,exports){
+},{"source-map":93}],79:[function(_dereq_,module,exports){
 (function() {
   var Declaration, Node, vendor,
     __hasProp = {}.hasOwnProperty,
@@ -9842,7 +10045,7 @@ module.exports={
 
 }).call(this);
 
-},{"./node":81,"./vendor":90}],79:[function(_dereq_,module,exports){
+},{"./node":82,"./vendor":91}],80:[function(_dereq_,module,exports){
 (function() {
   var list;
 
@@ -9908,7 +10111,7 @@ module.exports={
 
 }).call(this);
 
-},{}],80:[function(_dereq_,module,exports){
+},{}],81:[function(_dereq_,module,exports){
 (function() {
   var MapGenerator, Result, base64js, mozilla, path;
 
@@ -10164,7 +10367,7 @@ module.exports={
 
 }).call(this);
 
-},{"./result":86,"base64-js":91,"path":44,"source-map":92}],81:[function(_dereq_,module,exports){
+},{"./result":87,"base64-js":92,"path":44,"source-map":93}],82:[function(_dereq_,module,exports){
 (function() {
   var Node, Raw, clone, keys,
     __hasProp = {}.hasOwnProperty;
@@ -10357,7 +10560,7 @@ module.exports={
 
 }).call(this);
 
-},{"./raw":85}],82:[function(_dereq_,module,exports){
+},{"./raw":86}],83:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Comment, Declaration, Parser, PreviousMap, Raw, Root, Rule, SyntaxError, convertOptions, isSpace, path;
 
@@ -10879,7 +11082,7 @@ module.exports={
 
 }).call(this);
 
-},{"./at-rule":74,"./comment":75,"./convert-options":77,"./declaration":78,"./previous-map":84,"./raw":85,"./root":87,"./rule":88,"./syntax-error":89,"path":44}],83:[function(_dereq_,module,exports){
+},{"./at-rule":75,"./comment":76,"./convert-options":78,"./declaration":79,"./previous-map":85,"./raw":86,"./root":88,"./rule":89,"./syntax-error":90,"path":44}],84:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Comment, Declaration, PostCSS, Result, Root, Rule, convertOptions, postcss,
     __slice = [].slice;
@@ -10962,7 +11165,7 @@ module.exports={
 
 }).call(this);
 
-},{"./at-rule":74,"./comment":75,"./convert-options":77,"./declaration":78,"./parse":82,"./result":86,"./root":87,"./rule":88}],84:[function(_dereq_,module,exports){
+},{"./at-rule":75,"./comment":76,"./convert-options":78,"./declaration":79,"./parse":83,"./result":87,"./root":88,"./rule":89}],85:[function(_dereq_,module,exports){
 (function() {
   var PreviousMap, base64js, fs, mozilla, path;
 
@@ -11076,7 +11279,7 @@ module.exports={
 
 }).call(this);
 
-},{"base64-js":91,"fs":43,"path":44,"source-map":92}],85:[function(_dereq_,module,exports){
+},{"base64-js":92,"fs":43,"path":44,"source-map":93}],86:[function(_dereq_,module,exports){
 (function() {
   var Raw;
 
@@ -11110,7 +11313,7 @@ module.exports={
 
 }).call(this);
 
-},{}],86:[function(_dereq_,module,exports){
+},{}],87:[function(_dereq_,module,exports){
 (function() {
   var MapGenerator, Result;
 
@@ -11158,7 +11361,7 @@ module.exports={
 
 }).call(this);
 
-},{"./map-generator":80}],87:[function(_dereq_,module,exports){
+},{"./map-generator":81}],88:[function(_dereq_,module,exports){
 (function() {
   var AtRule, Comment, Container, Declaration, Result, Root, Rule,
     __hasProp = {}.hasOwnProperty,
@@ -11215,7 +11418,7 @@ module.exports={
 
 }).call(this);
 
-},{"./at-rule":74,"./comment":75,"./container":76,"./declaration":78,"./result":86,"./rule":88}],88:[function(_dereq_,module,exports){
+},{"./at-rule":75,"./comment":76,"./container":77,"./declaration":79,"./result":87,"./rule":89}],89:[function(_dereq_,module,exports){
 (function() {
   var Container, Declaration, Rule, list,
     __hasProp = {}.hasOwnProperty,
@@ -11276,7 +11479,7 @@ module.exports={
 
 }).call(this);
 
-},{"./container":76,"./declaration":78,"./list":79}],89:[function(_dereq_,module,exports){
+},{"./container":77,"./declaration":79,"./list":80}],90:[function(_dereq_,module,exports){
 (function() {
   var SyntaxError,
     __hasProp = {}.hasOwnProperty,
@@ -11305,7 +11508,7 @@ module.exports={
 
 }).call(this);
 
-},{}],90:[function(_dereq_,module,exports){
+},{}],91:[function(_dereq_,module,exports){
 (function() {
   var vendor;
 
@@ -11334,7 +11537,7 @@ module.exports={
 
 }).call(this);
 
-},{}],91:[function(_dereq_,module,exports){
+},{}],92:[function(_dereq_,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -11456,7 +11659,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],92:[function(_dereq_,module,exports){
+},{}],93:[function(_dereq_,module,exports){
 /*
  * Copyright 2009-2011 Mozilla Foundation and contributors
  * Licensed under the New BSD license. See LICENSE.txt or:
@@ -11466,7 +11669,7 @@ exports.SourceMapGenerator = _dereq_('./source-map/source-map-generator').Source
 exports.SourceMapConsumer = _dereq_('./source-map/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = _dereq_('./source-map/source-node').SourceNode;
 
-},{"./source-map/source-map-consumer":97,"./source-map/source-map-generator":98,"./source-map/source-node":99}],93:[function(_dereq_,module,exports){
+},{"./source-map/source-map-consumer":98,"./source-map/source-map-generator":99,"./source-map/source-node":100}],94:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -11565,7 +11768,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./util":100,"amdefine":101}],94:[function(_dereq_,module,exports){
+},{"./util":101,"amdefine":102}],95:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -11711,7 +11914,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./base64":95,"amdefine":101}],95:[function(_dereq_,module,exports){
+},{"./base64":96,"amdefine":102}],96:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -11755,7 +11958,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":101}],96:[function(_dereq_,module,exports){
+},{"amdefine":102}],97:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -11838,7 +12041,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":101}],97:[function(_dereq_,module,exports){
+},{"amdefine":102}],98:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -12318,7 +12521,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./array-set":93,"./base64-vlq":94,"./binary-search":96,"./util":100,"amdefine":101}],98:[function(_dereq_,module,exports){
+},{"./array-set":94,"./base64-vlq":95,"./binary-search":97,"./util":101,"amdefine":102}],99:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -12720,7 +12923,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./array-set":93,"./base64-vlq":94,"./util":100,"amdefine":101}],99:[function(_dereq_,module,exports){
+},{"./array-set":94,"./base64-vlq":95,"./util":101,"amdefine":102}],100:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -13122,7 +13325,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"./source-map-generator":98,"./util":100,"amdefine":101}],100:[function(_dereq_,module,exports){
+},{"./source-map-generator":99,"./util":101,"amdefine":102}],101:[function(_dereq_,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -13426,7 +13629,7 @@ define(function (_dereq_, exports, module) {
 
 });
 
-},{"amdefine":101}],101:[function(_dereq_,module,exports){
+},{"amdefine":102}],102:[function(_dereq_,module,exports){
 (function (process,__filename){
 /** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
