@@ -15791,7 +15791,7 @@ System.register("traceur-runtime@0.0.51/src/runtime/polyfill-import", [], functi
 });
 System.get("traceur-runtime@0.0.51/src/runtime/polyfill-import" + '');
 
-}).call(this,_dereq_("+xKvab"),typeof global !== "undefined" ? global : typeof window !== "undefined" ? window : {})
+}).call(this,_dereq_("+xKvab"),typeof global !== 'undefined' ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"+xKvab":45}]},{},[3])
 (3)
 });
