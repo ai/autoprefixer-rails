@@ -10043,7 +10043,7 @@ var Container = (function(super$0){"use strict";function Container() {super$0.ap
     function constructor$0(defaults) {
         this.rules = [];
         super$0.call(this, defaults);
-    }constructor$0.prototype = Object.create(super$0.prototype, {"constructor": {"value": constructor$0, "configurable": true, "writable": true} });DP$0(constructor$0, "prototype", {"configurable": false, "enumerable": false, "writable": false});
+    }constructor$0.prototype = Object.create(super$0.prototype, {"constructor": {"value": constructor$0, "configurable": true, "writable": true} });try{DP$0(constructor$0, "prototype", {"configurable": false, "enumerable": false, "writable": false});}catch(e){}
 
     // Execute `callback` on every declaration in all rules inside.
     // It will goes inside at-rules recursivelly.
@@ -10107,7 +10107,7 @@ var Container = (function(super$0){"use strict";function Container() {super$0.ap
     function constructor$1(defaults) {
         this.decls = [];
         super$0.call(this, defaults);
-    }constructor$1.prototype = Object.create(super$0.prototype, {"constructor": {"value": constructor$1, "configurable": true, "writable": true} });DP$0(constructor$1, "prototype", {"configurable": false, "enumerable": false, "writable": false});
+    }constructor$1.prototype = Object.create(super$0.prototype, {"constructor": {"value": constructor$1, "configurable": true, "writable": true} });try{DP$0(constructor$1, "prototype", {"configurable": false, "enumerable": false, "writable": false});}catch(e){}
 
     // Allow to define new declaration as hash
     constructor$1.prototype.normalize = function(child, sample, type) {
