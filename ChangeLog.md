@@ -1,3 +1,8 @@
+## 2.2.20140804
+* Fix UTF-8 support in inline source maps.
+* Allow to miss `from` and `to` options in inline source maps.
+* Update Can I Use data.
+
 ## 2.2 “Mobilis in mobili”
 * Allow to disable Autoprefixer for some rule by control comment.
 * Use PostCSS 2.1 with Safe Mode option and broken source line
