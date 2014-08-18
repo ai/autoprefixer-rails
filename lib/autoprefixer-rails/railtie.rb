@@ -17,7 +17,9 @@ begin
         file    = app.root.join('config/autoprefixer.yml')
         options = file.exist? ? YAML.load_file(file).symbolize_keys : { }
         options = { browsers: nil }.merge(options)
-        [options.delete(:browsers), options]
+        postcss = { }
+        postcss[:safe] = true if options.delete(:safe)
+        [options.delete(:browsers), options, postcss]
       end
     end
   end

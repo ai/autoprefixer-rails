@@ -10,7 +10,7 @@ module Rake
   class AutoprefixerTasks < Rake::TaskLib
     attr_reader :browsers
 
-    def initialize(browsers = [], options = {})
+    def initialize(browsers = [], options = {}, postcss = {})
       @browsers  = browsers
       @options   = options
       @processor = AutoprefixerRails.processor(@browsers, @options)

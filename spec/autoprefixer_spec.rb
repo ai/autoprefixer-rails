@@ -36,6 +36,10 @@ describe AutoprefixerRails do
     }.to raise_error(/a.css:/)
   end
 
+  it "has safe mode" do
+    expect(AutoprefixerRails.process('a {', safe: true).css).to eql('a {}')
+  end
+
   it "shows debug" do
     info = AutoprefixerRails.processor(['chrome 25']).info
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)

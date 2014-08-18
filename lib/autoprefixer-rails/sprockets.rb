@@ -8,18 +8,18 @@ module AutoprefixerRails
     end
 
     # Add prefixes for `css`
-    def process(context, css)
+    def process(context, css, opts)
       root   = Pathname.new(context.root_path)
       input  = context.pathname.relative_path_from(root).to_s
       output = input.chomp(File.extname(input)) + '.css'
 
-      @processor.process(css, from: input, to: output).css
+      @processor.process(css, opts.merge(from: input, to: output)).css
     end
 
     # Register postprocessor in Sprockets depend on issues with other gems
-    def install(assets)
+    def install(assets, opts = {})
       assets.register_postprocessor('text/css', :autoprefixer) do |context, css|
-        process(context, css)
+        process(context, css, opts)
       end
     end
   end

@@ -13,6 +13,12 @@ describe CssController, type: :controller do
                                 "  -webkit-transition: all 1s;\n" +
                                 "  transition: all 1s; }\n"
   end
+
+  it "has safe mode" do
+    get :test, file: 'wrong'
+    expect(response).to be_success
+    expect(response.body).to eq "a {\n}"
+  end
 end
 
 describe 'Rake task' do
