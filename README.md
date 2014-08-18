@@ -1,4 +1,6 @@
-﻿# Autoprefixer Rails
+﻿# Autoprefixer Rails [![Build Status](https://travis-ci.org/ai/autoprefixer-rails.png)](https://travis-ci.org/ai/autoprefixer-rails)
+
+<img align="right" width="94" height="71" src="http://ai.github.io/autoprefixer/logo.svg" title="Autoprefixer logo by Anton Lovchikov">
 
 [Autoprefixer](https://github.com/ai/autoprefixer) is a tool
 to parse CSS and add vendor prefixes to CSS rules using values
