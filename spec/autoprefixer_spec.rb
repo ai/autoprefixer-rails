@@ -33,7 +33,7 @@ describe AutoprefixerRails do
   it "uses file name in syntax errors", not_jruby: true do
     expect {
       AutoprefixerRails.process('a {', from: 'a.css')
-    }.to raise_error(/in a.css/)
+    }.to raise_error(/a.css:/)
   end
 
   it "shows debug" do
@@ -58,7 +58,7 @@ describe AutoprefixerRails do
     end
 
     it "shows file name from Sprockets", not_jruby: true do
-      expect { @assets['wrong.css'] }.to raise_error(/in wrong.css/)
+      expect { @assets['wrong.css'] }.to raise_error(/wrong.css:/)
     end
 
   end
