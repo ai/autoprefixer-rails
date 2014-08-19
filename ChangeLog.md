@@ -26,7 +26,7 @@
 
 ## 2.0 “Hongik Ingan”
 * Based on PostCSS 1.0.
-  See [options changes](https://github.com/ai/postcss/releases/tag/1.0.0).
+  See [options changes](https://github.com/postcss/postcss/releases/tag/1.0.0).
 * Restore visual cascade after declaration removing.
 * Prefix declareation in `@supports` at-rule conditions.
 * Add all browsers from Can I Use: `ie_mob`, `and_chr`, `and_ff`,
