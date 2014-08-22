@@ -1,3 +1,7 @@
+## 3.0 “Liberté, Égalité, Fraternité”
+* All methods now receive browsers as options key, not separated argument.
+* GNU format for syntax error messages from PostCSS 2.2.
+
 ## 2.2.20140804
 * Fix UTF-8 support in inline source maps.
 * Allow to miss `from` and `to` options in inline source maps.
