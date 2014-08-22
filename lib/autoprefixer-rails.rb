@@ -5,22 +5,22 @@ module AutoprefixerRails
 
   # Add prefixes to `css`. See `Processor#process` for options.
   def self.process(css, opts = {})
-    browsers = opts.delete(:browsers)
-    options  = opts.has_key?(:cascade) ? { cascade: opts.delete(:cascade) } : {}
-    processor(browsers, options).process(css, opts)
+    params = {}
+    params[:browsers] = opts.delete(:browsers) if opts.has_key?(:browsers)
+    params[:cascade]  = opts.delete(:cascade)  if opts.has_key?(:cascade)
+    processor(params).process(css, opts)
   end
 
   # Add Autoprefixer for Sprockets environment in `assets`.
   # You can specify `browsers` actual in your project.
-  def self.install(assets, browsers = nil, opts = {}, postcss = {})
-    Sprockets.new( processor(browsers, opts) ).install(assets, postcss)
+  def self.install(assets, params = {}, opts = {})
+    Sprockets.new( processor(params) ).install(assets, opts)
   end
 
   # Cache processor instances
-  def self.processor(browsers = nil, opts = {})
+  def self.processor(params = {})
     @cache  ||= {}
-    cache_key = browsers.hash.to_s + opts.hash.to_s
-    @cache[cache_key] ||= Processor.new(browsers, opts)
+    @cache[params.hash.to_s] ||= Processor.new(params)
   end
 end
 

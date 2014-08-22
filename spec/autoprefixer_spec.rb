@@ -41,7 +41,7 @@ describe AutoprefixerRails do
   end
 
   it "shows debug" do
-    info = AutoprefixerRails.processor(['chrome 25']).info
+    info = AutoprefixerRails.processor(browsers: ['chrome 25']).info
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)
     expect(info).to match(/  transition: webkit/)
   end
@@ -50,7 +50,7 @@ describe AutoprefixerRails do
     before :all do
       @assets = Sprockets::Environment.new
       @assets.append_path(@dir.join('app/app/assets/stylesheets'))
-      AutoprefixerRails.install(@assets, ['chrome 25'])
+      AutoprefixerRails.install(@assets, browsers: ['chrome 25'])
     end
 
     it "integrates with Sprockets" do

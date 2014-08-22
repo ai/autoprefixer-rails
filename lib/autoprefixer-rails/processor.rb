@@ -4,9 +4,8 @@ require 'execjs'
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
-    def initialize(browsers = nil, opts = {})
-      @browsers = browsers || []
-      @options  = opts
+    def initialize(params = {})
+      @params = params
     end
 
     # Process `css` and return result.
@@ -66,14 +65,8 @@ module AutoprefixerRails
 
     # Return JS code to create Autoprefixer instance
     def create_instance
-      options = @options.map { |k, v| "#{k}: #{v.inspect}"}.join(', ')
-
-      if @browsers.empty?
-        "var processor = autoprefixer({ #{options} });"
-      else
-        browsers = @browsers.map(&:to_s).join("', '")
-        "var processor = autoprefixer('#{browsers}', { #{options} });"
-      end
+      params = @params.map { |k, v| "#{k}: #{v.inspect}"}.join(', ')
+      "var processor = autoprefixer({ #{params} });"
     end
 
     # Return JS code for process method proxy

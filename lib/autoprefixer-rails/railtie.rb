@@ -5,7 +5,7 @@ begin
     class Railtie < ::Rails::Railtie
       rake_tasks do |app|
         require 'rake/autoprefixer_tasks'
-        Rake::AutoprefixerTasks.new(*config(app))
+        Rake::AutoprefixerTasks.new( config(app)[0] )
       end
 
       initializer :setup_autoprefixer, group: :all do |app|
@@ -14,12 +14,11 @@ begin
 
       # Read browsers requirements from application config
       def config(app)
-        file    = app.root.join('config/autoprefixer.yml')
-        options = file.exist? ? YAML.load_file(file).symbolize_keys : { }
-        options = { browsers: nil }.merge(options)
-        postcss = { }
-        postcss[:safe] = true if options.delete(:safe)
-        [options.delete(:browsers), options, postcss]
+        file   = app.root.join('config/autoprefixer.yml')
+        params = file.exist? ? YAML.load_file(file).symbolize_keys : { }
+        opts   = { }
+        opts[:safe] = true if params.delete(:safe)
+        [params, opts]
       end
     end
   end
