@@ -51,7 +51,7 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 }
 ```
 
-If you need to specify browsers for your project, you can save them
+If you need to specify browsers for your Rails project, you can save them
 to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
 
 ```yaml
