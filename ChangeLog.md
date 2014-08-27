@@ -1,3 +1,6 @@
+## 3.0.1
+* Update Can I Use data.
+
 ## 3.0 “Liberté, Égalité, Fraternité”
 * All methods now receive browsers as options key, not separated argument.
 * GNU format for syntax error messages from PostCSS 2.2.
