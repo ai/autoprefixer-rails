@@ -22,6 +22,11 @@ Add the `autoprefixer-rails` gem to your `Gemfile`:
 gem "autoprefixer-rails"
 ```
 
+Clear your cache
+```
+  rake tmp:clear
+```
+
 Write your CSS (Sass, Stylus, LESS) rules without vendor prefixes
 and Autoprefixer will apply prefixes for you.
 For example in `app/assets/stylesheet/foobar.sass`:
@@ -163,3 +168,4 @@ to JS style, so you can use `map: { sources_content: true }`
 instead of camelcase `sourcesContent`.
 
 [PostCSS docs]: https://github.com/postcss/postcss#source-map-1
+
