@@ -22,9 +22,10 @@ Add the `autoprefixer-rails` gem to your `Gemfile`:
 gem "autoprefixer-rails"
 ```
 
-Clear your cache
-```
-  rake tmp:clear
+Clear your cache:
+
+```sh
+rake tmp:clear
 ```
 
 Write your CSS (Sass, Stylus, LESS) rules without vendor prefixes
