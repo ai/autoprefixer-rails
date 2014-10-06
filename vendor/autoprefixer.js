@@ -11335,7 +11335,7 @@ var AtRule = (function(super$0){"use strict";var PRS$0 = (function(o,t){o["__pro
     function AtRule(defaults) {
         this.type = 'atrule';
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(AtRule,super$0);AtRule.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":AtRule,"configurable":true,"writable":true}});DP$0(AtRule,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(AtRule,super$0);AtRule.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":AtRule,"configurable":true,"writable":true}});try{DP$0(AtRule,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Different style for this.encoding and this.page at-rules.
     proto$0.styleType = function() {
@@ -11416,7 +11416,7 @@ var Comment = (function(super$0){"use strict";var PRS$0 = (function(o,t){o["__pr
     function Comment(defaults) {
         this.type = 'comment';
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(Comment,super$0);Comment.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Comment,"configurable":true,"writable":true}});DP$0(Comment,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(Comment,super$0);Comment.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Comment,"configurable":true,"writable":true}});try{DP$0(Comment,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Default spaces for new node
     proto$0.defaultStyle = function() {
@@ -11438,7 +11438,7 @@ var PRS$0 = (function(o,t){o["__proto__"]={"a":t};return o["a"]===t})({},{});var
 var Declaration = require('./declaration');
 
 // CSS node, that contain another nodes (like at-rules or rules with selectors)
-var Container = (function(super$0){"use strict";function Container() {super$0.apply(this, arguments)}if(!PRS$0)MIXIN$0(Container, super$0);if(super$0!==null)SP$0(Container,super$0);Container.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Container,"configurable":true,"writable":true}, first: {"get": first$get$0, "configurable":true,"enumerable":true}, last: {"get": last$get$0, "configurable":true,"enumerable":true}, list: {"get": list$get$0, "configurable":true,"enumerable":true}});DP$0(Container,"prototype",{"configurable":false,"enumerable":false,"writable":false});var proto$0={};var S_ITER$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol.iterator||'@@iterator';var S_MARK$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol["__setObjectSetter__"];function GET_ITER$0(v){if(v){if(Array.isArray(v))return 0;var f;if(S_MARK$0)S_MARK$0(v);if(typeof v==='object'&&typeof (f=v[S_ITER$0])==='function'){if(S_MARK$0)S_MARK$0(void 0);return f.call(v);}if(S_MARK$0)S_MARK$0(void 0);if((v+'')==='[object Generator]')return v;}throw new Error(v+' is not iterable')};
+var Container = (function(super$0){"use strict";function Container() {super$0.apply(this, arguments)}if(!PRS$0)MIXIN$0(Container, super$0);if(super$0!==null)SP$0(Container,super$0);Container.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Container,"configurable":true,"writable":true}, first: {"get": first$get$0, "configurable":true,"enumerable":true}, last: {"get": last$get$0, "configurable":true,"enumerable":true}, list: {"get": list$get$0, "configurable":true,"enumerable":true}});try{DP$0(Container,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}var proto$0={};var S_ITER$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol.iterator||'@@iterator';var S_MARK$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol["__setObjectSetter__"];function GET_ITER$0(v){if(v){if(Array.isArray(v))return 0;var f;if(S_MARK$0)S_MARK$0(v);if(typeof v==='object'&&typeof (f=v[S_ITER$0])==='function'){if(S_MARK$0)S_MARK$0(void 0);return f.call(v);}if(S_MARK$0)S_MARK$0(void 0);if((v+'')==='[object Generator]')return v;}throw new Error(v+' is not iterable')};
     // Stringify container childs
     proto$0.stringifyContent = function(builder) {
         if ( !this.rules && !this.decls ) return;
@@ -11755,7 +11755,7 @@ MIXIN$0(Container.prototype,proto$0);proto$0=void 0;return Container;})(Node);
     function constructor$0(defaults) {
         this.rules = [];
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(constructor$0,super$0);constructor$0.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":constructor$0,"configurable":true,"writable":true}});DP$0(constructor$0,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(constructor$0,super$0);constructor$0.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":constructor$0,"configurable":true,"writable":true}});try{DP$0(constructor$0,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Execute `callback` on every declaration in all rules inside.
     // It will goes inside at-rules recursivelly.
@@ -11819,7 +11819,7 @@ MIXIN$0(constructor$0.prototype,proto$0);proto$0=void 0;return constructor$0;})(
     function constructor$1(defaults) {
         this.decls = [];
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(constructor$1,super$0);constructor$1.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":constructor$1,"configurable":true,"writable":true}});DP$0(constructor$1,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(constructor$1,super$0);constructor$1.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":constructor$1,"configurable":true,"writable":true}});try{DP$0(constructor$1,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Allow to define new declaration as hash
     proto$0.normalize = function(child, sample, type) {
@@ -11857,7 +11857,7 @@ var CssSyntaxError = (function(super$0){"use strict";var PRS$0 = (function(o,t){
 
         this.message  = file ? file : '<css input>';
         this.message += ':' + pos.line + ':' + pos.column + ': ' + text;
-    }if(super$0!==null)SP$0(CssSyntaxError,super$0);CssSyntaxError.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":CssSyntaxError,"configurable":true,"writable":true}});DP$0(CssSyntaxError,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(CssSyntaxError,super$0);CssSyntaxError.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":CssSyntaxError,"configurable":true,"writable":true}});try{DP$0(CssSyntaxError,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     proto$0.highlight = function(color) {
         var num   = this.line - 1;
@@ -11905,7 +11905,7 @@ var Declaration = (function(super$0){"use strict";var PRS$0 = (function(o,t){o["
     function Declaration(defaults) {
         this.type = 'decl';
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(Declaration,super$0);Declaration.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Declaration,"configurable":true,"writable":true}});DP$0(Declaration,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(Declaration,super$0);Declaration.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Declaration,"configurable":true,"writable":true}});try{DP$0(Declaration,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     proto$0.defaultStyle = function() {
         return { before: "\n    ", between: ': ' };
@@ -12028,7 +12028,7 @@ var MapGenerator = (function(){"use strict";var PRS$0 = (function(o,t){o["__prot
         this.root    = root;
         this.opts    = opts;
         this.mapOpts = opts.map || { };
-    }DP$0(MapGenerator,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }try{DP$0(MapGenerator,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Should map be generated
     proto$0.isMap = function() {
@@ -12297,7 +12297,7 @@ var Node = (function(){"use strict";var PRS$0 = (function(o,t){o["__proto__"]={"
         for ( var name in defaults ) {
             this[name] = defaults[name];
         }
-    }DP$0(Node,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }try{DP$0(Node,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Remove this node from parent
     //
@@ -12475,7 +12475,7 @@ var Parser = (function(){"use strict";var PRS$0 = (function(o,t){o["__proto__"]=
         this.lines  = [];
         this.column = 0;
         this.buffer = '';
-    }DP$0(Parser,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }try{DP$0(Parser,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     proto$0.loop = function() {
         this.next  = this.source[0];
@@ -13018,7 +13018,7 @@ var Root        = require('./root');
 var PostCSS = (function(){"use strict";var PRS$0 = (function(o,t){o["__proto__"]={"a":t};return o["a"]===t})({},{});var DP$0 = Object.defineProperty;var GOPD$0 = Object.getOwnPropertyDescriptor;var MIXIN$0 = function(t,s){for(var p in s){if(s.hasOwnProperty(p)){DP$0(t,p,GOPD$0(s,p));}}return t};var proto$0={};
     function PostCSS() {var processors = arguments[0];if(processors === void 0)processors = [];var this$0 = this;
         this.processors = processors.map( function(i)  {return this$0.normalize(i)} );
-    }DP$0(PostCSS,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }try{DP$0(PostCSS,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Add another function to CSS processors
     proto$0.use = function(processor) {
@@ -13108,7 +13108,7 @@ var PreviousMap = (function(){"use strict";var PRS$0 = (function(o,t){o["__proto
 
         var text = this.loadMap(opts.map ? opts.map.prev : undefined);
         if ( text ) this.text = text;
-    }DP$0(PreviousMap,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }try{DP$0(PreviousMap,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Return SourceMapConsumer object to read map
     proto$0.consumer = function() {
@@ -13202,7 +13202,7 @@ var Result = (function(){"use strict";var PRS$0 = (function(o,t){o["__proto__"]=
     function Result(root) {var opts = arguments[1];if(opts === void 0)opts = { };
         this.root = root;
         this.opts = opts;
-    }DPS$0(Result.prototype,{map: {"get": map$get$0, "configurable":true,"enumerable":true}, css: {"get": css$get$0, "configurable":true,"enumerable":true}});DP$0(Result,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }DPS$0(Result.prototype,{map: {"get": map$get$0, "configurable":true,"enumerable":true}, css: {"get": css$get$0, "configurable":true,"enumerable":true}});try{DP$0(Result,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Lazy method to return source map
     function map$get$0() {
@@ -13246,7 +13246,7 @@ var Root = (function(super$0){"use strict";var PRS$0 = (function(o,t){o["__proto
         this.type  = 'root';
         this.rules = [];
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(Root,super$0);Root.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Root,"configurable":true,"writable":true}});DP$0(Root,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(Root,super$0);Root.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Root,"configurable":true,"writable":true}});try{DP$0(Root,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Fix spaces on insert before first rule
     proto$0.normalize = function(child, sample, type) {var S_ITER$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol.iterator||'@@iterator';var S_MARK$0 = typeof Symbol!=='undefined'&&Symbol&&Symbol["__setObjectSetter__"];function GET_ITER$0(v){if(v){if(Array.isArray(v))return 0;var f;if(S_MARK$0)S_MARK$0(v);if(typeof v==='object'&&typeof (f=v[S_ITER$0])==='function'){if(S_MARK$0)S_MARK$0(void 0);return f.call(v);}if(S_MARK$0)S_MARK$0(void 0);if((v+'')==='[object Generator]')return v;}throw new Error(v+' is not iterable')};var $D$0;var $D$1;var $D$2;
@@ -13295,7 +13295,7 @@ var Rule = (function(super$0){"use strict";var PRS$0 = (function(o,t){o["__proto
     function Rule(defaults) {
         this.type = 'rule';
         super$0.call(this, defaults);
-    }if(super$0!==null)SP$0(Rule,super$0);Rule.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Rule,"configurable":true,"writable":true}, selectors: {"get": selectors$get$0, "set": selectors$set$0, "configurable":true,"enumerable":true}});DP$0(Rule,"prototype",{"configurable":false,"enumerable":false,"writable":false});
+    }if(super$0!==null)SP$0(Rule,super$0);Rule.prototype = OC$0(super$0!==null?super$0.prototype:null,{"constructor":{"value":Rule,"configurable":true,"writable":true}, selectors: {"get": selectors$get$0, "set": selectors$set$0, "configurable":true,"enumerable":true}});try{DP$0(Rule,"prototype",{"configurable":false,"enumerable":false,"writable":false});}catch(e){}
 
     // Different style for empty and non-empty rules
     proto$0.styleType = function() {
