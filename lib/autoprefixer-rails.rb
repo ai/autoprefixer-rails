@@ -8,6 +8,7 @@ module AutoprefixerRails
     params = {}
     params[:browsers] = opts.delete(:browsers) if opts.has_key?(:browsers)
     params[:cascade]  = opts.delete(:cascade)  if opts.has_key?(:cascade)
+    params[:remove]   = opts.delete(:remove)   if opts.has_key?(:remove)
     processor(params).process(css, opts)
   end
 

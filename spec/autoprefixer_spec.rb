@@ -52,6 +52,12 @@ describe AutoprefixerRails do
     expect(map).not_to include('sourcesContent')
   end
 
+  it "does not remove old prefixes on request" do
+    css    = 'a { -moz-border-radius: 5px; border-radius: 5px }'
+    result = AutoprefixerRails.process(css, remove: false)
+    expect(result.css).to eq(css)
+  end
+
   it "shows debug" do
     info = AutoprefixerRails.processor(browsers: ['chrome 25']).info
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)
