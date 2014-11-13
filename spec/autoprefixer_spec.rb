@@ -38,6 +38,20 @@ describe AutoprefixerRails do
     expect(AutoprefixerRails.process('a {', safe: true).css).to eql('a {}')
   end
 
+  it "includes sourcesContent by default" do
+    map = AutoprefixerRails.process('a{}', map: { inline:  false }).map
+    expect(map).to include('sourcesContent')
+  end
+
+  it "maps options from Ruby style" do
+    map = AutoprefixerRails.process('a{}', map: {
+      sources_content: false,
+      inline:          false
+    }).map
+
+    expect(map).not_to include('sourcesContent')
+  end
+
   it "shows debug" do
     info = AutoprefixerRails.processor(browsers: ['chrome 25']).info
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)
