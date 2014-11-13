@@ -20,14 +20,12 @@ describe AutoprefixerRails do
 
   it "generates source map" do
     result = AutoprefixerRails.process(@css, map: true)
-    expect(result.map).to be_a(String)
+    expect(result.css).to include('/*# sourceMappingURL=data:')
   end
 
-  it "convert options" do
-    result = AutoprefixerRails.process @css,
-      from: 'a.css',
-      map:  { sources_content: true }
-    expect(result.map).to include('"sourcesContent":["a {')
+  it "generates separated source map" do
+    result = AutoprefixerRails.process(@css, map: { inline: false })
+    expect(result.map).to be_a(String)
   end
 
   it "uses file name in syntax errors", not_jruby: true do

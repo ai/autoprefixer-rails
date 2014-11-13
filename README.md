@@ -147,9 +147,6 @@ result = AutoprefixerRails.process(css,
     map:   true,
     from: 'main.css',
     to:   'main.out.css')
-
-result.css #=> Prefixed CSS
-result.map #=> Source map content
 ```
 
 Autoprefixer can also modify previous source map (for example, from Sass
@@ -165,7 +162,7 @@ result.map #=> Source map from main.sass to main.min.css
 ```
 
 See all options in [PostCSS docs]. AutoprefixerRails will convert Ruby style
-to JS style, so you can use `map: { sources_content: true }`
+to JS style, so you can use `map: { sources_content: false }`
 instead of camelcase `sourcesContent`.
 
 [PostCSS docs]: https://github.com/postcss/postcss#source-map-1
