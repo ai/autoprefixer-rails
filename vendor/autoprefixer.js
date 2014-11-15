@@ -13115,10 +13115,16 @@ var Parser = (function () {
         node.source.end = { line: token[4], column: token[5] };
 
         var text = token[1].slice(2, -2);
-        var match = text.match(/^(\s*)([^]*[^\s])(\s*)$/);
-        node.left = match[1];
-        node.text = match[2];
-        node.right = match[3];
+        if (text.match(/^\s*$/)) {
+          node.left = text;
+          node.text = "";
+          node.right = "";
+        } else {
+          var match = text.match(/^(\s*)([^]*[^\s])(\s*)$/);
+          node.left = match[1];
+          node.text = match[2];
+          node.right = match[3];
+        }
         return true;
       }
     },
@@ -13837,7 +13843,7 @@ var Root = (function (Container) {
             }
           } else {
             if (this.childs.length > 1) {
-              childs[i].before = sample.before;
+              if (sample) childs[i].before = sample.before;
             } else {
               childs[i].before = this.after;
             }
