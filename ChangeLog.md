@@ -1,3 +1,6 @@
+## 4.0.0.1
+* Update PostCSS to fix issue with empty comment.
+
 ## 4.0 “Indivisibiliter ac Inseparabiliter”
 * Become 2.5 times fatser by new PostCSS 3.0 parser.
 * Do not remove outdated prefixes by `remove: false` option.
