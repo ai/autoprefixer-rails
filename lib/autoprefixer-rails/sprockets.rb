@@ -9,8 +9,7 @@ module AutoprefixerRails
 
     # Add prefixes for `css`
     def process(context, css, opts)
-      root   = Pathname.new(context.root_path)
-      input  = context.pathname.relative_path_from(root).to_s
+      input  = context.pathname.to_s
       output = input.chomp(File.extname(input)) + '.css'
 
       @processor.process(css, opts.merge(from: input, to: output)).css
