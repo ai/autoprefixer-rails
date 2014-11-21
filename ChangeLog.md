@@ -1,3 +1,7 @@
+## 4.0.1
+* Fix `@supports` support with brackets in values (by Vincent De Oliveira).
+* Fix Windows support (by Kamen Hursev).
+
 ## 4.0.0.1
 * Update PostCSS to fix issue with empty comment.
 
