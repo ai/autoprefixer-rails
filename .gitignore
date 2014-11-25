@@ -5,3 +5,4 @@ pkg/
 
 .bundle
 Gemfile.lock
+Gemfile.rails3.lock
