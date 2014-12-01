@@ -1,3 +1,7 @@
+## 4.0.1.1
+* Use PostCSS 3.0.5 to parse complicated cases of CSS syntax.
+* Update Can I Use dump.
+
 ## 4.0.1
 * Fix `@supports` support with brackets in values (by Vincent De Oliveira).
 * Fix Windows support (by Kamen Hursev).
