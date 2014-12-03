@@ -9,9 +9,8 @@ describe CssController, type: :controller do
   it "integrates with Rails and Sass" do
     get :test, file: 'sass'
     expect(response).to be_success
-    expect(response.body).to eq "a {\n" +
-                                "  -webkit-transition: all 1s;\n" +
-                                "  transition: all 1s; }\n"
+    clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
+    expect(clear_css).to eq "a { -webkit-transition: all 1s; transition: all 1s; }"
   end
 
   it "has safe mode" do
