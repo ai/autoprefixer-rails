@@ -9,6 +9,8 @@ rvm:
 gemfile:
   - Gemfile
   - Gemfile.rails3
+
 matrix:
-  allow_failures:
+  exclude:
     - rvm: 2.2
+      gemfile: Gemfile.rails3
