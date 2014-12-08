@@ -1,3 +1,6 @@
+## 4.0.2
+* Remove `o-border-radius`, which is common mistake in legacy CSS.
+
 ## 4.0.1.1
 * Use PostCSS 3.0.5 to parse complicated cases of CSS syntax.
 * Update Can I Use dump.
