@@ -1,3 +1,7 @@
+## 4.0.2.1
+* Fix IE filter parsing with multiple commands.
+* Update Can I Use dump.
+
 ## 4.0.2
 * Remove `o-border-radius`, which is common mistake in legacy CSS.
 
