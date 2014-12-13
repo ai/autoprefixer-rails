@@ -6,9 +6,10 @@
 using values from the [Can I Use]. This gem provides Ruby and Ruby on Rails
 integration with this JavaScript tool.
 
-Sponsored by [Evil Martians].
+<a href="https://evilmartians.com/?utm_source=autoprefixer-rails">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
+</a>
 
-[Evil Martians]: http://evilmartians.com/
 [Autoprefixer]:  https://github.com/postcss/autoprefixer
 [Can I Use]:     http://caniuse.com/
 
