@@ -11,10 +11,10 @@ describe AutoprefixerRails do
   end
 
   it "process CSS for selected browsers" do
-    result = AutoprefixerRails.process(@css, browsers: ['chrome 25'])
+    result = AutoprefixerRails.process(@css, browsers: ['opera 12'])
     expect(result.css).to eq "a {\n" +
-                             "    -webkit-transition: all 1s;\n" +
-                             "            transition: all 1s\n" +
+                             "    -o-transition: all 1s;\n" +
+                             "       transition: all 1s\n" +
                              "}\n"
   end
 
