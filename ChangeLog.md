@@ -1,3 +1,7 @@
+## 4.0.2.2
+* Update Can I Use data.
+* Update some npm dependencies.
+
 ## 4.0.2.1
 * Fix IE filter parsing with multiple commands.
 * Update Can I Use dump.
