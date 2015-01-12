@@ -35,7 +35,7 @@ For example in `app/assets/stylesheet/foobar.sass`:
 
 ```sass
 :fullscreen a
-  transition: transform 1s
+  display: flex
 ```
 
 Autoprefixer uses Can I Use database with browser statistics and properties
@@ -43,29 +43,32 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 
 ```css
 :-webkit-full-screen a {
-    -webkit-transition: -webkit-transform 1s;
-            transition: transform 1s
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex
 }
 :-moz-full-screen a {
-    transition: transform 1s
+    display: flex
 }
 :-ms-fullscreen a {
-    transition: transform 1s
+    display: -ms-flexbox;
+    display: flex
 }
 :fullscreen a {
-    -webkit-transition: -webkit-transform 1s;
-            transition: transform 1s
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
 }
 ```
 
 If you need to specify browsers for your Rails project, you can save them
-to `config/autoprefixer.yml`. See [browser section] in Autoprefixer docs.
+to `browserslist` config in app root. See [Browserslist docs] for config format.
 
-```yaml
-browsers:
-  - "last 1 version"
-  - "> 1%"
-  - "Explorer 10"
+```
+last 1 version
+> 1%
+Explorer 10
 ```
 
 You can get what properties will be changed using a Rake task:
@@ -74,12 +77,8 @@ You can get what properties will be changed using a Rake task:
 rake autoprefixer:info
 ```
 
-By default, Autoprefixer uses `> 1%, last 2 versions, Firefox ESR, Opera 12.1`:
-* Latest [Firefox ESR] is a 24 version.
-* Opera 12.1 will be in list until Opera supports non-Blink 12.x branch.
-
-[browser section]: https://github.com/postcss/autoprefixer#browsers
-[Firefox ESR]:     http://www.mozilla.org/en/firefox/organizations/faq/
+[Browserslist docs]: https://github.com/ai/browserslist
+[Firefox ESR]:       http://www.mozilla.org/en/firefox/organizations/faq/
 
 ### Sprockets
 
@@ -167,4 +166,3 @@ to JS style, so you can use `map: { sources_content: false }`
 instead of camelcase `sourcesContent`.
 
 [PostCSS docs]: https://github.com/postcss/postcss#source-map-1
-
