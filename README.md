@@ -63,7 +63,7 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 ```
 
 If you need to specify browsers for your Rails project, you can save them
-to `browserslist` config in app root. See [Browserslist docs] for config format.
+to `browserslist` config in app root. See [Browserslist docs] for config format.
 
 ```
 last 1 version
