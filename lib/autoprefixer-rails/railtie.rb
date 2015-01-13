@@ -16,8 +16,16 @@ begin
       def config(app)
         file   = app.root.join('config/autoprefixer.yml')
         params = file.exist? ? YAML.load_file(file).symbolize_keys : { }
+
         opts   = { }
         opts[:safe] = true if params.delete(:safe)
+
+        if params[:browsers]
+          ActiveSupport::Deprecation.warn(
+            'browsers key is config/autoprefixer.yml was deprecated. ' +
+            'Use browserslist config.')
+        end
+
         [params, opts]
       end
     end
