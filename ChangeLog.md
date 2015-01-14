@@ -1,3 +1,13 @@
+## 5.0 “Pravda vítězí”
+* Use PostCSS 4.0.
+* Use Browserslist to parse browsers queries.
+* Use global `browserslist` config.
+  Key `browsers` in `config/autoprefixer.yml` is now deprecated.
+* Add `> 5% in US` query to select browsers by usage in some country.
+* Add `object-fit` and `object-position` properties support.
+* Add CSS Shape properties support.
+* Fix UC Browser name in debug info.
+
 ## 4.0.2.2
 * Update Can I Use data.
 * Update some npm dependencies.
