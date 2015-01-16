@@ -17,8 +17,7 @@ module AutoprefixerRails
     def process(css, opts = {})
       opts = convert_options(opts)
 
-      runtime.eval("processor = autoprefixer(#{ js_params(opts[:from]) })");
-      result = runtime.call('process', css,  opts)
+      result = runtime.exec("processor = autoprefixer(#{ js_params(opts[:from]) }); return eval(process.apply(this, #{::JSON.generate([css,opts])}));")
 
       Result.new(result['css'], result['map'])
     end
@@ -106,7 +105,7 @@ module AutoprefixerRails
     # Return JS code for process method proxy
     def process_proxy
       <<-JS
-      var processor;
+        var processor;
         var process = function() {
           var result = processor.process.apply(processor, arguments);
           var map    = result.map ? result.map.toString() : null;

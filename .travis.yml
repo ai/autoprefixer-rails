@@ -7,6 +7,10 @@ rvm:
   - 2.2
   - jruby-19mode
 
+env:
+  - EXECJS_RUNTIME=Node
+  - EXECJS_RUNTIME=      # Default to rubyracer or rubyrhino depending on platform
+
 gemfile:
   - Gemfile
   - Gemfile.rails3
