@@ -9,7 +9,7 @@ rvm:
 
 env:
   - EXECJS_RUNTIME=Node
-  - EXECJS_RUNTIME=      # Default to rubyracer or rubyrhino depending on platform
+  - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
 
 gemfile:
   - Gemfile
