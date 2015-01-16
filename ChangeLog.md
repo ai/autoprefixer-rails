@@ -1,3 +1,6 @@
+## 5.0.0.1
+* Fix issue on node.js runtime.
+
 ## 5.0 “Pravda vítězí”
 * Use PostCSS 4.0.
 * Use Browserslist to parse browsers queries.
