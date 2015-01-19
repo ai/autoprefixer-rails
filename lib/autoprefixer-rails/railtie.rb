@@ -22,7 +22,7 @@ begin
 
         if params[:browsers]
           ActiveSupport::Deprecation.warn(
-            'browsers key is config/autoprefixer.yml was deprecated. ' +
+            'browsers key in config/autoprefixer.yml was deprecated. ' +
             'Use browserslist config.')
         end
 
