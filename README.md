@@ -6,6 +6,9 @@
 using values from the [Can I Use]. This gem provides Ruby and Ruby on Rails
 integration with this JavaScript tool.
 
+Windows users should install [node.js](http://nodejs.org/).
+Autoprefixer Rails doesn’t work with old JScript in Windows.
+
 <a href="https://evilmartians.com/?utm_source=autoprefixer-rails">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
