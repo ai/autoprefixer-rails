@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
   s.license  = 'MIT'
 
   s.add_dependency 'execjs', '>= 0'
+  s.add_dependency 'json',   '>= 0'
 end

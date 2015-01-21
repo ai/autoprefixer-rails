@@ -1,5 +1,6 @@
 require 'pathname'
 require 'execjs'
+require 'json'
 
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
