@@ -5,6 +5,7 @@ require 'json'
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
+
     def initialize(params = {})
       @params = params
     end
@@ -92,7 +93,14 @@ module AutoprefixerRails
 
     # Lazy load for JS library
     def runtime
-      @runtime ||= ExecJS.compile(build_js)
+      @runtime ||= begin
+        if ExecJS.eval('typeof(Array.prototype.map)') != 'function'
+          raise "Current ExecJS runtime does't support ES5. " +
+                "Please install node.js."
+        end
+
+        ExecJS.compile(build_js)
+      end
     end
 
     # Cache autoprefixer.js content
