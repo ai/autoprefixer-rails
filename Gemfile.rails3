@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gemspec
 gem 'rake'
 gem 'rails', '~> 3.2'
+gem 'compass'
 gem 'sass-rails'
 gem 'rspec-rails'
 
