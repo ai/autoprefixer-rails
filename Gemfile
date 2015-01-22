@@ -12,3 +12,5 @@ gem 'therubyracer', platforms: ['mri', 'rbx']
 
 gem 'racc',   platforms: 'rbx'
 gem 'rubysl', platforms: 'rbx'
+
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :jruby]
