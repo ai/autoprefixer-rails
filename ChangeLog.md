@@ -1,3 +1,8 @@
+## 5.0.0.2
+* Fix for non-Rails environments.
+* Add notice about unsupported ExecJS runtimes.
+* Update Can I Use data.
+
 ## 5.0.0.1
 * Fix issue on node.js runtime.
 
