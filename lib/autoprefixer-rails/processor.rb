@@ -6,8 +6,8 @@ module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
 
-    def initialize(params = {})
-      @params = params
+    def initialize(params = { })
+      @params = params || { }
     end
 
     # Process `css` and return result.
