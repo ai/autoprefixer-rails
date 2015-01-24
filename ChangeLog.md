@@ -1,3 +1,6 @@
+## 5.0.0.3
+* Fix error on `nil` in processor params.
+
 ## 5.0.0.2
 * Fix for non-Rails environments.
 * Add notice about unsupported ExecJS runtimes.
