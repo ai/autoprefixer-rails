@@ -10,8 +10,14 @@ begin
         Rake::AutoprefixerTasks.new( config(app.root)[0] )
       end
 
-      config.assets.configure do |env|
-        AutoprefixerRails.install(env, *config(env.root))
+      if config.respond_to?(:assets)
+        config.assets.configure do |env|
+          AutoprefixerRails.install(env, *config(env.root))
+        end
+      else
+        initializer :setup_autoprefixer, group: :all do |app|
+          AutoprefixerRails.install(app.assets, *config(app.root))
+        end
       end
 
       # Read browsers requirements from application config
