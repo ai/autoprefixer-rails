@@ -1,3 +1,6 @@
+# 5.1.3.1
+* Fix Rails 5 support (by Joshua Peek).
+
 # 5.1.3
 * Add IE support for `image-rendering: crisp-edges`.
 
