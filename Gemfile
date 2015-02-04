@@ -7,6 +7,8 @@ gem 'compass'
 gem 'sass-rails'
 gem 'rspec-rails'
 
+gem 'sprockets', '>= 3.0.0.beta.6'
+
 gem 'therubyrhino', platforms:  'jruby'
 gem 'therubyracer', platforms: ['mri', 'rbx']
 
