@@ -1,3 +1,5 @@
+require 'yaml'
+
 begin
   require 'sprockets/railtie'
 
@@ -15,7 +17,7 @@ begin
       # Read browsers requirements from application config
       def config(app)
         file   = app.root.join('config/autoprefixer.yml')
-        params = file.exist? ? YAML.load_file(file).symbolize_keys : { }
+        params = file.exist? ? ::YAML.load_file(file).symbolize_keys : { }
 
         opts   = { }
         opts[:safe] = true if params.delete(:safe)
