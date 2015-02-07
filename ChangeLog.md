@@ -1,3 +1,6 @@
+# 5.1.4
+* Use `-webkit-` prefix for Opera Mobile 24.
+
 # 5.1.3.1
 * Fix Rails 5 support (by Joshua Peek).
 
