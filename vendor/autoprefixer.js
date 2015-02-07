@@ -658,8 +658,11 @@
     Browsers.prototype.prefix = function(browser) {
       var name, version, _ref;
       _ref = browser.split(' '), name = _ref[0], version = _ref[1];
-      if (name === 'opera' && parseFloat(version) < 15) {
+      version = parseFloat(version);
+      if (name === 'opera' && version < 15) {
         return '-o-';
+      } else if (name === 'op_mob' && version >= 15) {
+        return '-webkit-';
       } else {
         return '-' + this.data[name].prefix + '-';
       }
