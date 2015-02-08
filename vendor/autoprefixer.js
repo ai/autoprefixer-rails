@@ -444,7 +444,11 @@
   });
 
   feature(require('caniuse-db/features-json/css-masks'), function(browsers) {
-    return prefix('clip-path', 'mask', 'mask-clip', 'mask-composite', 'mask-image', 'mask-origin', 'mask-position', 'mask-repeat', 'mask-size', {
+    prefix('mask-clip', 'mask-composite', 'mask-image', 'mask-origin', 'mask-repeat', {
+      browsers: browsers
+    });
+    return prefix('clip-path', 'mask', 'mask-position', 'mask-size', {
+      transition: true,
       browsers: browsers
     });
   });
@@ -656,16 +660,14 @@
     };
 
     Browsers.prototype.prefix = function(browser) {
-      var name, version, _ref;
+      var data, name, prefix, version, _ref;
       _ref = browser.split(' '), name = _ref[0], version = _ref[1];
-      version = parseFloat(version);
-      if (name === 'opera' && version < 15) {
-        return '-o-';
-      } else if (name === 'op_mob' && version >= 15) {
-        return '-webkit-';
-      } else {
-        return '-' + this.data[name].prefix + '-';
+      data = this.data[name];
+      if (data.prefix_exceptions) {
+        prefix = data.prefix_exceptions[version];
       }
+      prefix || (prefix = data.prefix);
+      return '-' + prefix + '-';
     };
 
     Browsers.prototype.isSelected = function(browser) {
