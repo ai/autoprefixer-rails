@@ -44,7 +44,7 @@ module AutoprefixerRails
     # Convert params to JS string and add browsers from Browserslist config
     def js_params(from = nil)
       unless from
-        if defined? Rails and Rails.root
+        if defined? Rails and Rails.respond_to?(:root) and Rails.root
           from = Rails.root.join('app/assets/stylesheets').to_s
         else
           from = '.'
