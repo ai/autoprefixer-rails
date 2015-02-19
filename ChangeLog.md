@@ -1,3 +1,7 @@
+# 5.1.6
+* Use official `::placeholder-shown` selector (by Vincent De Oliveira).
+* Fix problem with rails-html-sanitizer (by Alexey Vasiliev).
+
 # 5.1.5
 * Add transition support for CSS Masks properties.
 
