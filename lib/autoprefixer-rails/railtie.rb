@@ -23,7 +23,9 @@ begin
       # Read browsers requirements from application config
       def config(root)
         file   = File.join(root, 'config/autoprefixer.yml')
-        params = File.exist?(file) ? ::YAML.load_file(file).symbolize_keys : { }
+        params = ::YAML.load_file(file) if File.exist?(file)
+        params ||= {}
+        params = params.symbolize_keys
 
         opts   = { }
         opts[:safe] = true if params.delete(:safe)
