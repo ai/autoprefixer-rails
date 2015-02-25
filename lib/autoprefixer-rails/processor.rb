@@ -19,9 +19,13 @@ module AutoprefixerRails
     def process(css, opts = {})
       opts = convert_options(opts)
 
-      result = runtime.exec(
-        "processor = autoprefixer(#{ js_params(opts[:from]) });" +
-        "return eval(process.apply(this, #{::JSON.generate([css,opts])}));")
+      apply_wrapper =
+        "(function(opts) {" +
+        "processor = autoprefixer(" + js_params(opts[:from]) + ");" +
+        "return eval(process.apply(this, opts));" +
+        "})"
+
+      result = runtime.call(apply_wrapper, [css, opts])
 
       Result.new(result['css'], result['map'])
     end
