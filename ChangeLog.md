@@ -1,3 +1,7 @@
+## 5.1.8
+* Fix gradients in `mask` and `mask-image` properties.
+* Fix old webkit prefix on some unsupported gradients.
+
 ## 5.1.7.1
 * Update Can I Use database and JS libraries.
 * Better support with Alaska runtime (by Jon Bardin).
