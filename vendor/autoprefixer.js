@@ -1946,9 +1946,7 @@
           params = list.comma(args);
           params = _this.newDirection(params);
           if (prefix === '-webkit- old') {
-            if (args.indexOf('px') === -1) {
-              return _this.oldWebkit(value, args, params, after);
-            }
+            return _this.oldWebkit(value, args, params, after);
           } else {
             _this.convertDirection(params);
             return prefix + _this.name + '(' + params.join(', ') + ')' + after;
@@ -1999,6 +1997,9 @@
     };
 
     Gradient.prototype.oldWebkit = function(value, args, params, after) {
+      if (args.indexOf('px') !== -1) {
+        return value;
+      }
       if (this.name !== 'linear-gradient') {
         return value;
       }
