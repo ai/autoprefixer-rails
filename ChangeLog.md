@@ -1,3 +1,6 @@
+## 5.1.8.1
+* Update Can I Use database.
+
 ## 5.1.8
 * Fix gradients in `mask` and `mask-image` properties.
 * Fix old webkit prefix on some unsupported gradients.
