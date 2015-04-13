@@ -1,3 +1,6 @@
+## 5.1.9
+* Fix DynJS compatibility (by Nick Howes).
+
 ## 5.1.8.1
 * Update Can I Use database.
 
