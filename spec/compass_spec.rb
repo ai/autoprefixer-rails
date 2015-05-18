@@ -17,8 +17,8 @@ describe 'Compass integration' do
              "/*# sourceMappingURL=screen.css.map */")
     expect(STYLESHEETS_DIR.join('screen.css.map').read)
       .to eq('{"version":3,"sources":["../sass/screen.scss"],"names":[],' +
-             '"mappings":"AAAA,EACI,oBAAA,CAAa,oBAAb,CAAa,mBAAb,CAAa,' +
-             'YAAA,CAAA","file":"screen.css"}')
+             '"mappings":"AAAA,EACI,oBAAa,AAAb,qBAAa,AAAb,oBAAa,AAAb,YAAa,' +
+             'CAAA","file":"screen.css"}')
   end
 
 end
