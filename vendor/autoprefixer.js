@@ -2116,14 +2116,16 @@
     };
 
     Gradient.prototype.process = function(node, result) {
-      if (this.name === 'linear-gradient') {
+      var added;
+      added = Gradient.__super__.process.apply(this, arguments);
+      if (added && this.name === 'linear-gradient') {
         if (/\(\s*(top|left|right|bottom)/.test(node.value)) {
           result.warn('Gradient has outdated direction syntax. ' + 'New syntax is like "to left" instead of "right".', {
             node: node
           });
         }
       }
-      return Gradient.__super__.process.apply(this, arguments);
+      return added;
     };
 
     return Gradient;
