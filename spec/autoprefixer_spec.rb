@@ -67,8 +67,8 @@ describe AutoprefixerRails do
   it "returns warnings" do
     css    = 'a{background:linear-gradient(top,white,black)}'
     result = AutoprefixerRails.process(css)
-    expect(result.warnings).to eq(['Gradient has outdated direction syntax. ' +
-      'New syntax is like "to left" instead of "right".'])
+    expect(result.warnings).to eq(['<css input>:1:3: Gradient has outdated ' +
+      'direction syntax. New syntax is like "to left" instead of "right".'])
   end
 
   context 'Sprockets' do
