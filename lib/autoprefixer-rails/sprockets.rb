@@ -11,8 +11,13 @@ module AutoprefixerRails
     def process(context, css, opts)
       input  = context.pathname.to_s
       output = input.chomp(File.extname(input)) + '.css'
+      result = @processor.process(css, opts.merge(from: input, to: output))
 
-      @processor.process(css, opts.merge(from: input, to: output)).css
+      result.warnings.each do |warning|
+        $stderr.puts "autoprefixer: #{ warning }"
+      end
+
+      result.css
     end
 
     # Register postprocessor in Sprockets depend on issues with other gems

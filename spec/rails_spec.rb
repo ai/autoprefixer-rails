@@ -16,7 +16,7 @@ describe CssController, type: :controller do
   it "has safe mode" do
     get :test, file: 'wrong'
     expect(response).to be_success
-    expect(response.body).to eq "a {\n}"
+    expect(response.body).to match /a \{[^}]+\}/
   end
 end
 
