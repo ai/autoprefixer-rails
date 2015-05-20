@@ -7,9 +7,13 @@ module AutoprefixerRails
     # Source map of changes
     attr_reader :map
 
-    def initialize(css, map)
-      @css = css
-      @map = map
+    # Warnings from Autoprefixer
+    attr_reader :warnings
+
+    def initialize(css, map, warnings)
+      @warnings = warnings
+      @css      = css
+      @map      = map
     end
 
     # Stringify prefixed CSS

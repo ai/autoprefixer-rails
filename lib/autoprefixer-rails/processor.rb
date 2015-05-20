@@ -16,7 +16,7 @@ module AutoprefixerRails
     # * `from` with input CSS file name. Will be used in error messages.
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
-    def process(css, opts = {})
+    def process(css, opts = { })
       opts = convert_options(opts)
 
       apply_wrapper =
@@ -27,7 +27,7 @@ module AutoprefixerRails
 
       result = runtime.call(apply_wrapper, [css, opts])
 
-      Result.new(result['css'], result['map'])
+      Result.new(result['css'], result['map'], result['warnings'])
     end
 
     # Return, which browsers and prefixes will be used
@@ -123,8 +123,12 @@ module AutoprefixerRails
         var processor;
         var process = function() {
           var result = processor.process.apply(processor, arguments);
+          var warns  = result.warnings().map(function (i) {
+            delete i.plugin;
+            return i.toString();
+          });
           var map    = result.map ? result.map.toString() : null;
-          return { css: result.css, map: map };
+          return { css: result.css, map: map, warnings: warns };
         };
       JS
     end
