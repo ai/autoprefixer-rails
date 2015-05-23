@@ -1,6 +1,8 @@
-﻿# Autoprefixer Rails [![Build Status](https://travis-ci.org/ai/autoprefixer-rails.svg)](https://travis-ci.org/ai/autoprefixer-rails)
+﻿# Autoprefixer Rails [![Build Status][ci-img]][ci]
 
-<img align="right" width="94" height="71" src="http://postcss.github.io/autoprefixer/logo.svg" title="Autoprefixer logo by Anton Lovchikov">
+<img align="right" width="94" height="71"
+     src="http://postcss.github.io/autoprefixer/logo.svg"
+     title="Autoprefixer logo by Anton Lovchikov">
 
 [Autoprefixer] is a tool to parse CSS and add vendor prefixes to CSS rules
 using values from the [Can I Use]. This gem provides Ruby and Ruby on Rails
@@ -12,6 +14,8 @@ integration with this JavaScript tool.
 
 [Autoprefixer]:  https://github.com/postcss/autoprefixer
 [Can I Use]:     http://caniuse.com/
+[ci-img]:             https://travis-ci.org/ai/autoprefixer-rails.svg
+[ci]:                 https://travis-ci.org/ai/autoprefixer-rails
 
 ## Usage
 
