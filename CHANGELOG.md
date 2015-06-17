@@ -1,3 +1,6 @@
+## 5.2.0.1
+* Update Can I Use database.
+
 ## 5.2 “Dont tread on me”
 * Add `appearance` support.
 * Warn users on old gradient direction or flexbox syntax.
