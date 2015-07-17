@@ -1,3 +1,7 @@
+## 5.2.1.1
+* Update Can I Use database.
+* Update internal libraries.
+
 ## 5.2.1
 * Fix parent-less node issue on some cases (by Josh Gillies)
 
