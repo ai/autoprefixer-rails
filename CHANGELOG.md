@@ -1,3 +1,7 @@
+## 5.2.1.3
+* Update Can I Use database.
+* Update internal libraries.
+
 ## 5.2.1.2
 * Update Can I Use database.
 * Update internal libraries.
