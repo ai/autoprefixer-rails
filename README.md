@@ -117,6 +117,42 @@ You can specify browsers by `browsers` option:
 AutoprefixerRails.process(css, from: 'a.css', browsers: ['> 1%', 'ie 10']).css
 ```
 
+### Compass
+
+You should consider using Gulp instead of Compass binary,
+because it has better Autoprefixer integration and many other awesome plugins.
+
+But if you can’t move from Compass binary right now, there’s a hack
+to run Autoprefixer after `compass compile`.
+
+Install `autoprefixer-rails` gem:
+
+```
+gem install autoprefixer-rails
+```
+
+and add post-compile hook to `config.rb`:
+
+```ruby
+require 'autoprefixer-rails'
+
+on_stylesheet_saved do |file|
+  css = File.read(file)
+  map = file + '.map'
+
+  if File.exists? map
+    result = AutoprefixerRails.process(css,
+      from: file,
+      to:   file,
+      map:  { prev: File.read(map), inline: false })
+    File.open(file, 'w') { |io| io << result.css }
+    File.open(map,  'w') { |io| io << result.map }
+  else
+    File.open(file, 'w') { |io| io << AutoprefixerRails.process(css) }
+  end
+end
+```
+
 ## Visual Cascade
 
 By default, Autoprefixer will change CSS indentation to create nice visual
