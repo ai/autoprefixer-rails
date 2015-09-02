@@ -169,14 +169,6 @@ a {
 You can disable it by `cascade: false` in `config/autoprefixer.yml`
 or in `process()` options.
 
-## Safe Mode
-
-If you have legacy code with non-valid CSS hacks, you can enable Safe Mode
-and Autoprefixer will try to fix broken CSS.
-
-Add `safe: on` to `config/autoprefixer.yml` or use `safe: true` option
-in `process` method.
-
 ## Source Map
 
 Autoprefixer will generate source map, if you set `map` option to `true` in

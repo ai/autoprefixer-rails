@@ -12,12 +12,6 @@ describe CssController, type: :controller do
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
     expect(clear_css).to eq "a { -webkit-transition: all 1s; transition: all 1s; }"
   end
-
-  it "has safe mode" do
-    get :test, file: 'wrong'
-    expect(response).to be_success
-    expect(response.body).to match /a \{[^}]+\}/
-  end
 end
 
 describe 'Rake task' do

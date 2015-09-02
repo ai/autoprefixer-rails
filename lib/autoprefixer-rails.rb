@@ -14,8 +14,8 @@ module AutoprefixerRails
 
   # Add Autoprefixer for Sprockets environment in `assets`.
   # You can specify `browsers` actual in your project.
-  def self.install(assets, params = { }, opts = { })
-    Sprockets.new( processor(params) ).install(assets, opts)
+  def self.install(assets, params = { })
+    Sprockets.new( processor(params) ).install(assets)
   end
 
   # Cache processor instances

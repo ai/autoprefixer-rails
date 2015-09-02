@@ -7,16 +7,16 @@ begin
     class Railtie < ::Rails::Railtie
       rake_tasks do |app|
         require 'rake/autoprefixer_tasks'
-        Rake::AutoprefixerTasks.new( config(app.root)[0] )
+        Rake::AutoprefixerTasks.new( config(app.root) )
       end
 
       if config.respond_to?(:assets)
         config.assets.configure do |env|
-          AutoprefixerRails.install(env, *config(env.root))
+          AutoprefixerRails.install(env, config(env.root))
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          AutoprefixerRails.install(app.assets, *config(app.root))
+          AutoprefixerRails.install(app.assets, config(app.root))
         end
       end
 
@@ -26,17 +26,7 @@ begin
         params = ::YAML.load_file(file) if File.exist?(file)
         params ||= {}
         params = params.symbolize_keys
-
-        opts   = { }
-        opts[:safe] = true if params.delete(:safe)
-
-        if params[:browsers]
-          ActiveSupport::Deprecation.warn(
-            'browsers key in config/autoprefixer.yml was deprecated. ' +
-            'Use browserslist config.')
-        end
-
-        [params, opts]
+        params
       end
     end
   end
