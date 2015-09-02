@@ -1,11 +1,10 @@
 sudo: false
 language: ruby
 rvm:
-  - 1.9
   - 2.0
   - 2.1
   - 2.2
-  - jruby-19mode
+  - jruby-21mode
 
 env:
   - EXECJS_RUNTIME=Node
