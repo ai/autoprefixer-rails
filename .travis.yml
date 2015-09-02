@@ -10,12 +10,3 @@ rvm:
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
-
-gemfile:
-  - Gemfile
-  - Gemfile.rails3
-
-matrix:
-  exclude:
-    - rvm: 2.2
-      gemfile: Gemfile.rails3
