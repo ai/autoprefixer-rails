@@ -21,11 +21,11 @@ module AutoprefixerRails
 
       apply_wrapper =
         "(function(opts) {" +
-        "processor = autoprefixer(" + js_params(opts[:from]) + ");" +
         "return eval(process.apply(this, opts));" +
         "})"
 
-      result = runtime.call(apply_wrapper, [css, opts])
+      params = params_with_browsers(opts[:from]).merge(opts)
+      result = runtime.call(apply_wrapper, [css, params])
 
       Result.new(result['css'], result['map'], result['warnings'])
     end
@@ -45,8 +45,7 @@ module AutoprefixerRails
 
     private
 
-    # Convert params to JS string and add browsers from Browserslist config
-    def js_params(from = nil)
+    def params_with_browsers(from = nil)
       unless from
         if defined? Rails and Rails.respond_to?(:root) and Rails.root
           from = Rails.root.join('app/assets/stylesheets').to_s
@@ -64,7 +63,14 @@ module AutoprefixerRails
         end
       end
 
-      '{ ' + params.map { |k, v| "#{k}: #{v.inspect}"}.join(', ') + ' }'
+      params
+    end
+
+    # Convert params to JS string and add browsers from Browserslist config
+    def js_params
+      '{ ' +
+        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}"}.join(', ') +
+      ' }'
     end
 
     # Convert ruby_options to jsOptions
@@ -122,12 +128,12 @@ module AutoprefixerRails
       <<-JS
         var processor;
         var process = function() {
-          var result = processor.process.apply(processor, arguments);
+          var result = autoprefixer.process.apply(autoprefixer, arguments);
           var warns  = result.warnings().map(function (i) {
             delete i.plugin;
             return i.toString();
           });
-          var map    = result.map ? result.map.toString() : null;
+          var map = result.map ? result.map.toString() : null;
           return { css: result.css, map: map, warnings: warns };
         };
       JS
