@@ -34,10 +34,6 @@ describe AutoprefixerRails do
     }.to raise_error(/a.css:/)
   end
 
-  it "has safe mode" do
-    expect(AutoprefixerRails.process('a {', safe: true).css).to eql('a {}')
-  end
-
   it "includes sourcesContent by default" do
     map = AutoprefixerRails.process('a{}', map: { inline:  false }).map
     expect(map).to include('sourcesContent')
