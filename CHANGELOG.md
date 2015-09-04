@@ -1,5 +1,5 @@
 ## 6.0 “Eureka”
-# Remove Ruby on Rails 3 support.
+* Remove Ruby on Rails 3 support.
 * Remove Ruby 1.9 support.
 * Remove `safe` option.
 * Remove Opera 12.1 from default query.
