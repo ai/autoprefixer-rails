@@ -1,3 +1,6 @@
+## 6.0.1
+* Fix `cross-fade()` support (by 一丝).
+
 ## 6.0 “Eureka”
 * Remove Ruby on Rails 3 support.
 * Remove Ruby 1.9 support.
