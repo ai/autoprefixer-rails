@@ -89,6 +89,7 @@
 
   feature(require('caniuse-db/features-json/css-boxshadow'), function(browsers) {
     return prefix('box-shadow', {
+      mistakes: ['-khtml-'],
       transition: true,
       browsers: browsers
     });
@@ -96,14 +97,14 @@
 
   feature(require('caniuse-db/features-json/css-animation'), function(browsers) {
     return prefix('animation', 'animation-name', 'animation-duration', 'animation-delay', 'animation-direction', 'animation-fill-mode', 'animation-iteration-count', 'animation-play-state', 'animation-timing-function', '@keyframes', {
-      mistakes: ['-ms-'],
+      mistakes: ['-khtml-', '-ms-'],
       browsers: browsers
     });
   });
 
   feature(require('caniuse-db/features-json/css-transitions'), function(browsers) {
     return prefix('transition', 'transition-property', 'transition-duration', 'transition-delay', 'transition-timing-function', {
-      mistakes: ['-ms-'],
+      mistakes: ['-khtml-', '-ms-'],
       browsers: browsers
     });
   });
@@ -197,6 +198,7 @@
 
   feature(require('caniuse-db/features-json/user-select-none'), function(browsers) {
     return prefix('user-select', {
+      mistakes: ['-khtml-'],
       browsers: browsers
     });
   });
