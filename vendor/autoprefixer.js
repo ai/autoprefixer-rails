@@ -81,7 +81,7 @@
 
   feature(require('caniuse-db/features-json/border-radius'), function(browsers) {
     return prefix('border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius', {
-      mistakes: ['-ms-', '-o-'],
+      mistakes: ['-khtml-', '-ms-', '-o-'],
       transition: true,
       browsers: browsers
     });
