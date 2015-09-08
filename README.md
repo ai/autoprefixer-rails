@@ -84,6 +84,12 @@ You can get what properties will be changed using a Rake task:
 rake autoprefixer:info
 ```
 
+To disable Autoprefixer just remove postprocessor:
+
+```ruby
+Rails.application.assets.unregister_postprocessor('text/css', :autoprefixer)
+```
+
 [Browserslist docs]: https://github.com/ai/browserslist
 [Firefox ESR]:       http://www.mozilla.org/en/firefox/organizations/faq/
 
