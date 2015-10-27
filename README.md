@@ -71,7 +71,8 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 
 If you need to specify browsers for your Rails project, you can save them to
 
-* `browserslist` and place it under `app/assets/stylesheets/` or any of its ancestor directories
+* `browserslist` and place it under `app/assets/stylesheets/`
+   or any of its ancestor directories
 
     ```
     > 1%
