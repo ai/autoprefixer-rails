@@ -89,9 +89,12 @@ If you need to specify browsers for your Rails project, you can save them to
       - "IE > 8"
     ```
 
-See [Browserslist docs] for config format.
+See [Browserslist docs] for config format. But `> 5% in US` query is not
+supported in Rails, because of ExecJS limitations. You should migrate to webpack
+or Gulp if you want counrty based statistics.
 
-__Note: you have to clear cache (`rake tmp:clear`) for the configuration to take effect.__
+__Note: you have to clear cache (`rake tmp:clear`) for the configuration
+to take effect.__
 
 You can get what properties will be changed using a Rake task:
 
