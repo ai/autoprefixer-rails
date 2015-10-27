@@ -91,7 +91,7 @@ If you need to specify browsers for your Rails project, you can save them to
 
 See [Browserslist docs] for config format. But `> 5% in US` query is not
 supported in Rails, because of ExecJS limitations. You should migrate to webpack
-or Gulp if you want counrty based statistics.
+or Gulp if you want it.
 
 __Note: you have to clear cache (`rake tmp:clear`) for the configuration
 to take effect.__
