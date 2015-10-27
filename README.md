@@ -69,14 +69,28 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 }
 ```
 
-If you need to specify browsers for your Rails project, you can save them
-to `browserslist` config in app root. See [Browserslist docs] for config format.
+If you need to specify browsers for your Rails project, you can save them to
 
-```
-last 1 version
-> 1%
-Explorer 10
-```
+* `browserslist` and place it under `app/assets/stylesheets/` or any of its ancestor directories
+
+    ```
+    > 1%
+    last 2 versions
+    IE > 8 # comment
+    ```
+
+* Or `config/autoprefixer.yml`
+
+    ```yaml
+    browsers:
+      - "> 1%"
+      - "last 2 versions"
+      - "IE > 8"
+    ```
+
+See [Browserslist docs] for config format.
+
+__Note: you have to clear cache (`rake tmp:clear`) for the configuration to take effect.__
 
 You can get what properties will be changed using a Rake task:
 
