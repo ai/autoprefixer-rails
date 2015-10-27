@@ -14,8 +14,8 @@ integration with this JavaScript tool.
 
 [Autoprefixer]:  https://github.com/postcss/autoprefixer
 [Can I Use]:     http://caniuse.com/
-[ci-img]:             https://travis-ci.org/ai/autoprefixer-rails.svg
-[ci]:                 https://travis-ci.org/ai/autoprefixer-rails
+[ci-img]:        https://travis-ci.org/ai/autoprefixer-rails.svg
+[ci]:            https://travis-ci.org/ai/autoprefixer-rails
 
 ## Usage
 
