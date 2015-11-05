@@ -1,3 +1,6 @@
+## 6.1.0.1
+* Return old Rails integration to fix strange issues.
+
 ## 6.1 “Bil-shaʿb wa lil-shaʿb”
 * Change `transition` support to output more robust CSS.
 * Add `:read-only` support.
