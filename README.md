@@ -102,10 +102,10 @@ You can get what properties will be changed using a Rake task:
 rake autoprefixer:info
 ```
 
-To disable Autoprefixer just remove the postprocessor:
+To disable Autoprefixer just remove postprocessor:
 
 ```ruby
-Rails.application.assets.unregister_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+Rails.application.assets.unregister_postprocessor('text/css', :autoprefixer)
 ```
 
 [Browserslist docs]: https://github.com/ai/browserslist
