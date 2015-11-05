@@ -82,7 +82,6 @@
   feature(require('caniuse-db/features-json/border-radius'), function(browsers) {
     return prefix('border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius', {
       mistakes: ['-khtml-', '-ms-', '-o-'],
-      transition: true,
       browsers: browsers
     });
   });
@@ -90,7 +89,6 @@
   feature(require('caniuse-db/features-json/css-boxshadow'), function(browsers) {
     return prefix('box-shadow', {
       mistakes: ['-khtml-'],
-      transition: true,
       browsers: browsers
     });
   });
@@ -111,14 +109,12 @@
 
   feature(require('caniuse-db/features-json/transforms2d'), function(browsers) {
     return prefix('transform', 'transform-origin', {
-      transition: true,
       browsers: browsers
     });
   });
 
   feature(require('caniuse-db/features-json/transforms3d'), function(browsers) {
     prefix('perspective', 'perspective-origin', {
-      transition: true,
       browsers: browsers
     });
     return prefix('transform-style', 'backface-visibility', {
@@ -162,7 +158,6 @@
 
   feature(require('caniuse-db/features-json/css-filters'), function(browsers) {
     return prefix('filter', {
-      transition: true,
       browsers: browsers
     });
   });
@@ -176,7 +171,6 @@
 
   feature(require('caniuse-db/features-json/css-backdrop-filter'), function(browsers) {
     return prefix('backdrop-filter', {
-      transition: true,
       browsers: browsers
     });
   });
@@ -190,7 +184,6 @@
 
   feature(require('caniuse-db/features-json/multicolumn'), function(browsers) {
     prefix('columns', 'column-width', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-width', {
-      transition: true,
       browsers: browsers
     });
     return prefix('column-count', 'column-rule-style', 'column-span', 'column-fill', 'break-before', 'break-after', 'break-inside', {
@@ -222,7 +215,6 @@
       browsers: browsers
     });
     prefix('flex', 'flex-grow', 'flex-shrink', 'flex-basis', {
-      transition: true,
       browsers: browsers
     });
     return prefix('flex-direction', 'flex-wrap', 'flex-flow', 'justify-content', 'order', 'align-items', 'align-self', 'align-content', {
@@ -370,7 +362,6 @@
       browsers: browsers
     });
     return prefix('clip-path', 'mask', 'mask-position', 'mask-size', 'mask-border', 'mask-border-outset', 'mask-border-width', 'mask-border-slice', {
-      transition: true,
       browsers: browsers
     });
   });
@@ -450,7 +441,6 @@
 
   feature(logicalProps, function(browsers) {
     return prefix('border-inline-start', 'border-inline-end', 'margin-inline-start', 'margin-inline-end', 'padding-inline-start', 'padding-inline-end', {
-      transition: true,
       browsers: browsers
     });
   });
@@ -459,7 +449,6 @@
     match: /x\s#2/
   }, function(browsers) {
     return prefix('border-block-start', 'border-block-end', 'margin-block-start', 'margin-block-end', 'padding-block-start', 'padding-block-end', {
-      transition: true,
       browsers: browsers
     });
   });
@@ -4104,7 +4093,7 @@
           continue;
         }
         prefixer = this.prefixes.add[prop];
-        if (!prefixer) {
+        if (!(prefixer != null ? prefixer.prefixes : void 0)) {
           continue;
         }
         ref1 = prefixer.prefixes;
