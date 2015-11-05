@@ -11,11 +11,12 @@ describe AutoprefixerRails do
   end
 
   it "process CSS for selected browsers" do
-    result = AutoprefixerRails.process(@css, browsers: ['opera 12'])
+    css = "a {\n    transition: all 1s\n}"
+    result = AutoprefixerRails.process(css, browsers: ['opera 12'])
     expect(result.css).to eq "a {\n" +
                              "    -o-transition: all 1s;\n" +
                              "       transition: all 1s\n" +
-                             "}\n"
+                             "}"
   end
 
   it "generates source map" do
@@ -77,8 +78,8 @@ describe AutoprefixerRails do
     it "integrates with Sprockets" do
       css = @assets['test.css'].to_s
       expect(css).to eq "a {\n" +
-                        "    -webkit-transition: all 1s;\n" +
-                        "            transition: all 1s\n" +
+                        "    -webkit-mask: none;\n" +
+                        "            mask: none\n" +
                         "}\n"
     end
 

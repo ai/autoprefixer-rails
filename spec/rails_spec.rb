@@ -10,7 +10,7 @@ describe CssController, type: :controller do
     get :test, file: 'sass'
     expect(response).to be_success
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
-    expect(clear_css).to eq "a { -webkit-transition: all 1s; transition: all 1s; }"
+    expect(clear_css).to eq "a { -webkit-mask: none; mask: none; }"
   end
 end
 
