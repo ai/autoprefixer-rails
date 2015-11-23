@@ -1,3 +1,6 @@
+## 6.1.1
+* Fix `cursor: grab` and `cusror: grabbing` support.
+
 ## 6.1.0.1
 * Return old Rails integration to fix strange issues.
 
