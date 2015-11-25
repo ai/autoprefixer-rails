@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.extra_rdoc_files = ['README.md', 'LICENSE', 'CHANGELOG.md']
   s.require_path     = 'lib'
+  s.required_ruby_version = '>= 2.0'
 
   s.author   = 'Andrey Sitnik'
   s.email    = 'andrey@sitnik.ru'
