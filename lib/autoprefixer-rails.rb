@@ -28,4 +28,4 @@ require_relative 'autoprefixer-rails/result'
 require_relative 'autoprefixer-rails/version'
 require_relative 'autoprefixer-rails/processor'
 
-require_relative 'autoprefixer-rails/railtie' if defined?(Rails)
+require_relative 'autoprefixer-rails/railtie' if defined?(Rails.application.assets)
