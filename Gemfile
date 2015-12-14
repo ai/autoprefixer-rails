@@ -7,7 +7,7 @@ gem 'compass'
 gem 'sass-rails'
 gem 'rspec-rails'
 
-gem 'execjs', '< 2.5.0' if RUBY_VERSION.start_with? '1.9.'
+gem 'execjs'
 gem 'sprockets'
 
 gem 'therubyrhino', platforms:  'jruby'
