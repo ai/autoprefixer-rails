@@ -1,8 +1,6 @@
 require 'yaml'
 
 begin
-  require 'sprockets/railtie'
-
   module AutoprefixedRails
     class Railtie < ::Rails::Railtie
       rake_tasks do |app|
