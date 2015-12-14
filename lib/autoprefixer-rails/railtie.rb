@@ -7,7 +7,7 @@ begin
     class Railtie < ::Rails::Railtie
       rake_tasks do |app|
         require 'rake/autoprefixer_tasks'
-        Rake::AutoprefixerTasks.new( config(app.root) )
+        Rake::AutoprefixerTasks.new( config(app.root) ) if defined? app.assets
       end
 
       if config.respond_to?(:assets)
@@ -16,7 +16,9 @@ begin
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          AutoprefixerRails.install(app.assets, config(app.root))
+          if defined? app.assets
+            AutoprefixerRails.install(app.assets, config(app.root))
+          end
         end
       end
 
