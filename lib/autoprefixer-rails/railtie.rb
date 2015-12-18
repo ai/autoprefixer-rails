@@ -8,13 +8,13 @@ begin
         Rake::AutoprefixerTasks.new( config(app.root) ) if defined? app.assets
       end
 
-      if config.respond_to?(:assets)
+      if config.respond_to?(:assets) and not config.assets.nil?
         config.assets.configure do |env|
           AutoprefixerRails.install(env, config(env.root))
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          if defined? app.assets
+          if defined? app.assets and not app.assets.nil?
             AutoprefixerRails.install(app.assets, config(app.root))
           end
         end
