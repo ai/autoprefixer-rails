@@ -4464,11 +4464,6 @@
       params = params.filter((function(_this) {
         return function(param) {
           var ref;
-          return (ref = param[0]) != null ? ref.value : void 0;
-        };
-      })(this)).filter((function(_this) {
-        return function(param) {
-          var ref;
           return !((ref = _this.prefixes.remove[param[0].value]) != null ? ref.remove : void 0);
         };
       })(this));
@@ -4508,7 +4503,9 @@
         }
       }
       result.push(param);
-      return result;
+      return result.filter(function(i) {
+        return i.length > 0;
+      });
     };
 
     Transition.prototype.stringify = function(params) {
