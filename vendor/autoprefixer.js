@@ -635,8 +635,9 @@
       reqs = options.browsers;
     }
     loadPrefixes = function(opts) {
-      var browsers, key;
-      browsers = new Browsers(module.exports.data.browsers, reqs, opts);
+      var browsers, key, stats;
+      stats = options.stats;
+      browsers = new Browsers(module.exports.data.browsers, reqs, opts, stats);
       key = browsers.selected.join(', ') + JSON.stringify(options);
       return cache[key] || (cache[key] = new Prefixes(module.exports.data.prefixes, browsers, options));
     };
@@ -756,16 +757,18 @@
       return this.prefixesRegexp.test(value);
     };
 
-    function Browsers(data1, requirements, options) {
+    function Browsers(data1, requirements, options, stats) {
       this.data = data1;
       this.options = options;
+      this.stats = stats;
       this.selected = this.parse(requirements);
     }
 
     Browsers.prototype.parse = function(requirements) {
       var ref;
       return browserslist(requirements, {
-        path: (ref = this.options) != null ? ref.from : void 0
+        path: (ref = this.options) != null ? ref.from : void 0,
+        stats: this.stats
       });
     };
 
@@ -5543,7 +5546,7 @@ browserslist.queries = {
     },
 
     globalStatistics: {
-        regexp: /^> (\d+\.?\d*)%$/,
+        regexp: /^>\s?(\d+\.?\d*)%$/,
         select: function (popularity) {
             popularity = parseFloat(popularity);
             var result = [];
@@ -5559,23 +5562,14 @@ browserslist.queries = {
     },
 
     customStatistics: {
-        regexp: /^> (\d+\.?\d*)% in my stats$/,
+        regexp: /^>\s?(\d+\.?\d*)% in my stats$/,
         select: function (popularity) {
             popularity = parseFloat(popularity);
             var result = [];
 
             var usage = browserslist.usage.custom;
             if ( !usage ) {
-                error('Custom usage data was not provided. ' +
-                    'To use selection "> ' + popularity + '% in my stats" ' +
-                    'you need one of the following:\n' +
-                    '* browserslist("selections", ' +
-                    '{stats: "path/to/the/stats_file.json"})\n' +
-                    '* browserslist("selections", {stats: <stats object>})\n' +
-                    '* Set the ENV variable BROWSERSLIST_STATS to the path ' +
-                    'of the stats JSON file.\nThe expected stats object is: ' +
-                    '{"browser": {"version": <percentage>, "anotherVersion"' +
-                    ': <percentage>, ...}, "anotherBrowser": {...}, ...}');
+                error('Custom usage statistics was not provided');
             }
 
             for ( var version in usage ) {
