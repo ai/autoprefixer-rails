@@ -83,6 +83,7 @@ If you need to specify browsers for your Rails project, you can save them to
 * Or `config/autoprefixer.yml`
 
     ```yaml
+    flexbox: no-2009
     browsers:
       - "> 1%"
       - "last 2 versions"
