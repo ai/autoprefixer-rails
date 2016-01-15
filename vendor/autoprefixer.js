@@ -1465,7 +1465,7 @@
     }
 
     DisplayFlex.prototype.check = function(decl) {
-      return decl.value === this.name;
+      return decl.prop === 'display' && decl.value === this.name;
     };
 
     DisplayFlex.prototype.prefixed = function(prefix) {
