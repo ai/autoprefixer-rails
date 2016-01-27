@@ -22,7 +22,7 @@ module AutoprefixerRails
 
     # Register postprocessor in Sprockets depend on issues with other gems
     def install(assets)
-      assets.register_postprocessor('text/css', :autoprefixer) do |context, css|
+      assets.register_bundle_processor('text/css', :autoprefixer) do |context, css|
         process(context, css)
       end
     end
