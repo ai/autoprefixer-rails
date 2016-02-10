@@ -1,3 +1,6 @@
+## 6.3.2
+* Update Can I Use data.
+
 ## 6.3.1
 * Fix compatibility with Flexibility polyfill.
 
