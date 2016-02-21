@@ -42,6 +42,15 @@ module AutoprefixerRails
       end
     end
 
+    # Register postprocessor in Sprockets depend on issues with other gems
+    def self.uninstall(env)
+      if ::Sprockets::VERSION.to_i < 4
+        env.unregister_postprocessor('text/css', :autoprefixer)
+      else
+        env.unregister_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+      end
+    end
+
     # Sprockets 2 API new and render
     def initialize(filename, &block)
       @filename = filename

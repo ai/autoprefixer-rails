@@ -106,7 +106,7 @@ rake autoprefixer:info
 To disable Autoprefixer just remove postprocessor:
 
 ```ruby
-Rails.application.assets.unregister_postprocessor('text/css', :autoprefixer)
+AutoprefixerRails.uninstall(Rails.application.assets)
 ```
 
 [Browserslist docs]: https://github.com/ai/browserslist

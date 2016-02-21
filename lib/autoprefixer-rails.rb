@@ -19,6 +19,11 @@ module AutoprefixerRails
     Sprockets.install(assets)
   end
 
+  # Disable installed Autoprefixer
+  def self.uninstall(assets)
+    Sprockets.uninstall(assets)
+  end
+
   # Cache processor instances
   def self.processor(params = { })
     Processor.new(params)

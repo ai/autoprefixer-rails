@@ -69,7 +69,7 @@ describe AutoprefixerRails do
   end
 
   context 'Sprockets' do
-    before :all do
+    before :each do
       @assets = Sprockets::Environment.new
       @assets.append_path(@dir.join('app/app/assets/stylesheets'))
       AutoprefixerRails.install(@assets, browsers: ['chrome 25'])
@@ -85,6 +85,14 @@ describe AutoprefixerRails do
 
     it "shows file name from Sprockets", not_jruby: true do
       expect { @assets['wrong.css'] }.to raise_error(/wrong/)
+    end
+
+    it "supports disabling", not_jruby: true do
+      AutoprefixerRails.uninstall(@assets)
+      css = @assets['test.css'].to_s
+      expect(css).to eq "a {\n" +
+                        "    mask: none\n" +
+                        "}\n"
     end
 
   end
