@@ -7,17 +7,6 @@ module AutoprefixerRails
       @processor = processor
     end
 
-    # Sprockets 2 API new and render
-    def initialize(filename, &block)
-      @filename = filename
-      @source   = block.call
-    end
-
-    # Sprockets 2 API new and render
-    def render(_, _)
-      self.class.run(@filename, @source)
-    end
-
     # Sprockets 3 and 4 API
     def self.call(input)
       filename  = input[:source_path] || input[:filename]
@@ -25,9 +14,15 @@ module AutoprefixerRails
       run(filename, source)
     end
 
-    def self.run(filename, source)
+    # Sprockets 2 compatibility
+    def self.process(context, css)
+      self.run(context.pathname.to_s, css)
+    end
+
+    # Add prefixes to `css`
+    def self.run(filename, css)
       output = filename.chomp(File.extname(filename)) + '.css'
-      result = @processor.process(source, from: filename, to: output)
+      result = @processor.process(css, from: filename, to: output)
 
       result.warnings.each do |warning|
         $stderr.puts "autoprefixer: #{ warning }"
@@ -37,8 +32,25 @@ module AutoprefixerRails
     end
 
     # Register postprocessor in Sprockets depend on issues with other gems
-    def self.install(assets)
-      assets.register_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+    def self.install(env)
+      if ::Sprockets::VERSION.to_i < 4
+        env.register_postprocessor('text/css', :autoprefixer) do |context, css|
+          process(context, css)
+        end
+      else
+        env.register_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+      end
+    end
+
+    # Sprockets 2 API new and render
+    def initialize(filename, &block)
+      @filename = filename
+      @source   = block.call
+    end
+
+    # Sprockets 2 API new and render
+    def render(_, _)
+      self.class.run(@filename, @source)
     end
   end
 end
