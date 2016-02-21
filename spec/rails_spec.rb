@@ -12,6 +12,15 @@ describe CssController, type: :controller do
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
     expect(clear_css).to eq "a { -webkit-mask: none; mask: none; }"
   end
+
+  if Sprockets::Context.instance_methods.include?(:evaluate)
+    it 'supports evaluate' do
+      get :test, file: 'evaluate'
+      expect(response).to be_success
+      clear_css = response.body.gsub("\n", ' ').squeeze(' ').strip
+      expect(clear_css).to eq 'a { -webkit-mask: none; mask: none }'
+    end
+  end
 end
 
 describe 'Rake task' do

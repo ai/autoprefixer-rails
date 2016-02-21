@@ -7,6 +7,12 @@ rvm:
   - "2.3.0"
   - jruby-21mode
 
+cache: bundler
+bundler_args: --path ../../vendor/bundle --without debug
+gemfile:
+  - spec/gemfiles/sprockets_2_12.gemfile
+  - spec/gemfiles/sprockets_3_4.gemfile
+
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
