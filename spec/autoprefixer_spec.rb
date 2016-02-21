@@ -84,7 +84,7 @@ describe AutoprefixerRails do
     end
 
     it "shows file name from Sprockets", not_jruby: true do
-      expect { @assets['wrong.css'] }.to raise_error(/wrong.css:/)
+      expect { @assets['wrong.css'] }.to raise_error(/wrong/)
     end
 
   end
