@@ -16,14 +16,16 @@ desc 'Delete all generated files'
 task :clobber => [:clobber_package]
 
 desc 'Test all Gemfiles from spec/*.gemfile'
-task :test_all_gemfiles do
+task :test_all do
   require 'pty'
   require 'shellwords'
-  cmd      = 'bundle install --quiet && bundle exec rake --trace'
-  statuses = Dir.glob('./spec/gemfiles/*{[!.lock]}').map do |gemfile|
+  cmd      = 'bundle update && bundle exec rake --trace'
+  statuses = Dir.glob('./sprockets*.gemfile').map do |gemfile|
     Bundler.with_clean_env do
-      env = {'BUNDLE_GEMFILE' => gemfile}
-      $stderr.puts "Testing #{File.basename(gemfile)}:\n  export #{env.map { |k, v| "#{k}=#{Shellwords.escape v}" } * ' '}; #{cmd}"
+      env = { 'BUNDLE_GEMFILE' => gemfile }
+      $stderr.puts "Testing #{ File.basename(gemfile) }:"
+      $stderr.puts "  export BUNDLE_GEMFILE=#{ gemfile }"
+      $stderr.puts "  #{ cmd }"
       PTY.spawn(env, cmd) do |r, _w, pid|
         begin
           r.each_line { |l| puts l }
@@ -36,11 +38,11 @@ task :test_all_gemfiles do
       [$? && $?.exitstatus == 0, gemfile]
     end
   end
-  failed_gemfiles = statuses.reject(&:first).map { |(_status, gemfile)| gemfile }
-  if failed_gemfiles.empty?
-    $stderr.puts "✓ Tests pass with all #{statuses.size} gemfiles"
+  failed = statuses.reject(&:first).map(&:last)
+  if failed.empty?
+    $stderr.puts "✓ Tests pass with all #{ statuses.size } gemfiles"
   else
-    $stderr.puts "❌ FAILING (#{failed_gemfiles.size} / #{statuses.size})\n#{failed_gemfiles * "\n"}"
+    $stderr.puts "❌ FAILING #{ failed * "\n" }"
     exit 1
   end
 end
