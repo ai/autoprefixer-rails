@@ -8,8 +8,8 @@ rvm:
   - jruby-21mode
 cache: bundler
 gemfile:
-  - sprockets_2_12.gemfile
-  - sprockets_3_4.gemfile
+  - sprockets2.gemfile
+  - sprockets3.gemfile
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
