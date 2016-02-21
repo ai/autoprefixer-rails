@@ -38,7 +38,8 @@ module AutoprefixerRails
           process(context, css)
         end
       else
-        env.register_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+        env.register_bundle_processor('text/css',
+          ::AutoprefixerRails::Sprockets)
       end
     end
 
@@ -47,7 +48,8 @@ module AutoprefixerRails
       if ::Sprockets::VERSION.to_i < 4
         env.unregister_postprocessor('text/css', :autoprefixer)
       else
-        env.unregister_postprocessor('text/css', ::AutoprefixerRails::Sprockets)
+        env.unregister_bundle_processor('text/css',
+          ::AutoprefixerRails::Sprockets)
       end
     end
 
