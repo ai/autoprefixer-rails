@@ -1,7 +1,7 @@
 sudo: false
 language: ruby
 rvm:
-  - "2.0.0p598"
+  - "2.0.0"
   - "2.1.8"
   - "2.2.4"
   - "2.3.0"
@@ -16,7 +16,7 @@ env:
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
 matrix:
   exclude:
-    - rvm: "2.0.0p598"
+    - rvm: "2.0.0"
       gemfile: Gemfile
     - rvm: "2.1.8"
       gemfile: Gemfile
