@@ -1,9 +1,9 @@
 sudo: false
 language: ruby
 rvm:
-  - "2.0"
-  - "2.1"
-  - "2.2"
+  - "2.0.0p598"
+  - "2.1.8"
+  - "2.2.4"
   - "2.3.0"
   - jruby-21mode
 cache: bundler
@@ -14,3 +14,9 @@ gemfile:
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
+matrix:
+  exclude:
+    - rvm: "2.0.0p598"
+      gemfile: Gemfile
+    - rvm: "2.1.8"
+      gemfile: Gemfile
