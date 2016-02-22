@@ -10,15 +10,15 @@ cache: bundler
 gemfile:
   - sprockets2.gemfile
   - sprockets3.gemfile
-  - Gemfile
+  - sprockets4.gemfile
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
 matrix:
   exclude:
     - rvm: "2.0.0"
-      gemfile: Gemfile
+      gemfile: sprockets4.gemfile
     - rvm: "2.1.8"
-      gemfile: Gemfile
+      gemfile: sprockets4.gemfile
     - rvm: "jruby-21mode"
-      gemfile: Gemfile
+      gemfile: sprockets4.gemfile
