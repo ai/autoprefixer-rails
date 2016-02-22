@@ -10,6 +10,7 @@ cache: bundler
 gemfile:
   - sprockets2.gemfile
   - sprockets3.gemfile
+  - Gemfile
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
