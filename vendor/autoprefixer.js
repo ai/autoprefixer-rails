@@ -5990,6 +5990,14 @@ function fromJsonObject (that, object) {
 if (Buffer.TYPED_ARRAY_SUPPORT) {
   Buffer.prototype.__proto__ = Uint8Array.prototype
   Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
 } else {
   // pre-set for values that may exist in the future
   Buffer.prototype.length = undefined
@@ -21746,10 +21754,11 @@ var walk = require('./walk');
 var stringify = require('./stringify');
 
 function ValueParser(value) {
-    if (!(this instanceof ValueParser)) {
-        return new ValueParser(value);
+    if (this instanceof ValueParser) {
+        this.nodes = parse(value);
+        return this;
     }
-    this.nodes = parse(value);
+    return new ValueParser(value);
 }
 
 ValueParser.prototype.toString = function () {
@@ -21853,7 +21862,7 @@ module.exports = function (input) {
             pos = next + 1;
             code = value.charCodeAt(pos);
 
-        //Comments
+        // Comments
         } else if (code === slash && value.charCodeAt(pos + 1) === star) {
             token = {
                 type: 'comment',
@@ -22014,12 +22023,15 @@ module.exports = function (input) {
 };
 
 },{}],124:[function(require,module,exports){
-function stringifyNode(node) {
+function stringifyNode(node, custom) {
     var type = node.type;
     var value = node.value;
     var buf;
+    var customResult;
 
-    if (type === 'word' || type === 'space') {
+    if (custom && (customResult = custom(node)) !== undefined) {
+        return customResult;
+    } else if (type === 'word' || type === 'space') {
         return value;
     } else if (type === 'string') {
         buf = node.quote || '';
@@ -22038,18 +22050,18 @@ function stringifyNode(node) {
     return value;
 }
 
-function stringify(nodes) {
+function stringify(nodes, custom) {
     var result, i;
 
     if (Array.isArray(nodes)) {
         result = '';
-        for (var i = nodes.length - 1; ~i; i -= 1) {
-            result = stringifyNode(nodes[i]) + result;
+        for (i = nodes.length - 1; ~i; i -= 1) {
+            result = stringifyNode(nodes[i], custom) + result;
         }
         return result;
     }
-    return stringifyNode(nodes);
-};
+    return stringifyNode(nodes, custom);
+}
 
 module.exports = stringify;
 
@@ -22069,7 +22081,7 @@ module.exports = function (value) {
     while (pos < length) {
         code = value.charCodeAt(pos);
 
-        if (48 <= code && code <= 57) {
+        if (code >= 48 && code <= 57) {
             number += value[pos];
             containsNumber = true;
         } else if (code === dot) {
@@ -22356,18 +22368,16 @@ var Container = function (_Node) {
 
         delete this.indexes[id];
 
-        if (result === false) return false;
+        return result;
     };
 
     Container.prototype.walk = function walk(callback) {
         return this.each(function (child, i) {
             var result = callback(child, i);
-
             if (result !== false && child.walk) {
                 result = child.walk(callback);
             }
-
-            if (result === false) return result;
+            return result;
         });
     };
 
@@ -22376,22 +22386,19 @@ var Container = function (_Node) {
             callback = prop;
             return this.walk(function (child, i) {
                 if (child.type === 'decl') {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else if (prop instanceof RegExp) {
             return this.walk(function (child, i) {
                 if (child.type === 'decl' && prop.test(child.prop)) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else {
             return this.walk(function (child, i) {
                 if (child.type === 'decl' && child.prop === prop) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         }
@@ -22403,22 +22410,19 @@ var Container = function (_Node) {
 
             return this.walk(function (child, i) {
                 if (child.type === 'rule') {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else if (selector instanceof RegExp) {
             return this.walk(function (child, i) {
                 if (child.type === 'rule' && selector.test(child.selector)) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else {
             return this.walk(function (child, i) {
                 if (child.type === 'rule' && child.selector === selector) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         }
@@ -22429,22 +22433,19 @@ var Container = function (_Node) {
             callback = name;
             return this.walk(function (child, i) {
                 if (child.type === 'atrule') {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else if (name instanceof RegExp) {
             return this.walk(function (child, i) {
                 if (child.type === 'atrule' && name.test(child.name)) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         } else {
             return this.walk(function (child, i) {
                 if (child.type === 'atrule' && child.name === name) {
-                    var result = callback(child, i);
-                    if (result === false) return result;
+                    return callback(child, i);
                 }
             });
         }
@@ -22453,8 +22454,7 @@ var Container = function (_Node) {
     Container.prototype.walkComments = function walkComments(callback) {
         return this.walk(function (child, i) {
             if (child.type === 'comment') {
-                var result = callback(child, i);
-                if (result === false) return result;
+                return callback(child, i);
             }
         });
     };
@@ -23247,7 +23247,7 @@ var LazyResult = function () {
                 var b = runtimeVer.split('.');
 
                 if (a[0] !== b[0] || parseInt(a[1]) > parseInt(b[1])) {
-                    (0, _warnOnce2.default)('Your current PostCSS version is ' + runtimeVer + ', ' + ('but ' + pluginName + ' uses ' + pluginVer + '. Perhaps ') + 'this is the source of the error below.');
+                    (0, _warnOnce2.default)('Your current PostCSS version ' + 'is ' + runtimeVer + ', but ' + pluginName + ' ' + 'uses ' + pluginVer + '. Perhaps this is ' + 'the source of the error below.');
                 }
             }
         } catch (err) {
@@ -23760,7 +23760,7 @@ var _class = function () {
         } else {
             var result = '';
             this.stringify(this.root, function (i) {
-                return result += i;
+                result += i;
             });
             return [result];
         }
@@ -23867,7 +23867,7 @@ var Node = function () {
         if (stringifier.stringify) stringifier = stringifier.stringify;
         var result = '';
         stringifier(this, function (i) {
-            return result += i;
+            result += i;
         });
         return result;
     };
@@ -25658,7 +25658,22 @@ function tokenize(input) {
                     }
                 } while (escaped);
 
-                tokens.push(['string', css.slice(pos, next + 1), line, pos - offset, line, next - offset]);
+                content = css.slice(pos, next + 1);
+                lines = content.split('\n');
+                last = lines.length - 1;
+
+                if (last > 0) {
+                    nextLine = line + last;
+                    nextOffset = next - lines[last].length;
+                } else {
+                    nextLine = line;
+                    nextOffset = offset;
+                }
+
+                tokens.push(['string', css.slice(pos, next + 1), line, pos - offset, nextLine, next - nextOffset]);
+
+                offset = nextOffset;
+                line = nextLine;
                 pos = next;
                 break;
 
