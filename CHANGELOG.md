@@ -1,3 +1,9 @@
+## 6.3.3.1
+* Add Sprockets 4 support (by Richard Schneeman).
+* Add `AutoprefixerRails.uninstall()`.
+* Use `bundle_processor` for Sprockets 4 (by Adam Becker).
+* Clean gem dependency from `json` (by deepj).
+
 ## 6.3.3
 * Fix transition warning.
 
