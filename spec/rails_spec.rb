@@ -7,7 +7,7 @@ describe CssController, type: :controller do
   end
 
   it "integrates with Rails and Sass" do
-    get :test, file: 'sass'
+    get :test, params: { file: 'sass' }
     expect(response).to be_success
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
     expect(clear_css).to eq "a { -webkit-mask: none; mask: none; }"
@@ -15,7 +15,7 @@ describe CssController, type: :controller do
 
   if Sprockets::Context.instance_methods.include?(:evaluate)
     it 'supports evaluate' do
-      get :test, file: 'evaluate'
+      get :test, params: { file: 'evaluate' }
       expect(response).to be_success
       clear_css = response.body.gsub("\n", ' ').squeeze(' ').strip
       expect(clear_css).to eq 'a { -webkit-mask: none; mask: none }'
