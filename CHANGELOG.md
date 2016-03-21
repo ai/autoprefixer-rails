@@ -1,3 +1,6 @@
+## 6.3.4
+* Show users coverage for selected browsers in `.info` and Rake task.
+
 ## 6.3.3.1
 * Add Sprockets 4 support (by Richard Schneeman).
 * Add `AutoprefixerRails.uninstall()`.
