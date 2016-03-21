@@ -6,8 +6,16 @@ describe CssController, type: :controller do
     cache.rmtree if cache.exist?
   end
 
+  def test_file(file)
+    if Rails.version.split('.').first.to_i >= 5
+      get :test, params: { file: 'sass' }
+    else
+      get :test, file: 'sass'
+    end
+  end
+
   it "integrates with Rails and Sass" do
-    get :test, params: { file: 'sass' }
+    test_file 'sass'
     expect(response).to be_success
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
     expect(clear_css).to eq "a { -webkit-mask: none; mask: none; }"
@@ -15,7 +23,7 @@ describe CssController, type: :controller do
 
   if Sprockets::Context.instance_methods.include?(:evaluate)
     it 'supports evaluate' do
-      get :test, params: { file: 'evaluate' }
+      test_file 'evaluate'
       expect(response).to be_success
       clear_css = response.body.gsub("\n", ' ').squeeze(' ').strip
       expect(clear_css).to eq 'a { -webkit-mask: none; mask: none }'
