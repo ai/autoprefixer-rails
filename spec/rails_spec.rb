@@ -18,7 +18,7 @@ describe CssController, type: :controller do
     test_file 'sass'
     expect(response).to be_success
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
-    expect(clear_css).to eq "a { -webkit-mask: none; mask: none; }"
+    expect(clear_css).to eq "a { -webkit-mask: none; mask: none }"
   end
 
   if Sprockets::Context.instance_methods.include?(:evaluate)
