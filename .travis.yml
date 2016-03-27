@@ -5,7 +5,6 @@ rvm:
   - "2.1.8"
   - "2.2.4"
   - "2.3.0"
-  - "jruby-21mode"
 cache: bundler
 gemfile:
   - sprockets2.gemfile
@@ -19,6 +18,4 @@ matrix:
     - rvm: "2.0.0"
       gemfile: sprockets4.gemfile
     - rvm: "2.1.8"
-      gemfile: sprockets4.gemfile
-    - rvm: "jruby-21mode"
       gemfile: sprockets4.gemfile
