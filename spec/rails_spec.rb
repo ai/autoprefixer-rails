@@ -29,6 +29,16 @@ describe CssController, type: :controller do
       expect(clear_css).to eq 'a { -webkit-mask: none; mask: none }'
     end
   end
+
+  if sprockets_4?
+    it "works with sprockets 4 source maps" do
+      get :test, exact_file: "sass.css.map"
+      expect(response).to be_success
+
+      source_map = JSON.parse(response.body)
+      expect(source_map["sources"].first).to include("spec/app/app/assets/stylesheets/loaded.sass")
+    end
+  end
 end
 
 describe 'Rake task' do
