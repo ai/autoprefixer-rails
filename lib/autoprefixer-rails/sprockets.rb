@@ -9,7 +9,7 @@ module AutoprefixerRails
 
     # Sprockets 3 and 4 API
     def self.call(input)
-      filename  = input[:source_path] || input[:filename]
+      filename  = input[:filename]
       source    = input[:data]
       run(filename, source)
     end
