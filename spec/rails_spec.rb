@@ -32,11 +32,12 @@ describe CssController, type: :controller do
 
   if sprockets_4?
     it "works with sprockets 4 source maps" do
-      get :test, exact_file: "sass.css.map"
+      get :test, params: { exact_file: 'sass.css.map' }
       expect(response).to be_success
 
       source_map = JSON.parse(response.body)
-      expect(source_map["sources"].first).to include("spec/app/app/assets/stylesheets/loaded.sass")
+      expect(source_map["sources"].first).to(
+        include('spec/app/app/assets/stylesheets/loaded.sass'))
     end
   end
 end
