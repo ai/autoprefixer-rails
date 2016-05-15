@@ -1,3 +1,6 @@
+## 6.3.6.1
+* Fix source map for Sprockets 4 (by Richard Schneeman).
+
 ## 6.3.6
 * Add Safari TP prefix support for Grid Layout.
 
