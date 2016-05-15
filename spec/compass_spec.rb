@@ -12,13 +12,11 @@ describe 'Compass integration' do
   it 'works from config.rb' do
     `cd #{ COMPASS_DIR }; bundle exec compass compile`
     expect(STYLESHEETS_DIR.join('screen.css').read)
-      .to eq("a{display:-webkit-box;display:-webkit-flex;" +
-             "display:-ms-flexbox;display:flex}\n\n" +
+      .to eq("a{display:-webkit-flex;display:flex}\n\n" +
              "/*# sourceMappingURL=screen.css.map */")
     expect(STYLESHEETS_DIR.join('screen.css.map').read)
       .to eq('{"version":3,"sources":["../sass/screen.scss"],"names":[],' +
-             '"mappings":"AAAA,EACI,oBAAa,AAAb,qBAAa,AAAb,oBAAa,AAAb,YAAa,' +
-             'CAAA","file":"screen.css"}')
+             '"mappings":"AAAA,EACI,qBAAa,AAAb,YAAa,CAAA","file":"screen.css"}')
   end
 
 end

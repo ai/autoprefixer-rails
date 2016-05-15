@@ -19,12 +19,15 @@ on_stylesheet_saved do |file|
 
   if File.exists? map
     result = AutoprefixerRails.process(css,
-      from: file,
-      to:   file,
-      map:  { prev: File.read(map), inline: false })
+      browsers: ['chrome 25'],
+      from:     file,
+      to:       file,
+      map:    { prev: File.read(map), inline: false })
     File.open(file, 'w') { |io| io << result.css }
     File.open(map,  'w') { |io| io << result.map }
   else
-    File.open(file, 'w') { |io| io << AutoprefixerRails.process(css) }
+    File.open(file, 'w') do |io|
+      io << AutoprefixerRails.process(css, browsers: ['chrome 25'])
+    end
   end
 end
