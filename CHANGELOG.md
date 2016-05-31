@@ -1,3 +1,7 @@
+## 6.3.6.2
+* Update Firefox ESR.
+* Update Can I Use data.
+
 ## 6.3.6.1
 * Fix source map for Sprockets 4 (by Richard Schneeman).
 
