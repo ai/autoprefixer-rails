@@ -90,7 +90,7 @@ module AutoprefixerRails
 
     # Try to find Browserslist config
     def find_config(file)
-      path = Pathname(file).expand_path.dirname
+      path = Pathname(file).expand_path
 
       while path.parent != path
         config = path.join('browserslist')
