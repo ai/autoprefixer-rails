@@ -1,3 +1,10 @@
+## 6.3.7
+* Fix `browserslist` path detection (by Jose Luis Salas).
+* Fix rare `Cannot read property 'constructor' of null` issue.
+* Add space-less `>1%` and `>.5%` syntax support.
+* Clean `0` versions in some country-based requests.
+* Update Can I Use data.
+
 ## 6.3.6.2
 * Update Firefox ESR.
 * Update Can I Use data.
