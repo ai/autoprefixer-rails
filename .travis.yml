@@ -19,3 +19,5 @@ matrix:
       gemfile: sprockets4.gemfile
     - rvm: "2.1.8"
       gemfile: sprockets4.gemfile
+    - rvm: "2.1.8"
+      gemfile: sprockets3.gemfile
