@@ -1,3 +1,13 @@
+## 6.4 “Hic et ubique terrarum”
+* Add `:any-link` selector support.
+* Add `text-decoration-skip` support.
+* Add `transition: duration property` support.
+* Fix `-webkit-` prefix for backface-visibility.
+* Fix `rad` unit support in gradients (by 刘祺).
+* Fix `transition` support in Opera 12.
+* Fix warning in Sprokets 3.
+* Removed Safari TP Grid prefixes support.
+
 ## 6.3.7
 * Fix `browserslist` path detection (by Jose Luis Salas).
 * Fix rare `Cannot read property 'constructor' of null` issue.
