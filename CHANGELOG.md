@@ -2,7 +2,7 @@
 * Add `:any-link` selector support.
 * Add `text-decoration-skip` support.
 * Add `transition: duration property` support.
-* Fix `-webkit-` prefix for backface-visibility.
+* Fix `-webkit-` prefix for `backface-visibility`.
 * Fix `rad` unit support in gradients (by 刘祺).
 * Fix `transition` support in Opera 12.
 * Fix warning in Sprokets 3.
