@@ -1,3 +1,6 @@
+## 6.4.0.1
+* Fix Sprockets 3 support (by Eda Riedl).
+
 ## 6.4 “Hic et ubique terrarum”
 * Add `:any-link` selector support.
 * Add `text-decoration-skip` support.
