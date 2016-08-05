@@ -33,7 +33,7 @@ module AutoprefixerRails
 
     # Register postprocessor in Sprockets depend on issues with other gems
     def self.install(env)
-      if ::Sprockets::VERSION.to_i < 3
+      if ::Sprockets::VERSION.to_f < 3.7
         env.register_postprocessor('text/css', :autoprefixer) do |context, css|
           process(context, css)
         end
@@ -45,7 +45,7 @@ module AutoprefixerRails
 
     # Register postprocessor in Sprockets depend on issues with other gems
     def self.uninstall(env)
-      if ::Sprockets::VERSION.to_i < 3
+      if ::Sprockets::VERSION.to_f < 3.7
         env.unregister_postprocessor('text/css', :autoprefixer)
       else
         env.unregister_bundle_processor('text/css',
