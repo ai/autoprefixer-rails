@@ -115,7 +115,7 @@ module AutoprefixerRails
 
     # Cache autoprefixer.js content
     def read_js
-      @@js ||= Pathname(__FILE__).join("../../../vendor/autoprefixer.js").read
+      @@js ||= Pathname(File.dirname(__FILE__)).join("../../vendor/autoprefixer.js").read
     end
 
     # Return processor JS with some extra methods
