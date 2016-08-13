@@ -1,3 +1,7 @@
+## 6.4.0.2
+* Fix `autoprefixer.js` loading path in some cases (by Pavan Trikutam)
+* Update Can I Use data.
+
 ## 6.4.0.1
 * Fix Sprockets 3 support (by Eda Riedl).
 
