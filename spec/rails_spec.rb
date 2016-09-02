@@ -36,8 +36,7 @@ describe CssController, type: :controller do
       expect(response).to be_success
 
       source_map = JSON.parse(response.body)
-      expect(source_map["sources"].first).to(
-        include('spec/app/app/assets/stylesheets/loaded.sass'))
+      expect(source_map["sources"].first).to match(/loaded.*.sass/)
     end
   end
 end
