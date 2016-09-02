@@ -1,3 +1,6 @@
+## 6.4.1
+* Fix node cloning.
+
 ## 6.4.0.3
 * Update Browserslist.
 * Update Can I Use data.
