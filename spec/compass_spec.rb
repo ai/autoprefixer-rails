@@ -1,6 +1,5 @@
 require_relative 'spec_helper'
 
-
 COMPASS_DIR     = Pathname(__FILE__).dirname.join('compass')
 STYLESHEETS_DIR = COMPASS_DIR.join('stylesheets')
 
