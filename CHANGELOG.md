@@ -1,3 +1,7 @@
+## 6.4.1.1
+* Better syntax error output by PostCSS 5.2.
+* Update Can I Use data.
+
 ## 6.4.1
 * Fix node cloning.
 
