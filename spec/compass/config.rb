@@ -9,6 +9,9 @@ output_style  = :compressed
 sass_options  = { cache: false }
 line_comments = false
 
+require 'rubygems'
+require 'bundler'
+Bundler.require
 require '../../lib/autoprefixer-rails'
 
 on_stylesheet_saved do |file|
