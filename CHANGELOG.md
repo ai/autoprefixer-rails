@@ -1,3 +1,7 @@
+## 6.5.0.1
+* Better syntax error output by PostCSS 5.2.3.
+* Update Can I Use data.
+
 ## 6.5 “Einigkeit und Recht und Freiheit”
 * Add `defaults` keyword to browsers requirements.
 * Fix CSS Grid Layout support.
