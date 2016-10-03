@@ -1,3 +1,7 @@
+## 6.5.0.2
+* Better CSS highlight by PostCSS 5.2.4.
+* Update Can I Use data.
+
 ## 6.5.0.1
 * Better syntax error output by PostCSS 5.2.3.
 * Update Can I Use data.
