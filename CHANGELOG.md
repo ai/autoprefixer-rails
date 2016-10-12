@@ -1,3 +1,6 @@
+## 6.5.1
+* Fix selectors with `:--` prefix support.
+
 ## 6.5.0.2
 * Better CSS highlight by PostCSS 5.2.4.
 * Update Can I Use data.
