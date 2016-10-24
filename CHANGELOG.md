@@ -1,3 +1,7 @@
+## 6.5.1.1
+* Better syntax error messages with PostCSS 5.2.5.
+* Update Can I Use data.
+
 ## 6.5.1
 * Fix selectors with `:--` prefix support.
 
