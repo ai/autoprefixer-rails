@@ -1,3 +1,7 @@
+## 6.5.3.1
+* Update PostCSS to 5.2.6.
+* Update Can I Use data.
+
 ## 6.5.3
 * Add error for popular mistake with `browser` option instead of `browsers`.
 
