@@ -2,6 +2,8 @@ require 'pathname'
 require 'execjs'
 require 'json'
 
+IS_SECTION = /^\s*\[(.+)\]\s*$/
+
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
@@ -37,10 +39,21 @@ module AutoprefixerRails
 
     # Parse Browserslist config
     def parse_config(config)
+      sections = { 'defaults' => [] }
+      current  = 'defaults'
       config.gsub(/#[^\n]*/, '')
             .split(/\n/)
             .map(&:strip)
             .reject(&:empty?)
+            .each do |line|
+              if line =~ IS_SECTION
+                current = line.match(IS_SECTION)[1].strip
+                sections[current] ||= []
+              else
+                sections[current] << line
+              end
+            end
+      sections
     end
 
     private
@@ -59,7 +72,7 @@ module AutoprefixerRails
         config = find_config(from)
         if config
           params = params.dup
-          params[:browsers] = parse_config(config)
+          params[:browsers] = parse_config(config)['defaults']
         end
       end
 
