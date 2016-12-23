@@ -17,6 +17,15 @@ integration with this JavaScript tool.
 [ci-img]:        https://travis-ci.org/ai/autoprefixer-rails.svg
 [ci]:            https://travis-ci.org/ai/autoprefixer-rails
 
+## Differences
+
+The best way to use Autoprefixer is a webpack or Gulp.
+
+Autoprefixer Rails doesn’t support this Autoprefixer’s features:
+
+* Browsers in `package.json`.
+* Custom browsers usage statistics.
+
 ## Usage
 
 Windows users should install [node.js](http://nodejs.org/).
