@@ -69,10 +69,16 @@ module AutoprefixerRails
 
       params = @params
       if not params.has_key?(:browsers) and from
-        config = find_config(from)
-        if config
+        file = find_config(from)
+        if file
+          env    = params[:env].to_s || 'development'
+          config = parse_config(file)
           params = params.dup
-          params[:browsers] = parse_config(config)['defaults']
+          if config[env]
+            params[:browsers] = config[env]
+          else
+            params[:browsers] = config['defaults']
+          end
         end
       end
 

@@ -26,6 +26,7 @@ begin
         params = ::YAML.load_file(file) if File.exist?(file)
         params ||= {}
         params = params.symbolize_keys
+        params[:env] ||= Rails.env.to_s
         params
       end
     end

@@ -1,4 +1,4 @@
-chrome 25
-
-[production]
 ie 11
+
+[test]
+chrome 25
