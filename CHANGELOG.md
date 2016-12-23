@@ -1,3 +1,6 @@
+## 6.6 “Kaiyuan”
+* Add support for separated environments in browserslist config.
+
 ## 6.5.4
 * Fix unitless 0 basis in IE10/IE11 shorthand flex (by Google).
 
