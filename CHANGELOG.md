@@ -1,3 +1,6 @@
+## 6.6.1
+* Update Can I Use data.
+
 ## 6.6 “Kaiyuan”
 * Add support for separated environments in browserslist config.
 
