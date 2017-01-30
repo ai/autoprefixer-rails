@@ -1,4 +1,4 @@
-## 6.7.0.1
+## 6.7.1
 * Update Browserslist to fix `last n version` query.
 * Update Can I Use data.
 
