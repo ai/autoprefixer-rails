@@ -1,3 +1,6 @@
+## 6.7.2
+* Do not prefix grid/flexbox in `@supports` on `grid: false`/`flexbox: false`.
+
 ## 6.7.1
 * Update Browserslist to fix `last n version` query.
 * Update Can I Use data.
