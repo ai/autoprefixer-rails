@@ -9,6 +9,8 @@ gemfile:
   - sprockets2.gemfile
   - sprockets3.gemfile
   - sprockets4.gemfile
+before_install:
+  - nvm install stable
 env:
   - EXECJS_RUNTIME=Node
   - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
