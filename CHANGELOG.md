@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.7.5
+* Fix `text-decoration-skip` in iOS (by Chi Vinh Le).
+* Fix `clip-path` (by Chi Vinh Le).
+
 ## 6.7.4
 * Improve `browsers` option perfomance.
 * Update CoffeeScript compiler.
