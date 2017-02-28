@@ -1,5 +1,8 @@
 # Change Log
 
+## 6.7.6
+* Fix `font-kerning` (by Chi Vinh Le).
+
 ## 6.7.5
 * Fix `text-decoration-skip` in iOS (by Chi Vinh Le).
 * Fix `clip-path` (by Chi Vinh Le).
