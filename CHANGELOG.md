@@ -1,5 +1,8 @@
 # Change Log
 
+## 6.7.7
+* Fix `order` for non-digit values.
+
 ## 6.7.6
 * Fix `font-kerning` (by Chi Vinh Le).
 
