@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.7.7.1
+* Update Firefox ESR.
+* Update Can I Use data.
+
 ## 6.7.7
 * Fix `order` for non-digit values.
 
