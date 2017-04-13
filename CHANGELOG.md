@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.7.7.2
+* Update Can I Use data.
+* Update PostCSS.
+
 ## 6.7.7.1
 * Update Firefox ESR.
 * Update Can I Use data.
