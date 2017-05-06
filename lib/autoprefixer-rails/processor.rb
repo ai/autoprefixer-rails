@@ -22,12 +22,18 @@ module AutoprefixerRails
       opts = convert_options(opts)
 
       apply_wrapper =
-        "(function(opts) {" +
-        "return eval(process.apply(this, opts));" +
+        "(function(opts, pluginOpts) {" +
+        "return eval(process.apply(this, opts, pluginOpts));" +
         "})"
 
-      params = params_with_browsers(opts[:from]).merge(opts)
-      result = runtime.call(apply_wrapper, [css, params])
+      pluginOpts = params_with_browsers(opts[:from]).merge(opts)
+      processOpts = {
+        from: pluginOpts.delete(:from),
+        to:   pluginOpts.delete(:to),
+        map:  pluginOpts.delete(:map)
+      }
+
+      result = runtime.call(apply_wrapper, [css, processOpts, pluginOpts])
 
       Result.new(result['css'], result['map'], result['warnings'])
     end
@@ -137,9 +143,65 @@ module AutoprefixerRails
       @@js ||= Pathname(File.dirname(__FILE__)).join("../../vendor/autoprefixer.js").read
     end
 
+    def polyfills
+      <<-JS
+        if (typeof Uint8Array === "undefined")
+          global.Uint8Array = Array;
+        if (typeof ArrayBuffer === "undefined")
+          global.ArrayBuffer = Array;
+        Math.log2 = Math.log2 ||
+          function(x) { return Math.log(x) * Math.LOG2E; };
+        Math.sign = Math.sign ||
+          function(x) {
+            x = +x;
+            if (x === 0 || isNaN(x)) return Number(x);
+            return x > 0 ? 1 : -1;
+          };
+        Array.prototype.fill = Array.prototype.fill ||
+          function(value) {
+            var O = Object(this);
+            var len = O.length >>> 0;
+            var start = arguments[1];
+            var relativeStart = start >> 0;
+            var k = relativeStart < 0 ?
+              Math.max(len + relativeStart, 0) :
+              Math.min(relativeStart, len);
+            var end = arguments[2];
+            var relativeEnd = end === undefined ?
+              len : end >> 0;
+            var final = relativeEnd < 0 ?
+              Math.max(len + relativeEnd, 0) :
+              Math.min(relativeEnd, len);
+            while (k < final) {
+              O[k] = value;
+              k++;
+            }
+            return O;
+          };
+        if (!Object.assign) {
+          Object.assign = function(target, firstSource) {
+            var to = Object(target);
+            for (var i = 1; i < arguments.length; i++) {
+              var nextSource = arguments[i];
+              if (nextSource === undefined || nextSource === null) continue;
+              var keysArray = Object.keys(Object(nextSource));
+              for (var n = 0, len = keysArray.length; n < len; n++) {
+                var nextKey = keysArray[n];
+                var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+                if (desc !== undefined && desc.enumerable) {
+                  to[nextKey] = nextSource[nextKey];
+                }
+              }
+            }
+            return to;
+          }
+        }
+      JS
+    end
+
     # Return processor JS with some extra methods
     def build_js
-      'var global = this;' + read_js + process_proxy
+      'var global = this;' + polyfills + read_js + process_proxy
     end
 
     # Return JS code for process method proxy
