@@ -1,5 +1,14 @@
 # Change Log
 
+## 7.0 “Coelestem adspicit lucem”
+* Remove node.js 0.12 support.
+* Use PostCSS 6.0.
+* Use Browserslist 2.
+* Use `caniuse-lite` instead of `caniuse-db` (by Ben Briggs).
+* Rewrite project from CoffeeScript to Babel (by Dmitry Semigradsky).
+* Disable Grid Layout prefixes for IE by default.
+* Fix `-ms-grid-column-align`.
+
 ## 6.7.7.2
 * Update Can I Use data.
 * Update PostCSS.
