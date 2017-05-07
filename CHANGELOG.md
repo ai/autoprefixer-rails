@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.0.1
+* Fix `therubyracer` support.
+
 ## 7.0 “Coelestem adspicit lucem”
 * Remove node.js 0.12 support.
 * Use PostCSS 6.0.
