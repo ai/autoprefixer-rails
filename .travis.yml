@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 language: ruby
 rvm:
   - "2.1.8"
@@ -31,6 +32,8 @@ matrix:
       gemfile: sprockets2.gemfile
     - rvm: "2.2.4"
       env: "EXECJS_RUNTIME=Node"
+    - rvm: "2.2.4"
+      gemfile: mini_racer.gemfile
 
     - rvm: "2.3.0"
       gemfile: sprockets2.gemfile
