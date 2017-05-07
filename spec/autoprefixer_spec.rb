@@ -19,6 +19,13 @@ describe AutoprefixerRails do
                              "}"
   end
 
+  it "process @supports" do
+    css = "@supports (display: flex) { }"
+    result = AutoprefixerRails.process(css, browsers: ['chrome 28'])
+    expect(result.css).to eq(
+      '@supports ((display: -webkit-flex) or (display: flex)) { }')
+  end
+
   it "generates source map" do
     result = AutoprefixerRails.process(@css, map: true)
     expect(result.css).to include('/*# sourceMappingURL=data:')

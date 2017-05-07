@@ -880,20 +880,8 @@ var brackets = {
         var current = [''];
         var stack = [current];
 
-        for (var _iterator = str, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-            var _ref;
-
-            if (_isArray) {
-                if (_i >= _iterator.length) break;
-                _ref = _iterator[_i++];
-            } else {
-                _i = _iterator.next();
-                if (_i.done) break;
-                _ref = _i.value;
-            }
-
-            var sym = _ref;
-
+        for (var i = 0; i < str.length; i++) {
+            var sym = str[i];
             if (sym === '(') {
                 current = [''];
                 last(stack).push(current);
@@ -916,19 +904,19 @@ var brackets = {
      */
     stringify: function stringify(ast) {
         var result = '';
-        for (var _iterator2 = ast, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-            var _ref2;
+        for (var _iterator = ast, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+            var _ref;
 
-            if (_isArray2) {
-                if (_i2 >= _iterator2.length) break;
-                _ref2 = _iterator2[_i2++];
+            if (_isArray) {
+                if (_i >= _iterator.length) break;
+                _ref = _iterator[_i++];
             } else {
-                _i2 = _iterator2.next();
-                if (_i2.done) break;
-                _ref2 = _i2.value;
+                _i = _iterator.next();
+                if (_i.done) break;
+                _ref = _i.value;
             }
 
-            var i = _ref2;
+            var i = _ref;
 
             if ((typeof i === 'undefined' ? 'undefined' : _typeof(i)) === 'object') {
                 result += '(' + brackets.stringify(i) + ')';
@@ -6371,9 +6359,7 @@ var Supports = function () {
             prop = _str$split[0],
             value = _str$split[1];
 
-        if (!value) {
-            value = '';
-        }
+        if (!value) value = '';
         return [prop.trim(), value.trim()];
     };
 
@@ -15613,10 +15599,13 @@ var Parser = function () {
         this.spaces = '';
         this.semicolon = false;
 
-        this.tokenizer = (0, _tokenize2.default)(this.input);
-
+        this.createTokenizer();
         this.root.source = { input: input, start: { line: 1, column: 1 } };
     }
+
+    Parser.prototype.createTokenizer = function createTokenizer() {
+        this.tokenizer = (0, _tokenize2.default)(this.input);
+    };
 
     Parser.prototype.parse = function parse() {
         var token = void 0;
@@ -15737,7 +15726,7 @@ var Parser = function () {
             this.decl(tokens);
             return;
         } else {
-            this.unknownWord(start);
+            this.unknownWord(tokens);
         }
     };
 
@@ -15768,7 +15757,7 @@ var Parser = function () {
         }
 
         while (tokens[0][0] !== 'word') {
-            if (tokens.length === 1) this.unknownWord(tokens[0]);
+            if (tokens.length === 1) this.unknownWord(tokens);
             node.raws.before += tokens.shift()[1];
         }
         node.source.start = { line: tokens[0][2], column: tokens[0][3] };
@@ -16041,8 +16030,8 @@ var Parser = function () {
         throw this.input.error('Unclosed bracket', bracket[2], bracket[3]);
     };
 
-    Parser.prototype.unknownWord = function unknownWord(token) {
-        throw this.input.error('Unknown word', token[2], token[3]);
+    Parser.prototype.unknownWord = function unknownWord(tokens) {
+        throw this.input.error('Unknown word', tokens[0][2], tokens[0][3]);
     };
 
     Parser.prototype.unexpectedClose = function unexpectedClose(token) {
@@ -16588,7 +16577,7 @@ var Processor = function () {
      *   throw new Error('This plugin works only with PostCSS 5');
      * }
      */
-    this.version = '6.0.0';
+    this.version = '6.0.1';
     /**
      * @member {pluginFunction[]} - Plugins added to this processor.
      *
