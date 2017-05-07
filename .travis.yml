@@ -9,14 +9,20 @@ gemfile:
   - sprockets2.gemfile
   - sprockets3.gemfile
   - sprockets4.gemfile
+  - mini_racer_sprockets4.gemfile
 before_install:
   - nvm install stable
 env:
   - EXECJS_RUNTIME=Node
-  - EXECJS_RUNTIME=      # Rubyracer or rubyrhino depending on platform
+  # mini_racer / rubyracer or rubyrhino depending on platform:
+  - EXECJS_RUNTIME=
 matrix:
   exclude:
     - rvm: "2.1.8"
       gemfile: sprockets4.gemfile
     - rvm: "2.1.8"
       gemfile: sprockets3.gemfile
+    - rvm: "2.1.8"
+      gemfile: mini_racer_sprockets4.gemfile
+    - env: "EXECJS_RUNTIME=Node"
+      gemfile: mini_racer_sprockets4.gemfile
