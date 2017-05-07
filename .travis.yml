@@ -9,7 +9,7 @@ gemfile:
   - sprockets2.gemfile
   - sprockets3.gemfile
   - sprockets4.gemfile
-  - mini_racer_sprockets4.gemfile
+  - mini_racer.gemfile
 before_install:
   - nvm install stable
 env:
@@ -23,6 +23,6 @@ matrix:
     - rvm: "2.1.8"
       gemfile: sprockets3.gemfile
     - rvm: "2.1.8"
-      gemfile: mini_racer_sprockets4.gemfile
+      gemfile: mini_racer.gemfile
     - env: "EXECJS_RUNTIME=Node"
-      gemfile: mini_racer_sprockets4.gemfile
+      gemfile: mini_racer.gemfile
