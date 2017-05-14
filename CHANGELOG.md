@@ -1,5 +1,10 @@
 # Change Log
 
+## 7.1 “Universitas litterarum”
+* Add `unicode-bidi` support.
+* Add `-webkit-appearance` support for Edge.
+* Fix intrinsic widths prefixes in Grid Layout.
+
 ## 7.0.1
 * Fix `therubyracer` support.
 
