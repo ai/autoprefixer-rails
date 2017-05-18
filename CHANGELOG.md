@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.1
+* Remove non-`-webkit-` intrinsic prefixes in Grid Layout (by 一丝).
+
 ## 7.1 “Universitas litterarum”
 * Add `unicode-bidi` support.
 * Add `-webkit-appearance` support for Edge.
