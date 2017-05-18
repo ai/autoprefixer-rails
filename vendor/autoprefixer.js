@@ -390,7 +390,7 @@ f(require('caniuse-lite/data/features/css3-tabsize.js'), function (browsers) {
 // Intrinsic & extrinsic sizing
 f(require('caniuse-lite/data/features/intrinsic-width.js'), function (browsers) {
     return prefix(['max-content', 'min-content', 'fit-content', 'fill', 'fill-available', 'stretch'], {
-        props: ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height', 'inline-size', 'min-inline-size', 'max-inline-size', 'block-size', 'min-block-size', 'max-block-size', 'grid-template', 'grid-template-rows', 'grid-template-columns'],
+        props: ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height', 'inline-size', 'min-inline-size', 'max-inline-size', 'block-size', 'min-block-size', 'max-block-size', 'grid', 'grid-template', 'grid-template-rows', 'grid-template-columns', 'grid-auto-columns', 'grid-auto-rows'],
         feature: 'intrinsic-width',
         browsers: browsers
     });
@@ -4083,6 +4083,13 @@ var Intrinsic = function (_Value) {
             }
         }
         return new OldValue(this.name, prefixed, prefixed, _regexp(prefixed));
+    };
+
+    Intrinsic.prototype.add = function add(decl, prefix) {
+        if (decl.prop.indexOf('grid') !== -1 && prefix !== '-webkit-') {
+            return undefined;
+        }
+        return _Value.prototype.add.call(this, decl, prefix);
     };
 
     return Intrinsic;
@@ -7857,11 +7864,17 @@ var browserslist = function (queries, opts) {
 
     var result = [];
 
-    queries.forEach(function (selection) {
+    queries.forEach(function (selection, index) {
         if ( selection.trim() === '' ) return;
 
         var exclude = selection.indexOf('not ') === 0;
-        if ( exclude ) selection = selection.slice(4);
+        if ( exclude ) {
+            if ( index === 0 ) {
+                error('Write any browsers query (for instance, `defaults`) ' +
+                      'before `' + selection + '`');
+            }
+            selection = selection.slice(4);
+        }
 
         for ( var i in browserslist.queries ) {
             var type  = browserslist.queries[i];
@@ -10499,7 +10512,7 @@ module.exports={A:{A:{"1":"B","2":"H G F C SB","289":"A"},B:{"1":"D q W I"},C:{"
 module.exports={A:{A:{"1":"A B","2":"H G F C SB"},B:{"1":"D q W I"},C:{"1":"0 1 2 L M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p u v w t y r g","2":"3 QB OB NB","33":"K H G F C A B D q W I","164":"E"},D:{"1":"0 1 2 6 9 V s X Y Z a b c d e f J h i j k l m n o p u v w t y r g CB RB AB","33":"E K H G F C A B D q W I L M N O P Q R S T U"},E:{"1":"G F C A EB FB GB HB IB","33":"H DB","164":"7 E K BB"},F:{"1":"I L M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p z","2":"C JB KB","33":"D","164":"4 5 B LB MB PB"},G:{"1":"F VB WB XB YB ZB aB","33":"UB","164":"7 8 x TB"},H:{"2":"bB"},I:{"1":"g gB hB","33":"3 E cB dB eB fB x"},J:{"1":"A","33":"G"},K:{"1":"J z","33":"D","164":"4 5 A B"},L:{"1":"6"},M:{"1":"r"},N:{"1":"A B"},O:{"1":"iB"},P:{"1":"E"},Q:{"1":"jB"},R:{"1":"kB"}},B:5,C:"CSS3 Transitions"};
 
 },{}],215:[function(require,module,exports){
-module.exports={A:{A:{"132":"H G F C A B SB"},B:{"132":"D q W I"},C:{"1":"0 1 2 t y r g","33":"M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p u v w","132":"3 QB E K H G F C OB NB","292":"A B D q W I L"},D:{"1":"0 1 2 6 9 v w t y r g CB RB AB","132":"E K H G F C A B D q W I L","548":"M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p u"},E:{"132":"7 E K H G F BB DB EB FB","548":"C A GB HB IB"},F:{"132":"4 5 C B D I L M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p JB KB LB MB PB z"},G:{"16":"7 8 x","33":"F TB UB VB WB XB YB ZB aB"},H:{"16":"bB"},I:{"1":"g","16":"3 E cB dB eB fB x gB hB"},J:{"16":"G A"},K:{"16":"4 5 A B D J z"},L:{"1":"6"},M:{"1":"r"},N:{"132":"A B"},O:{"16":"iB"},P:{"16":"E"},Q:{"16":"jB"},R:{"16":"kB"}},B:4,C:"CSS unicode-bidi property"};
+module.exports={A:{A:{"132":"H G F C A B SB"},B:{"132":"D q W I"},C:{"1":"0 1 2 t y r g","33":"M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p u v w","132":"3 QB E K H G F C OB NB","292":"A B D q W I L"},D:{"1":"0 1 2 6 9 v w t y r g CB RB AB","132":"E K H G F C A B D q W I L","548":"M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p u"},E:{"132":"7 E K H G F BB DB EB FB","548":"C A GB HB IB"},F:{"132":"4 5 C B D I L M N O P Q R S T U V s X Y Z a b c d e f J h i j k l m n o p JB KB LB MB PB z"},G:{"132":"7 8 F x TB UB VB WB","548":"XB YB ZB aB"},H:{"16":"bB"},I:{"1":"g","16":"3 E cB dB eB fB x gB hB"},J:{"16":"G A"},K:{"16":"4 5 A B D J z"},L:{"1":"6"},M:{"1":"r"},N:{"132":"A B"},O:{"16":"iB"},P:{"16":"E"},Q:{"16":"jB"},R:{"16":"kB"}},B:4,C:"CSS unicode-bidi property"};
 
 },{}],216:[function(require,module,exports){
 module.exports={A:{A:{"2":"H G F C A B SB"},B:{"1":"q W I","2":"D"},C:{"1":"0 1 2 s X Y Z a b c d e f J h i j k l m n o p u v w t y r g","2":"3 QB E K H G F C A B D q W I L M N O P Q R S T U V OB NB"},D:{"1":"0 1 2 6 9 k l m n o p u v w t y r g CB RB AB","2":"E K H G F C A B D q W I L M N O P Q R S T U V s X Y Z a b c d e f J h i j"},E:{"1":"A GB HB IB","2":"7 E K H G F C BB DB EB FB"},F:{"1":"X Y Z a b c d e f J h i j k l m n o p","2":"4 5 C B D I L M N O P Q R S T U V s JB KB LB MB PB z"},G:{"1":"YB ZB aB","2":"7 8 F x TB UB VB WB XB"},H:{"2":"bB"},I:{"1":"g","2":"3 E cB dB eB fB x gB hB"},J:{"2":"G A"},K:{"2":"4 5 A B D J z"},L:{"1":"6"},M:{"1":"r"},N:{"2":"A B"},O:{"2":"iB"},P:{"1":"E"},Q:{"2":"jB"},R:{"1":"kB"}},B:4,C:"CSS unset value"};
