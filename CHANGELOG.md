@@ -1,5 +1,10 @@
 # Change Log
 
+## 7.1.1.1
+* Update Can I Use data.
+* Update Browserslist.
+* Update PostCSS.
+
 ## 7.1.1
 * Remove non-`-webkit-` intrinsic prefixes in Grid Layout (by 一丝).
 
