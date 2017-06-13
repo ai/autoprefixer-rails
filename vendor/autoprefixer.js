@@ -8275,7 +8275,7 @@ browserslist.queries = {
     esr: {
         regexp: /^(firefox|ff|fx)\s+esr$/i,
         select: function () {
-            return ['firefox 52', 'firefox 45'];
+            return ['firefox 52'];
         }
     },
 
@@ -11031,7 +11031,7 @@ module.exports={A:{A:{"1":"A","2":"J C G E B TB"},B:{"1":"D X g H L"},C:{"1":"1 
 module.exports={A:{A:{"1":"B A","2":"J C G E TB"},B:{"1":"D X g H L"},C:{"1":"1 2 N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v w x y z s r","2":"3 RB F I J C G E PB OB","33":"B A D X g H L M"},D:{"1":"1 2 7 9 c d e f K h i j k l m n o p q v w x y z s r DB SB AB BB","2":"F I J C G E B A D X","33":"g H L M N O P Q R S T U V W t Y Z a b"},E:{"1":"C G E B A FB GB HB IB JB","2":"6 F I J CB EB"},F:{"1":"0 P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q","2":"4 5 E A D KB LB MB NB QB","33":"H L M N O"},G:{"1":"G A WB XB YB ZB aB bB","2":"6 8 u UB VB"},H:{"2":"cB"},I:{"1":"r","2":"3 F dB eB fB gB u","33":"hB iB"},J:{"1":"B","2":"C"},K:{"1":"0 K","2":"4 5 B A D"},L:{"1":"7"},M:{"1":"s"},N:{"1":"B A"},O:{"1":"jB"},P:{"1":"I","33":"F"},Q:{"1":"kB"},R:{"1":"lB"}},B:2,C:"Page Visibility"};
 
 },{}],388:[function(require,module,exports){
-module.exports={A:{A:{"2":"J C G E B A TB"},B:{"2":"D X g H L"},C:{"1":"1 2 w x y z s r","2":"3 RB F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v PB OB"},D:{"1":"1 2 7 9 y z s r DB SB AB BB","2":"F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v w x"},E:{"1":"B A IB JB","2":"6 F I J C G E CB EB FB GB HB"},F:{"1":"h i j k l m n o p q","2":"0 4 5 E A D H L M N O P Q R S T U V W t Y Z a b c d e f K KB LB MB NB QB"},G:{"1":"A aB bB","2":"6 8 G u UB VB WB XB YB ZB"},H:{"2":"cB"},I:{"1":"r","2":"3 F dB eB fB gB u hB iB"},J:{"2":"C B"},K:{"2":"0 4 5 B A D K"},L:{"1":"7"},M:{"1":"s"},N:{"2":"B A"},O:{"1":"jB"},P:{"1":"I","2":"F"},Q:{"2":"kB"},R:{"2":"lB"}},B:1,C:"Passive event listeners"};
+module.exports={A:{A:{"2":"J C G E B A TB"},B:{"1":"L","2":"D X g H"},C:{"1":"1 2 w x y z s r","2":"3 RB F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v PB OB"},D:{"1":"1 2 7 9 y z s r DB SB AB BB","2":"F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v w x"},E:{"1":"B A IB JB","2":"6 F I J C G E CB EB FB GB HB"},F:{"1":"h i j k l m n o p q","2":"0 4 5 E A D H L M N O P Q R S T U V W t Y Z a b c d e f K KB LB MB NB QB"},G:{"1":"A aB bB","2":"6 8 G u UB VB WB XB YB ZB"},H:{"2":"cB"},I:{"1":"r","2":"3 F dB eB fB gB u hB iB"},J:{"2":"C B"},K:{"2":"0 4 5 B A D K"},L:{"1":"7"},M:{"1":"s"},N:{"2":"B A"},O:{"1":"jB"},P:{"1":"I","2":"F"},Q:{"2":"kB"},R:{"2":"lB"}},B:1,C:"Passive event listeners"};
 
 },{}],389:[function(require,module,exports){
 module.exports={A:{A:{"2":"J C G E B A TB"},B:{"2":"D X","322":"g","516":"H L"},C:{"2":"1 2 3 RB F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v w x y z s r PB OB"},D:{"2":"F I J C G E B A D X g H L M N O P Q R S T U V W t Y Z a b c d e f K h i j k l m n o p q v w x y z","194":"1 2 7 9 s r DB SB AB BB"},E:{"2":"6 F I J C G E CB EB FB GB HB","1026":"B A IB JB"},F:{"2":"0 4 5 E A D H L M N O P Q R S T U V W t Y Z a b c d e f K h i KB LB MB NB QB","194":"j k l m n o p q"},G:{"2":"6 8 G u UB VB WB XB YB ZB","1026":"A aB bB"},H:{"2":"cB"},I:{"2":"3 F r dB eB fB gB u hB iB"},J:{"2":"C B"},K:{"2":"0 4 5 B A D K"},L:{"1":"7"},M:{"2":"s"},N:{"2":"B A"},O:{"2":"jB"},P:{"1":"I","2":"F"},Q:{"194":"kB"},R:{"2":"lB"}},B:5,C:"Payment Request API"};
