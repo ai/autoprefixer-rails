@@ -19,7 +19,7 @@ integration with this JavaScript tool.
 
 ## Differences
 
-The best way to use Autoprefixer is a webpack or Gulp.
+The best way to use Autoprefixer is with webpack or Gulp.
 
 Autoprefixer Rails doesn’t support this Autoprefixer’s features:
 
