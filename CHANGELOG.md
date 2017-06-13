@@ -1,5 +1,10 @@
 # Change Log
 
+
+## 7.1.1.2
+* Update Can I Use data.
+* Update Browserslist.
+
 ## 7.1.1.1
 * Update Can I Use data.
 * Update Browserslist.
