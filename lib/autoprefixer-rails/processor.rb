@@ -140,7 +140,11 @@ module AutoprefixerRails
 
     # Cache autoprefixer.js content
     def read_js
-      @@js ||= Pathname(File.dirname(__FILE__)).join("../../vendor/autoprefixer.js").read
+      @@js ||= begin
+        root = Pathname(File.dirname(__FILE__))
+        path = root.join("../../vendor/autoprefixer.js")
+        path.read
+      end
     end
 
     def polyfills
