@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.1.3
+* Update Can I Use data.
+* Update PostCSS.
 
 ## 7.1.1.2
 * Update Can I Use data.
