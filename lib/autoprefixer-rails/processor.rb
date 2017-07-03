@@ -143,7 +143,7 @@ module AutoprefixerRails
       @@js ||= begin
         root = Pathname(File.dirname(__FILE__))
         path = root.join("../../vendor/autoprefixer.js")
-        path.read
+        path.read.gsub(/Object.setPrototypeOf\(chalk[^)]+\)/, '')
       end
     end
 
@@ -153,6 +153,12 @@ module AutoprefixerRails
           global.Uint8Array = Array;
         if (typeof ArrayBuffer === "undefined")
           global.ArrayBuffer = Array;
+        if (typeof Set === "undefined") {
+          global.Set = function (values) { this.values = values }
+          global.Set.prototype = {
+            has: function (i) { return this.values.indexOf(i) !== -1 }
+          }
+        }
         Math.log2 = Math.log2 ||
           function(x) { return Math.log(x) * Math.LOG2E; };
         Math.sign = Math.sign ||
