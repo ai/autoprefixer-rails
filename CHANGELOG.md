@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.2
+* Fix `text-decoration` shortcut support.
+
 ## 7.1.1.3
 * Update Can I Use data.
 * Update PostCSS.
