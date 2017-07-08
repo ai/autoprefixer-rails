@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.2.1
+* Fix loading `autoprefixer.yml` from engines (by Jim Ryan).
+
 ## 7.1.2
 * Fix `text-decoration` shortcut support.
 
