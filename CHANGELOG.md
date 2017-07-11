@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.2.2
+* Fix working with empty `autoprefixer.yml` (by Murahashi Kenichi).
+
 ## 7.1.2.1
 * Fix loading `autoprefixer.yml` from engines (by Jim Ryan).
 
