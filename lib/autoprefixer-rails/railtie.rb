@@ -28,7 +28,9 @@ begin
           file = File.join(root, 'config/autoprefixer.yml')
 
           if File.exist?(file)
-            params = ::YAML.load_file(file)
+            parsed = ::YAML.load_file(file)
+            next unless parsed
+            params = parsed
 
             break
           end
