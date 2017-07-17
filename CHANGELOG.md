@@ -1,5 +1,10 @@
 # Change Log
 
+## 7.1.2.3
+* Add region usage statistics support.
+* Fix base64 decoding for old Node.js.
+* Update Can I Use data.
+
 ## 7.1.2.2
 * Fix working with empty `autoprefixer.yml` (by Murahashi Kenichi).
 
