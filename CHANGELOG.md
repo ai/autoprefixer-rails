@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.2.4
+* Add `unreleased versions` and `unreleased Chrome versions` browsers queries.
+* Update Can I Use data.
+
 ## 7.1.2.3
 * Add region usage statistics support.
 * Fix base64 decoding for old Node.js.
