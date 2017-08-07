@@ -159,7 +159,13 @@ module AutoprefixerRails
             has: function (i) { return this.values.indexOf(i) !== -1 }
           }
         }
-        Math.log2 = Math.log2 ||
+        if (typeof Map === "undefined") {
+          global.Map = function () { }
+          global.Map.prototype = {
+            set: function () { }
+          }
+        }
+          Math.log2 = Math.log2 ||
           function(x) { return Math.log(x) * Math.LOG2E; };
         Math.sign = Math.sign ||
           function(x) {
