@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.1.2.6
+* Fix `.browserslistrc` support
+
 ## 7.1.2.5
 * Fix `> 0` query for browsers with one version.
 * Update Can I Use data.
