@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.2.5
+* Fix `> 0` query for browsers with one version.
+* Update Can I Use data.
+
 ## 7.1.2.4
 * Add `unreleased versions` and `unreleased Chrome versions` browsers queries.
 * Update Can I Use data.
