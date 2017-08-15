@@ -118,8 +118,12 @@ module AutoprefixerRails
       path = Pathname(file).expand_path
 
       while path.parent != path
-        config = path.join('browserslist')
-        return config.read if config.exist? and not config.directory?
+        config1 = path.join('browserslist')
+        return config1.read if config1.exist? and not config1.directory?
+
+        config2 = path.join('.browserslistrc')
+        return config2.read if config2.exist? and not config1.directory?
+
         path = path.parent
       end
 
