@@ -164,9 +164,13 @@ module AutoprefixerRails
           }
         }
         if (typeof Map === "undefined") {
-          global.Map = function () { }
+          global.Map = function () { this.data = { } }
           global.Map.prototype = {
-            set: function () { }
+            set: function (k, v) { this.data[k] = v },
+            get: function (k) { return this.data[k] },
+            has: function (k) {
+              return Object.keys(this.data).indexOf(k) !== -1
+            },
           }
         }
           Math.log2 = Math.log2 ||
