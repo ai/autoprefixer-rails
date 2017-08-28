@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.3
+* Add warning for old `radial-gradient` direction syntax.
+* Add `last n major versions` browser query.
+
 ## 7.1.2.6
 * Fix `.browserslistrc` support
 
