@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.4
+* Fix `radial-gradient` direction conversion.
+* Fix `image-set` in `cursor`.
+
 ## 7.1.3
 * Add warning for old `radial-gradient` direction syntax.
 * Add `last n major versions` browser query.
