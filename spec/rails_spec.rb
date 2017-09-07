@@ -35,8 +35,8 @@ describe CssController, type: :controller do
       get :test, params: { exact_file: 'sass.css.map' }
       expect(response).to be_success
 
-      source_map = JSON.parse(response.body)
-      expect(source_map["sources"].first).to match(/loaded.*.sass/)
+      source_map = JSON.parse(response.body)['sections'].first['map']
+      expect(source_map['sources'].first).to match(/loaded.*.sass/)
     end
   end
 end
