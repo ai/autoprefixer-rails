@@ -17,7 +17,7 @@ before_install:
 env:
   - EXECJS_RUNTIME=Node
   # mini_racer / rubyracer or rubyrhino depending on platform:
-  - EXECJS_RUNTIME=
+  -
 matrix:
   exclude:
     - rvm: "2.1.9"
