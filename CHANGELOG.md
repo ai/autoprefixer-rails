@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.4.1
+* Update PostCSS.
+* Update Can I Use data.
+
 ## 7.1.4
 * Fix `radial-gradient` direction conversion.
 * Fix `image-set` in `cursor`.
