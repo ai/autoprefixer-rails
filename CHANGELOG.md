@@ -1,5 +1,10 @@
 # Change Log
 
+## 7.1.5
+* Fix `::placeholder` prefix for Edge.
+* Fix `inherit`/`initial`/`unset` values for `flex-direction`.
+* Fix RegExp usage in gradients (by Yet Another Minion).
+
 ## 7.1.4.1
 * Update PostCSS.
 * Update Can I Use data.
