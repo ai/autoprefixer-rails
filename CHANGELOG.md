@@ -1,5 +1,10 @@
 # Change Log
 
+## 7.1.6
+* Add warning for using `browserslist` option instead of `browsers`.
+* Add warning for multiple control comments in the same scope.
+* Fix `Invalid array length` error during indent changes.
+
 ## 7.1.5
 * Fix `::placeholder` prefix for Edge.
 * Fix `inherit`/`initial`/`unset` values for `flex-direction`.
