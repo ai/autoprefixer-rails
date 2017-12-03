@@ -16,7 +16,7 @@ describe CssController, type: :controller do
 
   it "integrates with Rails and Sass" do
     test_file 'sass'
-    expect(response).to be_success
+    expect(response).to be_successful
     clear_css = response.body.gsub("\n", " ").squeeze(" ").strip
     expect(clear_css).to eq "a { -webkit-mask: none; mask: none }"
   end
@@ -24,7 +24,7 @@ describe CssController, type: :controller do
   if Sprockets::Context.instance_methods.include?(:evaluate)
     it 'supports evaluate' do
       test_file 'evaluate'
-      expect(response).to be_success
+      expect(response).to be_successful
       clear_css = response.body.gsub("\n", ' ').squeeze(' ').strip
       expect(clear_css).to eq 'a { -webkit-mask: none; mask: none }'
     end
@@ -33,7 +33,7 @@ describe CssController, type: :controller do
   if sprockets_4?
     it "works with sprockets 4 source maps" do
       get :test, params: { exact_file: 'sass.css.map' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       source_map = JSON.parse(response.body)['sections'].first['map']
       expect(source_map['sources'].first).to match(/loaded.*.sass/)
