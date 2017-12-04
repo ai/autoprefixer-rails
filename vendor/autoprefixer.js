@@ -1689,10 +1689,17 @@ var Animation = function (_Declaration) {
      * Don’t add prefixes for modern values.
      */
     Animation.prototype.check = function check(decl) {
-        return !decl.value.split(/\s+/).find(function (i) {
+        var found = false;
+        decl.value.split(/\s+/).forEach(function (i) {
             var lower = i.toLowerCase();
-            return lower === 'reverse' || lower === 'alternate-reverse';
+            if (lower === 'reverse' || lower === 'alternate-reverse') {
+                found = true;
+                return false;
+            } else {
+                return true;
+            }
         });
+        return !found;
     };
 
     return Animation;
