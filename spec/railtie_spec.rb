@@ -18,7 +18,7 @@ describe AutoprefixedRails::Railtie do
       allow(::YAML).to receive(:load_file).with(file_path) { false } # empty yaml
     end
 
-    it 'skips empty yaml' do
+    it 'skips empty YAML' do
       expect { @railtie.config }.not_to raise_error
     end
 
