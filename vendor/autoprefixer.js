@@ -710,6 +710,14 @@ f(bidi, { match: /y x/ }, function (browsers) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -725,7 +733,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Prefixer = require('./prefixer');
@@ -1108,6 +1116,14 @@ module.exports = Browsers;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1123,7 +1139,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Prefixer = require('./prefixer');
@@ -1370,6 +1386,14 @@ module.exports = Declaration;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1385,7 +1409,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -1467,6 +1491,14 @@ module.exports = AlignContent;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1482,7 +1514,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -1561,6 +1593,14 @@ module.exports = AlignItems;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1576,7 +1616,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -1656,6 +1696,14 @@ module.exports = AlignSelf;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1671,7 +1719,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -1711,6 +1759,14 @@ module.exports = Animation;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1726,7 +1782,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -1768,6 +1824,14 @@ module.exports = Appearance;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1783,7 +1847,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -1824,6 +1888,14 @@ module.exports = BackgroundSize;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1839,7 +1911,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -1888,6 +1960,14 @@ module.exports = BlockLogical;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1903,7 +1983,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -1941,6 +2021,14 @@ module.exports = BorderImage;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -1956,7 +2044,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -2032,6 +2120,14 @@ module.exports = BorderRadius;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2047,7 +2143,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -2129,6 +2225,14 @@ module.exports = BreakProps;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2144,7 +2248,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Value = require('../value');
@@ -2200,6 +2304,14 @@ module.exports = CrossFade;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2215,7 +2327,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2310,6 +2422,14 @@ module.exports = DisplayFlex;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2325,7 +2445,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Value = require('../value');
@@ -2368,6 +2488,14 @@ module.exports = DisplayGrid;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2383,7 +2511,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Value = require('../value');
@@ -2418,6 +2546,14 @@ module.exports = FilterValue;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2433,7 +2569,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -2471,6 +2607,14 @@ module.exports = Filter;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2486,7 +2630,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2561,6 +2705,14 @@ module.exports = FlexBasis;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2576,7 +2728,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2684,6 +2836,14 @@ module.exports = FlexDirection;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2699,7 +2859,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2780,6 +2940,14 @@ module.exports = FlexFlow;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2795,7 +2963,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2854,6 +3022,14 @@ module.exports = Flex;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2869,7 +3045,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -2968,6 +3144,14 @@ module.exports = function (prefix) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -2983,7 +3167,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -3025,6 +3209,14 @@ module.exports = FlexWrap;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3040,7 +3232,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -3127,6 +3319,14 @@ module.exports = Flex;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3142,7 +3342,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Selector = require('../selector');
@@ -3185,6 +3385,14 @@ module.exports = Fullscreen;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3200,7 +3408,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var OldValue = require('../old-value');
@@ -3708,6 +3916,14 @@ module.exports = Gradient;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3723,7 +3939,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -3807,6 +4023,14 @@ module.exports = GridArea;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3822,7 +4046,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -3875,6 +4099,14 @@ module.exports = GridColumnAlign;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3890,7 +4122,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -3958,6 +4190,14 @@ module.exports = GridEnd;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -3973,7 +4213,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4026,6 +4266,14 @@ module.exports = GridRowAlign;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4041,7 +4289,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4101,6 +4349,14 @@ module.exports = GridRowColumn;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4116,7 +4372,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4339,6 +4595,14 @@ module.exports = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4354,7 +4618,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4412,6 +4676,14 @@ module.exports = GridStart;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4427,7 +4699,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4558,6 +4830,14 @@ module.exports = GridTemplateAreas;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4573,7 +4853,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4645,6 +4925,14 @@ module.exports = GridTemplate;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4660,7 +4948,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4736,6 +5024,14 @@ module.exports = ImageRendering;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4751,7 +5047,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Value = require('../value');
@@ -4792,6 +5088,14 @@ module.exports = ImageSet;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4807,7 +5111,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -4852,6 +5156,14 @@ module.exports = InlineLogical;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4867,7 +5179,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var OldValue = require('../old-value');
@@ -4940,6 +5252,14 @@ module.exports = Intrinsic;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -4955,7 +5275,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -5042,6 +5362,14 @@ module.exports = JustifyContent;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5057,7 +5385,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -5106,6 +5434,14 @@ module.exports = MaskBorder;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5121,7 +5457,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var flexSpec = require('./flex-spec');
@@ -5194,6 +5530,14 @@ module.exports = Order;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5209,7 +5553,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var OldValue = require('../old-value');
@@ -5267,6 +5611,14 @@ module.exports = Pixelated;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5282,7 +5634,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Selector = require('../selector');
@@ -5337,6 +5689,14 @@ module.exports = Placeholder;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5352,7 +5712,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -5393,6 +5753,14 @@ module.exports = TextDecoration;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5408,7 +5776,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -5445,6 +5813,14 @@ module.exports = TextEmphasisPosition;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5460,7 +5836,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -5573,6 +5949,14 @@ module.exports = TransformDecl;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -5588,7 +5972,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Declaration = require('../declaration');
@@ -7062,6 +7446,14 @@ module.exports = Processor;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -7077,7 +7469,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Prefixer = require('./prefixer');
@@ -7227,6 +7619,14 @@ module.exports = Resolution;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -7242,7 +7642,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var OldSelector = require('./old-selector');
@@ -8318,6 +8718,14 @@ module.exports = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) {
+    var keys = Object.getOwnPropertyNames(defaults);for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];var value = Object.getOwnPropertyDescriptor(defaults, key);if (value && value.configurable && obj[key] === undefined) {
+            Object.defineProperty(obj, key, value);
+        }
+    }return obj;
+}
+
 function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
@@ -8333,7 +8741,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 var Prefixer = require('./prefixer');
@@ -8604,11 +9012,11 @@ function fromByteArray(uint8) {
 "use strict";
 
 },{}],69:[function(require,module,exports){
-(function (process){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var process = require('process');
 var path = require('path');
 var e2c = require('electron-to-chromium/versions');
 var fs = require('fs');
@@ -8643,7 +9051,7 @@ function getMajorVersions(released, number) {
   return selected;
 }
 
-var env = process.env;
+var env = process && process.env ? process.env : {};
 
 var FLOAT_RANGE = /^\d+(\.\d+)?(-\d+(\.\d+)?)*$/;
 var IS_SECTION = /^\s*\[(.+)\]\s*$/;
@@ -9426,8 +9834,7 @@ function checkExtend(name) {
 
 module.exports = browserslist;
 
-}).call(this,require('_process'))
-},{"_process":594,"caniuse-lite/dist/unpacker/agents":541,"caniuse-lite/dist/unpacker/region":547,"electron-to-chromium/versions":548,"fs":68,"path":68}],70:[function(require,module,exports){
+},{"caniuse-lite/dist/unpacker/agents":541,"caniuse-lite/dist/unpacker/region":547,"electron-to-chromium/versions":548,"fs":68,"path":68,"process":68}],70:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -9437,6 +9844,10 @@ module.exports = browserslist;
 /* eslint-disable no-proto */
 
 'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 
 var base64 = require('base64-js');
 var ieee754 = require('ieee754');
@@ -9472,9 +9883,11 @@ function typedArraySupport() {
   // Can typed array instances can be augmented?
   try {
     var arr = new Uint8Array(1);
-    arr.__proto__ = { __proto__: Uint8Array.prototype, foo: function foo() {
+
+    _defaults(arr, _extends({}, Uint8Array.prototype, { foo: function foo() {
         return 42;
-      } };
+      } }));
+
     return arr.foo() === 42;
   } catch (e) {
     return false;
@@ -9487,7 +9900,9 @@ function createBuffer(length) {
   }
   // Return an augmented `Uint8Array` instance
   var buf = new Uint8Array(length);
-  buf.__proto__ = Buffer.prototype;
+
+  _defaults(buf, Buffer.prototype);
+
   return buf;
 }
 
@@ -9554,8 +9969,10 @@ Buffer.from = function (value, encodingOrOffset, length) {
 
 // Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
 // https://github.com/feross/buffer/pull/148
-Buffer.prototype.__proto__ = Uint8Array.prototype;
-Buffer.__proto__ = Uint8Array;
+
+_defaults(Buffer.prototype, Uint8Array.prototype);
+
+_defaults(Buffer, Uint8Array);
 
 function assertSize(size) {
   if (typeof size !== 'number') {
@@ -9657,7 +10074,9 @@ function fromArrayBuffer(array, byteOffset, length) {
   }
 
   // Return an augmented `Uint8Array` instance
-  buf.__proto__ = Buffer.prototype;
+
+  _defaults(buf, Buffer.prototype);
+
   return buf;
 }
 
@@ -10446,7 +10865,9 @@ Buffer.prototype.slice = function slice(start, end) {
 
   var newBuf = this.subarray(start, end);
   // Return an augmented `Uint8Array` instance
-  newBuf.__proto__ = Buffer.prototype;
+
+  _defaults(newBuf, Buffer.prototype);
+
   return newBuf;
 };
 
@@ -11396,7 +11817,7 @@ module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" },
 },{}],131:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" }, C: { "2": "0 1 2 3 4 5 6 7 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB" }, D: { "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p", "194": "0 2 3 4 5 6 7 q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G GB AB IB JB KB", "33": "E A B LB MB NB" }, F: { "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a b c OB PB QB RB UB x", "194": "d e f L h i j k l m n o p q r s t" }, G: { "2": "G AB WB BB YB ZB aB bB", "33": "cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "2": "8 9 A B D x", "194": "L" }, L: { "194": "g" }, M: { "2": "v" }, N: { "2": "A B" }, O: { "2": "oB" }, P: { "2": "F", "194": "J pB" }, Q: { "194": "qB" }, R: { "194": "rB" } }, B: 7, C: "CSS Backdrop Filter" };
+module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "1": "H", "2": "D u Y I M" }, C: { "2": "0 1 2 3 4 5 6 7 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB" }, D: { "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p", "194": "0 2 3 4 5 6 7 q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G GB AB IB JB KB", "33": "E A B LB MB NB" }, F: { "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a b c OB PB QB RB UB x", "194": "d e f L h i j k l m n o p q r s t" }, G: { "2": "G AB WB BB YB ZB aB bB", "33": "cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "2": "8 9 A B D x", "194": "L" }, L: { "194": "g" }, M: { "2": "v" }, N: { "2": "A B" }, O: { "2": "oB" }, P: { "2": "F", "194": "J pB" }, Q: { "194": "qB" }, R: { "194": "rB" } }, B: 7, C: "CSS Backdrop Filter" };
 
 },{}],132:[function(require,module,exports){
 "use strict";
@@ -12741,12 +13162,12 @@ module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" },
 },{}],400:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" }, C: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB", "2": "1 VB" }, D: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB NB" }, F: { "1": "8 9 B D I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t QB RB UB x", "2": "E OB PB" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "1": "1 F g kB lB BB mB nB", "16": "iB jB" }, J: { "1": "A", "2": "C" }, K: { "1": "8 9 B D L x", "2": "A" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 6, C: "Ogg Vorbis audio format" };
+module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "1": "H", "2": "D u Y I M" }, C: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB", "2": "1 VB" }, D: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB NB" }, F: { "1": "8 9 B D I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t QB RB UB x", "2": "E OB PB" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "1": "1 F g kB lB BB mB nB", "16": "iB jB" }, J: { "1": "A", "2": "C" }, K: { "1": "8 9 B D L x", "2": "A" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 6, C: "Ogg Vorbis audio format" };
 
 },{}],401:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G CB", "8": "E A B" }, B: { "8": "D u Y I M H" }, C: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB", "2": "1 VB" }, D: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB NB" }, F: { "1": "8 9 B D I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t QB RB UB x", "2": "E OB PB" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "2": "8 9 A B D L x" }, L: { "2": "g" }, M: { "1": "v" }, N: { "8": "A B" }, O: { "1": "oB" }, P: { "2": "F J pB" }, Q: { "2": "qB" }, R: { "2": "rB" } }, B: 6, C: "Ogg/Theora video format" };
+module.exports = { A: { A: { "2": "K C G CB", "8": "E A B" }, B: { "1": "H", "8": "D u Y I M" }, C: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v TB SB", "2": "1 VB" }, D: { "1": "0 2 3 4 5 6 7 F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB NB" }, F: { "1": "8 9 B D I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t QB RB UB x", "2": "E OB PB" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "2": "8 9 A B D L x" }, L: { "2": "g" }, M: { "1": "v" }, N: { "8": "A B" }, O: { "1": "oB" }, P: { "2": "F J pB" }, Q: { "2": "qB" }, R: { "2": "rB" } }, B: 6, C: "Ogg/Theora video format" };
 
 },{}],402:[function(require,module,exports){
 "use strict";
@@ -12866,7 +13287,7 @@ module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" },
 },{}],425:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" }, C: { "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m TB SB", "257": "0 2 3 4 5 6 7 n p q r s t y v", "1281": "o z" }, D: { "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m", "257": "0 2 3 4 5 6 7 t y z v HB g DB XB EB FB", "388": "n o p q r s" }, E: { "2": "F J K C G E GB AB IB JB KB", "514": "A B LB MB NB" }, F: { "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a b c d e f OB PB QB RB UB x", "16": "L h i j k", "257": "l m n o p q r s t" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "2": "rB" } }, B: 5, C: "Push API" };
+module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "1": "H", "2": "D u Y I M" }, C: { "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m TB SB", "257": "0 2 3 4 5 6 7 n p q r s t y v", "1281": "o z" }, D: { "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m", "257": "0 2 3 4 5 6 7 t y z v HB g DB XB EB FB", "388": "n o p q r s" }, E: { "2": "F J K C G E GB AB IB JB KB", "514": "A B LB MB NB" }, F: { "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a b c d e f OB PB QB RB UB x", "16": "L h i j k", "257": "l m n o p q r s t" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F g iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "2": "rB" } }, B: 5, C: "Push API" };
 
 },{}],426:[function(require,module,exports){
 "use strict";
@@ -12926,7 +13347,7 @@ module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" },
 },{}],437:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "1": "A B", "2": "K C G E CB" }, B: { "1": "D u Y I M H" }, C: { "1": "0 2 3 4 5 6 7 e f L h i j k l m n o p q r s t y z v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z TB SB", "194": "a b c d" }, D: { "1": "0 2 3 4 5 6 7 U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T" }, E: { "1": "B NB", "2": "F J K C G E A GB AB IB JB KB LB MB" }, F: { "1": "I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D OB PB QB RB UB x" }, G: { "1": "gB", "2": "G AB WB BB YB ZB aB bB cB dB eB fB" }, H: { "2": "hB" }, I: { "1": "g mB nB", "2": "1 F iB jB kB lB BB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "1": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 4, C: "Resource Timing" };
+module.exports = { A: { A: { "1": "A B", "2": "K C G E CB" }, B: { "1": "D u Y I M H" }, C: { "1": "0 2 3 4 5 6 7 e f L h i j k l m n o p q r s t y z v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z TB SB", "194": "a b c d" }, D: { "1": "0 2 3 4 5 6 7 U V W X w Z a b c d e f L h i j k l m n o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T" }, E: { "1": "NB", "2": "F J K C G E A GB AB IB JB KB LB MB", "260": "B" }, F: { "1": "I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D OB PB QB RB UB x" }, G: { "1": "gB", "2": "G AB WB BB YB ZB aB bB cB dB eB fB" }, H: { "2": "hB" }, I: { "1": "g mB nB", "2": "1 F iB jB kB lB BB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "1": "A B" }, O: { "1": "oB" }, P: { "1": "F J pB" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 4, C: "Resource Timing" };
 
 },{}],438:[function(require,module,exports){
 "use strict";
@@ -12991,7 +13412,7 @@ module.exports = { A: { A: { "1": "E A B", "16": "CB", "260": "K C G" }, B: { "1
 },{}],450:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y", "322": "I M H" }, C: { "1": "0 2 3 4 5 6 7 n p q r s t y v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b TB SB", "194": "c d e f L h i j k l m", "513": "o z" }, D: { "1": "0 2 3 4 5 6 7 o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i", "4": "j k l m n" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB", "1090": "NB" }, F: { "1": "b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D I M H N O P Q R S T U V OB PB QB RB UB x", "4": "W X w Z a" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F iB jB kB lB BB mB nB", "4": "g" }, J: { "2": "C A" }, K: { "2": "8 9 A B D x", "4": "L" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "4": "oB" }, P: { "1": "F J pB" }, Q: { "4": "qB" }, R: { "4": "rB" } }, B: 5, C: "Service Workers" };
+module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "1": "H", "2": "D u Y", "322": "I M" }, C: { "1": "0 2 3 4 5 6 7 n p q r s t y v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b TB SB", "194": "c d e f L h i j k l m", "513": "o z" }, D: { "1": "0 2 3 4 5 6 7 o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i", "4": "j k l m n" }, E: { "2": "F J K C G E A B GB AB IB JB KB LB MB", "1090": "NB" }, F: { "1": "b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D I M H N O P Q R S T U V OB PB QB RB UB x", "4": "W X w Z a" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB gB" }, H: { "2": "hB" }, I: { "2": "1 F iB jB kB lB BB mB nB", "4": "g" }, J: { "2": "C A" }, K: { "2": "8 9 A B D x", "4": "L" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "4": "oB" }, P: { "1": "F J pB" }, Q: { "4": "qB" }, R: { "4": "rB" } }, B: 5, C: "Service Workers" };
 
 },{}],451:[function(require,module,exports){
 "use strict";
@@ -13081,7 +13502,7 @@ module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" },
 },{}],468:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "2": "D u Y I M H" }, C: { "1": "0 2 3 4 5 6 7 m n o p q r s t y z v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l TB SB" }, D: { "1": "0 2 3 4 5 6 7 o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n" }, E: { "1": "B NB", "2": "F J K C G E A GB AB IB JB KB LB MB" }, F: { "1": "b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a OB PB QB RB UB x" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB", "194": "gB" }, H: { "2": "hB" }, I: { "1": "g", "2": "1 F iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "2": "oB" }, P: { "1": "J pB", "2": "F" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 2, C: "Subresource Integrity" };
+module.exports = { A: { A: { "2": "K C G E A B CB" }, B: { "1": "H", "2": "D u Y I M" }, C: { "1": "0 2 3 4 5 6 7 m n o p q r s t y z v", "2": "1 VB F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l TB SB" }, D: { "1": "0 2 3 4 5 6 7 o p q r s t y z v HB g DB XB EB FB", "2": "F J K C G E A B D u Y I M H N O P Q R S T U V W X w Z a b c d e f L h i j k l m n" }, E: { "1": "B NB", "2": "F J K C G E A GB AB IB JB KB LB MB" }, F: { "1": "b c d e f L h i j k l m n o p q r s t", "2": "8 9 E B D I M H N O P Q R S T U V W X w Z a OB PB QB RB UB x" }, G: { "2": "G AB WB BB YB ZB aB bB cB dB eB fB", "194": "gB" }, H: { "2": "hB" }, I: { "1": "g", "2": "1 F iB jB kB lB BB mB nB" }, J: { "2": "C A" }, K: { "1": "L", "2": "8 9 A B D x" }, L: { "1": "g" }, M: { "1": "v" }, N: { "2": "A B" }, O: { "2": "oB" }, P: { "1": "J pB", "2": "F" }, Q: { "1": "qB" }, R: { "1": "rB" } }, B: 2, C: "Subresource Integrity" };
 
 },{}],469:[function(require,module,exports){
 "use strict";
@@ -13687,11 +14108,11 @@ function unpackRegion(packed) {
 
 module.exports = {
 	"1.8": "59",
-	"1.6": "56",
 	"1.7": "58",
-	"1.3": "52",
-	"1.4": "53",
+	"1.6": "56",
 	"1.5": "54",
+	"1.4": "53",
+	"1.3": "52",
 	"1.2": "51",
 	"1.1": "50",
 	"1.0": "49",
@@ -14514,6 +14935,8 @@ module.exports = function walk(nodes, cb, bubble) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _container = require('./container');
@@ -14539,7 +14962,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 /**
@@ -14661,6 +15084,8 @@ module.exports = exports['default'];
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _node = require('./node');
@@ -14686,7 +15111,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 /**
@@ -14738,6 +15163,8 @@ module.exports = exports['default'];
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _createClass = function () {
@@ -14781,7 +15208,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 function cleanSource(nodes) {
@@ -15835,7 +16262,7 @@ var CssSyntaxError = function () {
         if (!this.source) return '';
 
         var css = this.source;
-        if (typeof color === 'undefined') color = _supportsColor2.default;
+        if (typeof color === 'undefined') color = _supportsColor2.default.stdout;
         if (color) css = (0, _terminalHighlight2.default)(css);
 
         var lines = css.split(/\r?\n/);
@@ -15914,6 +16341,8 @@ module.exports = exports['default'];
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _node = require('./node');
@@ -15939,7 +16368,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 /**
@@ -16269,6 +16698,10 @@ var _stringify2 = require('./stringify');
 
 var _stringify3 = _interopRequireDefault(_stringify2);
 
+var _warnOnce = require('./warn-once');
+
+var _warnOnce2 = _interopRequireDefault(_warnOnce);
+
 var _result = require('./result');
 
 var _result2 = _interopRequireDefault(_result);
@@ -16376,12 +16809,15 @@ var LazyResult = function () {
      * @return {Promise} Promise API to make queue
      *
      * @example
-     * postcss([cssnext]).process(css).then(result => {
+     * postcss([cssnext]).process(css, { from: cssPath }).then(result => {
      *   console.log(result.css);
      * });
      */
 
     LazyResult.prototype.then = function then(onFulfilled, onRejected) {
+        if (!('from' in this.opts)) {
+            (0, _warnOnce2.default)('Witout `from` option PostCSS could generate wrong ' + 'source map or do not find Browserslist config. ' + 'Set it to CSS file path or to `undefined` to prevent ' + 'this warning');
+        }
         return this.async().then(onFulfilled, onRejected);
     };
 
@@ -16683,7 +17119,7 @@ exports.default = LazyResult;
 
 module.exports = exports['default'];
 
-},{"./map-generator":566,"./parse":568,"./result":573,"./stringify":577}],565:[function(require,module,exports){
+},{"./map-generator":566,"./parse":568,"./result":573,"./stringify":577,"./warn-once":581}],565:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -18849,7 +19285,7 @@ var Processor = function () {
      *   throw new Error('This plugin works only with PostCSS 6');
      * }
      */
-    this.version = '6.0.14';
+    this.version = '6.0.15';
     /**
      * @member {pluginFunction[]} - Plugins added to this processor.
      *
@@ -19267,6 +19703,8 @@ module.exports = exports['default'];
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _container = require('./container');
@@ -19292,7 +19730,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 /**
@@ -19412,6 +19850,8 @@ module.exports = exports['default'];
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
 exports.__esModule = true;
 
 var _createClass = function () {
@@ -19451,7 +19891,7 @@ function _possibleConstructorReturn(self, call) {
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
-  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass);
 }
 
 /**
