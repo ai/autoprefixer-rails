@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.2.4
+* Update Can I Use data.
+
 ## 7.2.3
 * Fix `grid-template-areas` in `@media` (by Evgeny Petukhov).
 
