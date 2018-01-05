@@ -5,7 +5,7 @@
      title="Autoprefixer logo by Anton Lovchikov">
 
 [Autoprefixer] is a tool to parse CSS and add vendor prefixes to CSS rules
-using values from the [Can I Use]. This gem provides Ruby and Ruby on Rails
+using values from the [Can I Use] database. This gem provides Ruby and Ruby on Rails
 integration with this JavaScript tool.
 
 <a href="https://evilmartians.com/?utm_source=autoprefixer-rails">
@@ -21,7 +21,7 @@ integration with this JavaScript tool.
 
 The best way to use Autoprefixer is with webpack or Gulp.
 
-Autoprefixer Rails doesn’t support this Autoprefixer’s features:
+Autoprefixer Rails doesn’t support these Autoprefixer features:
 
 * Browsers in `package.json`.
 * Custom browsers usage statistics.
@@ -54,7 +54,7 @@ For example in `app/assets/stylesheet/foobar.sass`:
   display: flex
 ```
 
-Autoprefixer uses Can I Use database with browser statistics and properties
+Autoprefixer uses the Can I Use database with browser statistics and properties
 support to add vendor prefixes automatically using the Asset Pipeline:
 
 ```css
@@ -123,7 +123,7 @@ AutoprefixerRails.uninstall(Rails.application.assets)
 
 ### Sprockets
 
-If you use Sinatra or other non-Rails frameworks with Sprockets,
+If you use Sinatra or another non-Rails framework with Sprockets,
 just connect your Sprockets environment with Autoprefixer and write CSS
 in the usual way:
 
@@ -145,7 +145,7 @@ require "autoprefixer-rails"
 prefixed = AutoprefixerRails.process(css, from: 'main.css').css
 ```
 
-You can specify browsers by `browsers` option:
+You can specify browsers with the `browsers` option:
 
 ```ruby
 AutoprefixerRails.process(css, from: 'a.css', browsers: ['> 1%', 'ie 10']).css
@@ -200,12 +200,12 @@ a {
 }
 ```
 
-You can disable it by `cascade: false` in `config/autoprefixer.yml`
+You can disable this by specifying `cascade: false` in `config/autoprefixer.yml`
 or in `process()` options.
 
 ## Source Map
 
-Autoprefixer will generate source map, if you set `map` option to `true` in
+Autoprefixer will generate a source map if you set `map` option to `true` in
 `process` method.
 
 You must set input and output CSS files paths (by `from` and `to` options)
