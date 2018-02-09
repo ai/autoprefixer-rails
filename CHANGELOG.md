@@ -1,5 +1,8 @@
 # Change Log
 
+## 7.2.6
+* Fix `-ms-` prefix for grid cells with same `grid-area` (by Evgeny Petukhov).
+
 ## 7.2.5
 * Fix multiple prefixes in declaration value.
 
