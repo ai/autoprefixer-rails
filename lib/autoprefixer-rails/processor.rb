@@ -33,7 +33,19 @@ module AutoprefixerRails
         map:  pluginOpts.delete(:map)
       }
 
-      result = runtime.call(apply_wrapper, [css, processOpts, pluginOpts])
+      begin
+        result = runtime.call(apply_wrapper, [css, processOpts, pluginOpts])
+      rescue ExecJS::ProgramError => e
+        contry_error = 'BrowserslistError: ' +
+          'Country statistics is not supported ' +
+          'in client-side build of Browserslist'
+        if e.message == contry_error
+          raise 'Country statistics is not supported in AutoprefixerRails. ' +
+                'Use Autoprefixer with webpack or other Node.js builder.'
+        else
+          raise e
+        end
+      end
 
       Result.new(result['css'], result['map'], result['warnings'])
     end

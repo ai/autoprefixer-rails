@@ -75,6 +75,12 @@ describe AutoprefixerRails do
       'direction syntax. New syntax is like `to left` instead of `right`.'])
   end
 
+  it "shows correct error on country statistics" do
+    expect {
+      AutoprefixerRails.process('', browsers: '> 1% in US')
+    }.to raise_error(/Use Autoprefixer with webpack/)
+  end
+
   context 'Sprockets' do
     before :each do
       @assets = Sprockets::Environment.new
