@@ -221,14 +221,17 @@ f(require('caniuse-lite/data/features/css-element-function.js'), function (brows
 
 // Multicolumns
 f(require('caniuse-lite/data/features/multicolumn.js'), function (browsers) {
-    prefix(['columns', 'column-width', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-width'], {
+    prefix(['columns', 'column-width', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-width', 'column-count', 'column-rule-style', 'column-span', 'column-fill'], {
         feature: 'multicolumn',
         browsers: browsers
     });
 
-    prefix(['column-count', 'column-rule-style', 'column-span', 'column-fill', 'break-before', 'break-after', 'break-inside'], {
+    var noff = browsers.filter(function (i) {
+        return !/firefox/.test(i);
+    });
+    prefix(['break-before', 'break-after', 'break-inside'], {
         feature: 'multicolumn',
-        browsers: browsers
+        browsers: noff
     });
 });
 
@@ -2161,11 +2164,7 @@ var BreakProps = function (_Declaration) {
      * Change name for -webkit- and -moz- prefix
      */
     BreakProps.prototype.prefixed = function prefixed(prop, prefix) {
-        if (prefix === '-moz-') {
-            return 'page-' + prop;
-        } else {
-            return prefix + 'column-' + prop;
-        }
+        return prefix + 'column-' + prop;
     };
 
     /**
@@ -2200,9 +2199,7 @@ var BreakProps = function (_Declaration) {
     BreakProps.prototype.insert = function insert(decl, prefix, prefixes) {
         if (decl.prop !== 'break-inside') {
             return _Declaration.prototype.insert.call(this, decl, prefix, prefixes);
-        } else if (decl.value === 'avoid-region') {
-            return undefined;
-        } else if (decl.value === 'avoid-page' && prefix === '-webkit-') {
+        } else if (/region/i.test(decl.value) || /page/i.test(decl.value)) {
             return undefined;
         } else {
             return _Declaration.prototype.insert.call(this, decl, prefix, prefixes);
@@ -9040,6 +9037,10 @@ module.exports = {
     }
   },
 
+  loadCountry: function loadCountry() {
+    throw new BrowserslistError('Country statistics is not supported ' + 'in client-side build of Browserslist');
+  },
+
   parseConfig: noop,
 
   readConfig: noop,
@@ -9054,7 +9055,7 @@ module.exports = {
 
 function BrowserslistError(message) {
   this.name = 'BrowserslistError';
-  this.message = message || '';
+  this.message = message;
   this.browserslist = true;
   if (Error.captureStackTrace) {
     Error.captureStackTrace(this, BrowserslistError);
@@ -9074,7 +9075,6 @@ var path = require('path');
 var e2c = require('electron-to-chromium/versions');
 
 var agents = require('caniuse-lite/dist/unpacker/agents').agents;
-var region = require('caniuse-lite/dist/unpacker/region').default;
 
 var BrowserslistError = require('./error');
 var env = require('./node'); // Will load browser.js in webpack
@@ -9163,20 +9163,6 @@ function normalizeVersion(data, version) {
   }
 }
 
-function loadCountryStatistics(country) {
-  country = country.replace(/[^\w-]/g, '');
-  if (!browserslist.usage[country]) {
-    var usage = {};
-    // eslint-disable-next-line security/detect-non-literal-require
-    var compressed = require('caniuse-lite/data/regions/' + country + '.js');
-    var data = region(compressed);
-    for (var i in data) {
-      fillUsage(usage, i, data[i]);
-    }
-    browserslist.usage[country] = usage;
-  }
-}
-
 function filterByYear(since) {
   return Object.keys(agents).reduce(function (selected, name) {
     var data = byName(name);
@@ -9256,12 +9242,12 @@ function resolve(queries, context) {
 function browserslist(queries, opts) {
   if (typeof opts === 'undefined') opts = {};
 
-  if (!opts.hasOwnProperty('path')) {
+  if (typeof opts.path === 'undefined') {
     opts.path = path.resolve ? path.resolve('.') : '.';
   }
 
   if (typeof queries === 'undefined' || queries === null) {
-    var config = env.loadConfig(opts);
+    var config = browserslist.loadConfig(opts);
     if (config) {
       queries = config;
     } else {
@@ -9323,7 +9309,7 @@ browserslist.usage = {
   custom: null
 
   // Default browsers query
-};browserslist.defaults = ['> 1%', 'last 2 versions', 'Firefox ESR'];
+};browserslist.defaults = ['> 0.5%', 'last 2 versions', 'Firefox ESR', 'not dead'];
 
 // Browser names aliases
 browserslist.aliases = {
@@ -9347,34 +9333,48 @@ browserslist.clearCaches = env.clearCaches;
 browserslist.parseConfig = env.parseConfig;
 browserslist.readConfig = env.readConfig;
 browserslist.findConfig = env.findConfig;
+browserslist.loadConfig = env.loadConfig;
 
 /**
  * Return browsers market coverage.
  *
  * @param {string[]} browsers Browsers names in Can I Use.
- * @param {string} [country="global"] Which country statistics should be used.
+ * @param {string|object} [stats="global"] Which statistics should be used.
+ *                                         Country code or custom statistics.
  *
  * @return {number} Total market coverage for all selected browsers.
  *
  * @example
  * browserslist.coverage(browserslist('> 1% in US'), 'US') //=> 83.1
  */
-browserslist.coverage = function (browsers, country) {
-  if (country && country !== 'global') {
-    if (country.length > 2) {
-      country = country.toLowerCase();
+browserslist.coverage = function (browsers, stats) {
+  var data;
+  if (typeof stats === 'undefined') {
+    data = browserslist.usage.global;
+  } else if (typeof stats === 'string') {
+    if (stats.length > 2) {
+      stats = stats.toLowerCase();
     } else {
-      country = country.toUpperCase();
+      stats = stats.toUpperCase();
     }
-    loadCountryStatistics(country);
+    env.loadCountry(browserslist.usage, stats);
+    data = browserslist.usage[stats];
   } else {
-    country = 'global';
+    if ('dataByBrowser' in stats) {
+      stats = stats.dataByBrowser;
+    }
+    data = {};
+    for (var name in stats) {
+      for (var version in stats[name]) {
+        data[name + ' ' + version] = stats[name][version];
+      }
+    }
   }
 
   return browsers.reduce(function (all, i) {
-    var usage = browserslist.usage[country][i];
+    var usage = data[i];
     if (usage === undefined) {
-      usage = browserslist.usage[country][i.replace(/ [\d.]+$/, ' 0')];
+      usage = data[i.replace(/ [\d.]+$/, ' 0')];
     }
     return all + (usage || 0);
   }, 0);
@@ -9543,7 +9543,7 @@ var QUERIES = [{
       place = place.toLowerCase();
     }
 
-    loadCountryStatistics(place);
+    env.loadCountry(browserslist.usage, place);
     var usage = browserslist.usage[place];
 
     return Object.keys(usage).reduce(function (result, version) {
@@ -9648,7 +9648,7 @@ var QUERIES = [{
     } else {
       if (version.indexOf('.') === -1) {
         alias = version + '.0';
-      } else if (/\.0$/.test(version)) {
+      } else {
         alias = version.replace(/\.0$/, '');
       }
       alias = normalizeVersion(data, alias);
@@ -9669,6 +9669,11 @@ var QUERIES = [{
   regexp: /^defaults$/i,
   select: function select() {
     return browserslist(browserslist.defaults);
+  }
+}, {
+  regexp: /^dead$/i,
+  select: function select() {
+    return ['ie 10', 'ie_mob 10', 'bb 10', 'bb 7'];
   }
 }];
 
@@ -9702,7 +9707,7 @@ var QUERIES = [{
 
 module.exports = browserslist;
 
-},{"./error":70,"./node":69,"caniuse-lite/dist/unpacker/agents":550,"caniuse-lite/dist/unpacker/region":556,"electron-to-chromium/versions":557,"path":68}],72:[function(require,module,exports){
+},{"./error":70,"./node":69,"caniuse-lite/dist/unpacker/agents":550,"electron-to-chromium/versions":557,"path":68}],72:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -11500,7 +11505,7 @@ module.exports = { A: { A: { "1": "A B", "2": "K C G YB", "132": "E" }, B: { "1"
 },{}],96:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "1": "0 1 3 5 6 7 8 z x", "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v UB OB" }, D: { "1": "0 1 3 5 6 7 8 s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v QB RB SB TB g VB" }, G: { "2": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "2": "4 9 A B D L g" }, L: { "1": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "2": "F J rB" }, Q: { "2": "sB" }, R: { "2": "tB" } }, B: 5, C: "Background Sync API" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M", "16": "H" }, C: { "2": "0 1 3 5 6 7 WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x UB OB", "16": "8" }, D: { "1": "0 1 3 5 6 7 8 s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "1": "f L h i j k l m n o p q r s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e QB RB SB TB g VB" }, G: { "2": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "1": "L", "2": "4 9 A B D g" }, L: { "1": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "1": "qB" }, P: { "1": "J rB", "2": "F" }, Q: { "1": "sB" }, R: { "2": "tB" } }, B: 7, C: "Background Sync API" };
 
 },{}],97:[function(require,module,exports){
 "use strict";
@@ -11575,7 +11580,7 @@ module.exports = { A: { A: { "2": "K C G YB", "132": "E A B" }, B: { "1": "D w Z
 },{}],111:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "1": "0 1 3 5 6 7 8 q r s t u v z x", "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p UB OB" }, D: { "1": "0 1 3 5 6 7 8 s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b", "129": "c d e f L h i j k l m n o p q r" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "1": "f L h i j k l m n o p q r s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e QB RB SB TB g VB" }, G: { "2": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB", "16": "pB" }, J: { "2": "C A" }, K: { "1": "L", "2": "4 9 A B D g" }, L: { "1": "DB" }, M: { "1": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 6, C: "ChaCha20-Poly1305 cipher suites for TLS" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "1": "0 1 3 5 6 7 8 q r s t u v z x", "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p UB OB" }, D: { "1": "0 1 3 5 6 7 8 s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b", "129": "c d e f L h i j k l m n o p q r" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "1": "f L h i j k l m n o p q r s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e QB RB SB TB g VB" }, G: { "1": "hB iB", "2": "2 G CB XB EB aB bB cB dB eB fB gB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB", "16": "pB" }, J: { "2": "C A" }, K: { "1": "L", "2": "4 9 A B D g" }, L: { "1": "DB" }, M: { "1": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 6, C: "ChaCha20-Poly1305 cipher suites for TLS" };
 
 },{}],112:[function(require,module,exports){
 "use strict";
@@ -12030,7 +12035,7 @@ module.exports = { A: { A: { "2": "K C G E YB", "36": "A B" }, B: { "36": "D w Z
 },{}],202:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "1": "w Z I M H", "2": "D" }, C: { "16": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V UB OB", "33": "0 1 3 5 6 7 8 W X Y y a b c d e f L h i j k l m n o p q r s t u v z x" }, D: { "16": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c", "132": "0 1 3 5 6 7 8 d e f L h i j k l m n o p q r s t u v z x BB IB DB FB ZB GB" }, E: { "16": "F J K HB CB JB KB", "132": "C G E A B LB MB NB g PB" }, F: { "2": "4 9 E B D QB RB SB TB g VB", "132": "I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v" }, G: { "16": "2 CB XB EB aB bB", "132": "G cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "2": "2 AB F kB lB mB nB oB pB", "132": "BB" }, J: { "16": "C A" }, K: { "2": "4 9 A B D g", "132": "L" }, L: { "132": "DB" }, M: { "33": "x" }, N: { "16": "A B" }, O: { "16": "qB" }, P: { "2": "F", "132": "J rB" }, Q: { "132": "sB" }, R: { "132": "tB" } }, B: 1, C: "CSS :read-only and :read-write selectors" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "1": "w Z I M H", "2": "D" }, C: { "16": "WB", "33": "0 1 3 5 6 7 8 AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x UB OB" }, D: { "1": "0 1 3 5 6 7 8 f L h i j k l m n o p q r s t u v z x BB IB DB FB ZB GB", "16": "F J K C G E A B D w Z", "132": "I M H N O P Q R S T U V W X Y y a b c d e" }, E: { "1": "E A B MB NB g PB", "16": "HB CB", "132": "F J K C G JB KB LB" }, F: { "1": "S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v", "16": "E B QB RB SB TB g", "132": "4 9 D I M H N O P Q R VB" }, G: { "1": "dB eB fB gB hB iB", "16": "CB XB", "132": "2 G EB aB bB cB" }, H: { "2": "jB" }, I: { "1": "BB", "16": "kB lB", "132": "2 AB F mB nB oB pB" }, J: { "1": "A", "132": "C" }, K: { "1": "L", "2": "A B g", "132": "4 9 D" }, L: { "1": "DB" }, M: { "33": "x" }, N: { "2": "A B" }, O: { "1": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 1, C: "CSS :read-only and :read-write selectors" };
 
 },{}],203:[function(require,module,exports){
 "use strict";
@@ -12195,7 +12200,7 @@ module.exports = { A: { A: { "1": "K C YB", "129": "G E A B" }, B: { "1": "D w Z
 },{}],235:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "2": "0 1 3 5 6 7 8 WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x UB OB" }, D: { "2": "0 1 3 5 6 7 8 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x BB IB DB FB ZB GB" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v QB RB SB TB g VB" }, G: { "2": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "2": "2 AB F BB kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "2": "4 9 A B D L g" }, L: { "2": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "2": "F J rB" }, Q: { "2": "sB" }, R: { "2": "tB" } }, B: 4, C: "CSS3 attr() function" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "2": "0 1 3 5 6 7 8 WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x UB OB" }, D: { "2": "0 1 3 5 6 7 8 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x BB IB DB FB ZB GB" }, E: { "2": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v QB RB SB TB g VB" }, G: { "2": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "2": "2 AB F BB kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "2": "4 9 A B D L g" }, L: { "2": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "2": "F J rB" }, Q: { "2": "sB" }, R: { "2": "tB" } }, B: 4, C: "CSS3 attr() function for all properties" };
 
 },{}],236:[function(require,module,exports){
 "use strict";
@@ -12250,7 +12255,7 @@ module.exports = { A: { A: { "2": "K C G YB", "132": "E A B" }, B: { "1": "D w Z
 },{}],246:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "YB", "8": "K C G E", "260": "A B" }, B: { "260": "D w Z I M H" }, C: { "8": "WB AB UB OB", "516": "0 1 3 5 6 7 8 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x" }, D: { "1": "IB DB FB ZB GB", "8": "F J K C G E A B D w Z I M H N O", "132": "0 1 3 5 6 7 8 P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x BB" }, E: { "8": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "1": "4 9 E B D QB RB SB TB g VB", "132": "I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v" }, G: { "8": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "1": "pB", "8": "2 AB F kB lB mB nB oB", "132": "BB" }, J: { "1": "A", "8": "C" }, K: { "1": "4 9 A B D g", "8": "L" }, L: { "1": "DB" }, M: { "516": "x" }, N: { "8": "A B" }, O: { "8": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 1, C: "Datalist element" };
+module.exports = { A: { A: { "2": "YB", "8": "K C G E", "260": "A B" }, B: { "260": "D w Z I M H" }, C: { "8": "WB AB UB OB", "516": "0 1 3 5 6 7 8 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x" }, D: { "8": "F J K C G E A B D w Z I M H N O", "132": "0 1 3 5 6 7 8 P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x BB IB DB FB ZB GB" }, E: { "8": "F J K C G E A B HB CB JB KB LB MB NB g PB" }, F: { "1": "4 9 E B D QB RB SB TB g VB", "132": "I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v" }, G: { "8": "2 G CB XB EB aB bB cB dB eB fB gB hB iB" }, H: { "2": "jB" }, I: { "1": "pB", "8": "2 AB F kB lB mB nB oB", "132": "BB" }, J: { "1": "A", "8": "C" }, K: { "1": "4 9 A B D g", "8": "L" }, L: { "1": "DB" }, M: { "516": "x" }, N: { "8": "A B" }, O: { "8": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 1, C: "Datalist element" };
 
 },{}],247:[function(require,module,exports){
 "use strict";
@@ -13565,7 +13570,7 @@ module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" },
 },{}],509:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M H" }, C: { "1": "0 1 3 5 6 7 8 l m n o p q r s t u v z x", "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k UB OB" }, D: { "1": "0 1 3 5 6 7 8 m n o p q r s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l" }, E: { "1": "B NB g PB", "2": "F J K C G E A HB CB JB KB LB MB" }, F: { "1": "y a b c d e f L h i j k l m n o p q r s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y QB RB SB TB g VB" }, G: { "1": "gB hB iB", "2": "2 G CB XB EB aB bB cB dB eB fB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "1": "L", "2": "4 9 A B D g" }, L: { "1": "DB" }, M: { "1": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 4, C: "Upgrade Insecure Requests" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "1": "H", "2": "D w Z I M" }, C: { "1": "0 1 3 5 6 7 8 l m n o p q r s t u v z x", "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k UB OB" }, D: { "1": "0 1 3 5 6 7 8 m n o p q r s t u v z x BB IB DB FB ZB GB", "2": "F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l" }, E: { "1": "B NB g PB", "2": "F J K C G E A HB CB JB KB LB MB" }, F: { "1": "y a b c d e f L h i j k l m n o p q r s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y QB RB SB TB g VB" }, G: { "1": "gB hB iB", "2": "2 G CB XB EB aB bB cB dB eB fB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "1": "L", "2": "4 9 A B D g" }, L: { "1": "DB" }, M: { "1": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "1": "F J rB" }, Q: { "1": "sB" }, R: { "1": "tB" } }, B: 4, C: "Upgrade Insecure Requests" };
 
 },{}],510:[function(require,module,exports){
 "use strict";
@@ -13595,7 +13600,7 @@ module.exports = { A: { A: { "1": "A B", "2": "K C G E YB" }, B: { "1": "D w Z I
 },{}],515:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "1": "H", "2": "D w Z I M" }, C: { "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v UB OB", "322": "0 1 3 5 6 7 8 z x" }, D: { "1": "BB IB DB FB ZB GB", "2": "0 1 3 5 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x", "194": "6 7 8" }, E: { "2": "F J K C G E A HB CB JB KB LB MB NB", "513": "B g PB" }, F: { "1": "s t u v", "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r QB RB SB TB g VB" }, G: { "1": "hB iB", "2": "2 G CB XB EB aB bB cB dB eB fB gB" }, H: { "2": "jB" }, I: { "1": "BB", "2": "2 AB F kB lB mB nB oB pB" }, J: { "2": "C A" }, K: { "2": "4 9 A B D L g" }, L: { "1": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "2": "F J rB" }, Q: { "2": "sB" }, R: { "2": "tB" } }, B: 5, C: "Variable fonts" };
+module.exports = { A: { A: { "2": "K C G E A B YB" }, B: { "2": "D w Z I M", "1028": "H" }, C: { "2": "WB AB F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v UB OB", "1346": "0 1 3 5 6 7 8 z x" }, D: { "2": "0 1 3 5 F J K C G E A B D w Z I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r s t u v z x", "194": "6 7 8", "1028": "BB IB DB FB ZB GB" }, E: { "2": "F J K C G E A HB CB JB KB LB MB NB", "513": "B g PB" }, F: { "2": "4 9 E B D I M H N O P Q R S T U V W X Y y a b c d e f L h i j k l m n o p q r QB RB SB TB g VB", "1028": "s t u v" }, G: { "1": "hB iB", "2": "2 G CB XB EB aB bB cB dB eB fB gB" }, H: { "2": "jB" }, I: { "2": "2 AB F kB lB mB nB oB pB", "1028": "BB" }, J: { "2": "C A" }, K: { "2": "4 9 A B D L g" }, L: { "1028": "DB" }, M: { "2": "x" }, N: { "2": "A B" }, O: { "2": "qB" }, P: { "2": "F J rB" }, Q: { "2": "sB" }, R: { "2": "tB" } }, B: 5, C: "Variable fonts" };
 
 },{}],516:[function(require,module,exports){
 "use strict";
