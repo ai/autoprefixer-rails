@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.0 “Excelsior”
+* Use Browserslist 3.0.
+* Remove `break-*` to `page-break-*` conversion for Firefox.
+
 ## 7.2.6
 * Fix `-ms-` prefix for grid cells with same `grid-area` (by Evgeny Petukhov).
 
