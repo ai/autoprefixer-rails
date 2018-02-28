@@ -232,6 +232,11 @@ module AutoprefixerRails
             return to;
           }
         }
+        if (!Array.isView) {
+          Array.isView = function () {
+            return false
+          }
+        }
       JS
     end
 
