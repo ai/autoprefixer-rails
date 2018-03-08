@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.1.0.1
+* Add more clear error on missed browser version.
+
 ## 8.1 “Rex, Familia et Ultio”
 * Add `overscroll-behavior` support.
 * Add `grid-template` shortcut support (by Evgeny Petukhov).
