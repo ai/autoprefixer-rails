@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.2 “Ad Astra per Aspera”
+* Add `color-adjust` (by Sergey Lysenko, Stanislav Botev, and Yuriy Alekseyev).
+
 ## 8.1.0.1
 * Add more clear error on missed browser version.
 
