@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.3 “Benigno Numine”
+* Add `@media` support to `grid-template` (by Evgeny Petukhov).
+* Fix `radial-gradient` direction warning (by Gustavo Real).
+
 ## 8.2 “Ad Astra per Aspera”
 * Add `color-adjust` (by Sergey Lysenko, Stanislav Botev, and Yuriy Alekseyev).
 
