@@ -178,6 +178,7 @@ on_stylesheet_saved do |file|
     result = AutoprefixerRails.process(css,
       from: file,
       to:   file,
+      browsers: ['> 5%', 'last 2 versions', 'ie 10'],
       map:  { prev: File.read(map), inline: false })
     File.open(file, 'w') { |io| io << result.css }
     File.open(map,  'w') { |io| io << result.map }
