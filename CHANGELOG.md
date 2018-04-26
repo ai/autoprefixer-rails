@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.3.0.1
+* Remove Opera Mobile 12.1 from default browsers.
+* Update Can I Use data.
+
 ## 8.3 “Benigno Numine”
 * Add `@media` support to `grid-template` (by Evgeny Petukhov).
 * Fix `radial-gradient` direction warning (by Gustavo Real).
