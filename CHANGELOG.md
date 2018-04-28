@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.4.1
+* Fix non-related to Ruby issue.
+
 ## 8.4 “Non in aves, sed in angues”
 * Add `/* autoprefixer: ignore next */` control comment (by Pavel Vostrikov).
 
