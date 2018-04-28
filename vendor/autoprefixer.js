@@ -7557,11 +7557,13 @@ var Processor = function () {
             return node._autoprefixerDisabled;
         }
 
-        var prev = node.prev();
-        if (prev && prev.type === 'comment' && IGNORE_NEXT.test(prev.text)) {
-            node._autoprefixerDisabled = true;
-            node._autoprefixerSelfDisabled = true;
-            return true;
+        if (node.parent) {
+            var p = node.prev();
+            if (p && p.type === 'comment' && IGNORE_NEXT.test(p.text)) {
+                node._autoprefixerDisabled = true;
+                node._autoprefixerSelfDisabled = true;
+                return true;
+            }
         }
 
         var value = null;
