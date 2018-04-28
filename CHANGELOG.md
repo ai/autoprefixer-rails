@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.4 “Non in aves, sed in angues”
+* Add `/* autoprefixer: ignore next */` control comment (by Pavel Vostrikov).
+
 ## 8.3.0.1
 * Remove Opera Mobile 12.1 from default browsers.
 * Update Can I Use data.
