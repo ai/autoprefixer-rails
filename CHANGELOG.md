@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.5 “Muito Nobre e Sempre Leal”
+* Add `grid-gap` support (by Evgeny Petukhov).
+* Fix radial gradients direction fix.
+
 ## 8.4.1
 * Fix non-related to Ruby issue.
 
