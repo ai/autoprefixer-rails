@@ -5085,6 +5085,13 @@ function testTrack(node) {
     return node.type === 'word' && /^\[.+\]$/.test(node.value);
 }
 
+function verifyRowSize(result) {
+    if (result.areas.length > result.rows.length) {
+        result.rows.push('auto');
+    }
+    return result;
+}
+
 function parseTemplate(_ref7) {
     var decl = _ref7.decl,
         gap = _ref7.gap;
@@ -5097,6 +5104,7 @@ function parseTemplate(_ref7) {
 
         // area
         if (type === 'string') {
+            result = verifyRowSize(result);
             result.areas.push(value);
         }
 
@@ -5108,6 +5116,7 @@ function parseTemplate(_ref7) {
         // devider(/)
         if (type === 'div' && value === '/') {
             result.key = 'columns';
+            result = verifyRowSize(result);
         }
 
         return result;
