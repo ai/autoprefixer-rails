@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.5.2
+* Fix `grid-template` support wit auto row sizes (by Yury Timofeev).
+
 ## 8.5.1
 * Remove unnecessary warning on `-webkit-fill-available`.
 
