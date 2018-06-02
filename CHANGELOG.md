@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.6 “Follow Reason”
+* Add `gap` support (by Evgeny Petukhov).
+* Add two values support for `grid-gap` and `gap` (by Evgeny Petukhov).
+
 ## 8.5.2
 * Fix `grid-template` support wit auto row sizes (by Yury Timofeev).
 
