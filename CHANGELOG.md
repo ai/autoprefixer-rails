@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.6.1
+* Fix `grid-template` with media queries (by Evgeny Petukhov).
+
 ## 8.6 “Follow Reason”
 * Add `gap` support (by Evgeny Petukhov).
 * Add two values support for `grid-gap` and `gap` (by Evgeny Petukhov).
