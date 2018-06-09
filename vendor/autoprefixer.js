@@ -5216,7 +5216,7 @@ function insertAreas(areas, decl, result) {
             if (areasCount === areasLength) {
                 var next = gridArea.parent.next();
 
-                if (next.type === 'atrule' && next.name === 'media' && next.params === parentMedia.params && next.first.type === 'rule' && next.first.selector && parentMedia.first.selector && /^-ms-/.test(next.first.first.prop)) return undefined;
+                if (next && next.type === 'atrule' && next.name === 'media' && next.params === parentMedia.params && next.first.type === 'rule' && next.first.selector && parentMedia.first.selector && /^-ms-/.test(next.first.first.prop)) return undefined;
 
                 var areaMedia = parentMedia.clone().removeAll().append(rules);
                 gridArea.parent.after(areaMedia);
