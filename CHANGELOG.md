@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.6.2
+* Fix error during adding Grid prefixes in `@media` (by Evgeny Petukhov).
+
 ## 8.6.1
 * Fix `grid-template` with media queries (by Evgeny Petukhov).
 
