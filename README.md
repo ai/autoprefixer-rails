@@ -1,4 +1,7 @@
-﻿# Autoprefixer Rails [![Build Status][ci-img]][ci]
+﻿# Autoprefixer Rails
+[![Build Status][ci-img]][ci]
+![Rubygems Version][gem-img]
+[![SemVer Compatibility][semver-compat-img]][semver-compat-url]
 
 <img align="right" width="94" height="71"
      src="http://postcss.github.io/autoprefixer/logo.svg"
@@ -12,10 +15,13 @@ integration with this JavaScript tool.
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
 
-[Autoprefixer]:  https://github.com/postcss/autoprefixer
-[Can I Use]:     http://caniuse.com/
-[ci-img]:        https://travis-ci.org/ai/autoprefixer-rails.svg
-[ci]:            https://travis-ci.org/ai/autoprefixer-rails
+[Autoprefixer]:      https://github.com/postcss/autoprefixer
+[Can I Use]:         http://caniuse.com/
+[ci-img]:            https://travis-ci.org/ai/autoprefixer-rails.svg
+[ci]:                https://travis-ci.org/ai/autoprefixer-rails
+[gem-img]:           https://img.shields.io/gem/v/autoprefixer-rails.svg
+[semver-compat-img]: https://api.dependabot.com/badges/compatibility_score?dependency-name=autoprefixer-rails&package-manager=bundler&version-scheme=semver
+[semver-compat-url]: https://dependabot.com/compatibility-score.html?dependency-name=autoprefixer-rails&package-manager=bundler&version-scheme=semver
 
 ## Differences
 
