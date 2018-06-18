@@ -1,5 +1,10 @@
 # Change Log
 
+## 8.6.3
+* Add warnings for unsupported Grid features.
+* Add warnings about wrong Grid properties.
+* Add note about `grid` option for grid properties in `rake autoprefixer`.
+
 ## 8.6.2
 * Fix error during adding Grid prefixes in `@media` (by Evgeny Petukhov).
 
