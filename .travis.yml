@@ -19,14 +19,10 @@ env:
 matrix:
   exclude:
     - rvm: "2.3.5"
-      gemfile: sprockets2.gemfile
-    - rvm: "2.3.5"
       env: "EXECJS_RUNTIME=Node"
     - rvm: "2.3.5"
       gemfile: mini_racer.gemfile
 
-    - rvm: "2.4.2"
-      gemfile: sprockets2.gemfile
     - rvm: "2.4.2"
       gemfile: sprockets3.gemfile
 
