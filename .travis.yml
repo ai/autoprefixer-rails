@@ -1,15 +1,12 @@
 sudo: false
 language: ruby
 rvm:
-  - "2.1.10"
-  - "2.2.8"
   - "2.3.5"
   - "2.4.2"
 git:
   depth: 5
 cache: bundler
 gemfile:
-  - sprockets2.gemfile
   - sprockets3.gemfile
   - sprockets4.gemfile
   - mini_racer.gemfile
@@ -21,22 +18,6 @@ env:
   -
 matrix:
   exclude:
-    - rvm: "2.1.10"
-      gemfile: sprockets4.gemfile
-    - rvm: "2.1.10"
-      gemfile: sprockets3.gemfile
-    - rvm: "2.1.10"
-      gemfile: mini_racer.gemfile
-    - rvm: "2.1.10"
-      env: "EXECJS_RUNTIME=Node"
-
-    - rvm: "2.2.8"
-      gemfile: sprockets2.gemfile
-    - rvm: "2.2.8"
-      env: "EXECJS_RUNTIME=Node"
-    - rvm: "2.2.8"
-      gemfile: mini_racer.gemfile
-
     - rvm: "2.3.5"
       gemfile: sprockets2.gemfile
     - rvm: "2.3.5"
