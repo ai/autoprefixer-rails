@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.6.4
+* Fix `stretch` prefix in Chrome >= 46.
+
 ## 8.6.3
 * Add warnings for unsupported Grid features.
 * Add warnings about wrong Grid properties.
