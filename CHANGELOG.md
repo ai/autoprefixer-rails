@@ -1,5 +1,8 @@
 # Change Log
 
+## 8.6.5
+* Do not show Grid warnings if IE was not selected.
+
 ## 8.6.4
 * Fix `stretch` prefix in Chrome >= 46.
 
