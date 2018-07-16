@@ -145,9 +145,9 @@ module AutoprefixerRails
     # Lazy load for JS library
     def runtime
       @runtime ||= begin
-        if ExecJS.eval('typeof(Array.prototype.map)') != 'function'
-          raise "Current ExecJS runtime does't support ES5. " +
-                "Please install node.js."
+        if ExecJS.eval('typeof Uint8Array') != 'function'
+          raise "Current ExecJS runtime does't support ES6. " +
+                "Please install latest Node.js."
         end
 
         ExecJS.compile(build_js)
@@ -159,90 +159,13 @@ module AutoprefixerRails
       @@js ||= begin
         root = Pathname(File.dirname(__FILE__))
         path = root.join("../../vendor/autoprefixer.js")
-        path.read.gsub(/Object.setPrototypeOf\(chalk[^)]+\)/, '')
+        path.read
       end
-    end
-
-    def polyfills
-      <<-JS
-        if (typeof Uint8Array === "undefined")
-          global.Uint8Array = Array;
-        if (typeof ArrayBuffer === "undefined")
-          global.ArrayBuffer = Array;
-        if (typeof Set === "undefined") {
-          global.Set = function (values) { this.values = values }
-          global.Set.prototype = {
-            has: function (i) { return this.values.indexOf(i) !== -1 }
-          }
-        }
-        if (typeof Map === "undefined") {
-          global.Map = function () { this.data = { } }
-          global.Map.prototype = {
-            set: function (k, v) { this.data[k] = v },
-            get: function (k) { return this.data[k] },
-            has: function (k) {
-              return Object.keys(this.data).indexOf(k) !== -1
-            },
-          }
-        }
-          Math.log2 = Math.log2 ||
-          function(x) { return Math.log(x) * Math.LOG2E; };
-        Math.sign = Math.sign ||
-          function(x) {
-            x = +x;
-            if (x === 0 || isNaN(x)) return Number(x);
-            return x > 0 ? 1 : -1;
-          };
-        Array.prototype.fill = Array.prototype.fill ||
-          function(value) {
-            var O = Object(this);
-            var len = O.length >>> 0;
-            var start = arguments[1];
-            var relativeStart = start >> 0;
-            var k = relativeStart < 0 ?
-              Math.max(len + relativeStart, 0) :
-              Math.min(relativeStart, len);
-            var end = arguments[2];
-            var relativeEnd = end === undefined ?
-              len : end >> 0;
-            var final = relativeEnd < 0 ?
-              Math.max(len + relativeEnd, 0) :
-              Math.min(relativeEnd, len);
-            while (k < final) {
-              O[k] = value;
-              k++;
-            }
-            return O;
-          };
-        if (!Object.assign) {
-          Object.assign = function(target, firstSource) {
-            var to = Object(target);
-            for (var i = 1; i < arguments.length; i++) {
-              var nextSource = arguments[i];
-              if (nextSource === undefined || nextSource === null) continue;
-              var keysArray = Object.keys(Object(nextSource));
-              for (var n = 0, len = keysArray.length; n < len; n++) {
-                var nextKey = keysArray[n];
-                var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-                if (desc !== undefined && desc.enumerable) {
-                  to[nextKey] = nextSource[nextKey];
-                }
-              }
-            }
-            return to;
-          }
-        }
-        if (!Array.isView) {
-          Array.isView = function () {
-            return false
-          }
-        }
-      JS
     end
 
     # Return processor JS with some extra methods
     def build_js
-      'var global = this;' + polyfills + read_js + process_proxy
+      'var global = this;' + read_js + process_proxy
     end
 
     # Return JS code for process method proxy

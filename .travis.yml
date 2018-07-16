@@ -1,4 +1,3 @@
-sudo: false
 language: ruby
 rvm:
   - "2.5"
@@ -10,19 +9,16 @@ cache: bundler
 gemfile:
   - sprockets3.gemfile
   - sprockets4.gemfile
-  - mini_racer.gemfile
 before_install:
-  - nvm install stable
+  - nvm install node
 env:
   - EXECJS_RUNTIME=Node
-  # mini_racer / rubyracer or rubyrhino depending on platform:
+  # mini_racer
   -
 matrix:
   exclude:
     - rvm: "2.3"
       env: "EXECJS_RUNTIME=Node"
-    - rvm: "2.3"
-      gemfile: mini_racer.gemfile
 
     - rvm: "2.4"
       gemfile: sprockets3.gemfile
