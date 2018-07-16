@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0 “A Mari Usque Ad Mare”
+* Remove Node.js 9 and Node.js 4 support.
+* Remove RubyRacer and Sprockets 3 support.
+* Use PostCSS 7.0.
+* Use Browserslist 4.0.
+
 ## 8.6.5
 * Do not show Grid warnings if IE was not selected.
 
