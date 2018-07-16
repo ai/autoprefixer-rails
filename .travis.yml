@@ -6,9 +6,6 @@ rvm:
 git:
   depth: 5
 cache: bundler
-gemfile:
-  - sprockets3.gemfile
-  - sprockets4.gemfile
 before_install:
   - nvm install node
 env:
@@ -21,10 +18,4 @@ matrix:
       env: "EXECJS_RUNTIME=Node"
 
     - rvm: "2.4"
-      gemfile: sprockets3.gemfile
-
-    - rvm: "2.5"
-      gemfile: sprockets3.gemfile
-
-    - env: "EXECJS_RUNTIME=Node"
-      gemfile: mini_racer.gemfile
+      env: "EXECJS_RUNTIME=Node"
