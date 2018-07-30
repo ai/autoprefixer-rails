@@ -1,5 +1,12 @@
 # Change Log
 
+## 9.0.2
+* Show warning on Grid area names conflict (by Bogdan).
+* Fix ExecJS warning (by Jan Kmet).
+
+## 9.0.1
+* Fix nested at-rules in Grid prefixes (by Ivan Malov).
+
 ## 9.0 “A Mari Usque Ad Mare”
 * Remove Node.js 9 and Node.js 4 support.
 * Remove RubyRacer and Sprockets 3 support.
