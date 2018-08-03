@@ -150,7 +150,7 @@ module AutoprefixerRails
             raise "ExecJS::RubyRacerRuntime is not supported. " +
                   "Please replace therubyracer with mini_racer in your Gemfile."
           else
-            raise "Current ExecJS runtime: '#{ExecJS.runtime.name}' does't support ES6. " +
+            raise "#{ExecJS.runtime.name} runtime does’t support ES6. " +
                   "Please update or replace your current ExecJS runtime."
           end
         end
