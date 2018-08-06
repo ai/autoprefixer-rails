@@ -146,12 +146,20 @@ module AutoprefixerRails
     def runtime
       @runtime ||= begin
         if ExecJS.eval('typeof Uint8Array') != 'function'
-          if ExecJS.runtime.is_a?(ExecJS::RubyRacerRuntime)
+          if ExecJS.runtime == ExecJS::Runtimes::MiniRacer
             raise "ExecJS::RubyRacerRuntime is not supported. " +
                   "Please replace therubyracer with mini_racer in your Gemfile."
           else
             raise "#{ExecJS.runtime.name} runtime does’t support ES6. " +
                   "Please update or replace your current ExecJS runtime."
+          end
+        end
+
+        if ExecJS.runtime == ExecJS::Runtimes::Node
+          version = ExecJS.runtime.eval('process.version')
+          first = version.match(/^v(\d+)/)[1].to_i
+          if first < 6
+            raise "Autoprefixer doesn’t support Node #{ version }. Update it."
           end
         end
 
