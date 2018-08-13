@@ -4515,6 +4515,12 @@ var GridRowColumn = function (_Declaration) {
         start = _utils$translate[0],
         span = _utils$translate[1];
 
+    var hasStartValueSpan = values[0] && values[0].includes('span');
+
+    if (hasStartValueSpan) {
+      span = values[0].join('').replace(/\D/g, '');
+    }
+
     [[decl.prop, start], [decl.prop + '-span', span]].forEach(function (_ref) {
       var prop = _ref[0],
           value = _ref[1];
@@ -4744,7 +4750,8 @@ var _require = require('./grid-utils'),
     prefixTrackValue = _require.prefixTrackValue,
     getGridGap = _require.getGridGap,
     warnGridGap = _require.warnGridGap,
-    warnDuplicateNames = _require.warnDuplicateNames;
+    warnDuplicateNames = _require.warnDuplicateNames,
+    inheritGridGap = _require.inheritGridGap;
 
 function getGridRows(tpl) {
   return tpl.trim().slice(1, -1).split(/['"]\s*['"]?/g);
@@ -4769,6 +4776,7 @@ var GridTemplateAreas = function (_Declaration) {
     var hasRows = false;
     var parent = decl.parent;
     var gap = getGridGap(decl);
+    var inheritedGap = inheritGridGap(decl, gap);
 
     // remove already prefixed rows and columns
     // without gutter to prevent doubling prefixes
@@ -4783,19 +4791,43 @@ var GridTemplateAreas = function (_Declaration) {
         var prop = trackDecl.prop,
             value = trackDecl.value;
 
-        trackDecl.cloneBefore({
-          prop: prefixTrackProp({ prop: prop, prefix: prefix }),
-          value: prefixTrackValue({ value: value, gap: gap.row })
-        });
+        /**
+         * we must insert inherited gap values in some cases:
+         * if we are inside media query && if we have no grid-gap value
+        */
+
+        if (inheritedGap) {
+          trackDecl.cloneBefore({
+            prop: prefixTrackProp({ prop: prop, prefix: prefix }),
+            value: prefixTrackValue({ value: value, gap: inheritedGap.row })
+          });
+        } else {
+          trackDecl.cloneBefore({
+            prop: prefixTrackProp({ prop: prop, prefix: prefix }),
+            value: prefixTrackValue({ value: value, gap: gap.row })
+          });
+        }
       } else {
         hasColumns = true;
         var _prop = trackDecl.prop,
             _value = trackDecl.value;
 
-        trackDecl.cloneBefore({
-          prop: prefixTrackProp({ prop: _prop, prefix: prefix }),
-          value: prefixTrackValue({ value: _value, gap: gap.column })
-        });
+        /**
+         * we must insert inherited gap values in some cases:
+         * if we are inside media query && if we have no grid-gap value
+        */
+
+        if (inheritedGap) {
+          trackDecl.cloneBefore({
+            prop: prefixTrackProp({ prop: _prop, prefix: prefix }),
+            value: prefixTrackValue({ value: _value, gap: inheritedGap.column })
+          });
+        } else {
+          trackDecl.cloneBefore({
+            prop: prefixTrackProp({ prop: _prop, prefix: prefix }),
+            value: prefixTrackValue({ value: _value, gap: gap.column })
+          });
+        }
       }
     });
 
@@ -4882,7 +4914,8 @@ var _require = require('./grid-utils'),
     insertAreas = _require.insertAreas,
     getGridGap = _require.getGridGap,
     warnGridGap = _require.warnGridGap,
-    warnDuplicateNames = _require.warnDuplicateNames;
+    warnDuplicateNames = _require.warnDuplicateNames,
+    inheritGridGap = _require.inheritGridGap;
 
 var GridTemplate = function (_Declaration) {
   _inherits(GridTemplate, _Declaration);
@@ -4907,9 +4940,15 @@ var GridTemplate = function (_Declaration) {
 
     var gap = getGridGap(decl);
 
+    /**
+     * we must insert inherited gap values in some cases:
+     * if we are inside media query && if we have no grid-gap value
+    */
+    var inheritedGap = inheritGridGap(decl, gap);
+
     var _parseTemplate = parseTemplate({
       decl: decl,
-      gap: gap
+      gap: inheritedGap || gap
     }),
         rows = _parseTemplate.rows,
         columns = _parseTemplate.columns,
@@ -5389,9 +5428,16 @@ function shouldAddSpan(decl, area, areaName) {
     node.walkDecls('grid-template', function (d) {
       var template = parseTemplate({ decl: d, gap: getGridGap(d) });
       var comparedArea = template.areas[areaName];
+
+      if (!comparedArea) {
+        return true;
+      }
+
       if (area.row.span !== comparedArea.row.span) {
         overrideValues[0] = true;
-      } else if (area.column.span !== comparedArea.column.span) {
+      }
+
+      if (area.column.span !== comparedArea.column.span) {
         overrideValues[1] = true;
       }
 
@@ -5402,6 +5448,39 @@ function shouldAddSpan(decl, area, areaName) {
   });
 
   return overrideValues;
+}
+
+/**
+ * search the next siblings and find the latest media with
+ * the same selectors inside
+ * @param  {Rule | AtRule} rule
+ * @param  {Array<String>} selectors
+ * @return {AtRule}
+ */
+function getLastNextSimilarMedia(rule, selectors) {
+  if (!rule) {
+    return false;
+  } else if (rule.type !== 'atrule' && rule.name !== 'media') {
+    return rule.prev();
+  }
+
+  var selectorsToCompare = [];
+  rule.walkRules(function (r) {
+    return selectorsToCompare.push(r.selector);
+  });
+
+  // check if every selector match
+  var selectorsEqual = selectors.every(function (sel, index) {
+    return sel === selectorsToCompare[index];
+  });
+
+  if (selectorsEqual) {
+    // to check the next rule
+    return getLastNextSimilarMedia(rule.next(), selectors);
+  } else {
+    // or return the last similar media
+    return rule.prev();
+  }
 }
 
 function insertAreas(areas, decl, result) {
@@ -5448,11 +5527,22 @@ function insertAreas(areas, decl, result) {
 
         if (next && next.type === 'atrule' && next.name === 'media' && next.params === parentMedia.params && next.first.type === 'rule' && next.first.selector && parentMedia.first.selector && /^-ms-/.test(next.first.first.prop)) return undefined;
 
+        var selectors = rules.map(function (r) {
+          return r.selector;
+        });
+        var lastSimilarMedia = getLastNextSimilarMedia(next, selectors);
+
         var areaParentMedia = getParentMedia(gridArea.parent);
         var areaMedia = parentMedia.clone().removeAll().append(rules);
+
         if (areaParentMedia) {
+          // insert after @media
           areaParentMedia.after(areaMedia);
+        } else if (lastSimilarMedia) {
+          // insert after the closest @media with the same selectors
+          lastSimilarMedia.after(areaMedia);
         } else {
+          // insert after every other Rule
           gridArea.parent.after(areaMedia);
         }
       }
@@ -5507,6 +5597,95 @@ function getGridGap(decl) {
   return gap;
 }
 
+/**
+ * parse media parameters (for example 'min-width: 500px')
+ * @param  {String} params parameter to parse
+ * @return {}
+ */
+function parseMediaParams(params) {
+  var parsed = parser(params);
+  var prop = void 0;
+  var value = void 0;
+
+  parsed.walk(function (node) {
+    if (node.type === 'word' && /min|max/g.test(node.value)) {
+      prop = node.value;
+    } else if (node.value.includes('px')) {
+      value = parseInt(node.value.replace(/\D/g, ''));
+    }
+  });
+
+  return [prop, value];
+}
+
+/**
+ * inherit grid gap values from the closest rule above
+ * with the same selector
+ * @param  {Declaration} decl
+ * @param  {Object} gap gap values
+ * @return {Object | Boolean} return gap values or false (if not found)
+ */
+function inheritGridGap(decl, gap) {
+  var rule = decl.parent;
+  var mediaRule = getParentMedia(rule);
+  var root = rule.root();
+  if (Object.keys(gap).length > 0 || !mediaRule) {
+    return false;
+  }
+
+  // e.g ['min-width']
+
+  var _parseMediaParams = parseMediaParams(mediaRule.params),
+      prop = _parseMediaParams[0];
+
+  // find the closest rule with the same selector
+
+
+  var closestRuleGap = void 0;
+  root.walkRules(rule.selector, function (r) {
+    var gridGap = void 0;
+
+    // abort if checking the same rule
+    if (rule.toString() === r.toString()) {
+      return false;
+    }
+
+    // find grid-gap values
+    r.walkDecls('grid-gap', function (d) {
+      return gridGap = getGridGap(d);
+    });
+
+    // skip rule without gaps
+    if (!gridGap || Object.keys(gridGap).length === 0) {
+      return true;
+    }
+
+    var media = getParentMedia(r);
+
+    if (media) {
+      // if we are inside media, we need to check that media props match
+      // e.g ('min-width' === 'min-width')
+      var propToCompare = parseMediaParams(media.params)[0];
+      if (propToCompare === prop) {
+        closestRuleGap = gridGap;
+        return true;
+      }
+    } else {
+      closestRuleGap = gridGap;
+      return true;
+    }
+
+    return undefined;
+  });
+
+  // if we find the closest gap object
+  if (closestRuleGap && Object.keys(closestRuleGap).length > 0) {
+    return closestRuleGap;
+  } else {
+    return false;
+  }
+}
+
 function warnGridGap(_ref10) {
   var gap = _ref10.gap,
       hasColumns = _ref10.hasColumns,
@@ -5531,7 +5710,8 @@ module.exports = {
   prefixTrackValue: prefixTrackValue,
   getGridGap: getGridGap,
   warnGridGap: warnGridGap,
-  warnDuplicateNames: warnDuplicateNames
+  warnDuplicateNames: warnDuplicateNames,
+  inheritGridGap: inheritGridGap
 };
 
 },{"postcss":603,"postcss-value-parser":586}],44:[function(require,module,exports){
@@ -10502,7 +10682,7 @@ var QUERIES = [{
   select: function select(context) {
     var now = Date.now();
     var queries = Object.keys(jsEOL).filter(function (key) {
-      return now < Date.parse(jsEOL[key].end);
+      return now < Date.parse(jsEOL[key].end) && now > Date.parse(jsEOL[key].start);
     }).map(function (key) {
       return 'node ' + key.slice(1);
     });
@@ -12315,7 +12495,7 @@ function numberIsNaN(obj) {
 },{"base64-js":70,"ieee754":580}],76:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { H: 0.00895953, D: 0.0134393, G: 0.179191, E: 0.161271, A: 0.107514, B: 2.71026, FB: 0.009298 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "FB", "H", "D", "G", "E", "A", "B", "", "", ""], E: "IE", F: { FB: 962323200, H: 998870400, D: 1161129600, G: 1237420800, E: 1300060800, A: 1346716800, B: 1381968000 } }, B: { A: { C: 0.026214, p: 0.026214, x: 0.065535, J: 0.074273, L: 0.48059, N: 1.15342, I: 0 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "C", "p", "x", "J", "L", "N", "I", "", ""], E: "Edge", F: { C: 1438128000, p: 1447286400, x: 1470096000, J: 1491868800, L: 1508198400, N: 1525046400, I: null } }, C: { A: { "0": 0.017476, "1": 0.026214, "2": 0.039321, "3": 0.08738, "4": 0.056797, "5": 0.048059, "6": 0.148546, "8": 0.21845, "9": 0.013107, aB: 0.013107, CB: 0.004369, F: 0.004369, K: 0.004879, H: 0.020136, D: 0.005725, G: 0.008738, E: 0.00533, A: 0.004283, B: 0.004369, C: 0.004471, p: 0.004486, x: 0.00453, J: 0.013107, L: 0.004417, N: 0.004349, I: 0.004393, O: 0.004443, P: 0.004283, Q: 0.004369, R: 0.004393, S: 0.013107, T: 0.008786, U: 0.004369, V: 0.004393, W: 0.004393, X: 0.004418, Y: 0.004369, Z: 0.004369, b: 0.004471, c: 0.008738, d: 0.013107, e: 0.004369, f: 0.004369, g: 0.008738, h: 0.04369, i: 0.008738, j: 0.008738, k: 0.013107, l: 0.008738, m: 0.026214, n: 0.008738, o: 0.034952, M: 0.008738, q: 0.069904, r: 0.126701, s: 0.021845, t: 0.021845, u: 0.056797, v: 0.432531, w: 0.021845, y: 3.23743, AB: 0, YB: 0.008786, SB: 0.008738 }, B: "moz", C: ["", "", "", "aB", "CB", "YB", "SB", "F", "K", "H", "D", "G", "E", "A", "B", "C", "p", "x", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "1", "2", "3", "4", "5", "6", "y", "8", "9", "AB", ""], E: "Firefox", F: { "0": 1405987200, "1": 1497312000, "2": 1502150400, "3": 1506556800, "4": 1510617600, "5": 1516665600, "6": 1520985600, "8": 1529971200, "9": null, aB: 1161648000, CB: 1213660800, YB: 1246320000, SB: 1264032000, F: 1300752000, K: 1308614400, H: 1313452800, D: 1317081600, G: 1317081600, E: 1320710400, A: 1324339200, B: 1327968000, C: 1331596800, p: 1335225600, x: 1338854400, J: 1342483200, L: 1346112000, N: 1349740800, I: 1353628800, O: 1357603200, P: 1361232000, Q: 1364860800, R: 1368489600, S: 1372118400, T: 1375747200, U: 1379376000, V: 1386633600, W: 1391472000, X: 1395100800, Y: 1398729600, Z: 1402358400, b: 1409616000, c: 1413244800, d: 1417392000, e: 1421107200, f: 1424736000, g: 1428278400, h: 1431475200, i: 1435881600, j: 1439251200, k: 1442880000, l: 1446508800, m: 1450137600, n: 1453852800, o: 1457395200, M: 1461628800, q: 1465257600, r: 1470096000, s: 1474329600, t: 1479168000, u: 1485216000, v: 1488844800, w: 1492560000, y: 1525824000, AB: null } }, D: { A: { "0": 0.026214, "1": 0.074273, "2": 0.336413, "3": 0.104856, "4": 0.074273, "5": 0.113594, "6": 0.056797, "8": 0.100487, "9": 0.144177, F: 0.004706, K: 0.004879, H: 0.004879, D: 0.005591, G: 0.005591, E: 0.005591, A: 0.004534, B: 0.008738, C: 0.004283, p: 0.004879, x: 0.004706, J: 0.009154, L: 0.004393, N: 0.004393, I: 0.013107, O: 0.004418, P: 0.004393, Q: 0.004369, R: 0.017476, S: 0.008786, T: 0.026214, U: 0.013107, V: 0.008738, W: 0.004369, X: 0.008738, Y: 0.196605, Z: 0.017476, b: 0.008738, c: 0.013107, d: 0.021845, e: 0.026214, f: 0.017476, g: 0.017476, h: 0.030583, i: 0.013107, j: 0.017476, k: 0.017476, l: 0.026214, m: 0.061166, n: 0.008738, o: 0.017476, M: 0.017476, q: 0.030583, r: 0.039321, s: 0.712147, t: 0.026214, u: 0.04369, v: 0.048059, w: 0.026214, y: 0.08738, AB: 0.432531, MB: 0.227188, cB: 0.4369, GB: 9.00451, a: 15.4925, HB: 0.061166, IB: 0.030583, JB: 0, KB: 0 }, B: "webkit", C: ["F", "K", "H", "D", "G", "E", "A", "B", "C", "p", "x", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "1", "2", "3", "4", "5", "6", "y", "8", "9", "AB", "MB", "cB", "GB", "a", "HB", "IB", "JB", "KB"], E: "Chrome", F: { "0": 1384214400, "1": 1476230400, "2": 1480550400, "3": 1485302400, "4": 1489017600, "5": 1492560000, "6": 1496707200, "8": 1504569600, "9": 1508198400, F: 1264377600, K: 1274745600, H: 1283385600, D: 1287619200, G: 1291248000, E: 1296777600, A: 1299542400, B: 1303862400, C: 1307404800, p: 1312243200, x: 1316131200, J: 1316131200, L: 1319500800, N: 1323734400, I: 1328659200, O: 1332892800, P: 1337040000, Q: 1340668800, R: 1343692800, S: 1348531200, T: 1352246400, U: 1357862400, V: 1361404800, W: 1364428800, X: 1369094400, Y: 1374105600, Z: 1376956800, b: 1389657600, c: 1392940800, d: 1397001600, e: 1400544000, f: 1405468800, g: 1409011200, h: 1412640000, i: 1416268800, j: 1421798400, k: 1425513600, l: 1429401600, m: 1432080000, n: 1437523200, o: 1441152000, M: 1444780800, q: 1449014400, r: 1453248000, s: 1456963200, t: 1460592000, u: 1464134400, v: 1469059200, w: 1472601600, y: 1500940800, AB: 1512518400, MB: 1516752000, cB: 1520294400, GB: 1523923200, a: 1527552000, HB: 1532390400, IB: null, JB: null, KB: null } }, E: { A: { F: 0, K: 0.013107, H: 0.004349, D: 0.008738, G: 0.039321, E: 0.04369, A: 0.069904, B: 0.288354, C: 0.004369, LB: 0, DB: 0.008692, NB: 0.065535, OB: 0.013107, PB: 0.004283, QB: 0.135439, RB: 0.244664, z: 1.38497, TB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "LB", "DB", "F", "K", "NB", "H", "OB", "D", "PB", "G", "E", "QB", "A", "RB", "B", "z", "C", "TB", ""], E: "Safari", F: { LB: 1205798400, DB: 1226534400, F: 1244419200, K: 1275868800, NB: 1311120000, H: 1343174400, OB: 1382400000, D: 1382400000, PB: 1410998400, G: 1413417600, E: 1443657600, QB: 1458518400, A: 1474329600, RB: 1490572800, B: 1505779200, z: 1522281600, C: null, TB: null } }, F: { A: { "0": 0.008738, "7": 0.034952, E: 0.0082, B: 0.016581, C: 0.004369, J: 0.00685, L: 0.00685, N: 0.00685, I: 0.005014, O: 0.006015, P: 0.004879, Q: 0.006597, R: 0.006597, S: 0.013434, T: 0.006702, U: 0.006015, V: 0.005595, W: 0.004393, X: 0.004369, Y: 0.004879, Z: 0.004879, b: 0.005152, c: 0.005014, d: 0.009758, e: 0.004879, f: 0.026214, g: 0.004283, h: 0.004367, i: 0.004534, j: 0.004367, k: 0.004227, l: 0.004418, m: 0.008668, n: 0.004227, o: 0.004471, M: 0.004417, q: 0.008942, r: 0.004369, s: 0.008738, t: 0.004369, u: 0.004369, v: 0.026214, w: 0.843217, UB: 0.00685, VB: 0.008738, WB: 0.008392, XB: 0.004706, z: 0.006229, BB: 0.004879, ZB: 0.008786 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "E", "UB", "VB", "WB", "XB", "B", "z", "BB", "ZB", "C", "7", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "", "", ""], E: "Opera", F: { "0": 1438646400, "7": 1352073600, E: 1150761600, UB: 1223424000, VB: 1251763200, WB: 1267488000, XB: 1277942400, B: 1292457600, z: 1302566400, BB: 1309219200, ZB: 1323129600, C: 1323129600, J: 1372723200, L: 1377561600, N: 1381104000, I: 1386288000, O: 1390867200, P: 1393891200, Q: 1399334400, R: 1401753600, S: 1405987200, T: 1409616000, U: 1413331200, V: 1417132800, W: 1422316800, X: 1425945600, Y: 1430179200, Z: 1433808000, b: 1442448000, c: 1445904000, d: 1449100800, e: 1454371200, f: 1457308800, g: 1462320000, h: 1465344000, i: 1470096000, j: 1474329600, k: 1477267200, l: 1481587200, m: 1486425600, n: 1490054400, o: 1494374400, M: 1498003200, q: 1502236800, r: 1506470400, s: 1510099200, t: 1515024000, u: 1517961600, v: 1521676800, w: 1525910400 }, D: { "7": "o", E: "o", B: "o", C: "o", UB: "o", VB: "o", WB: "o", XB: "o", z: "o", BB: "o", ZB: "o" } }, G: { A: { G: 0.0116667, C: 0.0291667, DB: 0.000972222, bB: 0, EB: 0.00194444, dB: 0.0145833, eB: 0.00777778, fB: 0.0408333, gB: 0.06125, hB: 0.0466667, iB: 0.279028, jB: 0.30625, kB: 0.701945, lB: 1.57597, mB: 6.63542 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "DB", "bB", "EB", "dB", "eB", "fB", "G", "gB", "hB", "iB", "jB", "kB", "lB", "mB", "C", "", ""], E: "iOS Safari", F: { DB: 1270252800, bB: 1283904000, EB: 1299628800, dB: 1331078400, eB: 1359331200, fB: 1394409600, G: 1410912000, gB: 1413763200, hB: 1442361600, iB: 1458518400, jB: 1473724800, kB: 1490572800, lB: 1505779200, mB: 1522281600, C: null } }, H: { A: { nB: 2.42564 }, B: "o", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "nB", "", "", ""], E: "Opera Mini", F: { nB: 1426464000 } }, I: { A: { CB: 0, F: 0, a: 0, oB: 0, pB: 0, qB: 0, rB: 0.0683595, EB: 0.156, sB: 0.578426, tB: 0.362831 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "oB", "pB", "qB", "CB", "F", "rB", "EB", "sB", "tB", "a", "", "", ""], E: "Android Browser", F: { oB: 1256515200, pB: 1274313600, qB: 1291593600, CB: 1298332800, F: 1318896000, rB: 1341792000, EB: 1374624000, sB: 1386547200, tB: 1401667200, a: 1494115200 } }, J: { A: { D: 0.0090096, A: 0.0360384 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "D", "A", "", "", ""], E: "Blackberry Browser", F: { D: 1325376000, A: 1359504000 } }, K: { A: { "7": 0, A: 0, B: 0, C: 0, M: 0.0111391, z: 0, BB: 0 }, B: "o", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "A", "B", "z", "BB", "C", "7", "M", "", "", ""], E: "Opera Mobile", F: { "7": 1349740800, A: 1287100800, B: 1300752000, z: 1314835200, BB: 1318291200, C: 1330300800, M: 1474588800 }, D: { M: "webkit" } }, L: { A: { a: 31.6889 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "a", "", "", ""], E: "Chrome for Android", F: { a: 1527724800 } }, M: { A: { y: 0.16893 }, B: "moz", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "y", "", "", ""], E: "Firefox for Android", F: { y: 1525824000 } }, N: { A: { A: 0.0232279, B: 0.162595 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "A", "B", "", "", ""], E: "IE Mobile", F: { A: 1340150400, B: 1353456000 } }, O: { A: { uB: 7.53991 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "uB", "", "", ""], E: "UC Browser for Android", F: { uB: 1471392000 }, D: { uB: "webkit" } }, P: { A: { F: 0.830777, K: 0.166155, vB: 1.12155, wB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "F", "K", "vB", "wB", "", "", ""], E: "Samsung Internet", F: { F: 1461024000, K: 1481846400, vB: 1509408000, wB: 1528329600 } }, Q: { A: { xB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "xB", "", "", ""], E: "QQ Browser", F: { xB: 1483228800 } }, R: { A: { yB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "yB", "", "", ""], E: "Baidu Browser", F: { yB: 1491004800 } } };
+module.exports = { A: { A: { H: 0.00884489, D: 0.00884489, G: 0.176898, E: 0.145941, A: 0.0928713, B: 2.64462, FB: 0.009298 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "FB", "H", "D", "G", "E", "A", "B", "", "", ""], E: "IE", F: { FB: 962323200, H: 998870400, D: 1161129600, G: 1237420800, E: 1300060800, A: 1346716800, B: 1381968000 } }, B: { A: { C: 0.025902, p: 0.025902, x: 0.060438, J: 0.069072, L: 0.263337, N: 1.38144, I: 0 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "C", "p", "x", "J", "L", "N", "I", "", ""], E: "Edge", F: { C: 1438128000, p: 1447286400, x: 1470096000, J: 1491868800, L: 1508198400, N: 1525046400, I: null } }, C: { A: { "0": 0.017268, "1": 0.021585, "2": 0.038853, "3": 0.090657, "4": 0.047487, "5": 0.038853, "6": 0.082023, "8": 2.91398, "9": 0.094974, aB: 0.004317, CB: 0.004317, F: 0.008634, K: 0.004879, H: 0.020136, D: 0.005725, G: 0.004317, E: 0.00533, A: 0.004283, B: 0.004317, C: 0.004471, p: 0.004486, x: 0.00453, J: 0.004317, L: 0.004417, N: 0.004349, I: 0.004393, O: 0.004443, P: 0.004283, Q: 0.008634, R: 0.004393, S: 0.004317, T: 0.008786, U: 0.004317, V: 0.004317, W: 0.004393, X: 0.004418, Y: 0.004317, Z: 0.008634, b: 0.004471, c: 0.008634, d: 0.012951, e: 0.008634, f: 0.004317, g: 0.008634, h: 0.056121, i: 0.008634, j: 0.008634, k: 0.008634, l: 0.004317, m: 0.025902, n: 0.012951, o: 0.030219, M: 0.008634, q: 0.069072, r: 0.099291, s: 0.017268, t: 0.021585, u: 0.056121, v: 0.410115, w: 0.017268, y: 0.453285, AB: 0, YB: 0.008786, SB: 0.008634 }, B: "moz", C: ["", "", "", "aB", "CB", "YB", "SB", "F", "K", "H", "D", "G", "E", "A", "B", "C", "p", "x", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "1", "2", "3", "4", "5", "6", "y", "8", "9", "AB", ""], E: "Firefox", F: { "0": 1405987200, "1": 1497312000, "2": 1502150400, "3": 1506556800, "4": 1510617600, "5": 1516665600, "6": 1520985600, "8": 1529971200, "9": null, aB: 1161648000, CB: 1213660800, YB: 1246320000, SB: 1264032000, F: 1300752000, K: 1308614400, H: 1313452800, D: 1317081600, G: 1317081600, E: 1320710400, A: 1324339200, B: 1327968000, C: 1331596800, p: 1335225600, x: 1338854400, J: 1342483200, L: 1346112000, N: 1349740800, I: 1353628800, O: 1357603200, P: 1361232000, Q: 1364860800, R: 1368489600, S: 1372118400, T: 1375747200, U: 1379376000, V: 1386633600, W: 1391472000, X: 1395100800, Y: 1398729600, Z: 1402358400, b: 1409616000, c: 1413244800, d: 1417392000, e: 1421107200, f: 1424736000, g: 1428278400, h: 1431475200, i: 1435881600, j: 1439251200, k: 1442880000, l: 1446508800, m: 1450137600, n: 1453852800, o: 1457395200, M: 1461628800, q: 1465257600, r: 1470096000, s: 1474329600, t: 1479168000, u: 1485216000, v: 1488844800, w: 1492560000, y: 1525824000, AB: null } }, D: { A: { "0": 0.030219, "1": 0.064755, "2": 0.271971, "3": 0.094974, "4": 0.064755, "5": 0.107925, "6": 0.047487, "8": 0.082023, "9": 0.120876, F: 0.004706, K: 0.004879, H: 0.004879, D: 0.005591, G: 0.005591, E: 0.005591, A: 0.004534, B: 0.008634, C: 0.004283, p: 0.004879, x: 0.004706, J: 0.017268, L: 0.004393, N: 0.004393, I: 0.012951, O: 0.004418, P: 0.004393, Q: 0.004317, R: 0.021585, S: 0.008786, T: 0.012951, U: 0.008634, V: 0.008634, W: 0.004317, X: 0.004317, Y: 0.289239, Z: 0.012951, b: 0.012951, c: 0.012951, d: 0.021585, e: 0.012951, f: 0.021585, g: 0.017268, h: 0.030219, i: 0.017268, j: 0.017268, k: 0.090657, l: 0.012951, m: 0.051804, n: 0.012951, o: 0.017268, M: 0.017268, q: 0.030219, r: 0.038853, s: 0.69072, t: 0.021585, u: 0.038853, v: 0.021585, w: 0.021585, y: 0.08634, AB: 0.500772, MB: 0.17268, cB: 0.289239, GB: 0.530991, a: 23.4715, HB: 0.591429, IB: 0.04317, JB: 0.004317, KB: 0 }, B: "webkit", C: ["F", "K", "H", "D", "G", "E", "A", "B", "C", "p", "x", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "1", "2", "3", "4", "5", "6", "y", "8", "9", "AB", "MB", "cB", "GB", "a", "HB", "IB", "JB", "KB"], E: "Chrome", F: { "0": 1384214400, "1": 1476230400, "2": 1480550400, "3": 1485302400, "4": 1489017600, "5": 1492560000, "6": 1496707200, "8": 1504569600, "9": 1508198400, F: 1264377600, K: 1274745600, H: 1283385600, D: 1287619200, G: 1291248000, E: 1296777600, A: 1299542400, B: 1303862400, C: 1307404800, p: 1312243200, x: 1316131200, J: 1316131200, L: 1319500800, N: 1323734400, I: 1328659200, O: 1332892800, P: 1337040000, Q: 1340668800, R: 1343692800, S: 1348531200, T: 1352246400, U: 1357862400, V: 1361404800, W: 1364428800, X: 1369094400, Y: 1374105600, Z: 1376956800, b: 1389657600, c: 1392940800, d: 1397001600, e: 1400544000, f: 1405468800, g: 1409011200, h: 1412640000, i: 1416268800, j: 1421798400, k: 1425513600, l: 1429401600, m: 1432080000, n: 1437523200, o: 1441152000, M: 1444780800, q: 1449014400, r: 1453248000, s: 1456963200, t: 1460592000, u: 1464134400, v: 1469059200, w: 1472601600, y: 1500940800, AB: 1512518400, MB: 1516752000, cB: 1520294400, GB: 1523923200, a: 1527552000, HB: 1532390400, IB: null, JB: null, KB: null } }, E: { A: { F: 0, K: 0.008634, H: 0.004349, D: 0.004317, G: 0.038853, E: 0.034536, A: 0.064755, B: 0.220167, C: 0.012951, LB: 0, DB: 0.008692, NB: 0.025902, OB: 0.012951, PB: 0.004283, QB: 0.116559, RB: 0.21585, z: 1.37281, TB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "LB", "DB", "F", "K", "NB", "H", "OB", "D", "PB", "G", "E", "QB", "A", "RB", "B", "z", "C", "TB", ""], E: "Safari", F: { LB: 1205798400, DB: 1226534400, F: 1244419200, K: 1275868800, NB: 1311120000, H: 1343174400, OB: 1382400000, D: 1382400000, PB: 1410998400, G: 1413417600, E: 1443657600, QB: 1458518400, A: 1474329600, RB: 1490572800, B: 1505779200, z: 1522281600, C: null, TB: null } }, F: { A: { "0": 0.008634, "7": 0.038853, E: 0.0082, B: 0.016581, C: 0.004317, J: 0.00685, L: 0.00685, N: 0.00685, I: 0.005014, O: 0.006015, P: 0.004879, Q: 0.006597, R: 0.006597, S: 0.013434, T: 0.006702, U: 0.006015, V: 0.005595, W: 0.004393, X: 0.008634, Y: 0.004879, Z: 0.004879, b: 0.005152, c: 0.005014, d: 0.009758, e: 0.004879, f: 0.025902, g: 0.004283, h: 0.004367, i: 0.004534, j: 0.004367, k: 0.004227, l: 0.004418, m: 0.004317, n: 0.004227, o: 0.004471, M: 0.004417, q: 0.008942, r: 0.004369, s: 0.004317, t: 0.004369, u: 0.004317, v: 0.008634, w: 0.246069, UB: 0.00685, VB: 0, WB: 0.008392, XB: 0.004706, z: 0.006229, BB: 0.004879, ZB: 0.008786 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "E", "UB", "VB", "WB", "XB", "B", "z", "BB", "ZB", "C", "7", "J", "L", "N", "I", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "M", "q", "r", "s", "t", "u", "v", "w", "", "", ""], E: "Opera", F: { "0": 1438646400, "7": 1352073600, E: 1150761600, UB: 1223424000, VB: 1251763200, WB: 1267488000, XB: 1277942400, B: 1292457600, z: 1302566400, BB: 1309219200, ZB: 1323129600, C: 1323129600, J: 1372723200, L: 1377561600, N: 1381104000, I: 1386288000, O: 1390867200, P: 1393891200, Q: 1399334400, R: 1401753600, S: 1405987200, T: 1409616000, U: 1413331200, V: 1417132800, W: 1422316800, X: 1425945600, Y: 1430179200, Z: 1433808000, b: 1442448000, c: 1445904000, d: 1449100800, e: 1454371200, f: 1457308800, g: 1462320000, h: 1465344000, i: 1470096000, j: 1474329600, k: 1477267200, l: 1481587200, m: 1486425600, n: 1490054400, o: 1494374400, M: 1498003200, q: 1502236800, r: 1506470400, s: 1510099200, t: 1515024000, u: 1517961600, v: 1521676800, w: 1525910400 }, D: { "7": "o", E: "o", B: "o", C: "o", UB: "o", VB: "o", WB: "o", XB: "o", z: "o", BB: "o", ZB: "o" } }, G: { A: { G: 0.00805035, C: 0.0674217, DB: 0.00100629, bB: 0, EB: 0.00301888, dB: 0.0181133, eB: 0.00805035, fB: 0.0533336, gB: 0.0764783, hB: 0.0402517, iB: 0.302894, jB: 0.326039, kB: 0.605789, lB: 1.29812, mB: 7.25034 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "DB", "bB", "EB", "dB", "eB", "fB", "G", "gB", "hB", "iB", "jB", "kB", "lB", "mB", "C", "", ""], E: "iOS Safari", F: { DB: 1270252800, bB: 1283904000, EB: 1299628800, dB: 1331078400, eB: 1359331200, fB: 1394409600, G: 1410912000, gB: 1413763200, hB: 1442361600, iB: 1458518400, jB: 1473724800, kB: 1490572800, lB: 1505779200, mB: 1522281600, C: null } }, H: { A: { nB: 2.29201 }, B: "o", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "nB", "", "", ""], E: "Opera Mini", F: { nB: 1426464000 } }, I: { A: { CB: 0, F: 0, a: 0, oB: 0, pB: 0, qB: 0, rB: 0, EB: 0.15472, sB: 0.576334, tB: 0.377131 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "oB", "pB", "qB", "CB", "F", "rB", "EB", "sB", "tB", "a", "", "", ""], E: "Android Browser", F: { oB: 1256515200, pB: 1274313600, qB: 1291593600, CB: 1298332800, F: 1318896000, rB: 1341792000, EB: 1374624000, sB: 1386547200, tB: 1401667200, a: 1494115200 } }, J: { A: { D: 0.0079562, A: 0.0318248 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "D", "A", "", "", ""], E: "Blackberry Browser", F: { D: 1325376000, A: 1359504000 } }, K: { A: { "7": 0, A: 0, B: 0, C: 0, M: 0.0111391, z: 0, BB: 0 }, B: "o", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "A", "B", "z", "BB", "C", "7", "M", "", "", ""], E: "Opera Mobile", F: { "7": 1349740800, A: 1287100800, B: 1300752000, z: 1314835200, BB: 1318291200, C: 1330300800, M: 1474588800 }, D: { M: "webkit" } }, L: { A: { a: 32.6509 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "a", "", "", ""], E: "Chrome for Android", F: { a: 1527724800 } }, M: { A: { y: 0.176173 }, B: "moz", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "y", "", "", ""], E: "Firefox for Android", F: { y: 1525824000 } }, N: { A: { A: 0.0234897, B: 0.152683 }, B: "ms", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "A", "B", "", "", ""], E: "IE Mobile", F: { A: 1340150400, B: 1353456000 } }, O: { A: { uB: 7.09807 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "uB", "", "", ""], E: "UC Browser for Android", F: { uB: 1471392000 }, D: { uB: "webkit" } }, P: { A: { F: 0.828383, K: 0.155322, vB: 0.320998, wB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "F", "K", "vB", "wB", "", "", ""], E: "Samsung Internet", F: { F: 1461024000, K: 1481846400, vB: 1509408000, wB: 1528329600 } }, Q: { A: { xB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "xB", "", "", ""], E: "QQ Browser", F: { xB: 1483228800 } }, R: { A: { yB: 0 }, B: "webkit", C: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "yB", "", "", ""], E: "Baidu Browser", F: { yB: 1491004800 } } };
 
 },{}],77:[function(require,module,exports){
 "use strict";
@@ -13930,7 +14110,7 @@ module.exports = { A: { A: { "2": "H D G E A B FB" }, B: { "2": "C p x J L N I" 
 },{}],399:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "H D G E A FB", "260": "B" }, B: { "1": "C p x J L N I" }, C: { "1": "1 2 3 4 5 6 8 9 l m n o M q r s t u v w y AB", "2": "aB CB F K H D G E A B C p x J L N I O P Q R S T YB SB", "194": "0 U V W X Y Z b c d e f g h i j k" }, D: { "1": "0 1 2 3 4 5 6 8 9 b c d e f g h i j k l m n o M q r s t u v w y AB MB cB GB a HB IB JB KB", "2": "F K H D G E A B C p x J L", "33": "S T U V W X Y Z", "66": "N I O P Q R" }, E: { "1": "G E A B C QB RB z TB", "2": "F K H D LB DB NB OB PB" }, F: { "1": "0 J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w", "2": "7 E B C UB VB WB XB z BB ZB" }, G: { "2": "G C DB bB EB dB eB fB gB hB iB jB kB lB mB" }, H: { "2": "nB" }, I: { "1": "a tB", "2": "CB F oB pB qB rB EB sB" }, J: { "2": "D A" }, K: { "1": "M", "2": "7 A B C z BB" }, L: { "1": "a" }, M: { "1": "y" }, N: { "1": "B", "2": "A" }, O: { "1": "uB" }, P: { "1": "K vB wB", "514": "F" }, Q: { "2": "xB" }, R: { "1": "yB" } }, B: 4, C: "Media Source Extensions" };
+module.exports = { A: { A: { "2": "H D G E A FB", "260": "B" }, B: { "1": "C p x J L N I" }, C: { "1": "1 2 3 4 5 6 8 9 l m n o M q r s t u v w y AB", "2": "aB CB F K H D G E A B C p x J L N I O P Q R S T YB SB", "194": "0 U V W X Y Z b c d e f g h i j k" }, D: { "1": "0 1 2 3 4 5 6 8 9 b c d e f g h i j k l m n o M q r s t u v w y AB MB cB GB a HB IB JB KB", "2": "F K H D G E A B C p x J L", "33": "S T U V W X Y Z", "66": "N I O P Q R" }, E: { "1": "G E A B C QB RB z TB", "2": "F K H D LB DB NB OB PB" }, F: { "1": "0 J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w", "2": "7 E B C UB VB WB XB z BB ZB" }, G: { "2": "G C DB bB EB dB eB fB gB hB iB jB kB lB mB" }, H: { "2": "nB" }, I: { "1": "a tB", "2": "CB F oB pB qB rB EB sB" }, J: { "2": "D A" }, K: { "1": "M", "2": "7 A B C z BB" }, L: { "1": "a" }, M: { "1": "y" }, N: { "1": "B", "2": "A" }, O: { "1": "uB" }, P: { "514": "F K vB wB" }, Q: { "2": "xB" }, R: { "1": "yB" } }, B: 4, C: "Media Source Extensions" };
 
 },{}],400:[function(require,module,exports){
 "use strict";
@@ -14350,7 +14530,7 @@ module.exports = { A: { A: { "2": "H D G E A B FB" }, B: { "2": "C p x J L N I" 
 },{}],483:[function(require,module,exports){
 "use strict";
 
-module.exports = { A: { A: { "2": "H D G E A B FB" }, B: { "2": "C p x J", "194": "L N I" }, C: { "2": "0 1 2 3 aB CB F K H D G E A B C p x J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w YB SB", "194": "4 5 6 8 9 y AB" }, D: { "2": "0 1 2 3 4 5 6 F K H D G E A B C p x J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w", "194": "8 9 y AB MB cB GB a HB IB JB KB" }, E: { "2": "F K H D G E A LB DB NB OB PB QB", "194": "B C RB z TB" }, F: { "2": "0 7 E B C J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M UB VB WB XB z BB ZB", "194": "q r s t u v w" }, G: { "2": "G DB bB EB dB eB fB gB hB iB jB", "194": "C kB lB mB" }, H: { "2": "nB" }, I: { "2": "CB F oB pB qB rB EB sB tB", "16": "a" }, J: { "2": "D A" }, K: { "2": "7 A B C M z BB" }, L: { "194": "a" }, M: { "194": "y" }, N: { "2": "A B" }, O: { "1": "uB" }, P: { "2": "F K vB wB" }, Q: { "2": "xB" }, R: { "2": "yB" } }, B: 6, C: "Shared Array Buffer" };
+module.exports = { A: { A: { "2": "H D G E A B FB" }, B: { "2": "C p x J", "194": "L N I" }, C: { "2": "0 1 2 3 aB CB F K H D G E A B C p x J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w YB SB", "194": "4 5 6 8 9 y AB" }, D: { "1": "HB IB JB KB", "2": "0 1 2 3 4 5 6 F K H D G E A B C p x J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M q r s t u v w", "194": "8 9 y AB MB cB GB a" }, E: { "2": "F K H D G E A LB DB NB OB PB QB", "194": "B C RB z TB" }, F: { "2": "0 7 E B C J L N I O P Q R S T U V W X Y Z b c d e f g h i j k l m n o M UB VB WB XB z BB ZB", "194": "q r s t u v w" }, G: { "2": "G DB bB EB dB eB fB gB hB iB jB", "194": "C kB lB mB" }, H: { "2": "nB" }, I: { "2": "CB F oB pB qB rB EB sB tB", "16": "a" }, J: { "2": "D A" }, K: { "2": "7 A B C M z BB" }, L: { "194": "a" }, M: { "194": "y" }, N: { "2": "A B" }, O: { "1": "uB" }, P: { "2": "F K vB wB" }, Q: { "2": "xB" }, R: { "2": "yB" } }, B: 6, C: "Shared Array Buffer" };
 
 },{}],484:[function(require,module,exports){
 "use strict";
@@ -14907,6 +15087,8 @@ function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
 
+var MATH2LOG = Math.log(2);
+
 function unpackSupport(cipher) {
     // bit flags
     var stats = Object.keys(_supported2.default).reduce(function (list, support) {
@@ -14918,7 +15100,7 @@ function unpackSupport(cipher) {
     var notes = cipher >> 7;
     var notesArray = [];
     while (notes) {
-        var note = Math.floor(Math.log2(notes)) + 1;
+        var note = Math.floor(Math.log(notes) / MATH2LOG) + 1;
         notesArray.unshift('#' + note);
         notes -= Math.pow(2, note - 1);
     }
@@ -15036,6 +15218,7 @@ function unpackRegion(packed) {
 
 module.exports = {
 	"3.0": "66",
+	"2.1": "61",
 	"2.0": "61",
 	"1.8": "59",
 	"1.7": "58",
@@ -15745,6 +15928,54 @@ module.exports=[
     "version": "10.0.0",
     "date": "2018-04-24",
     "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.1.0",
+    "date": "2018-05-08",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.2.0",
+    "date": "2018-05-23",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.3.0",
+    "date": "2018-05-29",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.4.0",
+    "date": "2018-06-06",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.5.0",
+    "date": "2018-06-20",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.6.0",
+    "date": "2018-07-04",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.7.0",
+    "date": "2018-07-18",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "10.8.0",
+    "date": "2018-08-01",
+    "lts": false
   }
 ]
 },{}],582:[function(require,module,exports){
@@ -15794,11 +16025,16 @@ module.exports={
     "end": "2018-06-30"
   },
   "v10": {
-    "start": "2018-04-30",
+    "start": "2018-04-24",
     "lts": "2018-10-01",
     "maintenance": "2020-04-01",
     "end": "2021-04-01",
     "codename": ""
+  },
+  "v11": {
+    "start": "2018-10-23",
+    "maintenance": "2019-04-01",
+    "end": "2019-06-30"
   }
 }
 
