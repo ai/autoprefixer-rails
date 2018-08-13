@@ -1,5 +1,12 @@
 # Change Log
 
+## 9.1.1
+* Retain `grid-gap` through `@media` (by Bogdan Dolin).
+* Fix `grid-template` and  `@media` (by Bogdan Dolin).
+* Fix Grid areas searching error (by Bogdan Dolin).
+* Fix `span X` Grid prefix (by Bogdan Dolin).
+* Fix `log2` error.
+
 ## 9.1 “Equality before the law”
 * Add `background-clip: text` support.
 * Fix adding Grid span for IE (by Bogdan).
