@@ -7010,7 +7010,7 @@ module.exports = function (prefixes) {
       props += prefix(_name, _data.prefixes, grid);
     }
 
-    if (!_data.values) {
+    if (!Array.isArray(_data.values)) {
       continue;
     }
     for (var _iterator3 = _data.values, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
@@ -7296,8 +7296,8 @@ var Prefixer = function () {
   function Prefixer(name, prefixes, all) {
     _classCallCheck(this, Prefixer);
 
-    this.name = name;
     this.prefixes = prefixes;
+    this.name = name;
     this.all = all;
   }
 
