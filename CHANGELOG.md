@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.1.2
+* Fix `autoprefixer --info` in new Node.js.
+* Fix ExecJS runtime warning.
+
 ## 9.1.1
 * Retain `grid-gap` through `@media` (by Bogdan Dolin).
 * Fix `grid-template` and  `@media` (by Bogdan Dolin).
