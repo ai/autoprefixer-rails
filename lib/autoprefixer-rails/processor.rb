@@ -146,7 +146,7 @@ module AutoprefixerRails
     def runtime
       @runtime ||= begin
         if ExecJS.eval('typeof Uint8Array') != 'function'
-          if ExecJS.runtime == ExecJS::Runtimes::MiniRacer
+          if ExecJS.runtime == ExecJS::Runtimes::RubyRacerRuntime
             raise "ExecJS::RubyRacerRuntime is not supported. " +
                   "Please replace therubyracer with mini_racer " +
                   "in your Gemfile or use Node.js as ExecJS runtime."
