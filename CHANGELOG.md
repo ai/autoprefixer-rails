@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.1.3
+* Sort properties in `rake autoprefixer` alphabetically.
+* Fix old Firefox gradient prefix.
+
 ## 9.1.2
 * Fix `autoprefixer --info` in new Node.js.
 * Fix ExecJS runtime warning.
