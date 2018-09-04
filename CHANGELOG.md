@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.1.4
+* Fix `ExecJS` runtime test (by Patrice Chalin).
+
 ## 9.1.3
 * Sort properties in `rake autoprefixer` alphabetically.
 * Fix old Firefox gradient prefix.
