@@ -10,8 +10,7 @@ before_install:
   - nvm install node
 env:
   - EXECJS_RUNTIME=Node
-  # mini_racer
-  -
+  - EXECJS_RUNTIME=MiniRacer
 matrix:
   exclude:
     - rvm: "2.3"
