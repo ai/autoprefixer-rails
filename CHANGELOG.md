@@ -1,5 +1,12 @@
 # Change Log
 
+## 9.2 “Ony est glavnaya krepost”
+* Add `/* autoprefixer grid: on */` control comment (by Andrey Alexandrov).
+* Add duplicate `grid-area` support (by Bogdan Dolin).
+* Fix `grid-gap` support for rules with different specifity (by Bogdan Dolin).
+* Disable Grid in `@supports` at-rule with non-supported Grid features.
+* Improve Grid warnings (by Daniel Tonon).
+
 ## 9.1.4
 * Fix `ExecJS` runtime test (by Patrice Chalin).
 
