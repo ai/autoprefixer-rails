@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.2.1
+* Update Can I Use data.
+
 ## 9.2 “Ony est glavnaya krepost”
 * Add `/* autoprefixer grid: on */` control comment (by Andrey Alexandrov).
 * Add duplicate `grid-area` support (by Bogdan Dolin).
