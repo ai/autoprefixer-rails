@@ -5435,20 +5435,36 @@ function transformRepeat(_ref3, _ref4) {
     count: []
   }),
       count = _nodes$reduce.count,
-      size = _nodes$reduce.size;
+      size = _nodes$reduce.size; // insert gap values
+
 
   if (gap) {
-    var val = [];
+    var _ret = function () {
+      size = size.filter(function (i) {
+        return i.trim();
+      });
+      var val = [];
 
-    for (var i = 1; i <= count; i++) {
-      if (gap && i > 1) {
-        val.push(gap);
+      var _loop = function _loop(i) {
+        size.forEach(function (item, index) {
+          if (index > 0 || i > 1) {
+            val.push(gap);
+          }
+
+          val.push(item);
+        });
+      };
+
+      for (var i = 1; i <= count; i++) {
+        _loop(i);
       }
 
-      val.push(size.join());
-    }
+      return {
+        v: val.join(' ')
+      };
+    }();
 
-    return val.join(' ');
+    if (typeof _ret === "object") return _ret.v;
   }
 
   return "(" + size.join('') + ")[" + count.join('') + "]";
@@ -52003,6 +52019,12 @@ module.exports=[
     "name": "nodejs",
     "version": "10.12.0",
     "date": "2018-10-10",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "11.0.0",
+    "date": "2018-10-23",
     "lts": false
   }
 ]
