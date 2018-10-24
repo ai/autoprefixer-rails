@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.3.1
+* Fix Grid prefixes with `repeat()` value (by Bogdan Dolin).
+
 ## 9.3 “Labor omnia vincit”
 * Add `place-self` support (by Bogdan Dolin).
 * Fix Grid row/column span inheritance bug (by Bogdan Dolin).
