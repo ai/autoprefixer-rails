@@ -2,7 +2,7 @@
 
 ## 9.4 “Advance Australia”
 * Add Grid autoplacment for `-ms-` (by Bogdan Dolin).
-* Improve wargnins (by Daniel Tonon).
+* Improve warnings (by Daniel Tonon).
 * Remove some unnecessary warnings for Grid (by Andrey Alexandrov).
 
 ## 9.3.1
