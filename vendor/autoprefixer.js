@@ -1670,6 +1670,16 @@ function (_Declaration) {
 
   var _proto = AlignSelf.prototype;
 
+  _proto.check = function check(decl) {
+    return decl.parent && decl.parent.every(function (i) {
+      return !/^grid-/.test(i.prop);
+    });
+  };
+  /**
+   * Change property name for 2012 specs
+   */
+
+
   _proto.prefixed = function prefixed(prop, prefix) {
     var spec;
 
@@ -1720,10 +1730,6 @@ _defineProperty(AlignSelf, "names", ['align-self', 'flex-item-align']);
 _defineProperty(AlignSelf, "oldValues", {
   'flex-end': 'end',
   'flex-start': 'start'
-  /**
-   * Change property name for 2012 specs
-   */
-
 });
 
 module.exports = AlignSelf;
@@ -15395,8 +15401,8 @@ module.exports = {
       "2": "0 1 2 4 6 7 8 9 F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a c d e f g h i j k l m n o M q r s t u v w x y z AB BB CB"
     },
     E: {
-      "1": "C b VB",
-      "2": "F K H D G E A B NB FB PB QB RB SB TB"
+      "2": "F K H D G E A B NB FB PB QB RB SB TB",
+      "130": "C b VB"
     },
     F: {
       "1": "w x y z",
@@ -34712,8 +34718,8 @@ module.exports = {
     },
     C: {
       "2": "0 3 cB F K H D G E A B C p J L N I O P Q R S T U V W X Y aB UB",
-      "8": "Z a",
-      "200": "1 2 4 6 7 8 9 c d e f g h i j k l m n o M q r s t u v w x y z AB BB CB"
+      "8": "1 4 6 7 8 9 Z a z AB BB CB",
+      "200": "2 c d e f g h i j k l m n o M q r s t u v w x y"
     },
     D: {
       "1": "1 4 6 7 8 9 f g h i j k l m n o M q r s t u v w x y z AB BB CB OB GB eB JB HB KB LB",
@@ -49872,15 +49878,15 @@ module.exports = {
     },
     B: {
       "2": "0 C p J L",
-      "257": "N I"
+      "514": "N I"
     },
     C: {
       "2": "0 1 2 3 4 6 7 8 9 cB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a c d e f g h i j k l m n o M q r s t u v w x y z AB BB CB aB UB"
     },
     D: {
       "2": "0 2 F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a c d e f g h",
-      "388": "1 4 6 7 8 9 i j k l m n o M q r s t u v w x y z AB BB CB OB",
-      "644": "GB eB JB HB KB LB MB"
+      "132": "1 4 6 7 8 9 i j k l m n o M q r s t u v w x y z AB BB CB OB",
+      "260": "GB eB JB HB KB LB MB"
     },
     E: {
       "2": "F K H D G E A B C NB FB PB QB RB SB TB b VB"
@@ -49890,7 +49896,7 @@ module.exports = {
     },
     G: {
       "2": "5 G FB dB fB gB hB iB jB kB lB mB nB",
-      "257": "C oB"
+      "132": "C oB"
     },
     H: {
       "2": "pB"
@@ -49902,29 +49908,29 @@ module.exports = {
       "2": "D A"
     },
     K: {
-      "1": "M",
-      "2": "A B C b DB EB"
+      "2": "A B C b DB EB",
+      "132": "M"
     },
     L: {
       "1": "HB"
     },
     M: {
-      "257": "1"
+      "132": "1"
     },
     N: {
       "2": "A B"
     },
     O: {
-      "1": "wB"
+      "132": "wB"
     },
     P: {
-      "1": "F K xB yB"
+      "132": "F K xB yB"
     },
     Q: {
-      "1": "zB"
+      "132": "zB"
     },
     R: {
-      "1": "0B"
+      "132": "0B"
     }
   },
   B: 5,
@@ -50255,7 +50261,8 @@ module.exports = {
       "2": "2 E B C J L N I O P Q R S T U V W X Y Z a c d e f g h i j k l WB XB YB ZB b DB bB EB"
     },
     G: {
-      "2": "5 G C FB dB fB gB hB iB jB kB lB mB nB oB"
+      "2": "5 G FB dB fB gB hB iB jB kB lB mB nB oB",
+      "1090": "C"
     },
     H: {
       "2": "pB"
