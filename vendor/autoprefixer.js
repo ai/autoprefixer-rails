@@ -4950,42 +4950,41 @@ function (_Declaration) {
     if (autoflow && !processor.disabled(autoflow, result)) {
       autoflowValue = autoflow.value.trim();
     }
-    /**
-     * Show warning if grid-template-rows decl is not found
-     */
+
+    if (status === 'autoplace') {
+      /**
+       * Show warning if grid-template-rows decl is not found
+       */
+      var rowDecl = parent.nodes.find(function (i) {
+        return i.prop === 'grid-template-rows';
+      });
+
+      if (!rowDecl && hasGridTemplate) {
+        return undefined;
+      } else if (!rowDecl && !hasGridTemplate) {
+        decl.warn(result, "Autoplacement does not work without grid-template-rows property");
+        return undefined;
+      }
+      /**
+       * Show warning if grid-template-columns decl is not found
+       */
 
 
-    var rowDecl = parent.nodes.find(function (i) {
-      return i.prop === 'grid-template-rows';
-    });
+      var columnDecl = parent.nodes.find(function (i) {
+        return i.prop === 'grid-template-columns';
+      });
 
-    if (!rowDecl && hasGridTemplate) {
-      return undefined;
-    } else if (!rowDecl && !hasGridTemplate) {
-      decl.warn(result, "Autoplacement does not work without grid-template-rows property");
-      return undefined;
-    }
-    /**
-     * Show warning if grid-template-columns decl is not found
-     */
+      if (!columnDecl && !hasGridTemplate) {
+        decl.warn(result, "Autoplacement does not work without grid-template-columns property");
+      }
+      /**
+       * Autoplace grid items
+       */
 
 
-    var columnDecl = parent.nodes.find(function (i) {
-      return i.prop === 'grid-template-columns';
-    });
-
-    if (!columnDecl && !hasGridTemplate) {
-      decl.warn(result, "Autoplacement does not work without grid-template-columns property");
-    }
-    /**
-     * Autoplace grid items
-     */
-
-
-    var autoplaceEnabled = status === 'autoplace';
-
-    if (isColumnProp && !hasGridTemplate && autoplaceEnabled) {
-      autoplaceGridItems(decl, result, gap, autoflowValue);
+      if (isColumnProp && !hasGridTemplate) {
+        autoplaceGridItems(decl, result, gap, autoflowValue);
+      }
     }
 
     return undefined;
