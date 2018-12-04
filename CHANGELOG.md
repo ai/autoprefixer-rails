@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.4.2
+* Fix Grid autoplacment warning.
+
 ## 9.4.1
 * Fix unnecessary Flexbox prefixes in Grid elements.
 
