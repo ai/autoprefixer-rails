@@ -1,13 +1,13 @@
 # Change Log
 
 ## 9.4.2
-* Fix Grid autoplacment warning.
+* Fix Grid autoplacement warning.
 
 ## 9.4.1
 * Fix unnecessary Flexbox prefixes in Grid elements.
 
 ## 9.4 “Advance Australia”
-* Add Grid autoplacment for `-ms-` (by Bogdan Dolin).
+* Add Grid autoplacement for `-ms-` (by Bogdan Dolin).
 * Improve warnings (by Daniel Tonon).
 * Remove some unnecessary warnings for Grid (by Andrey Alexandrov).
 
