@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.4.3
+* Add warning to force `flex-start` instead of `start` (by Antoine du Hamel).
+
 ## 9.4.2
 * Fix Grid autoplacement warning.
 
