@@ -8,6 +8,7 @@ git:
   depth: 5
 cache: bundler
 before_install:
+  - gem install bundler
   - nvm install node
 env:
   - EXECJS_RUNTIME=Node
