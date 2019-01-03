@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.4.4
+* Use `direction` value for `-ms-writing-mode` (by Denys Kniazevych).
+* Fix warning text (by @zzzzBov).
+
 ## 9.4.3
 * Add warning to force `flex-start` instead of `start` (by Antoine du Hamel).
 
