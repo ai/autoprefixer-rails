@@ -11366,7 +11366,14 @@ var env = require('./node'); // Will load browser.js in webpack
 
 
 var FLOAT_RANGE = /^\d+(\.\d+)?(-\d+(\.\d+)?)*$/;
-var YEAR = 365.259641 * 24 * 60 * 60 * 1000;
+var YEAR = 365.259641 * 24 * 60 * 60 * 1000; // Enum values MUST be powers of 2, so combination are safe
+
+/** @constant {number} */
+
+var QUERY_OR = 1;
+/** @constant {number} */
+
+var QUERY_AND = 2;
 
 function isVersionsMatch(versionA, versionB) {
   return (versionA + '.').indexOf(versionB + '.') === 0;
@@ -11492,11 +11499,25 @@ function checkName(name) {
 function unknownQuery(query) {
   return new BrowserslistError('Unknown browser query `' + query + '`. ' + 'Maybe you are using old Browserslist or made typo in query.');
 }
+/**
+ * Resolves queries into a browser list.
+ * @param {string|string[]} queries Queries to combine.
+ * Either an array of queries or a long string of queries.
+ * @param {object} [context] Optional arguments to
+ * the select function in `queries`.
+ * @returns {string[]} A list of browsers
+ */
+
 
 function resolve(queries, context) {
-  return queries.reduce(function (result, selection, index) {
-    selection = selection.trim();
-    if (selection === '') return result;
+  if (Array.isArray(queries)) {
+    queries = flatten(queries.map(parse));
+  } else {
+    queries = parse(queries);
+  }
+
+  return queries.reduce(function (result, query, index) {
+    var selection = query.queryString;
     var isExclude = selection.indexOf('not ') === 0;
 
     if (isExclude) {
@@ -11523,20 +11544,37 @@ function resolve(queries, context) {
           }
         });
 
-        if (isExclude) {
-          var filter = {};
-          var browsers = {};
-          array.forEach(function (j) {
-            filter[j] = true;
-            var browser = j.replace(/\s\S+$/, '');
-            browsers[browser] = true;
-          });
-          return result.filter(function (j) {
-            return !filter[j];
-          });
-        }
+        switch (query.type) {
+          case QUERY_AND:
+            if (isExclude) {
+              return result.filter(function (j) {
+                // remove result items that are in array
+                // (the relative complement of array in result)
+                return array.indexOf(j) === -1;
+              });
+            } else {
+              return result.filter(function (j) {
+                // remove result items not in array
+                // (intersect of result and array)
+                return array.indexOf(j) !== -1;
+              });
+            }
 
-        return result.concat(array);
+          case QUERY_OR:
+          default:
+            if (isExclude) {
+              var filter = {};
+              array.forEach(function (j) {
+                filter[j] = true;
+              });
+              return result.filter(function (j) {
+                return !filter[j];
+              });
+            } // union of result and array
+
+
+            return result.concat(array);
+        }
       }
     }
 
@@ -11560,7 +11598,7 @@ function resolve(queries, context) {
  *                                                     version in direct query.
  * @param {boolean} [opts.dangerousExtend] Disable security checks
  *                                         for extend query.
- * @return {string[]} Array with browser names in Can I Use.
+ * @returns {string[]} Array with browser names in Can I Use.
  *
  * @example
  * browserslist('IE >= 10, IE 8') //=> ['ie 11', 'ie 10', 'ie 8']
@@ -11584,12 +11622,8 @@ function browserslist(queries, opts) {
     }
   }
 
-  if (typeof queries === 'string') {
-    queries = queries.split(/,\s*/);
-  }
-
-  if (!Array.isArray(queries)) {
-    throw new BrowserslistError('Browser queries must be an array. Got ' + typeof queries + '.');
+  if (!(typeof queries === 'string' || Array.isArray(queries))) {
+    throw new BrowserslistError('Browser queries must be an array or string. Got ' + typeof queries + '.');
   }
 
   var context = {
@@ -11622,6 +11656,84 @@ function browserslist(queries, opts) {
     }
   });
   return uniq(result);
+}
+/**
+ * @typedef {object} BrowserslistQuery
+ * @property {number} type A type constant like QUERY_OR @see QUERY_OR.
+ * @property {string} queryString A query like "not ie < 11".
+ */
+
+/**
+ * Parse a browserslist string query
+ * @param {string} queries One or more queries as a string
+ * @returns {BrowserslistQuery[]} An array of BrowserslistQuery
+ */
+
+
+function parse(queries) {
+  var qs = [];
+
+  do {
+    queries = doMatch(queries, qs);
+  } while (queries);
+
+  return qs;
+}
+/**
+ * Find query matches in a string. This function is meant to be called
+ * repeatedly with the returned query string until there is no more matches.
+ * @param {string} string A string with one or more queries.
+ * @param {BrowserslistQuery[]} qs Out parameter,
+ * will be filled with `BrowserslistQuery`.
+ * @returns {string} The rest of the query string minus the matched part.
+ */
+
+
+function doMatch(string, qs) {
+  var or = /^(?:,\s*|\s+OR\s+)(.*)/i;
+  var and = /^\s+AND\s+(.*)/i;
+  return find(string, function (parsed, n, max) {
+    if (and.test(parsed)) {
+      qs.unshift({
+        type: QUERY_AND,
+        queryString: parsed.match(and)[1]
+      });
+      return true;
+    } else if (or.test(parsed)) {
+      qs.unshift({
+        type: QUERY_OR,
+        queryString: parsed.match(or)[1]
+      });
+      return true;
+    } else if (n === max) {
+      qs.unshift({
+        type: QUERY_OR,
+        queryString: parsed.trim()
+      });
+      return true;
+    }
+
+    return false;
+  });
+}
+
+function find(string, predicate) {
+  for (var n = 1, max = string.length; n <= max; n++) {
+    var parsed = string.substr(-n, n);
+
+    if (predicate(parsed, n, max)) {
+      return string.replace(parsed, '');
+    }
+  }
+
+  return '';
+}
+
+function flatten(array) {
+  if (!Array.isArray(array)) return [array];
+  return array.reduce(function (a, b) {
+    return a.concat(flatten(b));
+  }, []);
 } // Will be filled by Can I Use data below
 
 
@@ -17824,7 +17936,8 @@ module.exports = {
       "804": "1 F K H D G E A B C p bB VB"
     },
     D: {
-      "260": "0 2 5 6 7 8 9 u v w x y z BB CB DB GB PB KB IB gB LB MB NB",
+      "1": "0 2 5 6 7 8 9 z BB CB DB GB PB KB IB gB LB MB NB",
+      "260": "u v w x y",
       "388": "3 Z a b d e f g h i j k l m n o M q r s t",
       "1412": "J L N I O P Q R S T U V W X Y",
       "1956": "1 F K H D G E A B C p"
@@ -17835,8 +17948,9 @@ module.exports = {
       "1956": "F K OB HB QB"
     },
     F: {
+      "1": "0 m n o M q r s t u v w x y z",
       "2": "E XB YB",
-      "260": "0 h i j k l m n o M q r s t u v w x y z",
+      "260": "h i j k l",
       "388": "3 J L N I O P Q R S T U V W X Y Z a b d e f g",
       "1796": "ZB aB",
       "1828": "B C c EB cB AB"
@@ -17863,7 +17977,7 @@ module.exports = {
       "1828": "B C c EB AB"
     },
     L: {
-      "260": "IB"
+      "1": "IB"
     },
     M: {
       "1": "2"
@@ -17876,7 +17990,8 @@ module.exports = {
       "388": "yB"
     },
     P: {
-      "260": "K zB 0B",
+      "1": "0B",
+      "260": "K zB",
       "388": "F"
     },
     Q: {
@@ -46411,8 +46526,9 @@ module.exports = {
       "2": "E B C J L N I O P Q R S T U V W X Y Z a XB YB ZB aB c EB cB AB"
     },
     G: {
+      "1": "pB qB",
       "2": "4 G HB eB JB hB iB jB kB lB mB nB",
-      "194": "oB pB qB"
+      "194": "oB"
     },
     H: {
       "2": "rB"
@@ -48161,8 +48277,9 @@ module.exports = {
       "2": "F K H D G E A B C OB HB QB RB SB TB UB c WB"
     },
     F: {
+      "1": "0",
       "2": "3 E B C J L N I O P Q R S T U V W X Y Z a b d e f g h i j XB YB ZB aB c EB cB AB",
-      "1090": "0 k l m n o M q r s t u v w x y z"
+      "1090": "k l m n o M q r s t u v w x y z"
     },
     G: {
       "2": "4 G HB eB JB hB iB jB kB lB mB nB oB pB qB"
@@ -51997,6 +52114,7 @@ function unpackRegion(packed) {
 "use strict";
 
 module.exports = {
+  "5.0": "70",
   "4.0": "69",
   "3.1": "66",
   "3.0": "66",
@@ -56460,30 +56578,36 @@ function () {
       }
 
       if (node && type !== 'start') {
-        if (node.source && node.source.end) {
-          _this3.map.addMapping({
-            source: _this3.sourcePath(node),
-            generated: {
-              line: line,
-              column: column - 1
-            },
-            original: {
-              line: node.source.end.line,
-              column: node.source.end.column
-            }
-          });
-        } else {
-          _this3.map.addMapping({
-            source: '<no source>',
-            original: {
-              line: 1,
-              column: 0
-            },
-            generated: {
-              line: line,
-              column: column - 1
-            }
-          });
+        var p = node.parent || {
+          raws: {}
+        };
+
+        if (node.type !== 'decl' || node !== p.last || p.raws.semicolon) {
+          if (node.source && node.source.end) {
+            _this3.map.addMapping({
+              source: _this3.sourcePath(node),
+              generated: {
+                line: line,
+                column: column - 2
+              },
+              original: {
+                line: node.source.end.line,
+                column: node.source.end.column - 1
+              }
+            });
+          } else {
+            _this3.map.addMapping({
+              source: '<no source>',
+              original: {
+                line: 1,
+                column: 0
+              },
+              generated: {
+                line: line,
+                column: column - 1
+              }
+            });
+          }
         }
       }
     });
@@ -58292,7 +58416,7 @@ function () {
      */
 
 
-    this.version = '7.0.7';
+    this.version = '7.0.11';
     /**
      * Plugins added to this processor.
      *
@@ -59044,7 +59168,8 @@ var DEFAULT_RAW = {
   after: '\n',
   emptyBody: '',
   commentLeft: ' ',
-  commentRight: ' '
+  commentRight: ' ',
+  semicolon: false
 };
 
 function capitalize(str) {
