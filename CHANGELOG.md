@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.4.6
+* Fix warning text (by Albert Juhé Lluveras).
+
 ## 9.4.5
 * Fix `text-decoration-skip-ink` support.
 
