@@ -935,7 +935,7 @@ module.exports.info = function () {
 };
 
 }).call(this,require('_process'))
-},{"../data/prefixes":1,"./browsers":5,"./info":60,"./prefixes":64,"_process":640,"browserslist":76,"caniuse-lite":591,"postcss":617}],4:[function(require,module,exports){
+},{"../data/prefixes":1,"./browsers":5,"./info":60,"./prefixes":64,"_process":629,"browserslist":76,"caniuse-lite":591,"postcss":617}],4:[function(require,module,exports){
 "use strict";
 
 function last(array) {
@@ -9015,13 +9015,14 @@ module.exports = Prefixes;
 },{"./at-rule":2,"./browsers":5,"./declaration":6,"./hacks/align-content":7,"./hacks/align-items":8,"./hacks/align-self":9,"./hacks/animation":10,"./hacks/appearance":11,"./hacks/background-clip":12,"./hacks/background-size":13,"./hacks/block-logical":14,"./hacks/border-image":15,"./hacks/border-radius":16,"./hacks/break-props":17,"./hacks/color-adjust":18,"./hacks/cross-fade":19,"./hacks/display-flex":20,"./hacks/display-grid":21,"./hacks/filter":23,"./hacks/filter-value":22,"./hacks/flex":31,"./hacks/flex-basis":24,"./hacks/flex-direction":25,"./hacks/flex-flow":26,"./hacks/flex-grow":27,"./hacks/flex-shrink":28,"./hacks/flex-wrap":30,"./hacks/fullscreen":32,"./hacks/gradient":33,"./hacks/grid-area":34,"./hacks/grid-column-align":35,"./hacks/grid-end":36,"./hacks/grid-row-align":37,"./hacks/grid-row-column":38,"./hacks/grid-rows-columns":39,"./hacks/grid-start":40,"./hacks/grid-template":42,"./hacks/grid-template-areas":41,"./hacks/image-rendering":44,"./hacks/image-set":45,"./hacks/inline-logical":46,"./hacks/intrinsic":47,"./hacks/justify-content":48,"./hacks/mask-border":49,"./hacks/order":50,"./hacks/overscroll-behavior":51,"./hacks/pixelated":52,"./hacks/place-self":53,"./hacks/placeholder":54,"./hacks/text-decoration":56,"./hacks/text-decoration-skip-ink":55,"./hacks/text-emphasis-position":57,"./hacks/transform-decl":58,"./hacks/writing-mode":59,"./processor":65,"./resolution":66,"./selector":67,"./supports":68,"./transition":69,"./utils":70,"./value":71,"postcss":617}],65:[function(require,module,exports){
 "use strict";
 
+var parser = require('postcss-value-parser');
+
 var Value = require('./value');
 
 var insertAreas = require('./hacks/grid-utils').insertAreas;
 
 var OLD_LINEAR = /(^|[^-])linear-gradient\(\s*(top|left|right|bottom)/i;
 var OLD_RADIAL = /(^|[^-])radial-gradient\(\s*\d+(\w*|%)\s+\d+(\w*|%)\s*,/i;
-var RADIAL_BLOCK = /\(((?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*)\)/i;
 var IGNORE_NEXT = /(!\s*)?autoprefixer:\s*ignore\s+next/i;
 var GRID_REGEX = /(!\s*)?autoprefixer\s*grid:\s*(on|off|(no-)?autoplace)/i;
 var SIZES = ['width', 'height', 'min-width', 'max-width', 'min-height', 'max-height', 'inline-size', 'min-inline-size', 'max-inline-size', 'block-size', 'min-block-size', 'max-block-size'];
@@ -9227,17 +9228,49 @@ function () {
               node: decl
             });
           } else {
-            var match = value.match(RADIAL_BLOCK);
+            var ast = parser(value);
 
-            if (match) {
-              if (/cover/.test(match[1])) {
-                result.warn('Gradient has outdated direction syntax. ' + 'Replace `cover` to `farthest-corner`.', {
-                  node: decl
-                });
-              } else if (/contain/.test(match[1])) {
-                result.warn('Gradient has outdated direction syntax. ' + 'Replace `contain` to `closest-side`.', {
-                  node: decl
-                });
+            for (var _iterator = ast.nodes, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+              var _ref;
+
+              if (_isArray) {
+                if (_i >= _iterator.length) break;
+                _ref = _iterator[_i++];
+              } else {
+                _i = _iterator.next();
+                if (_i.done) break;
+                _ref = _i.value;
+              }
+
+              var i = _ref;
+
+              if (i.type === 'function' && i.value === 'radial-gradient') {
+                for (var _iterator2 = i.nodes, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+                  var _ref2;
+
+                  if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                  } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                  }
+
+                  var word = _ref2;
+
+                  if (word.type === 'word') {
+                    if (word.value === 'cover') {
+                      result.warn('Gradient has outdated direction syntax. ' + 'Replace `cover` to `farthest-corner`.', {
+                        node: decl
+                      });
+                    } else if (word.value === 'contain') {
+                      result.warn('Gradient has outdated direction syntax. ' + 'Replace `contain` to `closest-side`.', {
+                        node: decl
+                      });
+                    }
+                  }
+                }
               }
             }
           }
@@ -9330,19 +9363,19 @@ function () {
 
       var unprefixed = _this.prefixes.unprefixed(decl.prop);
 
-      for (var _iterator = _this.prefixes.values('add', unprefixed), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-        var _ref;
+      for (var _iterator3 = _this.prefixes.values('add', unprefixed), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+        var _ref3;
 
-        if (_isArray) {
-          if (_i >= _iterator.length) break;
-          _ref = _iterator[_i++];
+        if (_isArray3) {
+          if (_i3 >= _iterator3.length) break;
+          _ref3 = _iterator3[_i3++];
         } else {
-          _i = _iterator.next();
-          if (_i.done) break;
-          _ref = _i.value;
+          _i3 = _iterator3.next();
+          if (_i3.done) break;
+          _ref3 = _i3.value;
         }
 
-        var value = _ref;
+        var value = _ref3;
         value.process(decl, result);
       }
 
@@ -9370,16 +9403,16 @@ function () {
     }); // Selectors
 
     var _loop = function _loop() {
-      if (_isArray2) {
-        if (_i2 >= _iterator2.length) return "break";
-        _ref2 = _iterator2[_i2++];
+      if (_isArray4) {
+        if (_i4 >= _iterator4.length) return "break";
+        _ref4 = _iterator4[_i4++];
       } else {
-        _i2 = _iterator2.next();
-        if (_i2.done) return "break";
-        _ref2 = _i2.value;
+        _i4 = _iterator4.next();
+        if (_i4.done) return "break";
+        _ref4 = _i4.value;
       }
 
-      var checker = _ref2;
+      var checker = _ref4;
       css.walkRules(function (rule, i) {
         if (checker.check(rule)) {
           if (!_this2.disabled(rule, result)) {
@@ -9389,8 +9422,8 @@ function () {
       });
     };
 
-    for (var _iterator2 = this.prefixes.remove.selectors, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-      var _ref2;
+    for (var _iterator4 = this.prefixes.remove.selectors, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
+      var _ref4;
 
       var _ret = _loop();
 
@@ -9429,19 +9462,19 @@ function () {
       } // Values
 
 
-      for (var _iterator3 = _this2.prefixes.values('remove', unprefixed), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
-        var _ref3;
+      for (var _iterator5 = _this2.prefixes.values('remove', unprefixed), _isArray5 = Array.isArray(_iterator5), _i5 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator]();;) {
+        var _ref5;
 
-        if (_isArray3) {
-          if (_i3 >= _iterator3.length) break;
-          _ref3 = _iterator3[_i3++];
+        if (_isArray5) {
+          if (_i5 >= _iterator5.length) break;
+          _ref5 = _iterator5[_i5++];
         } else {
-          _i3 = _iterator3.next();
-          if (_i3.done) break;
-          _ref3 = _i3.value;
+          _i5 = _iterator5.next();
+          if (_i5.done) break;
+          _ref5 = _i5.value;
         }
 
-        var checker = _ref3;
+        var checker = _ref5;
 
         if (!checker.check(decl.value)) {
           continue;
@@ -9611,19 +9644,19 @@ function () {
   ;
 
   _proto.displayType = function displayType(decl) {
-    for (var _iterator4 = decl.parent.nodes, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
-      var _ref4;
+    for (var _iterator6 = decl.parent.nodes, _isArray6 = Array.isArray(_iterator6), _i6 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator]();;) {
+      var _ref6;
 
-      if (_isArray4) {
-        if (_i4 >= _iterator4.length) break;
-        _ref4 = _iterator4[_i4++];
+      if (_isArray6) {
+        if (_i6 >= _iterator6.length) break;
+        _ref6 = _iterator6[_i6++];
       } else {
-        _i4 = _iterator4.next();
-        if (_i4.done) break;
-        _ref4 = _i4.value;
+        _i6 = _iterator6.next();
+        if (_i6.done) break;
+        _ref6 = _i6.value;
       }
 
-      var i = _ref4;
+      var i = _ref6;
 
       if (i.prop !== 'display') {
         continue;
@@ -9713,7 +9746,7 @@ function () {
 
 module.exports = Processor;
 
-},{"./hacks/grid-utils":43,"./value":71}],66:[function(require,module,exports){
+},{"./hacks/grid-utils":43,"./value":71,"postcss-value-parser":600}],66:[function(require,module,exports){
 "use strict";
 
 function _defaults(obj, defaults) {
@@ -15610,8 +15643,9 @@ module.exports = {
       "2": "0 1 2 3 5 6 7 8 9 F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB CB"
     },
     E: {
+      "1": "WB",
       "2": "F K H D G E A B OB HB QB RB SB TB UB",
-      "130": "C c WB"
+      "130": "C c"
     },
     F: {
       "1": "0 w x y z",
@@ -17075,22 +17109,25 @@ module.exports = {
     },
     B: {
       "2": "1 C p J L N",
-      "578": "I"
+      "2114": "I"
     },
     C: {
       "2": "0 1 3 dB FB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z bB VB",
-      "194": "2 5 6 7 8 9 BB CB DB"
+      "194": "5 6 7 8 9",
+      "322": "2 BB",
+      "772": "CB DB"
     },
     D: {
       "1": "IB gB LB MB NB",
       "2": "0 1 2 3 5 6 7 8 9 F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB CB DB",
-      "322": "GB PB KB"
+      "1090": "GB PB KB"
     },
     E: {
       "2": "F K H D G E A B C OB HB QB RB SB TB UB c WB"
     },
     F: {
-      "2": "0 3 E B C J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z XB YB ZB aB c EB cB AB"
+      "1": "0",
+      "2": "3 E B C J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z XB YB ZB aB c EB cB AB"
     },
     G: {
       "2": "4 G HB eB JB hB iB jB kB lB mB nB oB pB qB"
@@ -21925,7 +21962,7 @@ module.exports = {
     },
     E: {
       "2": "F K H D G E A B OB HB QB RB SB TB UB",
-      "260": "C c WB"
+      "772": "C c WB"
     },
     F: {
       "2": "3 E B C J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u XB YB ZB aB c EB cB AB",
@@ -22051,8 +22088,8 @@ module.exports = {
       "2": "1 C p J L N I"
     },
     C: {
-      "2": "0 1 2 3 5 6 7 8 9 dB FB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB bB VB",
-      "16": "CB DB"
+      "1": "CB DB",
+      "2": "0 1 2 3 5 6 7 8 9 dB FB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB bB VB"
     },
     D: {
       "1": "KB IB gB LB MB NB",
@@ -28876,7 +28913,8 @@ module.exports = {
       "260": "A B"
     },
     B: {
-      "260": "1 C p J L N I"
+      "260": "1 C p J",
+      "1284": "L N I"
     },
     C: {
       "8": "dB FB bB VB",
@@ -30905,7 +30943,8 @@ module.exports = {
       "2": "1 C p J L N I"
     },
     C: {
-      "2": "0 1 2 3 5 6 7 8 9 dB FB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB CB DB bB VB"
+      "2": "0 1 2 3 5 6 7 8 9 dB FB F K H D G E A B C p J L N I O P Q R S T U V W X Y Z a b d e f g h i j k l m n o M q r s t u v w x y z BB CB bB VB",
+      "194": "DB"
     },
     D: {
       "1": "2 BB CB DB GB PB KB IB gB LB MB NB",
@@ -30959,7 +30998,7 @@ module.exports = {
       "2": "2B"
     }
   },
-  B: 7,
+  B: 6,
   C: "JavaScript modules: dynamic import()"
 };
 
@@ -48381,7 +48420,7 @@ module.exports = {
       "1": "IB"
     },
     M: {
-      "16": "2"
+      "1": "2"
     },
     N: {
       "2": "A",
@@ -52192,7 +52231,7 @@ function unpackRegion(packed) {
 "use strict";
 
 module.exports = {
-  "5.0": "70",
+  "5.0": "72",
   "4.0": "69",
   "3.1": "66",
   "3.0": "66",
@@ -53078,6 +53117,18 @@ module.exports=[
     "version": "11.6.0",
     "date": "2018-12-26",
     "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "11.7.0",
+    "date": "2019-01-17",
+    "lts": false
+  },
+  {
+    "name": "nodejs",
+    "version": "11.8.0",
+    "date": "2019-01-24",
+    "lts": false
   }
 ]
 },{}],596:[function(require,module,exports){
@@ -53571,7 +53622,7 @@ var substr = 'ab'.substr(-1) === 'b' ? function (str, start, len) {
 };
 
 }).call(this,require('_process'))
-},{"_process":640}],600:[function(require,module,exports){
+},{"_process":629}],600:[function(require,module,exports){
 "use strict";
 
 var parse = require("./parse");
@@ -56258,7 +56309,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require('_process'))
-},{"./map-generator":613,"./parse":615,"./result":620,"./stringify":624,"./warn-once":627,"_process":640}],612:[function(require,module,exports){
+},{"./map-generator":613,"./parse":615,"./result":620,"./stringify":624,"./warn-once":627,"_process":629}],612:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -56713,7 +56764,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":77,"path":599,"source-map":639}],614:[function(require,module,exports){
+},{"buffer":77,"path":599,"source-map":640}],614:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -57328,7 +57379,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require('_process'))
-},{"./css-syntax-error":608,"./stringifier":623,"./stringify":624,"_process":640}],615:[function(require,module,exports){
+},{"./css-syntax-error":608,"./stringifier":623,"./stringify":624,"_process":629}],615:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -57375,7 +57426,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require('_process'))
-},{"./input":610,"./parser":616,"_process":640}],616:[function(require,module,exports){
+},{"./input":610,"./parser":616,"_process":629}],616:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -58450,7 +58501,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":77,"fs":73,"path":599,"source-map":639}],619:[function(require,module,exports){
+},{"buffer":77,"fs":73,"path":599,"source-map":640}],619:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -58498,7 +58549,7 @@ function () {
      */
 
 
-    this.version = '7.0.13';
+    this.version = '7.0.14';
     /**
      * Plugins added to this processor.
      *
@@ -58722,7 +58773,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 }).call(this,require('_process'))
-},{"./lazy-result":611,"_process":640}],620:[function(require,module,exports){
+},{"./lazy-result":611,"_process":629}],620:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -59667,6 +59718,10 @@ function tokenizer(input, options) {
   var buffer = [];
   var returned = [];
 
+  function position() {
+    return pos;
+  }
+
   function unclosed(what) {
     throw input.error('Unclosed ' + what, line, pos - offset);
   }
@@ -59907,7 +59962,8 @@ function tokenizer(input, options) {
   return {
     back: back,
     nextToken: nextToken,
-    endOfFile: endOfFile
+    endOfFile: endOfFile,
+    position: position
   };
 }
 
@@ -60123,6 +60179,218 @@ module.exports = exports.default;
 },{}],629:[function(require,module,exports){
 "use strict";
 
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+
+},{}],630:[function(require,module,exports){
+"use strict";
+
 /* -*- Mode: js; js-indent-level: 2; -*- */
 
 /*
@@ -60260,7 +60528,7 @@ ArraySet.prototype.toArray = function ArraySet_toArray() {
 
 exports.ArraySet = ArraySet;
 
-},{"./util":638}],630:[function(require,module,exports){
+},{"./util":639}],631:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -60401,7 +60669,7 @@ exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
   aOutParam.rest = aIndex;
 };
 
-},{"./base64":631}],631:[function(require,module,exports){
+},{"./base64":632}],632:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -60477,7 +60745,7 @@ exports.decode = function (charCode) {
   return -1;
 };
 
-},{}],632:[function(require,module,exports){
+},{}],633:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -60593,7 +60861,7 @@ exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
   return index;
 };
 
-},{}],633:[function(require,module,exports){
+},{}],634:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -60686,7 +60954,7 @@ MappingList.prototype.toArray = function MappingList_toArray() {
 
 exports.MappingList = MappingList;
 
-},{"./util":638}],634:[function(require,module,exports){
+},{"./util":639}],635:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -60801,7 +61069,7 @@ exports.quickSort = function (ary, comparator) {
   doQuickSort(ary, comparator, 0, ary.length - 1);
 };
 
-},{}],635:[function(require,module,exports){
+},{}],636:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -61912,7 +62180,7 @@ IndexedSourceMapConsumer.prototype._parseMappings = function IndexedSourceMapCon
 
 exports.IndexedSourceMapConsumer = IndexedSourceMapConsumer;
 
-},{"./array-set":629,"./base64-vlq":630,"./binary-search":632,"./quick-sort":634,"./util":638}],636:[function(require,module,exports){
+},{"./array-set":630,"./base64-vlq":631,"./binary-search":633,"./quick-sort":635,"./util":639}],637:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -62347,7 +62615,7 @@ SourceMapGenerator.prototype.toString = function SourceMapGenerator_toString() {
 
 exports.SourceMapGenerator = SourceMapGenerator;
 
-},{"./array-set":629,"./base64-vlq":630,"./mapping-list":633,"./util":638}],637:[function(require,module,exports){
+},{"./array-set":630,"./base64-vlq":631,"./mapping-list":634,"./util":639}],638:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -62766,7 +63034,7 @@ SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSou
 
 exports.SourceNode = SourceNode;
 
-},{"./source-map-generator":636,"./util":638}],638:[function(require,module,exports){
+},{"./source-map-generator":637,"./util":639}],639:[function(require,module,exports){
 "use strict";
 
 /* -*- Mode: js; js-indent-level: 2; -*- */
@@ -63329,7 +63597,7 @@ function computeSourceURL(sourceRoot, sourceURL, sourceMapURL) {
 
 exports.computeSourceURL = computeSourceURL;
 
-},{}],639:[function(require,module,exports){
+},{}],640:[function(require,module,exports){
 "use strict";
 
 /*
@@ -63341,217 +63609,5 @@ exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGene
 exports.SourceMapConsumer = require('./lib/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = require('./lib/source-node').SourceNode;
 
-},{"./lib/source-map-consumer":635,"./lib/source-map-generator":636,"./lib/source-node":637}],640:[function(require,module,exports){
-"use strict";
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-
-},{}]},{},[3])(3)
+},{"./lib/source-map-consumer":636,"./lib/source-map-generator":637,"./lib/source-node":638}]},{},[3])(3)
 });
