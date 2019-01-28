@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.4.7
+* Fix infinite loop on mismatched parens.
+
 ## 9.4.6
 * Fix warning text (by Albert Juhé Lluveras).
 
