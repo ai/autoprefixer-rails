@@ -25,4 +25,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rails'
   s.add_development_dependency 'compass'
   s.add_development_dependency 'rspec-rails'
+
+  s.metadata['changelog_uri'] = 'https://github.com/ai/autoprefixer-rails/blob/master/CHANGELOG.md'
+  s.metadata['source_code_uri'] = 'https://github.com/ai/autoprefixer-rails'
+  s.metadata['bug_tracker_uri'] = 'https://github.com/ai/autoprefixer-rails/issues'
 end
