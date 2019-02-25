@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.4.9
+* Fix `grid-template` and `@media` case (by Bogdan Dolin).
+
 ## 9.4.8
 * Fix `calc()` support in Grid gap.
 
