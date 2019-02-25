@@ -5892,8 +5892,9 @@ function insertAreas(css, isDisabled) {
 
     if (!rulesToInsert[lastArea]) {
       rulesToInsert[lastArea] = {};
-    } // walk through every grid-template rule data
+    }
 
+    var lastRuleIsSet = false; // walk through every grid-template rule data
 
     for (var _iterator2 = data.rules, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
       var _ref9;
@@ -5937,6 +5938,7 @@ function insertAreas(css, isDisabled) {
           }));
         });
         rulesToInsert[lastArea].lastRule = gridAreaRule;
+        lastRuleIsSet = true;
       } else if (rule.hasDuplicates && !rule.params && !selectorIsComplex) {
         (function () {
           // grid-template has duplicates and not inside media rule
@@ -5956,10 +5958,11 @@ function insertAreas(css, isDisabled) {
           }
 
           rulesToInsert[lastArea].lastRule = cloned;
+          lastRuleIsSet = true;
         })();
       } else if (rule.hasDuplicates && !rule.params && selectorIsComplex && gridAreaRule.selector.includes(rule.selectors[0])) {
         // grid-template has duplicates and not inside media rule
-        // see the bottom of grid-template-areas test case for example
+        // and the selector is complex
         gridAreaRule.walkDecls(/-ms-grid-(row|column)/, function (d) {
           return d.remove();
         });
@@ -5999,9 +6002,11 @@ function insertAreas(css, isDisabled) {
           } else {
             // store the rule to insert later
             rulesToInsert[lastArea][rule.params].push(cloned);
-          }
+          } // set new rule as last rule ONLY if we didn't set lastRule for
+          // this grid-area before
 
-          if (gridAreaMedia) {
+
+          if (!lastRuleIsSet) {
             rulesToInsert[lastArea].lastRule = gridAreaMedia || gridAreaRule;
           }
         })();
@@ -12363,6 +12368,7 @@ var QUERIES = [{
 module.exports = browserslist;
 
 },{"./error":75,"./node":74,"caniuse-lite/dist/unpacker/agents":587,"electron-to-chromium/versions":594,"node-releases/data/processed/envs.json":596,"node-releases/data/release-schedule/release-schedule.json":597,"path":73}],77:[function(require,module,exports){
+(function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -14163,7 +14169,8 @@ function numberIsNaN(obj) {
   return obj !== obj; // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":72,"ieee754":595}],78:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"base64-js":72,"buffer":77,"ieee754":595}],78:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -17161,7 +17168,7 @@ module.exports = {
       "2": "IB"
     },
     M: {
-      "2": "2"
+      "578": "2"
     },
     N: {
       "2": "A B"
@@ -29532,8 +29539,8 @@ module.exports = {
       "2": "1 F N K D G E A B C d J M H I O P Q R"
     },
     E: {
-      "1": "4 K A B C RB UB VB p YB",
-      "2": "F N PB HB",
+      "1": "K A B C RB UB VB p",
+      "2": "4 F N PB HB YB",
       "1028": "D G E SB TB"
     },
     F: {
@@ -29541,8 +29548,8 @@ module.exports = {
       "2": "E B ZB aB bB cB p BB eB"
     },
     G: {
-      "1": "lB mB nB oB pB qB rB sB",
-      "2": "HB fB FB hB JB",
+      "1": "lB mB nB oB pB qB rB",
+      "2": "HB fB FB hB JB sB",
       "1028": "G jB kB"
     },
     H: {
@@ -45941,16 +45948,18 @@ module.exports = {
       "2": "0 2 3 6 7 8 9 u v w x y z GB AB CB DB QB iB KB IB LB MB NB OB"
     },
     E: {
-      "1": "4 G E A B C UB VB p YB",
-      "2": "F N K D PB HB RB SB TB"
+      "1": "G E A B C UB VB p",
+      "2": "F N K D PB HB RB SB TB",
+      "129": "4 YB"
     },
     F: {
       "1": "4 5 J M H I O P Q R S T U V W X Y Z a b c e f g h i l n",
       "2": "0 E B C j k m o L q r s t u v w x y z ZB aB bB cB p BB eB"
     },
     G: {
-      "1": "G kB lB mB nB oB pB qB rB sB",
-      "2": "HB fB FB hB JB jB"
+      "1": "G kB lB mB nB oB pB qB rB",
+      "2": "HB fB FB hB JB jB",
+      "257": "sB"
     },
     H: {
       "2": "tB"
