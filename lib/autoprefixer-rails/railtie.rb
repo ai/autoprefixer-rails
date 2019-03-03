@@ -1,20 +1,20 @@
-require 'yaml'
+require "yaml"
 
 begin
   module AutoprefixedRails
     class Railtie < ::Rails::Railtie
       rake_tasks do |app|
-        require 'rake/autoprefixer_tasks'
-        Rake::AutoprefixerTasks.new( config ) if defined? app.assets
+        require "rake/autoprefixer_tasks"
+        Rake::AutoprefixerTasks.new(config) if defined? app.assets
       end
 
-      if config.respond_to?(:assets) and not config.assets.nil?
+      if config.respond_to?(:assets) && !config.assets.nil?
         config.assets.configure do |env|
           AutoprefixerRails.install(env, config)
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          if defined? app.assets and not app.assets.nil?
+          if defined? app.assets && !app.assets.nil?
             AutoprefixerRails.install(app.assets, config)
           end
         end
@@ -25,7 +25,7 @@ begin
         params = {}
 
         roots.each do |root|
-          file = File.join(root, 'config/autoprefixer.yml')
+          file = File.join(root, "config/autoprefixer.yml")
 
           if File.exist?(file)
             parsed = ::YAML.load_file(file)

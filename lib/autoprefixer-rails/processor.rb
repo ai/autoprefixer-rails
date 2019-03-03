@@ -1,15 +1,14 @@
-require 'pathname'
-require 'execjs'
-require 'json'
+require "pathname"
+require "execjs"
+require "json"
 
 IS_SECTION = /^\s*\[(.+)\]\s*$/
 
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
-
-    def initialize(params = { })
-      @params = params || { }
+    def initialize(params = {})
+      @params = params || {}
     end
 
     # Process `css` and return result.
@@ -18,85 +17,79 @@ module AutoprefixerRails
     # * `from` with input CSS file name. Will be used in error messages.
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
-    def process(css, opts = { })
+    def process(css, opts = {})
       opts = convert_options(opts)
 
       apply_wrapper =
-        "(function(opts, pluginOpts) {" +
-        "return eval(process.apply(this, opts, pluginOpts));" +
+        "(function(opts, pluginOpts) {" \
+        "return eval(process.apply(this, opts, pluginOpts));" \
         "})"
 
-      pluginOpts = params_with_browsers(opts[:from]).merge(opts)
-      processOpts = {
-        from: pluginOpts.delete(:from),
-        to:   pluginOpts.delete(:to),
-        map:  pluginOpts.delete(:map)
+      plugin_opts = params_with_browsers(opts[:from]).merge(opts)
+      process_opts = {
+        from: plugin_opts.delete(:from),
+        to: plugin_opts.delete(:to),
+        map: plugin_opts.delete(:map),
       }
 
       begin
-        result = runtime.call(apply_wrapper, [css, processOpts, pluginOpts])
+        result = runtime.call(apply_wrapper, [css, process_opts, plugin_opts])
       rescue ExecJS::ProgramError => e
-        contry_error = 'BrowserslistError: ' +
-          'Country statistics is not supported ' +
-          'in client-side build of Browserslist'
+        contry_error = "BrowserslistError: " \
+          "Country statistics is not supported " \
+          "in client-side build of Browserslist"
         if e.message == contry_error
-          raise 'Country statistics is not supported in AutoprefixerRails. ' +
-                'Use Autoprefixer with webpack or other Node.js builder.'
+          raise "Country statistics is not supported in AutoprefixerRails. " \
+            "Use Autoprefixer with webpack or other Node.js builder."
         else
           raise e
         end
       end
 
-      Result.new(result['css'], result['map'], result['warnings'])
+      Result.new(result["css"], result["map"], result["warnings"])
     end
 
     # Return, which browsers and prefixes will be used
     def info
-      runtime.eval("autoprefixer(#{ js_params }).info()")
+      runtime.eval("autoprefixer(#{js_params}).info()")
     end
 
     # Parse Browserslist config
     def parse_config(config)
-      sections = { 'defaults' => [] }
-      current  = 'defaults'
-      config.gsub(/#[^\n]*/, '')
-            .split(/\n/)
-            .map(&:strip)
-            .reject(&:empty?)
-            .each do |line|
-              if line =~ IS_SECTION
-                current = line.match(IS_SECTION)[1].strip
-                sections[current] ||= []
-              else
-                sections[current] << line
-              end
-            end
+      sections = {"defaults" => []}
+      current  = "defaults"
+      config.gsub(/#[^\n]*/, "")
+        .split(/\n/)
+        .map(&:strip)
+        .reject(&:empty?)
+        .each do |line|
+        if IS_SECTION.match?(line)
+          current = line.match(IS_SECTION)[1].strip
+          sections[current] ||= []
+        else
+          sections[current] << line
+        end
+      end
       sections
     end
 
     private
 
     def params_with_browsers(from = nil)
-      unless from
-        if defined? Rails and Rails.respond_to?(:root) and Rails.root
-          from = Rails.root.join('app/assets/stylesheets').to_s
-        else
-          from = '.'
-        end
+      from ||= if defined? Rails&.respond_to?(:root) && Rails&.root
+        Rails.root.join("app/assets/stylesheets").to_s
+      else
+        "."
       end
 
       params = @params
-      if not params.has_key?(:browsers) and from
+      if !params.key?(:browsers) && from
         file = find_config(from)
         if file
-          env    = params[:env].to_s || 'development'
+          env    = params[:env].to_s || "development"
           config = parse_config(file)
           params = params.dup
-          if config[env]
-            params[:browsers] = config[env]
-          else
-            params[:browsers] = config['defaults']
-          end
+          params[:browsers] = (config[env] || config["defaults"])
         end
       end
 
@@ -105,18 +98,18 @@ module AutoprefixerRails
 
     # Convert params to JS string and add browsers from Browserslist config
     def js_params
-      '{ ' +
-        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}"}.join(', ') +
-      ' }'
+      "{ " +
+        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}"}.join(", ") +
+        " }"
     end
 
     # Convert ruby_options to jsOptions
     def convert_options(opts)
-      converted = { }
+      converted = {}
 
       opts.each_pair do |name, value|
-        if name =~ /_/
-          name = name.to_s.gsub(/_\w/) { |i| i.gsub('_', '').upcase }.to_sym
+        if /_/.match?(name)
+          name = name.to_s.gsub(/_\w/) { |i| i.delete("_").upcase }.to_sym
         end
         value = convert_options(value) if value.is_a? Hash
         converted[name] = value
@@ -130,11 +123,11 @@ module AutoprefixerRails
       path = Pathname(file).expand_path
 
       while path.parent != path
-        config1 = path.join('browserslist')
-        return config1.read if config1.exist? and not config1.directory?
+        config1 = path.join("browserslist")
+        return config1.read if config1.exist? && !config1.directory?
 
-        config2 = path.join('.browserslistrc')
-        return config2.read if config2.exist? and not config1.directory?
+        config2 = path.join(".browserslistrc")
+        return config2.read if config2.exist? && !config1.directory?
 
         path = path.parent
       end
@@ -145,22 +138,22 @@ module AutoprefixerRails
     # Lazy load for JS library
     def runtime
       @runtime ||= begin
-        if ExecJS.eval('typeof Uint8Array') != 'function'
-          if ExecJS.runtime.name.start_with?('therubyracer')
-            raise "ExecJS::RubyRacerRuntime is not supported. " +
-                  "Please replace therubyracer with mini_racer " +
-                  "in your Gemfile or use Node.js as ExecJS runtime."
+        if ExecJS.eval("typeof Uint8Array") != "function"
+          if ExecJS.runtime.name.start_with?("therubyracer")
+            raise "ExecJS::RubyRacerRuntime is not supported. " \
+              "Please replace therubyracer with mini_racer " \
+              "in your Gemfile or use Node.js as ExecJS runtime."
           else
-            raise "#{ExecJS.runtime.name} runtime does’t support ES6. " +
-                  "Please update or replace your current ExecJS runtime."
+            raise "#{ExecJS.runtime.name} runtime does’t support ES6. " \
+              "Please update or replace your current ExecJS runtime."
           end
         end
 
         if ExecJS.runtime == ExecJS::Runtimes::Node
-          version = ExecJS.runtime.eval('process.version')
+          version = ExecJS.runtime.eval("process.version")
           first = version.match(/^v(\d+)/)[1].to_i
           if first < 6
-            raise "Autoprefixer doesn’t support Node #{ version }. Update it."
+            raise "Autoprefixer doesn’t support Node #{version}. Update it."
           end
         end
 
@@ -179,7 +172,7 @@ module AutoprefixerRails
 
     # Return processor JS with some extra methods
     def build_js
-      'var global = this;' + read_js + process_proxy
+      "var global = this;" + read_js + process_proxy
     end
 
     # Return JS code for process method proxy
