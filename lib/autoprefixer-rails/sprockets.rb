@@ -49,7 +49,7 @@ module AutoprefixerRails
     end
 
     # Sprockets 2 API new and render
-    def initialize(filename, &block)
+    def initialize(filename)
       @filename = filename
       @source   = yield
     end
