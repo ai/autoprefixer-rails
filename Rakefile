@@ -10,9 +10,11 @@ RSpec::Core::RakeTask.new
 task default: [:spec, "standard:fix"]
 
 task :clobber_package do
-  rm_r "pkg"
-rescue
-  nil
+  begin
+    rm_r "pkg"
+  rescue
+    nil
+  end
 end
 
 desc "Delete all generated files"
@@ -30,11 +32,13 @@ task :test_all do
       warn "  export BUNDLE_GEMFILE=#{gemfile}"
       warn "  #{cmd}"
       PTY.spawn(env, cmd) do |r, _w, pid|
-        r.each_line { |l| puts l }
-      rescue Errno::EIO
-        # Errno:EIO error means that the process has finished giving output.
-      ensure
-        ::Process.wait pid
+        begin
+          r.each_line { |l| puts l }
+        rescue Errno::EIO
+          # Errno:EIO error means that the process has finished giving output.
+        ensure
+          ::Process.wait pid
+        end
       end
       [$? && $?.exitstatus == 0, gemfile]
     end
