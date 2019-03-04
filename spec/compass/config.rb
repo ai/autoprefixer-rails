@@ -1,7 +1,6 @@
-# rubocop:disable Lint/UselessAssignment
-sourcemap = true
-output_style = :compressed
-# rubocop:enable Lint/UselessAssignment
+self.sourcemap = true
+self.output_style = :compressed
+self.sass_options = {cache: false}
 
 require "rubygems"
 require "bundler"
