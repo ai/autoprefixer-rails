@@ -1,1 +1,1 @@
-App::Application.config.secret_key_base = 'test'
+App::Application.config.secret_key_base = "test"

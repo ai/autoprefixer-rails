@@ -1,4 +1,4 @@
-require 'pathname'
+require "pathname"
 
 module AutoprefixerRails
   # Register autoprefixer postprocessor in Sprockets and fix common issues
@@ -16,11 +16,11 @@ module AutoprefixerRails
 
     # Add prefixes to `css`
     def self.run(filename, css)
-      output = filename.chomp(File.extname(filename)) + '.css'
+      output = filename.chomp(File.extname(filename)) + ".css"
       result = @processor.process(css, from: filename, to: output)
 
       result.warnings.each do |warning|
-        $stderr.puts "autoprefixer: #{ warning }"
+        warn "autoprefixer: #{warning}"
       end
 
       result.css
@@ -29,10 +29,10 @@ module AutoprefixerRails
     # Register postprocessor in Sprockets depend on issues with other gems
     def self.install(env)
       if ::Sprockets::VERSION.to_f < 4
-        env.register_postprocessor('text/css',
+        env.register_postprocessor("text/css",
           ::AutoprefixerRails::Sprockets)
       else
-        env.register_bundle_processor('text/css',
+        env.register_bundle_processor("text/css",
           ::AutoprefixerRails::Sprockets)
       end
     end
@@ -40,18 +40,18 @@ module AutoprefixerRails
     # Register postprocessor in Sprockets depend on issues with other gems
     def self.uninstall(env)
       if ::Sprockets::VERSION.to_f < 4
-        env.unregister_postprocessor('text/css',
+        env.unregister_postprocessor("text/css",
           ::AutoprefixerRails::Sprockets)
       else
-        env.unregister_bundle_processor('text/css',
+        env.unregister_bundle_processor("text/css",
           ::AutoprefixerRails::Sprockets)
       end
     end
 
     # Sprockets 2 API new and render
-    def initialize(filename, &block)
+    def initialize(filename)
       @filename = filename
-      @source   = block.call
+      @source   = yield
     end
 
     # Sprockets 2 API new and render

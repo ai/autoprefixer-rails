@@ -1,31 +1,36 @@
-# coding: utf-8
-require 'rubygems'
+require "rubygems"
 
-require 'bundler/setup'
+require "bundler/setup"
 Bundler::GemHelper.install_tasks
 
-require 'rspec/core/rake_task'
+require "standard/rake"
+
+require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
-task :default => :spec
+task default: [:spec, "standard:fix"]
 
 task :clobber_package do
-  rm_r 'pkg' rescue nil
+  begin
+    rm_r "pkg"
+  rescue
+    nil
+  end
 end
 
-desc 'Delete all generated files'
-task :clobber => [:clobber_package]
+desc "Delete all generated files"
+task clobber: [:clobber_package]
 
-desc 'Test all Gemfiles from spec/*.gemfile'
+desc "Test all Gemfiles from spec/*.gemfile"
 task :test_all do
-  require 'pty'
-  require 'shellwords'
-  cmd      = 'bundle update && bundle exec rake --trace'
-  statuses = Dir.glob('./sprockets*.gemfile').map do |gemfile|
+  require "pty"
+  require "shellwords"
+  cmd      = "bundle update && bundle exec rake --trace"
+  statuses = Dir.glob("./sprockets*.gemfile").map { |gemfile|
     Bundler.with_clean_env do
-      env = { 'BUNDLE_GEMFILE' => gemfile }
-      $stderr.puts "Testing #{ File.basename(gemfile) }:"
-      $stderr.puts "  export BUNDLE_GEMFILE=#{ gemfile }"
-      $stderr.puts "  #{ cmd }"
+      env = {"BUNDLE_GEMFILE" => gemfile}
+      warn "Testing #{File.basename(gemfile)}:"
+      warn "  export BUNDLE_GEMFILE=#{gemfile}"
+      warn "  #{cmd}"
       PTY.spawn(env, cmd) do |r, _w, pid|
         begin
           r.each_line { |l| puts l }
@@ -37,12 +42,12 @@ task :test_all do
       end
       [$? && $?.exitstatus == 0, gemfile]
     end
-  end
+  }
   failed = statuses.reject(&:first).map(&:last)
   if failed.empty?
-    $stderr.puts "✓ Tests pass with all #{ statuses.size } gemfiles"
+    warn "✓ Tests pass with all #{statuses.size} gemfiles"
   else
-    $stderr.puts "❌ FAILING #{ failed * "\n" }"
+    warn "❌ FAILING #{failed * "\n"}"
     exit 1
   end
 end

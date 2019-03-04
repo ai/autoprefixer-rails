@@ -1,6 +1,6 @@
-require 'rake'
-require 'rake/tasklib'
-require 'autoprefixer-rails'
+require "rake"
+require "rake/tasklib"
+require "autoprefixer-rails"
 
 module Rake
   # Define task to inspect Autoprefixer browsers, properties and values.
@@ -18,7 +18,7 @@ module Rake
 
     def define
       namespace :autoprefixer do
-        desc 'Show selected browsers and prefixed CSS properties and values'
+        desc "Show selected browsers and prefixed CSS properties and values"
         task :info do
           puts @processor.info
         end
