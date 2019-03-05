@@ -9222,6 +9222,11 @@ function () {
               word: 'auto-fill'
             });
             return undefined;
+          } else if (/^grid-template/.test(prop) && value.indexOf('[') !== -1) {
+            result.warn('Autoprefixer currently does not support line names. ' + 'Try using grid-template-areas instead.', {
+              node: decl,
+              word: '['
+            });
           }
         }
 
@@ -28701,10 +28706,9 @@ module.exports = {
       "8": "1 C d J M H I"
     },
     C: {
-      "2": "1 dB EB F N K D G E A B C d J M H I O P Q R XB WB",
+      "2": "1 2 3 6 7 8 9 dB EB F N K D G E A B C d J M H I O P Q R AB CB DB XB WB",
       "194": "S T U V W X Y",
-      "200": "0 5 Z a b c e f g h i j k l m n o L q r s t u v w x y z GB",
-      "328": "2 3 6 7 8 9 AB CB DB"
+      "200": "0 5 Z a b c e f g h i j k l m n o L q r s t u v w x y z GB"
     },
     D: {
       "1": "0 2 3 5 6 7 8 9 c e f g h i j k l m n o L q r s t u v w x y z GB AB CB DB QB iB KB IB LB",
@@ -28742,7 +28746,7 @@ module.exports = {
       "1": "IB"
     },
     M: {
-      "200": "2"
+      "2": "2"
     },
     N: {
       "2": "A B"
@@ -28760,8 +28764,8 @@ module.exports = {
       "1": "6B"
     }
   },
-  B: 5,
-  C: "Custom Elements v0"
+  B: 7,
+  C: "Custom Elements (deprecated V0 spec)"
 };
 
 },{}],265:[function(require,module,exports){
@@ -28841,7 +28845,7 @@ module.exports = {
     }
   },
   B: 1,
-  C: "Custom Elements v1"
+  C: "Custom Elements (V1)"
 };
 
 },{}],266:[function(require,module,exports){
@@ -42986,7 +42990,8 @@ module.exports = {
       "2": "0 1 5 6 7 8 9 dB EB F N K D G E A B C d J M H I O P Q R S T U V W X Y Z a b c e f g h i j k l m n o L q r s t u v w x y z GB XB WB"
     },
     D: {
-      "2": "0 1 2 3 5 6 7 8 9 F N K D G E A B C d J M H I O P Q R S T U V W X Y Z a b c e f g h i j k l m n o L q r s t u v w x y z GB AB CB DB QB iB KB IB LB MB NB OB"
+      "1": "NB OB",
+      "2": "0 1 2 3 5 6 7 8 9 F N K D G E A B C d J M H I O P Q R S T U V W X Y Z a b c e f g h i j k l m n o L q r s t u v w x y z GB AB CB DB QB iB KB IB LB MB"
     },
     E: {
       "1": "4 B C VB p YB",
@@ -45577,9 +45582,9 @@ module.exports = {
       "2": "1 C d J M H I"
     },
     C: {
-      "2": "1 dB EB F N K D G E A B C d J M H I O P Q R S T U V W X XB WB",
+      "2": "1 2 3 8 9 dB EB F N K D G E A B C d J M H I O P Q R S T U V W X AB CB DB XB WB",
       "194": "0 5 Y Z a b c e f g h i j k l m n o L q r s t u v w x y z GB",
-      "322": "2 3 6 7 8 9 AB CB DB"
+      "322": "6 7"
     },
     D: {
       "1": "0 2 3 6 7 8 9 e f g h i j k l m n o L q r s t u v w x y z GB AB CB DB QB iB KB IB LB",
@@ -45635,8 +45640,8 @@ module.exports = {
       "1": "6B"
     }
   },
-  B: 5,
-  C: "Shadow DOM v0"
+  B: 7,
+  C: "Shadow DOM (deprecated V0 spec)"
 };
 
 },{}],497:[function(require,module,exports){
@@ -45711,7 +45716,7 @@ module.exports = {
     }
   },
   B: 5,
-  C: "Shadow DOM v1"
+  C: "Shadow DOM (V1)"
 };
 
 },{}],498:[function(require,module,exports){
@@ -52860,6 +52865,12 @@ module.exports=[
     "name": "nodejs",
     "version": "6.16.0",
     "date": "2018-12-26",
+    "lts": "Boron"
+  },
+  {
+    "name": "nodejs",
+    "version": "6.17.0",
+    "date": "2019-02-28",
     "lts": "Boron"
   },
   {
