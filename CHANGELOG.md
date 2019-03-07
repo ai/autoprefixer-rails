@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.4.10.1
+* Fix non-Rails environments support (by Junya Ogura).
+* Update Can I Use data.
+
 ## 9.4.10
 * Add warning for named Grid rows.
 
