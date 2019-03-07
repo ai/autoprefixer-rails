@@ -9,4 +9,17 @@ describe AutoprefixerRails::Processor do
       "test" => ["ios 8"],
     })
   end
+
+  context "without Rails" do
+    before do
+      hide_const("Rails")
+    end
+
+    it "doesn't raise error during processing" do
+      processor = AutoprefixerRails::Processor.new
+      expect {
+        processor.process("")
+      }.not_to raise_error
+    end
+  end
 end
