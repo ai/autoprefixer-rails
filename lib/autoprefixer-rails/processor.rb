@@ -76,7 +76,7 @@ module AutoprefixerRails
     private
 
     def params_with_browsers(from = nil)
-      from ||= if defined? Rails&.respond_to?(:root) && Rails&.root
+      from ||= if defined?(Rails) && Rails.respond_to?(:root) && Rails.root
         Rails.root.join("app/assets/stylesheets").to_s
       else
         "."
