@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.4.10.2
+* Fix Ruby < 2.4 support (by Jack Ford).
+* Update Can I Use data.
+
 ## 9.4.10.1
 * Fix non-Rails environments support (by Junya Ogura).
 * Update Can I Use data.
