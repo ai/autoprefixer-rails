@@ -63,7 +63,7 @@ module AutoprefixerRails
         .map(&:strip)
         .reject(&:empty?)
         .each do |line|
-        if IS_SECTION.match?(line)
+        if IS_SECTION =~ line
           current = line.match(IS_SECTION)[1].strip
           sections[current] ||= []
         else
@@ -108,7 +108,7 @@ module AutoprefixerRails
       converted = {}
 
       opts.each_pair do |name, value|
-        if /_/.match?(name)
+        if /_/ =~ name
           name = name.to_s.gsub(/_\w/) { |i| i.delete("_").upcase }.to_sym
         end
         value = convert_options(value) if value.is_a? Hash
