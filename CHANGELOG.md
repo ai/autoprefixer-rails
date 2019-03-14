@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.5 “Draco dormiens nunquam titillandus”
+* Add `mask-composite` support (by Semen Levenson).
+
 ## 9.4.10.2
 * Fix Ruby < 2.4 support (by Jack Ford).
 * Update Can I Use data.
