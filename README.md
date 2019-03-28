@@ -244,3 +244,11 @@ to JS style, so you can use `map: { sources_content: false }`
 instead of camelcase `sourcesContent`.
 
 [PostCSS docs]: https://github.com/postcss/postcss#source-map-1
+
+
+## Security Contact
+
+To report a security vulnerability, please use the [Tidelift security contact].
+Tidelift will coordinate the fix and disclosure.
+
+[Tidelift security contact]: https://tidelift.com/security
