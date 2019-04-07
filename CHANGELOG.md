@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.5.1
+* Fix `backdrop-filter` for Edge (by Oleh Aloshkin).
+* Fix `min-resolution` media query support in Firefox < 16.
+
 ## 9.5 “Draco dormiens nunquam titillandus”
 * Add `mask-composite` support (by Semen Levenson).
 
