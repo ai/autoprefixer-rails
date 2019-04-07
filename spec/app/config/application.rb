@@ -10,5 +10,7 @@ end
 module App
   class Application < Rails::Application
     config.assets.enabled = true
+    config.sass.line_comments = false
+    config.sass.inline_source_maps = true
   end
 end
