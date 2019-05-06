@@ -14,7 +14,7 @@ begin
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          if defined? app.assets && !app.assets.nil?
+          if defined?(app.assets) && !app.assets.nil?
             AutoprefixerRails.install(app.assets, config)
           end
         end
