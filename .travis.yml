@@ -3,23 +3,12 @@ rvm:
   - "2.6"
   - "2.5"
   - "2.4"
-  - "2.3"
-git:
-  depth: 5
 cache: bundler
 before_install:
   - gem update --system
   - nvm install node
-env:
-  - EXECJS_RUNTIME=Node
-  - EXECJS_RUNTIME=MiniRacer
+env: "EXECJS_RUNTIME=MiniRacer"
 matrix:
-  exclude:
-    - rvm: "2.3"
-      env: "EXECJS_RUNTIME=Node"
-
-    - rvm: "2.4"
-      env: "EXECJS_RUNTIME=Node"
-
-    - rvm: "2.5"
+  include:
+    - rvm: "2.6"
       env: "EXECJS_RUNTIME=Node"
