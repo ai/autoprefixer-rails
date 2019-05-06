@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.5.1.1
+* Fix `register_postprocessor' for nil:NilClass` error.
+* Update Can I Use data.
+
 ## 9.5.1
 * Fix `backdrop-filter` for Edge (by Oleh Aloshkin).
 * Fix `min-resolution` media query support in Firefox < 16.
