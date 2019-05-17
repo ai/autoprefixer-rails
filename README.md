@@ -102,6 +102,7 @@ If you need to specify browsers for your Rails project, you can save them to
 
     ```yaml
     flexbox: no-2009
+    grid: true # required to enable `-ms-` prefix output for CSS Grids
     browsers:
       - "> 1%"
       - "last 2 versions"
