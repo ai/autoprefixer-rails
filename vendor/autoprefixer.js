@@ -805,6 +805,8 @@ var postcss = require('postcss');
 
 var agents = require('caniuse-lite').agents;
 
+var chalk = require('chalk');
+
 var Browsers = require('./browsers');
 
 var Prefixes = require('./prefixes');
@@ -812,6 +814,8 @@ var Prefixes = require('./prefixes');
 var data = require('../data/prefixes');
 
 var info = require('./info');
+
+var WARNING = '\n' + '  Replace Autoprefixer `browsers` option to Browserslist config.\n' + '  Use `browserslist` key in `package.json` or `.browserslistrc` file.\n' + '\n' + '  Using `browsers` option cause some error. Browserslist config \n' + '  can be used for Babel, Autoprefixer, postcss-normalize and other tools.\n' + '\n' + '  If you really need to use option, rename it to `overrideBrowserslist`.\n' + '\n' + '  Learn more at:\n' + '  https://github.com/browserslist/browserslist#readme\n' + '  https://twitter.com/browserslist\n' + '\n';
 
 function isPlainObject(obj) {
   return Object.prototype.toString.apply(obj) === '[object Object]';
@@ -861,12 +865,22 @@ module.exports = postcss.plugin('autoprefixer', function () {
   }
 
   if (options.browser) {
-    throw new Error('Change `browser` option to `browsers` in Autoprefixer');
+    throw new Error('Change `browser` option to `overrideBrowserslist` in Autoprefixer');
   } else if (options.browserslist) {
-    throw new Error('Change `browserslist` option to `browsers` in Autoprefixer');
+    throw new Error('Change `browserslist` option to `overrideBrowserslist` in Autoprefixer');
   }
 
-  if (options.browsers) {
+  if (options.overrideBrowserslist) {
+    reqs = options.overrideBrowserslist;
+  } else if (options.browsers) {
+    if (chalk.red) {
+      console.warn(chalk.red(WARNING.replace(/`[^`]+`/g, function (i) {
+        return chalk.yellow(i.slice(1, -1));
+      })));
+    } else {
+      console.warn(WARNING);
+    }
+
     reqs = options.browsers;
   }
 
@@ -940,7 +954,7 @@ module.exports.info = function () {
 };
 
 }).call(this,require('_process'))
-},{"../data/prefixes":1,"./browsers":5,"./info":62,"./prefixes":66,"_process":639,"browserslist":78,"caniuse-lite":601,"postcss":627}],4:[function(require,module,exports){
+},{"../data/prefixes":1,"./browsers":5,"./info":62,"./prefixes":66,"_process":639,"browserslist":78,"caniuse-lite":601,"chalk":75,"postcss":627}],4:[function(require,module,exports){
 "use strict";
 
 function last(array) {

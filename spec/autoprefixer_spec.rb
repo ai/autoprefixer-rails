@@ -12,7 +12,7 @@ describe AutoprefixerRails do
 
   it "process CSS for selected browsers" do
     css = "a {\n    tab-size: 2\n}"
-    result = AutoprefixerRails.process(css, browsers: ["opera 12"])
+    result = AutoprefixerRails.process(css, overrideBrowserslist: ["opera 12"])
     expect(result.css).to eq "a {\n" \
       "    -o-tab-size: 2;\n" \
       "       tab-size: 2\n" \
@@ -21,7 +21,7 @@ describe AutoprefixerRails do
 
   it "process @supports" do
     css = "@supports (display: flex) { }"
-    result = AutoprefixerRails.process(css, browsers: ["chrome 28"])
+    result = AutoprefixerRails.process(css, overrideBrowserslist: ["chrome 28"])
     expect(result.css).to eq(
       "@supports ((display: -webkit-flex) or (display: flex)) { }"
     )
@@ -64,7 +64,7 @@ describe AutoprefixerRails do
   end
 
   it "shows debug" do
-    info = AutoprefixerRails.processor(browsers: ["chrome 25"]).info
+    info = AutoprefixerRails.processor(overrideBrowserslist: ["chrome 25"]).info
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)
     expect(info).to match(/  transition: webkit/)
   end
@@ -78,7 +78,7 @@ describe AutoprefixerRails do
 
   it "shows correct error on country statistics" do
     expect {
-      AutoprefixerRails.process("", browsers: "> 1% in US")
+      AutoprefixerRails.process("", overrideBrowserslist: "> 1% in US")
     }.to raise_error(/Use Autoprefixer with webpack/)
   end
 
@@ -86,7 +86,7 @@ describe AutoprefixerRails do
     before :each do
       @assets = Sprockets::Environment.new
       @assets.append_path(@dir.join("app/app/assets/stylesheets"))
-      AutoprefixerRails.install(@assets, browsers: ["chrome 25"])
+      AutoprefixerRails.install(@assets, overrideBrowserslist: ["chrome 25"])
     end
 
     it "integrates with Sprockets" do

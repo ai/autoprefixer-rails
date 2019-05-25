@@ -83,13 +83,13 @@ module AutoprefixerRails
       end
 
       params = @params
-      if !params.key?(:browsers) && from
+      if !params.key?(:browsers) && !params.key?(:overrideBrowserslist) && from
         file = find_config(from)
         if file
           env    = params[:env].to_s || "development"
           config = parse_config(file)
           params = params.dup
-          params[:browsers] = (config[env] || config["defaults"])
+          params[:overrideBrowserslist] = (config[env] || config["defaults"])
         end
       end
 
