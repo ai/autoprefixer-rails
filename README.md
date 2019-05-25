@@ -87,27 +87,15 @@ support to add vendor prefixes automatically using the Asset Pipeline:
 }
 ```
 
-If you need to specify browsers for your Rails project, you can save them to
+If you need to specify browsers for your Rails project, you can save them
+to `.browserslistrc` and place it under `app/assets/stylesheets/`
+or any of its ancestor directories
 
-* `browserslist` and place it under `app/assets/stylesheets/`
-   or any of its ancestor directories
-
-    ```
-    > 1%
-    last 2 versions
-    IE > 8 # comment
-    ```
-
-* Or `config/autoprefixer.yml`
-
-    ```yaml
-    flexbox: no-2009
-    grid: true # required to enable `-ms-` prefix output for CSS Grids
-    browsers:
-      - "> 1%"
-      - "last 2 versions"
-      - "IE > 8"
-    ```
+```
+> 1%
+last 2 versions
+IE > 8 # comment
+```
 
 See [Browserslist docs] for config format. But `> 5% in US` query is not
 supported in Rails, because of ExecJS limitations. You should migrate to webpack
@@ -153,12 +141,6 @@ If you need to call Autoprefixer from plain Ruby code, it’s very easy:
 ```ruby
 require "autoprefixer-rails"
 prefixed = AutoprefixerRails.process(css, from: 'main.css').css
-```
-
-You can specify browsers with the `browsers` option:
-
-```ruby
-AutoprefixerRails.process(css, from: 'a.css', browsers: ['> 1%', 'ie 10']).css
 ```
 
 ### Compass
