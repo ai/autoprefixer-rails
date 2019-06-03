@@ -19,6 +19,15 @@ describe AutoprefixerRails do
       "}"
   end
 
+  it "has browsers option" do
+    css = "a {\n    tab-size: 2\n}"
+    result = AutoprefixerRails.process(css, browsers: ["opera 12"])
+    expect(result.css).to eq "a {\n" \
+      "    -o-tab-size: 2;\n" \
+      "       tab-size: 2\n" \
+      "}"
+  end
+
   it "process @supports" do
     css = "@supports (display: flex) { }"
     result = AutoprefixerRails.process(css, overrideBrowserslist: ["chrome 28"])
