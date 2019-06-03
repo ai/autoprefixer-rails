@@ -1,5 +1,10 @@
 # Change Log
 
+## 9.6 “Nunc id vides, nunc ne vides”
+* Add warning-less `overrideBrowserslist` option.
+* Add `text-orientation` support.
+* Add `min-resolution: 2x` alias support.
+
 ## 9.5.1.1
 * Fix `register_postprocessor' for nil:NilClass` error.
 * Update Can I Use data.
