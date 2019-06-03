@@ -880,12 +880,14 @@ module.exports = postcss.plugin('autoprefixer', function () {
   if (options.overrideBrowserslist) {
     reqs = options.overrideBrowserslist;
   } else if (options.browsers) {
-    if (chalk.red) {
-      console.warn(chalk.red(WARNING.replace(/`[^`]+`/g, function (i) {
-        return chalk.yellow(i.slice(1, -1));
-      })));
-    } else {
-      console.warn(WARNING);
+    if (typeof console !== 'undefined' && console.warn) {
+      if (chalk && chalk.red) {
+        console.warn(chalk.red(WARNING.replace(/`[^`]+`/g, function (i) {
+          return chalk.yellow(i.slice(1, -1));
+        })));
+      } else {
+        console.warn(WARNING);
+      }
     }
 
     reqs = options.browsers;
