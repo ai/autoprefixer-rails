@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.6.1
+* Fix `-webkit-line-clamp` truncating multi-line text support.
+
 ## 9.6 “Nunc id vides, nunc ne vides”
 * Add warning-less `overrideBrowserslist` option.
 * Add `text-orientation` support.
