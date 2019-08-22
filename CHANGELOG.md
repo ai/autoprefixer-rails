@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.6.1.1
+* Update Can I Use data.
+
 ## 9.6.1
 * Fix `-webkit-line-clamp` truncating multi-line text support.
 
