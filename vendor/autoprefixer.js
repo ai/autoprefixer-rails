@@ -9332,7 +9332,7 @@ function () {
 
     function insideGrid(decl) {
       return decl.parent.nodes.some(function (node) {
-        // if (node.type !== 'decl') return false
+        if (node.type !== 'decl') return false;
         var displayGrid = node.prop === 'display' && /(inline-)?grid/.test(node.value);
         var gridTemplate = node.prop.startsWith('grid-template');
         var gridGap = /^grid-([A-z]+-)?gap/.test(node.prop);
