@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.6.4
+* Now the real fix for `'startsWith' of undefined` error.
+
 ## 9.6.3
 * Fix `Cannot read property 'startsWith' of undefined` error.
 
