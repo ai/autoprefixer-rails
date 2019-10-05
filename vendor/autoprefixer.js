@@ -9331,17 +9331,18 @@ function () {
     });
 
     function insideGrid(decl) {
-      return decl.parent.some(function (subDecl) {
-        var displayGrid = subDecl.prop === 'display' && /(inline-)?grid/.test(subDecl.value);
-        var gridTemplate = subDecl.prop.startsWith('grid-template');
-        var gridGap = /^grid-([A-z]+-)?gap/.test(subDecl.prop);
+      return decl.parent.nodes.some(function (node) {
+        // if (node.type !== 'decl') return false
+        var displayGrid = node.prop === 'display' && /(inline-)?grid/.test(node.value);
+        var gridTemplate = node.prop.startsWith('grid-template');
+        var gridGap = /^grid-([A-z]+-)?gap/.test(node.prop);
         return displayGrid || gridTemplate || gridGap;
       });
     }
 
     function insideFlex(decl) {
-      return decl.parent.some(function (subDecl) {
-        return subDecl.prop === 'display' && /(inline-)?flex/.test(subDecl.value);
+      return decl.parent.some(function (node) {
+        return node.prop === 'display' && /(inline-)?flex/.test(node.value);
       });
     }
 
