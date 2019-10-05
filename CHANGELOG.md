@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.6.2
+* Fix false `Replace fill to stretch` warning.
+
 ## 9.6.1.1
 * Update Can I Use data.
 
