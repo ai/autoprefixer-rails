@@ -9992,8 +9992,12 @@ function () {
         }
       } else if (typeof this.prefixes.options.grid !== 'undefined') {
         value = this.prefixes.options.grid;
-      } else if (typeof process.env.AUTOPREFIX_GRID !== 'undefined') {
-        value = process.env.AUTOPREFIX_GRID === 'autoplace' ? 'autoplace' : true;
+      } else if (typeof process.env.AUTOPREFIXER_GRID !== 'undefined') {
+        if (process.env.AUTOPREFIXER_GRID === 'autoplace') {
+          value = 'autoplace';
+        } else {
+          value = true;
+        }
       } else {
         value = false;
       }
@@ -60973,7 +60977,27 @@ function () {
     }
 
     for (var name in defaults) {
-      this[name] = defaults[name];
+      if (name === 'nodes') {
+        this.nodes = [];
+
+        for (var _iterator = defaults[name], _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+          var _ref;
+
+          if (_isArray) {
+            if (_i >= _iterator.length) break;
+            _ref = _iterator[_i++];
+          } else {
+            _i = _iterator.next();
+            if (_i.done) break;
+            _ref = _i.value;
+          }
+
+          var i = _ref;
+          this.append(i);
+        }
+      } else {
+        this[name] = defaults[name];
+      }
     }
   }
   /**
@@ -61200,8 +61224,8 @@ function () {
         nodes[_key] = arguments[_key];
       }
 
-      for (var _i = 0, _nodes = nodes; _i < _nodes.length; _i++) {
-        var node = _nodes[_i];
+      for (var _i2 = 0, _nodes = nodes; _i2 < _nodes.length; _i2++) {
+        var node = _nodes[_i2];
         this.parent.insertBefore(this, node);
       }
 
@@ -62688,7 +62712,7 @@ function () {
      */
 
 
-    this.version = '7.0.18';
+    this.version = '7.0.19';
     /**
      * Plugins added to this processor.
      *
