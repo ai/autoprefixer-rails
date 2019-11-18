@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.7.2
+* Add `-ms-user-select: element` support.
+
 ## 9.7.1
 * Avoid unnecessary transitions in prefixed selectors (by Andrey Alexandrov).
 * Fix `fit-content` for Firefox.
