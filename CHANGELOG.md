@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.7.3
+* Update Can I Use data.
+
 ## 9.7.2
 * Add `-ms-user-select: element` support.
 
