@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.7.4
+* Update Can I Use data.
+
 ## 9.7.3
 * Update Can I Use data.
 
