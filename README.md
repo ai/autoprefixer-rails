@@ -56,7 +56,7 @@ rake tmp:clear
 
 Write your CSS (Sass, Stylus, LESS) rules without vendor prefixes
 and Autoprefixer will apply prefixes for you.
-For example in `app/assets/stylesheet/foobar.sass`:
+For example in `app/assets/stylesheet/foobar.scss`:
 
 ```sass
 :fullscreen a
