@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.7.5
+* Fix `-webkit-stretch` support.
+* Reduce gem file size.
+
 ## 9.7.4
 * Update Can I Use data.
 
