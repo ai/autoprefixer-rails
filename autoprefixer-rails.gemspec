@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
     "values from the Can I Use website."
 
   s.files            = `git ls-files`.split("\n")
+  s.files.reject! { |i| i =~ /^\.|build.sh|Dockerfile|Gemfile/ }
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.extra_rdoc_files = ["README.md", "LICENSE", "CHANGELOG.md"]
   s.require_path     = "lib"
