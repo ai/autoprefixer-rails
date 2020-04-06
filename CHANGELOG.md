@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.7.6
+* Revert `-webkit-stretch` fix.
+
 ## 9.7.5
 * Fix `-webkit-stretch` support.
 * Reduce gem file size.
