@@ -1,5 +1,6 @@
 language: ruby
 rvm:
+  - "2.7"
   - "2.6"
   - "2.5"
 cache: bundler
@@ -9,5 +10,5 @@ before_install:
 env: "EXECJS_RUNTIME=MiniRacer"
 matrix:
   include:
-    - rvm: "2.6"
+    - rvm: "2.7"
       env: "EXECJS_RUNTIME=Node"
