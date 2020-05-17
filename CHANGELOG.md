@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8 “Vigilo Confido”
+* Add `:placeholder-shown` support (by Tanguy Krotoff).
+
 ## 9.7.6
 * Revert `-webkit-stretch` fix.
 
