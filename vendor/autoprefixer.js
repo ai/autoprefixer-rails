@@ -17117,8 +17117,7 @@ module.exports = {
       "2": "I F E D A B hB"
     },
     B: {
-      "1": "O H J K U UB L HB",
-      "16": "C N R"
+      "1": "C N R O H J K U UB L HB"
     },
     C: {
       "1": "0 1 2 3 4 5 6 7 8 9 c d e f g h i j k l m n o p q r s t u v w P y z WB BB GB DB EB CB AB T S M IB JB KB LB MB NB FB PB QB RB U",
