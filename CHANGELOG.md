@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.2
+* Update Can I Use data.
+
 ## 9.8.1
 * Replace `chalk` to `kleur` (by Luke Edwards).
 
