@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.4
+* Reduce JS bundle size.
+
 ## 9.8.3
 * Update Can I Use data.
 
