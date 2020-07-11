@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.5
+* Improved Grid Layout warnings (by Daniel Tonon).
+
 ## 9.8.4
 * Reduce JS bundle size.
 
