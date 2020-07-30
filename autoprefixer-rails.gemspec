@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name        = "autoprefixer-rails"
   s.version     = AutoprefixerRails::VERSION.dup
   s.date        = Time.now.strftime("%Y-%m-%d")
-  s.summary     = "Parse CSS and add vendor prefixes to CSS rules using" \
+  s.summary     = "Parse CSS and add vendor prefixes to CSS rules using " \
     "values from the Can I Use website."
 
   s.files            = `git ls-files`.split("\n")
@@ -19,6 +19,9 @@ Gem::Specification.new do |s|
   s.email    = "andrey@sitnik.ru"
   s.homepage = "https://github.com/ai/autoprefixer-rails"
   s.license  = "MIT"
+  
+  s.post_install_message = "autoprefixer-rails was deprected. " \
+    "Use Node.js’s Autoprefixer with PostCSS instead."
 
   s.add_dependency "execjs", ">= 0"
 

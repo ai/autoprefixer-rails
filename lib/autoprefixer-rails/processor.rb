@@ -18,6 +18,12 @@ module AutoprefixerRails
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
     def process(css, opts = {})
+      if defined?(ActiveSupport::Deprecation)
+        ActiveSupport::Deprecation.warn(
+          "autoprefixer-rails was deprected. " \
+          "Use Node.js’s Autoprefixer with PostCSS instead."
+        )
+      end
       opts = convert_options(opts)
 
       apply_wrapper =
