@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.8.6
+* Fixed `env` option.
+* Added deprecation warning.
+
 ## 9.8.5
 * Improved Grid Layout warnings (by Daniel Tonon).
 
