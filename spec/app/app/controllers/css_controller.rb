@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CssController < ApplicationController
   def test
     file = params[:exact_file] || params[:file] + ".css"

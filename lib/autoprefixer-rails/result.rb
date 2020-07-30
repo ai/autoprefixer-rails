@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AutoprefixerRails
   # Container of prefixed CSS and source map with changes
   class Result

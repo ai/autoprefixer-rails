@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Ruby integration with Autoprefixer JS library, which parse CSS and adds
 # only actual prefixed
 module AutoprefixerRails
