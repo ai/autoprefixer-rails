@@ -64,7 +64,7 @@ module AutoprefixerRails
 
     # Parse Browserslist config
     def parse_config(config)
-      sections = {"defaults" => []}
+      sections = { "defaults" => [] }
       current  = "defaults"
       config.gsub(/#[^\n]*/, "")
         .split(/\n/)

@@ -10,7 +10,7 @@ describe CssController, type: :controller do
 
   def test_file(file)
     if Rails.version.split(".").first.to_i >= 5
-      get :test, params: {file: file}
+      get :test, params: { file: file }
     else
       get :test, file: file
     end

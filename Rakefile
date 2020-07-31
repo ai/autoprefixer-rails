@@ -29,7 +29,7 @@ task :test_all do
   cmd      = "bundle update && bundle exec rake --trace"
   statuses = Dir.glob("./sprockets*.gemfile").map { |gemfile|
     Bundler.with_clean_env do
-      env = {"BUNDLE_GEMFILE" => gemfile}
+      env = { "BUNDLE_GEMFILE" => gemfile }
       warn "Testing #{File.basename(gemfile)}:"
       warn "  export BUNDLE_GEMFILE=#{gemfile}"
       warn "  #{cmd}"
