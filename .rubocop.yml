@@ -2,6 +2,18 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.4
 
+Lint/SuppressedException:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Naming/FileName:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes

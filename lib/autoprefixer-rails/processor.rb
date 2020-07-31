@@ -88,7 +88,7 @@ module AutoprefixerRails
                  Rails.root.join("app/assets/stylesheets").to_s
                else
                  "."
-      end
+               end
 
       params = @params
       if !params.key?(:browsers) && !params.key?(:overrideBrowserslist) && from
@@ -169,7 +169,7 @@ module AutoprefixerRails
 
     # Cache autoprefixer.js content
     def read_js
-      @@js ||= begin
+      @read_js ||= begin
         root = Pathname(File.dirname(__FILE__))
         path = root.join("../../vendor/autoprefixer.js")
         path.read

@@ -42,7 +42,7 @@ task :test_all do
           ::Process.wait pid
         end
       end
-      [$CHILD_STATUS && $CHILD_STATUS.exitstatus == 0, gemfile]
+      [$CHILD_STATUS&.exitstatus&.zero?, gemfile]
     end
   end
   failed = statuses.reject(&:first).map(&:last)
