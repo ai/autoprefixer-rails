@@ -16,9 +16,7 @@ begin
         end
       else
         initializer :setup_autoprefixer, group: :all do |app|
-          if defined?(app.assets) && !app.assets.nil?
-            AutoprefixerRails.install(app.assets, config)
-          end
+          AutoprefixerRails.install(app.assets, config) if defined?(app.assets) && !app.assets.nil?
         end
       end
 
@@ -29,13 +27,14 @@ begin
         roots.each do |root|
           file = File.join(root, "config/autoprefixer.yml")
 
-          if File.exist?(file)
-            parsed = ::YAML.load_file(file)
-            next unless parsed
-            params = parsed
+          next unless File.exist?(file)
 
-            break
-          end
+          parsed = ::YAML.load_file(file)
+          next unless parsed
+
+          params = parsed
+
+          break
         end
 
         params = params.symbolize_keys

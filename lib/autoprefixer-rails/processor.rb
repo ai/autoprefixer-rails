@@ -4,7 +4,7 @@ require "pathname"
 require "execjs"
 require "json"
 
-IS_SECTION = /^\s*\[(.+)\]\s*$/
+IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
 
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
@@ -37,7 +37,7 @@ module AutoprefixerRails
       process_opts = {
         from: plugin_opts.delete(:from),
         to: plugin_opts.delete(:to),
-        map: plugin_opts.delete(:map),
+        map: plugin_opts.delete(:map)
       }
 
       begin
@@ -67,10 +67,10 @@ module AutoprefixerRails
       sections = { "defaults" => [] }
       current  = "defaults"
       config.gsub(/#[^\n]*/, "")
-        .split(/\n/)
-        .map(&:strip)
-        .reject(&:empty?)
-        .each do |line|
+            .split(/\n/)
+            .map(&:strip)
+            .reject(&:empty?)
+            .each do |line|
         if IS_SECTION =~ line
           current = line.match(IS_SECTION)[1].strip
           sections[current] ||= []
@@ -85,9 +85,9 @@ module AutoprefixerRails
 
     def params_with_browsers(from = nil)
       from ||= if defined?(Rails) && Rails.respond_to?(:root) && Rails.root
-        Rails.root.join("app/assets/stylesheets").to_s
-      else
-        "."
+                 Rails.root.join("app/assets/stylesheets").to_s
+               else
+                 "."
       end
 
       params = @params
@@ -107,7 +107,7 @@ module AutoprefixerRails
     # Convert params to JS string and add browsers from Browserslist config
     def js_params
       "{ " +
-        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}"}.join(", ") +
+        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}" }.join(", ") +
         " }"
     end
 
@@ -160,9 +160,7 @@ module AutoprefixerRails
         if ExecJS.runtime == ExecJS::Runtimes::Node
           version = ExecJS.runtime.eval("process.version")
           first = version.match(/^v(\d+)/)[1].to_i
-          if first < 6
-            raise "Autoprefixer doesn’t support Node #{version}. Update it."
-          end
+          raise "Autoprefixer doesn’t support Node #{version}. Update it." if first < 6
         end
 
         ExecJS.compile(build_js)

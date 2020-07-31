@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require File.expand_path("../boot", __FILE__)
+require File.expand_path("boot", __dir__)
 
 require "action_controller/railtie"
 require "sprockets/railtie"
 
-if defined?(Bundler)
-  Bundler.require(*Rails.groups(assets: %w[development test]))
-end
+Bundler.require(*Rails.groups(assets: %w[development test])) if defined?(Bundler)
 
 module App
   class Application < Rails::Application

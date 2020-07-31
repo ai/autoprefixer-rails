@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-require File.expand_path("../config/application", __FILE__)
+require File.expand_path("config/application", __dir__)
 App::Application.load_tasks

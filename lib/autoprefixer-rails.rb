@@ -8,9 +8,7 @@ module AutoprefixerRails
   # Add prefixes to `css`. See `Processor#process` for options.
   def self.process(css, opts = {})
     params = {}
-    if opts.key?(:overrideBrowserslist)
-      params[:overrideBrowserslist] = opts.delete(:overrideBrowserslist)
-    end
+    params[:overrideBrowserslist] = opts.delete(:overrideBrowserslist) if opts.key?(:overrideBrowserslist)
     params[:browsers] = opts.delete(:browsers) if opts.key?(:browsers)
     params[:cascade]  = opts.delete(:cascade)  if opts.key?(:cascade)
     params[:remove]   = opts.delete(:remove)   if opts.key?(:remove)
