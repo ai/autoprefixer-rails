@@ -10,9 +10,8 @@ Gem::Specification.new do |s|
   s.summary     = "Parse CSS and add vendor prefixes to CSS rules using " \
     "values from the Can I Use website."
 
-  s.files = `git ls-files`.split("\n")
-  s.files.reject! { |i| i =~ /^\.|build.sh|Dockerfile|Gemfile/ }
-  s.test_files       = `git ls-files -- {spec}/*`.split("\n")
+  s.files = Dir["{lib,vendor}/**/*", "LICENSE", "CHANGELOG.md", "README.md"]
+  s.test_files       = Dir["spec/**/*"].reject { |f| File.directory?(f) }
   s.extra_rdoc_files = ["README.md", "LICENSE", "CHANGELOG.md"]
   s.require_path     = "lib"
   s.required_ruby_version = ">= 2.4"
@@ -30,7 +29,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "rubocop"
+  s.add_development_dependency "rubocop", "~> 0.85.1"
+  s.add_development_dependency "rubocop-packaging", "~> 0.1.1"
   s.add_development_dependency "standard"
 
   s.metadata["changelog_uri"] = "https://github.com/ai/autoprefixer-rails/blob/master/CHANGELOG.md"
