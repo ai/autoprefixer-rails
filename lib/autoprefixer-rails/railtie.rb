@@ -4,7 +4,7 @@ require "yaml"
 
 begin
   module AutoprefixedRails
-    class Railtie < ::Rails::Railtie
+    class Railtie < ::Rails::Railtie # :nodoc:
       rake_tasks do |app|
         require "rake/autoprefixer_tasks"
         Rake::AutoprefixerTasks.new(config) if defined? app.assets

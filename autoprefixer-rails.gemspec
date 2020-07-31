@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.extra_rdoc_files = ["README.md", "LICENSE", "CHANGELOG.md"]
   s.require_path     = "lib"
-  s.required_ruby_version = ">= 2.0"
+  s.required_ruby_version = ">= 2.4"
 
   s.author   = "Andrey Sitnik"
   s.email    = "andrey@sitnik.ru"
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "rubocop"
   s.add_development_dependency "standard"
 
   s.metadata["changelog_uri"] = "https://github.com/ai/autoprefixer-rails/blob/master/CHANGELOG.md"
