@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path("../lib/autoprefixer-rails/version", __FILE__)
+require File.expand_path("lib/autoprefixer-rails/version", __dir__)
 
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "Parse CSS and add vendor prefixes to CSS rules using " \
     "values from the Can I Use website."
 
-  s.files            = `git ls-files`.split("\n")
+  s.files = `git ls-files`.split("\n")
   s.files.reject! { |i| i =~ /^\.|build.sh|Dockerfile|Gemfile/ }
   s.test_files       = `git ls-files -- {spec}/*`.split("\n")
   s.extra_rdoc_files = ["README.md", "LICENSE", "CHANGELOG.md"]
@@ -21,14 +21,14 @@ Gem::Specification.new do |s|
   s.email    = "andrey@sitnik.ru"
   s.homepage = "https://github.com/ai/autoprefixer-rails"
   s.license  = "MIT"
-  
+
   s.post_install_message = "autoprefixer-rails was deprected. " \
     "Use Node.js’s Autoprefixer with PostCSS instead."
 
   s.add_dependency "execjs", ">= 0"
 
-  s.add_development_dependency "rake"
   s.add_development_dependency "rails"
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "standard"
 

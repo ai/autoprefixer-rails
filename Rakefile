@@ -14,7 +14,7 @@ task default: [:spec, "standard:fix"]
 task :clobber_package do
   begin
     rm_r "pkg"
-  rescue
+  rescue StandardError
     nil
   end
 end
@@ -27,7 +27,7 @@ task :test_all do
   require "pty"
   require "shellwords"
   cmd      = "bundle update && bundle exec rake --trace"
-  statuses = Dir.glob("./sprockets*.gemfile").map { |gemfile|
+  statuses = Dir.glob("./sprockets*.gemfile").map do |gemfile|
     Bundler.with_clean_env do
       env = { "BUNDLE_GEMFILE" => gemfile }
       warn "Testing #{File.basename(gemfile)}:"
@@ -42,9 +42,9 @@ task :test_all do
           ::Process.wait pid
         end
       end
-      [$? && $?.exitstatus == 0, gemfile]
+      [$CHILD_STATUS && $CHILD_STATUS.exitstatus == 0, gemfile]
     end
-  }
+  end
   failed = statuses.reject(&:first).map(&:last)
   if failed.empty?
     warn "✓ Tests pass with all #{statuses.size} gemfiles"
