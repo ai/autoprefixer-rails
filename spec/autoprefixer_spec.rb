@@ -44,7 +44,7 @@ describe AutoprefixerRails do
   end
 
   it "generates separated source map" do
-    result = AutoprefixerRails.process(@css, map: {inline: false})
+    result = AutoprefixerRails.process(@css, map: { inline: false })
     expect(result.map).to be_a(String)
   end
 
@@ -55,7 +55,7 @@ describe AutoprefixerRails do
   end
 
   it "includes sourcesContent by default" do
-    map = AutoprefixerRails.process("a{}", map: {inline: false}).map
+    map = AutoprefixerRails.process("a{}", map: { inline: false }).map
     expect(map).to include("sourcesContent")
   end
 
