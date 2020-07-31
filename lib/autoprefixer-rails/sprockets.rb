@@ -32,10 +32,10 @@ module AutoprefixerRails
     def self.install(env)
       if ::Sprockets::VERSION.to_f < 4
         env.register_postprocessor("text/css",
-          ::AutoprefixerRails::Sprockets)
+                                   ::AutoprefixerRails::Sprockets)
       else
         env.register_bundle_processor("text/css",
-          ::AutoprefixerRails::Sprockets)
+                                      ::AutoprefixerRails::Sprockets)
       end
     end
 
@@ -43,10 +43,10 @@ module AutoprefixerRails
     def self.uninstall(env)
       if ::Sprockets::VERSION.to_f < 4
         env.unregister_postprocessor("text/css",
-          ::AutoprefixerRails::Sprockets)
+                                     ::AutoprefixerRails::Sprockets)
       else
         env.unregister_bundle_processor("text/css",
-          ::AutoprefixerRails::Sprockets)
+                                        ::AutoprefixerRails::Sprockets)
       end
     end
 
