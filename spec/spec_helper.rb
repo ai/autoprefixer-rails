@@ -3,7 +3,7 @@
 ENV["RAILS_ENV"] ||= "test"
 
 require_relative "app/config/environment"
-require_relative "../lib/autoprefixer-rails"
+require "autoprefixer-rails"
 
 require "rspec/rails"
 
