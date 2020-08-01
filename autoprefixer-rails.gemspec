@@ -22,7 +22,8 @@ Gem::Specification.new do |s|
   s.license  = "MIT"
 
   s.post_install_message = "autoprefixer-rails was deprected. " \
-    "Use Node.js’s Autoprefixer with PostCSS instead."
+    "See the migration guide:\n" \ 
+    "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
 
   s.add_dependency "execjs", ">= 0"
 

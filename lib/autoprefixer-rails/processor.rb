@@ -22,8 +22,8 @@ module AutoprefixerRails
     def process(css, opts = {})
       if defined?(ActiveSupport::Deprecation)
         ActiveSupport::Deprecation.warn(
-          "autoprefixer-rails was deprected. " \
-          "Use Node.js’s Autoprefixer with PostCSS instead."
+          "autoprefixer-rails was deprected.\n" \
+          "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
         )
       end
       opts = convert_options(opts)

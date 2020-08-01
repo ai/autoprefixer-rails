@@ -4,7 +4,7 @@
      src="http://postcss.github.io/autoprefixer/logo.svg"
      title="Autoprefixer logo by Anton Lovchikov">
 
-**DEPECATED. Use [Node.js’s Autoprefixer] with [PostCSS] instead.**
+**DEPECATED. [Migration Guide.]**
 
 [Autoprefixer] is a tool to parse CSS and add vendor prefixes to CSS rules
 using values from the [Can I Use] database. This gem provides Ruby
@@ -14,12 +14,12 @@ and Ruby on Rails integration with this JavaScript tool.
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
 
-[Node.js’s Autoprefixer]: https://github.com/postcss/autoprefixer
-[Autoprefixer]:           https://github.com/postcss/autoprefixer
-[Can I Use]:              http://caniuse.com/
-[PostCSS]:                https://postcss.org/
-[ci-img]:                 https://travis-ci.org/ai/autoprefixer-rails.svg
-[ci]:                     https://travis-ci.org/ai/autoprefixer-rails
+[Migration Guide]: https://github.com/ai/autoprefixer-rails/wiki/Deprecated
+[Autoprefixer]:    https://github.com/postcss/autoprefixer
+[Can I Use]:       http://caniuse.com/
+[PostCSS]:         https://postcss.org/
+[ci-img]:          https://travis-ci.org/ai/autoprefixer-rails.svg
+[ci]:              https://travis-ci.org/ai/autoprefixer-rails
 
 ## Differences
 
