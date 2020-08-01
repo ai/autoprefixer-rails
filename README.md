@@ -4,7 +4,7 @@
      src="http://postcss.github.io/autoprefixer/logo.svg"
      title="Autoprefixer logo by Anton Lovchikov">
 
-**DEPECATED. [Migration Guide.]**
+**DEPRECATED. [Migration Guide.]**
 
 [Autoprefixer] is a tool to parse CSS and add vendor prefixes to CSS rules
 using values from the [Can I Use] database. This gem provides Ruby
