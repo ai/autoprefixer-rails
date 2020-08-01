@@ -14,12 +14,12 @@ and Ruby on Rails integration with this JavaScript tool.
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
 
-[Migration Guide]: https://github.com/ai/autoprefixer-rails/wiki/Deprecated
-[Autoprefixer]:    https://github.com/postcss/autoprefixer
-[Can I Use]:       http://caniuse.com/
-[PostCSS]:         https://postcss.org/
-[ci-img]:          https://travis-ci.org/ai/autoprefixer-rails.svg
-[ci]:              https://travis-ci.org/ai/autoprefixer-rails
+[Migration Guide.]: https://github.com/ai/autoprefixer-rails/wiki/Deprecated
+[Autoprefixer]:     https://github.com/postcss/autoprefixer
+[Can I Use]:        http://caniuse.com/
+[PostCSS]:          https://postcss.org/
+[ci-img]:           https://travis-ci.org/ai/autoprefixer-rails.svg
+[ci]:               https://travis-ci.org/ai/autoprefixer-rails
 
 ## Differences
 
