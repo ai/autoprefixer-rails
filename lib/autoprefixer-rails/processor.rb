@@ -22,7 +22,7 @@ module AutoprefixerRails
     def process(css, opts = {})
       if defined?(ActiveSupport::Deprecation)
         ActiveSupport::Deprecation.warn(
-          "autoprefixer-rails was deprected.\n" \
+          "autoprefixer-rails was deprected. Migration guide:\n" \
           "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
         )
       end

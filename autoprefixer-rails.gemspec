@@ -21,8 +21,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/ai/autoprefixer-rails"
   s.license  = "MIT"
 
-  s.post_install_message = "autoprefixer-rails was deprected. " +
-    "See the migration guide:\n" +
+  s.post_install_message = "autoprefixer-rails was deprected. Migration guide:\n" +
     "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
 
   s.add_dependency "execjs", ">= 0"
