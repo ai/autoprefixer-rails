@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.6.1
+* Improve deprecated warnings.
+
 ## 9.8.6
 * Fixed `env` option.
 * Added deprecation warning.
