@@ -32,6 +32,17 @@ module AutoprefixerRails
   def self.processor(params = {})
     Processor.new(params)
   end
+
+  def self.deprecate_warning_enabled
+    return @@deprecate_warning_enabled if class_variable_defined?(:@@deprecate_warning_enabled)
+
+    @@deprecate_warning_enabled = true
+    true
+  end
+
+  def self.deprecate_warning_enabled=(val)
+    @@deprecate_warning_enabled = val
+  end
 end
 
 require_relative "autoprefixer-rails/result"

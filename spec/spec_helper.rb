@@ -5,6 +5,9 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "app/config/environment"
 require "autoprefixer-rails"
 
+# Silence the deprecation note
+AutoprefixerRails.deprecate_warning_enabled = false
+
 require "rspec/rails"
 
 warn "ExecJS runtime is #{ExecJS.runtime.class}"

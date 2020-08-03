@@ -20,9 +20,9 @@ module AutoprefixerRails
     # * `to` with output CSS file name.
     # * `map` with true to generate new source map or with previous map.
     def process(css, opts = {})
-      if defined?(ActiveSupport::Deprecation)
+      if defined?(ActiveSupport::Deprecation) && AutoprefixerRails.deprecate_warning_enabled
         ActiveSupport::Deprecation.warn(
-          "autoprefixer-rails was deprected. Migration guide:\n" \
+          "autoprefixer-rails was deprecated. Migration guide:\n" \
           "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
         )
       end
