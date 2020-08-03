@@ -43,10 +43,10 @@ module AutoprefixerRails
       begin
         result = runtime.call(apply_wrapper, [css, process_opts, plugin_opts])
       rescue ExecJS::ProgramError => e
-        contry_error = "BrowserslistError: " \
-          "Country statistics is not supported " \
+        country_error = "BrowserslistError: " \
+          "Country statistics are not supported " \
           "in client-side build of Browserslist"
-        if e.message == contry_error
+        if e.message == country_error
           raise "Country statistics is not supported in AutoprefixerRails. " \
             "Use Autoprefixer with webpack or other Node.js builder."
         else
