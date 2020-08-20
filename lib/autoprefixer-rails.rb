@@ -32,6 +32,19 @@ module AutoprefixerRails
   def self.processor(params = {})
     Processor.new(params)
   end
+
+  def self.show_deprecation_message!
+    return unless defined?(ActiveSupport::Deprecation)
+
+    return if defined?(@deprecation_shown)
+
+    ActiveSupport::Deprecation.warn(
+      "autoprefixer-rails was deprected. Migration guide:\n" \
+      "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
+    )
+
+    @deprecation_shown = true
+  end
 end
 
 require_relative "autoprefixer-rails/result"
