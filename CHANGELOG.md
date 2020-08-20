@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.6.2
+* Print deprecation warning only once.
+
 ## 9.8.6.1
 * Improve deprecated warnings.
 
