@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.6.3
+* Fix deprecation warning for non-Rails environment.
+
 ## 9.8.6.2
 * Print deprecation warning only once.
 
