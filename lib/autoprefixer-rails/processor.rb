@@ -7,6 +7,19 @@ require "json"
 IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
 
 module AutoprefixerRails
+  def self.show_deprecation_message!
+    return unless defined?(ActiveSupport::Deprecation)
+
+    return if defined?(@deprecation_shown)
+
+    ActiveSupport::Deprecation.warn(
+      "autoprefixer-rails was deprected. Migration guide:\n" \
+      "https://github.com/ai/autoprefixer-rails/wiki/Deprecated"
+    )
+
+    @deprecation_shown = true
+  end
+
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
     def initialize(params = {})
