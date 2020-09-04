@@ -4,4 +4,6 @@
 pkg/
 
 .bundle
-*.lock
+Gemfile.lock
+
+build/node_modules/

@@ -37,11 +37,6 @@ module AutoprefixerRails
 
       opts = convert_options(opts)
 
-      apply_wrapper =
-        "(function(opts, pluginOpts) {" \
-        "return eval(process.apply(this, opts, pluginOpts));" \
-        "})"
-
       plugin_opts = params_with_browsers(opts[:from]).merge(opts)
       process_opts = {
         from: plugin_opts.delete(:from),
@@ -50,10 +45,10 @@ module AutoprefixerRails
       }
 
       begin
-        result = runtime.call(apply_wrapper, [css, process_opts, plugin_opts])
+        result = runtime.call("autoprefixer.process", css, process_opts, plugin_opts)
       rescue ExecJS::ProgramError => e
         contry_error = "BrowserslistError: " \
-          "Country statistics is not supported " \
+          "Country statistics are not supported " \
           "in client-side build of Browserslist"
         if e.message == contry_error
           raise "Country statistics is not supported in AutoprefixerRails. " \
@@ -68,7 +63,7 @@ module AutoprefixerRails
 
     # Return, which browsers and prefixes will be used
     def info
-      runtime.eval("autoprefixer(#{js_params}).info()")
+      runtime.call("autoprefixer.info", params_with_browsers)
     end
 
     # Parse Browserslist config
@@ -111,13 +106,6 @@ module AutoprefixerRails
       end
 
       params
-    end
-
-    # Convert params to JS string and add browsers from Browserslist config
-    def js_params
-      "{ " +
-        params_with_browsers.map { |k, v| "#{k}: #{v.inspect}" }.join(", ") +
-        " }"
     end
 
     # Convert ruby_options to jsOptions
@@ -176,34 +164,10 @@ module AutoprefixerRails
       end
     end
 
-    # Cache autoprefixer.js content
-    def read_js
-      @read_js ||= begin
-        root = Pathname(File.dirname(__FILE__))
-        path = root.join("../../vendor/autoprefixer.js")
-        path.read
-      end
-    end
-
-    # Return processor JS with some extra methods
     def build_js
-      "var global = this;" + read_js + process_proxy
-    end
-
-    # Return JS code for process method proxy
-    def process_proxy
-      <<-JS
-        var processor;
-        var process = function() {
-          var result = autoprefixer.process.apply(autoprefixer, arguments);
-          var warns  = result.warnings().map(function (i) {
-            delete i.plugin;
-            return i.toString();
-          });
-          var map = result.map ? result.map.toString() : null;
-          return { css: result.css, map: map, warnings: warns };
-        };
-      JS
+      root = Pathname(File.dirname(__FILE__))
+      path = root.join("../../vendor/autoprefixer.js")
+      path.read
     end
   end
 end
