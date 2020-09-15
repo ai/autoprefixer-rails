@@ -1,5 +1,8 @@
 # Change Log
 
+## Unreleased
+* Remove deprecation warnings.
+
 ## 9.8.6.3
 * Fix deprecation warning for non-Rails environment.
 
