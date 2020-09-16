@@ -9,6 +9,8 @@ IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
+    SUPPORTED_RUNTIMES = [ExecJS::Runtimes::Node, ExecJS::Runtimes::MiniRacer]
+
     def initialize(params = {})
       @params = params || {}
     end
@@ -128,24 +130,25 @@ module AutoprefixerRails
     # Lazy load for JS library
     def runtime
       @runtime ||= begin
-        if ExecJS.eval("typeof Uint8Array") != "function"
-          if ExecJS.runtime.name.start_with?("therubyracer")
-            raise "ExecJS::RubyRacerRuntime is not supported. " \
-              "Please replace therubyracer with mini_racer " \
-              "in your Gemfile or use Node.js as ExecJS runtime."
-          else
-            raise "#{ExecJS.runtime.name} runtime does’t support ES6. " \
-              "Please update or replace your current ExecJS runtime."
+        if ExecJS.runtime == ExecJS::Runtimes::Node
+          version = ExecJS.runtime.eval("process.version")
+          major = version.match(/^v(\d+)/)[1].to_i
+
+          # supports 10, 12, 14+
+          if major < 9 || [11, 13].include?(major)
+            raise "Autoprefixer doesn’t support Node #{version}. Update it."
           end
         end
 
-        if ExecJS.runtime == ExecJS::Runtimes::Node
-          version = ExecJS.runtime.eval("process.version")
-          first = version.match(/^v(\d+)/)[1].to_i
-          raise "Autoprefixer doesn’t support Node #{version}. Update it." if first < 6
-        end
-
         ExecJS.compile(build_js)
+      rescue ExecJS::RuntimeError
+        raise if SUPPORTED_RUNTIMES.include?(ExecJS.runtime)
+
+        # Only complain about unsupported runtimes when it failed to parse our script.
+        raise <<~MSG
+          Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
+          please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(' or ')}
+        MSG
       end
     end
 
