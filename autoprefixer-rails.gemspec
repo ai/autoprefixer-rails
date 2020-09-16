@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
     "values from the Can I Use website."
 
   s.files = Dir["{lib,vendor}/**/*", "LICENSE", "CHANGELOG.md", "README.md"]
-  s.test_files       = Dir["spec/**/*"].reject { |f| File.directory?(f) }
   s.extra_rdoc_files = ["README.md", "LICENSE", "CHANGELOG.md"]
   s.require_path     = "lib"
   s.required_ruby_version = ">= 2.4"
