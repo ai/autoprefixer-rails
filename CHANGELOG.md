@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.0 “Alis volat propriis”
+* Removed support for Node.js 6.x, 8.x, 11.x.
+* Moved to PostCSS 8.
+
 ## 9.8.6.5
 * Fix `9.8.6.4` regression.
 
