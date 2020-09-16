@@ -1,5 +1,8 @@
 # Change Log
 
+## 9.8.6.5
+* Fix `9.8.6.4` regression.
+
 ## 9.8.6.4
 * Remove deprecation warnings.
 
