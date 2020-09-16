@@ -5,9 +5,9 @@
   "license": "MIT",
   "browser": true,
   "dependencies": {
-    "autoprefixer": "postcss/autoprefixer",
+    "autoprefixer": "^10.0.0",
     "nop": "^1.0.0",
-    "postcss": "postcss/postcss#ose"
+    "postcss": "^8.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.1",
@@ -17,9 +17,6 @@
     "@rollup/plugin-replace": "^2.3.3",
     "rollup": "^2.26.10",
     "rollup-plugin-node-polyfills": "^0.2.1"
-  },
-  "resolutions": {
-    "autoprefixer/postcss": "postcss/postcss#ose"
   },
   "scripts": {
     "build": "yarn run rollup -c rollup.config.js"
