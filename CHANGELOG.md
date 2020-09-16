@@ -1,8 +1,8 @@
 # Change Log
 
 ## 10.0.0.1
-* Improve error message for old environments.
-* Reduce gem file size.
+* Improved error message for old environments.
+* Reduced gem file size.
 
 ## 10.0 “Alis volat propriis”
 * Removed support for Node.js 6.x, 8.x, 11.x.
