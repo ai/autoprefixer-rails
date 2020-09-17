@@ -135,7 +135,7 @@ module AutoprefixerRails
           major = version.match(/^v(\d+)/)[1].to_i
 
           # supports 10, 12, 14+
-          if major < 9 || [11, 13].include?(major)
+          unless [10, 12].include?(major) || major >= 14
             raise "Autoprefixer doesn’t support Node #{version}. Update it."
           end
         end
