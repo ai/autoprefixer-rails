@@ -1,5 +1,8 @@
 # Change Log
 
+## Unreleased
+* Update postcss to 8.0.5
+
 ## 10.0.0.1
 * Improved error message for old environments.
 * Reduced gem file size.
