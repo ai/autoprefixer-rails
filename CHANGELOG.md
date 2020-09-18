@@ -1,7 +1,8 @@
 # Change Log
 
-## Unreleased
+## 10.0.0.2
 * Update postcss to 8.0.5
+* Update browserslist & caniuse-lite
 
 ## 10.0.0.1
 * Improved error message for old environments.
