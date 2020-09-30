@@ -17,9 +17,8 @@ export default {
   plugins: [
     // patches for browser build
     replace({
-      "terminalHighlight.registerInput(Input)": '',
       "colorette.enabled": "null",
-      include: ["node_modules/postcss/lib/input.js", "node_modules/postcss/lib/css-syntax-error.js"],
+      include: ["node_modules/postcss/lib/css-syntax-error.js"],
       delimiters: ['', '']
     }),
     json(),
