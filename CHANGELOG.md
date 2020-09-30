@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.0.1.0
+* Update Can I Use data.
+* Update autoprefixer to 10.0.1
+* Update postcss to 8.1.1
+
 ## 10.0.0.2
 * Update postcss to 8.0.5
 * Update browserslist & caniuse-lite
