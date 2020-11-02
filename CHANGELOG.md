@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.0.1.2
+* Workaround `existsSync not a function` (#193)
+
 ## 10.0.1.1
 * Update Can I Use data.
 * Update postcss to 8.1.4
