@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.0.1.1
+* Update Can I Use data.
+* Update postcss to 8.1.4
+* Fix issue with source map (#190)
+
 ## 10.0.1.0
 * Update Can I Use data.
 * Update autoprefixer to 10.0.1
