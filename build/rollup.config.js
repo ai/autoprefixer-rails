@@ -18,7 +18,8 @@ export default {
     // patches for browser build
     replace({
       "colorette.enabled": "null",
-      include: ["node_modules/postcss/lib/css-syntax-error.js"],
+      "existsSync(": "void(",
+      include: ["node_modules/postcss/lib/css-syntax-error.js", "node_modules/postcss/lib/previous-map.js"],
       delimiters: ['', '']
     }),
     json(),
