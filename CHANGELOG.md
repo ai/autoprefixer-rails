@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.0.1.3
+* Fix `fileURL.replace is not a function` when reporting warnings (#194)
+
 ## 10.0.1.2
 * Workaround `existsSync not a function` (#193)
 
