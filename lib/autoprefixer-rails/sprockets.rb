@@ -57,7 +57,7 @@ module AutoprefixerRails
     end
 
     # Sprockets 2 API new and render
-    def render(_, _)
+    def render(*)
       self.class.run(@filename, @source)
     end
   end
