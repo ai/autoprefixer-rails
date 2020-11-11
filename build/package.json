@@ -5,7 +5,7 @@
   "license": "MIT",
   "browser": true,
   "dependencies": {
-    "autoprefixer": "^10.0.1",
+    "autoprefixer": "^10.0.2",
     "nop": "^1.0.0",
     "postcss": "^8.1.4"
   },
