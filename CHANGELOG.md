@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.0.2.0
+* Removed -ms-user-select: all because IE and old Edge don’t support it.
+* Fixed Grid Layout warning.
+* Update Can I Use data
+
 ## 10.0.1.3
 * Fix `fileURL.replace is not a function` when reporting warnings (#194)
 
