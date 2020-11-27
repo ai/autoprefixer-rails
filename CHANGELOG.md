@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.0.3.0
+* Fixed `substract` to `subtract` value for `mask-composite` (by Michelle Enos).
+* Update Can I Use data
+
 ## 10.0.2.0
 * Removed -ms-user-select: all because IE and old Edge don’t support it.
 * Fixed Grid Layout warning.
