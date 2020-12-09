@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.1.0.0 "Pula"
+* Fixed `Cannot read property 'proxyOf' of undefined` error (by Igor Kamyshev).
+* Added `dpcm` unit support to `min-resolution: 2dppx` (by Robert Eisele).
+* Fixed rational approximation in `min-resolution` (by Robert Eisele).
+
 ## 10.0.3.0
 * Fixed `substract` to `subtract` value for `mask-composite` (by Michelle Enos).
 * Update Can I Use data
