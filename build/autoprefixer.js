@@ -1,5 +1,5 @@
-import postcss from 'postcss'
-import autoprefixer from 'autoprefixer'
+const postcss = require('postcss')
+const autoprefixer = require('autoprefixer')
 
 export default {
   process: (css, processOptions, pluginOptions) => {

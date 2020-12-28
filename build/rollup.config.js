@@ -30,6 +30,7 @@ export default {
         { find: 'url', replacement: path.resolve(__dirname, 'url.js') }
       ]
     }),
+    nodePolyfills(),
     commonjs({
       transformMixedEsModules: true
     }),
@@ -37,7 +38,6 @@ export default {
       browser: true,
       preferBuiltins: false,
       extensions: [".mjs", ".js", ".json", ".node", ".es6"]
-    }),
-    nodePolyfills()
+    })
   ]
 }

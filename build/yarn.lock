@@ -29,10 +29,10 @@
   dependencies:
     "@rollup/pluginutils" "^3.0.8"
 
-"@rollup/plugin-node-resolve@^9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-9.0.0.tgz#39bd0034ce9126b39c1699695f440b4b7d2b62e6"
-  integrity sha512-gPz+utFHLRrd41WMP13Jq5mqqzHL3OXrfj3/MkSyB6UBIcuNt9j60GCbarzMzdf1VHFpOxfQh/ez7wyadLMqkg==
+"@rollup/plugin-node-resolve@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-10.0.0.tgz#44064a2b98df7530e66acf8941ff262fc9b4ead8"
+  integrity sha512-sNijGta8fqzwA1VwUEtTvWCx2E7qC70NMsDh4ZG13byAXYigBNZMxALhKUSycBks5gupJdq0lFrKumFrRZ8H3A==
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     "@types/resolve" "1.17.1"
@@ -80,7 +80,7 @@
   dependencies:
     "@types/node" "*"
 
-autoprefixer@^10.0.2:
+autoprefixer@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.1.0.tgz#b19fd8524edef8c85c9db3bdb0c998de84e172fb"
   integrity sha512-0/lBNwN+ZUnb5su18NZo5MBIjDaq6boQKZcxwy86Gip/CmXA2zZqUoFQLCNAGI5P25ZWSP2RWdhDJ8osfKEjoQ==
@@ -284,10 +284,10 @@ postcss-value-parser@^4.1.0:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.1.0.tgz#443f6a20ced6481a2bda4fa8532a6e55d789a2cb"
   integrity sha512-97DXOFbQJhk71ne5/Mt6cOu6yxsSfM0QGQyl0L25Gca4yGWEGJaig7l7gbCX623VqTBNGLRLaVUCnNkcedlRSQ==
 
-postcss@^8.1.4:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.0.tgz#214be4eda36db762eb8a89d7c7362b9341156eb5"
-  integrity sha512-vZ8cb6AlN53hHlnPvR+oj7fA46LU05Ysv7O7sNh1ixQrCbtx+d8/h+5tDER9XAccVhkf3aYskAiWmh0DdjNLbw==
+postcss@^8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.1.tgz#eabc5557c4558059b9d9e5b15bce7ffa9089c2a8"
+  integrity sha512-RhsqOOAQzTgh1UB/IZdca7F9WDb7SUCR2Vnv1x7DbvuuggQIpoDwjK+q0rzoPffhYvWNKX5JSwS4so4K3UC6vA==
   dependencies:
     colorette "^1.2.1"
     nanoid "^3.1.20"
@@ -323,10 +323,10 @@ rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@^2.27.0:
-  version "2.28.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.28.2.tgz#599ec4978144a82d8a8ec3d37670a8440cb04e4b"
-  integrity sha512-8txbsFBFLmm9Xdt4ByTOGa9Muonmc8MfNjnGAR8U8scJlF1ZW7AgNZa7aqBXaKtlvnYP/ab++fQIq9dB9NWUbg==
+rollup@^2.34.1:
+  version "2.35.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.35.1.tgz#e6bc8d10893556a638066f89e8c97f422d03968c"
+  integrity sha512-q5KxEyWpprAIcainhVy6HfRttD9kutQpHbeqDTWnqAFNJotiojetK6uqmcydNMymBEtC4I8bCYR+J3mTMqeaUA==
   optionalDependencies:
     fsevents "~2.1.2"
 
