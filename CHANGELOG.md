@@ -1,5 +1,11 @@
 # Change Log
 
+## 10.2.0.0 "Sub rosa"
+* Added TypeScript definitions (by Dmitry Semigradsky).
+* Fixed docs (by Florian Pellet).
+* Update Can I Use data.
+* Update postcss to 8.2.2
+
 ## 10.1.0.0 "Pula"
 * Fixed `Cannot read property 'proxyOf' of undefined` error (by Igor Kamyshev).
 * Added `dpcm` unit support to `min-resolution: 2dppx` (by Robert Eisele).
