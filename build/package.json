@@ -5,9 +5,9 @@
   "license": "MIT",
   "browser": true,
   "dependencies": {
-    "autoprefixer": "^10.0.2",
+    "autoprefixer": "^10.2.4",
     "nop": "^1.0.0",
-    "postcss": "^8.1.4"
+    "postcss": "^8.2.4"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.1",

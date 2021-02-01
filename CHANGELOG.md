@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.2.4.0
+* Fixed `transition-property` warnings (by @Sheraff).
+
 ## 10.2.0.0 "Sub rosa"
 * Added TypeScript definitions (by Dmitry Semigradsky).
 * Fixed docs (by Florian Pellet).
