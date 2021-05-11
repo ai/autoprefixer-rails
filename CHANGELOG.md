@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.2.5.0
+* Fixed `:` support in `@supports` (by Dmitry Semigradsky).
+* Update Can I Use data.
+* Lock to execjs < 2.8.0 for now (#203)
+
 ## 10.2.4.0
 * Fixed `transition-property` warnings (by @Sheraff).
 
