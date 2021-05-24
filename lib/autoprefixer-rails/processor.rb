@@ -9,7 +9,7 @@ IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
 module AutoprefixerRails
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
-    SUPPORTED_RUNTIMES = [ExecJS::Runtimes::Node, ExecJS::Runtimes::MiniRacer]
+    SUPPORTED_RUNTIMES = [ExecJS::Runtimes::Node, ExecJS::Runtimes::MiniRacer].freeze
 
     def initialize(params = {})
       @params = params || {}
@@ -131,7 +131,7 @@ module AutoprefixerRails
     def runtime
       @runtime ||= begin
         if ExecJS.runtime == ExecJS::Runtimes::Node
-          version = ExecJS.runtime.eval("process.version")
+          version = ExecJS.runtime.eval("this.process.version")
           major = version.match(/^v(\d+)/)[1].to_i
 
           # supports 10, 12, 14+
@@ -147,7 +147,7 @@ module AutoprefixerRails
         # Only complain about unsupported runtimes when it failed to parse our script.
         raise <<~MSG
           Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
-          please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(' or ')}
+          please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(" or ")}
         MSG
       end
     end

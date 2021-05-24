@@ -20,9 +20,6 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/ai/autoprefixer-rails"
   s.license  = "MIT"
 
-  # see #203, `process` is undefined in 2.8
-  s.add_dependency "execjs", "< 2.8.0"
-
   s.add_development_dependency "rails"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
