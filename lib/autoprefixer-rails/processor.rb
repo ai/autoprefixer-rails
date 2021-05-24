@@ -130,25 +130,29 @@ module AutoprefixerRails
     # Lazy load for JS library
     def runtime
       @runtime ||= begin
-        if ExecJS.runtime == ExecJS::Runtimes::Node
-          version = ExecJS.runtime.eval("process.version")
-          major = version.match(/^v(\d+)/)[1].to_i
-
-          # supports 10, 12, 14+
-          unless [10, 12].include?(major) || major >= 14
-            raise "Autoprefixer doesn’t support Node #{version}. Update it."
-          end
-        end
-
         ExecJS.compile(build_js)
       rescue ExecJS::RuntimeError
-        raise if SUPPORTED_RUNTIMES.include?(ExecJS.runtime)
-
         # Only complain about unsupported runtimes when it failed to parse our script.
-        raise <<~MSG
-          Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
-          please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(' or ')}
-        MSG
+
+        case ExecJS.runtime
+        when ExecJS::Runtimes::Node
+          node_command = ExecJS.runtime.send(:binary) rescue "Unknown"
+
+          raise <<~MSG
+            Your nodejs binary failed to load autoprefixer script file,
+            please check if you're running a supported version (10, 12, 14+)
+
+            ENV["PATH"] = #{ENV["PATH"]}
+            binary      = #{node_command}
+          MSG
+        when *SUPPORTED_RUNTIMES
+          raise
+        else
+          raise <<~MSG
+            Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
+            please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(' or ')}
+          MSG
+        end
       end
     end
 
