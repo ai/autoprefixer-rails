@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.2.5.1
+* Remvoe nodejs version check via ExecJS, to be compatible with 2.8.1 (#203)
+
 ## 10.2.5.0
 * Fixed `:` support in `@supports` (by Dmitry Semigradsky).
 * Update Can I Use data.
