@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/ai/autoprefixer-rails"
   s.license  = "MIT"
 
-  s.add_dependency "execjs", "> 0"
+  s.add_dependency "execjs", "~> 2"
 
   s.add_development_dependency "rails"
   s.add_development_dependency "rake"
