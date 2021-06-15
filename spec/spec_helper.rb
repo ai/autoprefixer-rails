@@ -11,6 +11,7 @@ warn "ExecJS runtime is #{ExecJS.runtime.class}"
 
 RSpec.configure do |c|
   c.filter_run_excluding not_jruby: RUBY_PLATFORM == "java"
+  c.example_status_persistence_file_path = ".rspec_status"
 end
 
 def sprockets_4?
