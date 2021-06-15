@@ -2,7 +2,7 @@
 
 require_relative "spec_helper"
 
-describe AutoprefixedRails::Railtie do
+RSpec.describe AutoprefixedRails::Railtie do
   before do
     @railtie = AutoprefixedRails::Railtie.instance
   end

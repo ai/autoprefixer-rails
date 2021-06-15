@@ -2,7 +2,7 @@
 
 require_relative "spec_helper"
 
-describe CssController, type: :controller do
+RSpec.describe CssController, type: :controller do
   before :all do
     cache = Rails.root.join("tmp/cache")
     cache.rmtree if cache.exist?
@@ -33,7 +33,7 @@ describe CssController, type: :controller do
   end
 end
 
-describe "Rake task" do
+RSpec.describe "Rake task" do
   it "shows debug" do
     info = `cd spec/app; bundle exec rake autoprefixer:info`
     expect(info).to match(/Browsers:\n  Chrome: 25\n\n/)

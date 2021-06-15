@@ -2,7 +2,7 @@
 
 require_relative "spec_helper"
 
-describe AutoprefixerRails do
+RSpec.describe AutoprefixerRails do
   before :all do
     @dir = Pathname(__FILE__).dirname
     @css = @dir.join("app/app/assets/stylesheets/test.css").read
