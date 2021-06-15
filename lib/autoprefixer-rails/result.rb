@@ -14,8 +14,8 @@ module AutoprefixerRails
 
     def initialize(css, map, warnings)
       @warnings = warnings
-      @css      = css
-      @map      = map
+      @css = css
+      @map = map
     end
 
     # Stringify prefixed CSS

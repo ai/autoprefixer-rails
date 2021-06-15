@@ -13,7 +13,7 @@ module Rake
     attr_reader :browsers
 
     def initialize(params = {})
-      @params    = params
+      @params = params
       @processor = AutoprefixerRails.processor(@params)
       define
     end

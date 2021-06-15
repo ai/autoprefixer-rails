@@ -14,7 +14,7 @@ task default: [:spec, "standard:fix"]
 task :clobber_package do
   begin
     rm_r "pkg"
-  rescue StandardError
+  rescue
     nil
   end
 end
@@ -26,10 +26,10 @@ desc "Test all Gemfiles from spec/*.gemfile"
 task :test_all do
   require "pty"
   require "shellwords"
-  cmd      = "bundle update && bundle exec rake --trace"
-  statuses = Dir.glob("./sprockets*.gemfile").map do |gemfile|
+  cmd = "bundle update && bundle exec rake --trace"
+  statuses = Dir.glob("./sprockets*.gemfile").map { |gemfile|
     Bundler.with_clean_env do
-      env = { "BUNDLE_GEMFILE" => gemfile }
+      env = {"BUNDLE_GEMFILE" => gemfile}
       warn "Testing #{File.basename(gemfile)}:"
       warn "  export BUNDLE_GEMFILE=#{gemfile}"
       warn "  #{cmd}"
@@ -44,7 +44,7 @@ task :test_all do
       end
       [$CHILD_STATUS&.exitstatus&.zero?, gemfile]
     end
-  end
+  }
   failed = statuses.reject(&:first).map(&:last)
   if failed.empty?
     warn "✓ Tests pass with all #{statuses.size} gemfiles"
