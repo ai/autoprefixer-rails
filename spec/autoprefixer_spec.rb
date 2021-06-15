@@ -44,32 +44,32 @@ describe AutoprefixerRails do
   end
 
   it "generates separated source map" do
-    result = AutoprefixerRails.process(@css, map: { inline: false })
+    result = AutoprefixerRails.process(@css, map: {inline: false})
     expect(result.map).to be_a(String)
   end
 
   it "uses file name in syntax errors", not_jruby: true do
-    expect do
+    expect {
       AutoprefixerRails.process("a {", from: "a.css")
-    end.to raise_error(/a.css:/)
+    }.to raise_error(/a.css:/)
   end
 
   it "includes sourcesContent by default" do
-    map = AutoprefixerRails.process("a{}", map: { inline: false }).map
+    map = AutoprefixerRails.process("a{}", map: {inline: false}).map
     expect(map).to include("sourcesContent")
   end
 
   it "maps options from Ruby style" do
     map = AutoprefixerRails.process("a{}", map: {
-                                      sources_content: false,
-                                      inline: false
-                                    }).map
+      sources_content: false,
+      inline: false
+    }).map
 
     expect(map).not_to include("sourcesContent")
   end
 
   it "does not remove old prefixes on request" do
-    css    = "a { -moz-border-radius: 5px; border-radius: 5px }"
+    css = "a { -moz-border-radius: 5px; border-radius: 5px }"
     result = AutoprefixerRails.process(css, remove: false)
     expect(result.css).to eq(css)
   end
@@ -81,16 +81,16 @@ describe AutoprefixerRails do
   end
 
   it "returns warnings" do
-    css    = "a{background:linear-gradient(top,white,black)}"
+    css = "a{background:linear-gradient(top,white,black)}"
     result = AutoprefixerRails.process(css)
     expect(result.warnings).to eq(["<css input>:1:3: Gradient has outdated " \
       "direction syntax. New syntax is like `to left` instead of `right`."])
   end
 
   it "shows correct error on country statistics" do
-    expect do
+    expect {
       AutoprefixerRails.process("", overrideBrowserslist: "> 1% in US")
-    end.to raise_error(/Use Autoprefixer with webpack/)
+    }.to raise_error(/Use Autoprefixer with webpack/)
   end
 
   context "Sprockets" do

@@ -55,14 +55,14 @@ module AutoprefixerRails
 
     # Parse Browserslist config
     def parse_config(config)
-      sections = { "defaults" => [] }
-      current  = "defaults"
+      sections = {"defaults" => []}
+      current = "defaults"
       config.gsub(/#[^\n]*/, "")
-            .split(/\n/)
-            .map(&:strip)
-            .reject(&:empty?)
-            .each do |line|
-        if IS_SECTION =~ line
+        .split(/\n/)
+        .map(&:strip)
+        .reject(&:empty?)
+        .each do |line|
+        if IS_SECTION.match?(line)
           current = line.match(IS_SECTION)[1].strip
           sections[current] ||= []
         else
@@ -76,16 +76,16 @@ module AutoprefixerRails
 
     def params_with_browsers(from = nil)
       from ||= if defined?(Rails) && Rails.respond_to?(:root) && Rails.root
-                 Rails.root.join("app/assets/stylesheets").to_s
-               else
-                 "."
-               end
+        Rails.root.join("app/assets/stylesheets").to_s
+      else
+        "."
+      end
 
       params = @params
       if !params.key?(:browsers) && !params.key?(:overrideBrowserslist) && from
         file = find_config(from)
         if file
-          env    = params[:env].to_s || "development"
+          env = params[:env].to_s || "development"
           config = parse_config(file)
           params = params.dup
           params[:overrideBrowserslist] = (config[env] || config["defaults"])
@@ -100,7 +100,7 @@ module AutoprefixerRails
       converted = {}
 
       opts.each_pair do |name, value|
-        if /_/ =~ name
+        if /_/.match?(name)
           name = name.to_s.gsub(/_\w/) { |i| i.delete("_").upcase }.to_sym
         end
         value = convert_options(value) if value.is_a? Hash
@@ -131,28 +131,32 @@ module AutoprefixerRails
     def runtime
       @runtime ||= begin
         ExecJS.compile(build_js)
-      rescue ExecJS::RuntimeError
-        # Only complain about unsupported runtimes when it failed to parse our script.
+                   rescue ExecJS::RuntimeError
+                     # Only complain about unsupported runtimes when it failed to parse our script.
 
-        case ExecJS.runtime
-        when ExecJS::Runtimes::Node
-          node_command = ExecJS.runtime.send(:binary) rescue "Unknown"
+                     case ExecJS.runtime
+                     when ExecJS::Runtimes::Node
+                       node_command = begin
+                                        ExecJS.runtime.send(:binary)
+                                      rescue
+                                        "Unknown"
+                                      end
 
-          raise <<~MSG
-            Your nodejs binary failed to load autoprefixer script file,
-            please check if you're running a supported version (10, 12, 14+)
+                       raise <<~MSG
+                         Your nodejs binary failed to load autoprefixer script file,
+                         please check if you're running a supported version (10, 12, 14+)
 
-            ENV["PATH"] = #{ENV["PATH"]}
-            binary      = #{node_command}
-          MSG
-        when *SUPPORTED_RUNTIMES
-          raise
-        else
-          raise <<~MSG
-            Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
-            please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(' or ')}
-          MSG
-        end
+                         ENV["PATH"] = #{ENV["PATH"]}
+                         binary      = #{node_command}
+                       MSG
+                     when *SUPPORTED_RUNTIMES
+                       raise
+                     else
+                       raise <<~MSG
+                         Your ExecJS runtime #{ExecJS.runtime.name} isn't supported by autoprefixer-rails,
+                         please switch to #{SUPPORTED_RUNTIMES.map(&:name).join(" or ")}
+                       MSG
+                     end
       end
     end
 

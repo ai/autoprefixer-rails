@@ -10,9 +10,9 @@ module AutoprefixerRails
     params = {}
     params[:overrideBrowserslist] = opts.delete(:overrideBrowserslist) if opts.key?(:overrideBrowserslist)
     params[:browsers] = opts.delete(:browsers) if opts.key?(:browsers)
-    params[:cascade]  = opts.delete(:cascade)  if opts.key?(:cascade)
-    params[:remove]   = opts.delete(:remove)   if opts.key?(:remove)
-    params[:env]      = opts.delete(:env)      if opts.key?(:env)
+    params[:cascade] = opts.delete(:cascade) if opts.key?(:cascade)
+    params[:remove] = opts.delete(:remove) if opts.key?(:remove)
+    params[:env] = opts.delete(:env) if opts.key?(:env)
     processor(params).process(css, opts)
   end
 
