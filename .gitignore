@@ -7,3 +7,4 @@ pkg/
 Gemfile.lock
 
 build/node_modules/
+.rspec_status
