@@ -15,8 +15,8 @@ and Ruby on Rails integration with this JavaScript tool.
 [Autoprefixer]:     https://github.com/postcss/autoprefixer
 [Can I Use]:        http://caniuse.com/
 [PostCSS]:          https://postcss.org/
-[ci-img]:           https://travis-ci.org/ai/autoprefixer-rails.svg
-[ci]:               https://travis-ci.org/ai/autoprefixer-rails
+[ci-img]:           https://github.com/ai/autoprefixer-rails/actions/workflows/ci.yml/badge.svg
+[ci]:               https://github.com/ai/autoprefixer-rails/actions/workflows/ci.yml
 
 ## Differences
 
