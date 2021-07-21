@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import nodePolyfills from 'rollup-plugin-node-polyfills'
 import replace from '@rollup/plugin-replace'
+import inject from '@rollup/plugin-inject'
 
 export default {
   input: 'autoprefixer.js',
@@ -38,6 +39,11 @@ export default {
       preferBuiltins: false,
       extensions: [".mjs", ".js", ".json", ".node", ".es6"]
     }),
-    nodePolyfills()
+    nodePolyfills(),
+	inject({
+      URL: ['whatwg-url', 'URL'],
+      TextEncoder: ['text-encoding', 'TextEncoder'],
+      TextDecoder: ['text-encoding', 'TextDecoder']
+    })
   ]
 }
