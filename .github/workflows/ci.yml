@@ -1,0 +1,65 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  linters:
+    name: Linters
+    # Run linting only once, on a single platform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+
+      - name: Run linters
+        run: |
+          bundle exec rake standard:fix
+
+  tests:
+    name: Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
+        ruby:
+          - 2.5
+          - 2.6
+          - 2.7
+          - '3.0'
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+
+      - name: Run tests
+        env:
+          EXECJS_RUNTIME: MiniRacer
+        run: bundle exec rake spec
+
+      - name: Run tests on EXECJS_RUNTIME=Node
+        if: ${{ matrix.ruby == '2.7' }}
+        env:
+          EXECJS_RUNTIME: Node
+        run: bundle exec rake spec
