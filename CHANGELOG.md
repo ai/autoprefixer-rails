@@ -3,6 +3,7 @@
 ## 10.3.1.0
 * Added `::file-selector-button` support (by Luke Warlow).
 * Fixed adding wrong prefixes to `content` (by Luke Warlow).
+* Fix `ReferenceError: Can't find variable: URL` (#213)
 
 ## 10.2.5.1
 * Remove nodejs version check via ExecJS, to be compatible with 2.8.1 (#203)
