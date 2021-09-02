@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.3.3.0
+* Fixed `::file-selector-button` support (by Usman Yunusov).
+* Fixed wrong `-moz-` prefix from  `::file-selector-button` (by Usman Yunusov).
+
 ## 10.3.1.0
 * Added `::file-selector-button` support (by Luke Warlow).
 * Fixed adding wrong prefixes to `content` (by Luke Warlow).
