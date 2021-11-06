@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "yaml"
+begin
+  require "sprockets/railtie"
+rescue LoadError
+end
 
 begin
   module AutoprefixedRails
