@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.4.0.0
+* Added `:autofill` support (by Luke Warlow).
+
 ## 10.3.3.0
 * Fixed `::file-selector-button` support (by Usman Yunusov).
 * Fixed wrong `-moz-` prefix from  `::file-selector-button` (by Usman Yunusov).
