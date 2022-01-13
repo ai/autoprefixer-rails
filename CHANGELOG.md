@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.4.2.0
+* Fixed missed `-webkit-` prefix for `width: stretch`.
+* Fixed `::file-selector-button` data (by Luke Warlow).
+* Ensure sprockets-rails is loaded before autoprefixer-rails (by Thomas Morgan)
+
 ## 10.4.0.0
 * Added `:autofill` support (by Luke Warlow).
 
