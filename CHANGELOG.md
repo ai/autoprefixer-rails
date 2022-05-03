@@ -1,5 +1,10 @@
 # Change Log
 
+## 10.4.7.0
+* Fixed `print-color-adjust` support in Firefox.
+* Fixed `print-color-adjust` support.
+* Fixed `NaN` in grid (by @SukkaW).
+
 ## 10.4.2.0
 * Fixed missed `-webkit-` prefix for `width: stretch`.
 * Fixed `::file-selector-button` data (by Luke Warlow).
