@@ -16,9 +16,9 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-inject": "^4.0.2",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-replace": "^2.3.3",
-    "rollup": "^2.27.0",
+    "rollup": "^2.42.0",
     "rollup-plugin-node-polyfills": "^0.2.1"
   },
   "scripts": {
