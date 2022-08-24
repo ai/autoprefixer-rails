@@ -4,9 +4,9 @@ require "pathname"
 require "execjs"
 require "json"
 
-IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
-
 module AutoprefixerRails
+  IS_SECTION = /^\s*\[(.+)\]\s*$/.freeze
+
   # Ruby to JS wrapper for Autoprefixer processor instance
   class Processor
     SUPPORTED_RUNTIMES = [ExecJS::Runtimes::Node, ExecJS::Runtimes::MiniRacer]
