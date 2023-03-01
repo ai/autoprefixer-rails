@@ -1,5 +1,13 @@
 # Change Log
 
+## 10.4.13.0
+* Fixed missed prefixes on vendor prefixes in name of CSS Custom Property.
+* Fixed support of unit-less zero angle in backgrounds (by 一丝).
+* Fixed `text-decoration` prefixes by moving to MDN data (by Romain Menke).
+* Fixed `unicode-bidi` prefixes by moving to MDN data.
+* Fixed `css-unicode-bidi` issue from latest Can I Use.
+* Do not print `color-adjust` warning if `print-color-adjust` also is in rule.
+
 ## 10.4.7.0
 * Fixed `print-color-adjust` support in Firefox.
 * Fixed `print-color-adjust` support.
