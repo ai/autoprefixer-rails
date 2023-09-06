@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.4.15.0
+* Improved startup time and reduced JS bundle size (by Kārlis Gaņģis).
+* Fixed `::backdrop` prefixes (by 一丝).
+
 ## 10.4.13.0
 * Fixed missed prefixes on vendor prefixes in name of CSS Custom Property.
 * Fixed support of unit-less zero angle in backgrounds (by 一丝).
