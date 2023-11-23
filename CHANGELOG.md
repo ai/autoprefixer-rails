@@ -1,5 +1,8 @@
 # Change Log
 
+## 10.4.16.0
+* Improved performance (by Romain Menke).
+
 ## 10.4.15.0
 * Improved startup time and reduced JS bundle size (by Kārlis Gaņģis).
 * Fixed `::backdrop` prefixes (by 一丝).
