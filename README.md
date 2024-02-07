@@ -202,7 +202,7 @@ Autoprefixer will generate a source map if you set `map` option to `true` in
 `process` method.
 
 You must set input and output CSS files paths (by `from` and `to` options)
-to generate correct map.
+to generate a correct map.
 
 ```ruby
 result = AutoprefixerRails.process(css,
@@ -212,11 +212,12 @@ result = AutoprefixerRails.process(css,
 ```
 
 Autoprefixer can also modify previous source map (for example, from Sass
-compilation). Just set original source map content (as string) to `map` option:
+compilation). Just set original source map content (as string) as `prev`
+in the `map` option.
 
 ```ruby
 result = AutoprefixerRails.process(css, {
-    map:   File.read('main.sass.css.map'),
+    map:   { prev: File.read('main.sass.css.map') },
     from: 'main.sass.css',
     to:   'main.min.css')
 
