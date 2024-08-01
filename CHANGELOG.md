@@ -1,4 +1,9 @@
 # Change Log
+## 10.4.19.0
+* Removed `end value has mixed support, consider using flex-end` warning
+  since `end`/`start` now have good support.
+* Fixed removing `-webkit-box-orient` on `-webkit-line-clamp` (@Goodwine).
+* Fixed `user-select: contain` prefixes.
 
 ## 10.4.16.0
 * Improved performance (by Romain Menke).
