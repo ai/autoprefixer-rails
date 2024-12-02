@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.metadata["changelog_uri"] = "https://github.com/ai/autoprefixer-rails/blob/master/CHANGELOG.md"
   s.metadata["source_code_uri"] = "https://github.com/ai/autoprefixer-rails"
   s.metadata["bug_tracker_uri"] = "https://github.com/ai/autoprefixer-rails/issues"
+  s.metadata["funding_uri"] = "https://tidelift.com/subscription/pkg/rubygems-autoprefixer-rails"
 end
