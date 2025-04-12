@@ -1,4 +1,8 @@
 # Change Log
+## 10.4.21.0
+* Fixed old `-moz-` prefix for `:placeholder-shown` (by @Marukome0743).
+* Fixed `fit-content` prefix for Firefox.
+
 ## 10.4.19.0
 * Removed `end value has mixed support, consider using flex-end` warning
   since `end`/`start` now have good support.
