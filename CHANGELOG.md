@@ -1,4 +1,19 @@
 # Change Log
+## 10.6.1.0
+* Added `initial-letter` support (by @thomasmattheussen).
+* Added `mask-position-x` and `mask-position-y` support (by @toporek).
+* Fixed grid gap set with the `row-gap` and `column-gap` longhands (by dualfroz).
+* Fixed producing wrong old `-webkit-` gradients (by @ryanchou1994).
+* Fixed resolution media query parsing performance (by @NotAFlightRisk).
+* Fixed prefixed rule duplication (by @xianjianlf2).
+* Fixed brackets and gradient parser (by @alanturing881).
+* Moved `-webkit-fill-available` before `-moz-available`, so Firefox
+  will use `-webkit-` version which is closer to `stretch`.
+* Fixed `grid-area` span reset for overriding areas (by @puneetdixit200).
+* Fixed broken gradients on CSS Custom Properties (by @serger777).
+* Made Autoprefixer a little faster (by @Cherry).
+* Fixed `stretch` prefixes on new Can I Use database.
+
 ## 10.4.21.0
 * Fixed old `-moz-` prefix for `:placeholder-shown` (by @Marukome0743).
 * Fixed `fit-content` prefix for Firefox.
