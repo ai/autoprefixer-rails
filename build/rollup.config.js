@@ -28,7 +28,10 @@ export default {
       entries: [
         { find: '@babel/register', replacement: 'nop' },
         { find: '@babel/core', replacement: 'nop' },
-        { find: 'url', replacement: path.resolve(__dirname, 'url.js') }
+        { find: 'url', replacement: path.resolve(__dirname, 'url.js') },
+        // postcss's "browser" field stubs these out, which disables source maps
+        { find: /^source-map-js$/, replacement: path.resolve(__dirname, 'node_modules/source-map-js/source-map.js') },
+        { find: /^path$/, replacement: path.resolve(__dirname, 'node_modules/rollup-plugin-node-polyfills/polyfills/path.js') }
       ]
     }),
     commonjs({
